@@ -163,3 +163,32 @@ Overall average: **60-90% token reduction** on common development operations.
 - Do not append automatically generated attribution to commit messages.
 
 <!-- end-rule-commit-->
+
+<!-- begin:research-before-design-rule:start -->
+
+### Research Before Design
+
+- Keep Superpowers as the primary brainstorming, planning, and development workflow.
+- For new ideas, features, business workflows, or external integrations, conduct relevant research before recommending solutions:
+  - **`business-analyst`**: Investigate business requirements, domain rules, stakeholder needs, business processes, and established best practices.
+  - **`workflow-mapping`**: Explore and optimize business workflows, user journeys, state transitions, edge cases, failure scenarios, and recovery paths.
+  - **`web-research`**: Research existing solutions, official documentation, SDKs, APIs, libraries, frameworks, cloud services, and integration patterns.
+
+### Research Guidelines
+
+- Prioritize official documentation, primary sources, and reputable GitHub repositories.
+- Verify current versions, compatibility, limitations, and recommended integration practices.
+- Investigate existing solutions and proven patterns before proposing new implementations.
+- Compare relevant alternatives, including their advantages, disadvantages, and trade-offs.
+- Clearly distinguish verified facts, assumptions, and recommendations.
+- Provide source references for important research findings.
+
+### Workflow Integration
+
+- Perform relevant research before recommending architecture, features, workflows, or implementation approaches.
+- Use research findings to inform Superpowers brainstorming and design decisions.
+- Activate only the skills relevant to the current task; do not invoke all three unnecessarily.
+- Skip extensive research for trivial or well-understood tasks.
+- Continue with the standard Superpowers planning and implementation workflow after design approval.
+
+<!-- end:research-before-design-rule:end -->

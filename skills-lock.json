@@ -1,6 +1,12 @@
 {
   "version": 1,
   "skills": {
+    "business-analyst": {
+      "source": "rade-nugroho/agentic-enteprises-skill",
+      "sourceType": "github",
+      "skillPath": "business-analyst/SKILL.md",
+      "computedHash": "8888c24e9c9a71992fd65294e70fcce405ee2536fa4be5063dcedb2d3c241bb0"
+    },
     "frontend-ui-engineering": {
       "source": "addyosmani/agent-skills",
       "sourceType": "github",
@@ -24,6 +30,18 @@
       "sourceType": "github",
       "skillPath": "skills/tailwind-guidelines/SKILL.md",
       "computedHash": "7c82c0068ec2034f82d708f6743c159213834dfeb7d1a753e317baa5d72655ef"
+    },
+    "web-research": {
+      "source": "velonx/agent-skills",
+      "sourceType": "github",
+      "skillPath": "skills/web-research/SKILL.md",
+      "computedHash": "eaa778f9f888291f49598927502fecb308adc6732a2c6748ce26e0044a5b3ee3"
+    },
+    "workflow-mapping": {
+      "source": "snappedly/skills",
+      "sourceType": "github",
+      "skillPath": "skills/tools/workflow-mapping/SKILL.md",
+      "computedHash": "77c01a1a5db936e3686bed0f03b39c52c2d083cd738301f43c40c75c6f232bf7"
     }
   }
 }
