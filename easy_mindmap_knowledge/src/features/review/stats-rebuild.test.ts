@@ -30,7 +30,7 @@ async function submit(
   );
   await repo.markSubmitted(id, {
     scorePct: 50, passed: false, reason: 'manual', at,
-    grades: qs.map((q) => ({ position: q.position, isCorrect: answers[q.questionId] })),
+    grades: qs.map((q) => ({ position: q.position, isCorrect: answers[q.questionId], selected: q.selected })),
   });
 }
 const stats = () => createQuestionStatsRepo(db);

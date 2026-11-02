@@ -17,6 +17,9 @@ let clock = NOW;
 let services: Services;
 let db: SqlExecutor;
 let executes: string[];
+let gate: Promise<void> | null = null;
+let gateHit: (() => void) | null = null;
+let failSql: string | null = null;
 let idN = 0;
 const onSubmitted = vi.fn(async () => {});
 
@@ -34,9 +37,15 @@ async function setup() {
   raw.questions = [...qs('compute', 12, 'c'), ...qs('storage', 4, 's'), ...qs('networking', 12, 'n', true), ...qs(null, 40, 'x')];
   const base = await createNodeSqliteExecutor();
   executes = [];
+  gate = null; gateHit = null; failSql = null;
   db = {
     select: (sql, params) => base.select(sql, params),
-    execute: (sql, params) => { executes.push(sql); return base.execute(sql, params); },
+    execute: async (sql, params) => {
+      if (failSql && sql.includes(failSql)) throw new Error('injected');
+      if (gate && sql.includes("SET status = 'submitted'")) { gateHit?.(); await gate; }
+      executes.push(sql);
+      return base.execute(sql, params);
+    },
   };
   services = buildServices({ executor: db, catalog: loadCatalog(raw), now: () => clock, newId: () => `id-${++idN}` });
 }
@@ -336,5 +345,91 @@ describe('time source', () => {
     await s.submit('manual');
     expect(spy).not.toHaveBeenCalled();
     spy.mockRestore();
+  });
+});
+
+describe('fix round 1', () => {
+  it('failed save rolls back the in-memory selection, surfaces the error, and submit grades the old value', async () => {
+    const s = await start();
+    await s.select(0, ['A']);
+    vi.spyOn(services.repos.attempts, 'saveAnswer').mockRejectedValueOnce(new Error('disk'));
+    await expect(s.select(0, ['B'])).rejects.toThrow('disk');
+    expect(s.questions[0].selected).toEqual(['A']);
+    const r = await s.submit('manual');
+    expect(r.items[0]).toMatchObject({ selected: ['A'], isCorrect: true });
+    expect((await services.repos.attempts.questionsOf(s.attemptId))[0].selected).toEqual(['A']);
+  });
+  it('submit persists selected alongside is_correct', async () => {
+    const s = await start();
+    failSql = 'UPDATE attempt_questions SET selected';
+    await expect(s.select(2, ['A'])).rejects.toThrow('injected');
+    failSql = null;
+    await s.select(1, ['B']);
+    await s.submit('manual');
+    const rows = await services.repos.attempts.questionsOf(s.attemptId);
+    expect(rows[1]).toMatchObject({ selected: ['B'], isCorrect: false });
+    expect(rows[2]).toMatchObject({ selected: [], isCorrect: false });
+  });
+  it('the exposed questions cannot be mutated by a component', async () => {
+    const s = await start();
+    const q = s.questions[0];
+    expect(() => { (q.selected as string[]).push('A'); }).toThrow();
+    expect(() => { (q as { selected: string[] }).selected = ['A']; }).toThrow();
+    expect(s.questions[0].selected).toEqual([]);
+  });
+  it('exit during an in-flight timeout submit waits, then discards and exposes no result', async () => {
+    const s = await start('compute', { limitMs: 1000 });
+    await answer(s, 10);
+    let release!: () => void;
+    gate = new Promise<void>((r) => { release = r; });
+    const hit = new Promise<void>((r) => { gateHit = r; });
+    const ticking = s.tick(5000);
+    await hit;
+    const exiting = s.exit();
+    release();
+    await Promise.all([ticking, exiting]);
+    expect(await services.repos.attempts.findInProgress()).toBeNull();
+    expect(await services.repos.attempts.listSubmitted()).toEqual([]);
+    expect(await db.select('SELECT * FROM attempt_questions')).toEqual([]);
+    expect(await services.repos.questionStats.listAll()).toEqual([]);
+    expect(s.result).toBeNull();
+    expect(s.submitted).toBe(false);
+    const n = executes.length;
+    await s.tick(1000); await s.select(0, ['A']); await s.flushClock();
+    await expect(s.submit('manual')).rejects.toThrow();
+    expect(executes.length).toBe(n);
+  });
+  it('failed markSubmitted then exit then tick/submit => no further writes', async () => {
+    const s = await start('compute', { limitMs: 100000 });
+    failSql = 'UPDATE attempts SET status';
+    await expect(s.submit('manual')).rejects.toThrow('injected');
+    expect(s.submitted).toBe(false);
+    failSql = null;
+    await s.exit();
+    const n = executes.length;
+    await s.tick(1000);
+    await expect(s.submit('manual')).rejects.toThrow();
+    expect(executes.length).toBe(n);
+    expect(await services.repos.attempts.findInProgress()).toBeNull();
+    expect(await services.repos.attempts.listSubmitted()).toEqual([]);
+  });
+  it('resume rejects a position gap', async () => {
+    await start();
+    const found = (await services.repos.attempts.findInProgress())!;
+    const gap = { ...found, questions: found.questions.map((q) => (q.position >= 5 ? { ...q, position: q.position + 1 } : q)) };
+    await expect(PracticeSession.resume(services, gap, onSubmitted)).rejects.toBeInstanceOf(CorruptAttemptError);
+    const dup = { ...found, questions: found.questions.map((q, i) => (i === 1 ? { ...q, position: 0 } : q)) };
+    await expect(PracticeSession.resume(services, dup, onSubmitted)).rejects.toBeInstanceOf(CorruptAttemptError);
+  });
+  it('rebuildStatsFor rejection still calls onSubmitted, rethrows, and result stays cached', async () => {
+    const s = await start();
+    await answer(s, 8);
+    failSql = 'INSERT INTO question_stats';
+    await expect(s.submit('manual')).rejects.toThrow();
+    failSql = null;
+    expect(onSubmitted).toHaveBeenCalledTimes(1);
+    expect(s.result).toMatchObject({ correct: 8 });
+    expect(await s.submit('manual')).toBe(s.result);
+    expect(onSubmitted).toHaveBeenCalledTimes(1);
   });
 });

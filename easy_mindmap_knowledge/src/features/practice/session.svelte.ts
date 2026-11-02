@@ -28,6 +28,9 @@ export interface SessionQuestion {
 type Reason = 'manual' | 'timeout';
 const CLOCK_SAVE_EVERY_MS = 5000;
 
+const view = (q: SessionQuestion): SessionQuestion =>
+  Object.freeze({ ...q, optionOrder: Object.freeze([...q.optionOrder]) as string[], selected: Object.freeze([...q.selected]) as string[] });
+
 /**
  * One practice attempt. Time comes only from `services.now()` (never Date.now) so tests and
  * resume logic are deterministic. The session never imports AppState: the UI passes
@@ -39,7 +42,8 @@ export class PracticeSession {
   readonly topicId: string | null;
   readonly allowReview: boolean;
 
-  #questions = $state<SessionQuestion[]>([]);
+  // $state.raw + frozen items: components cannot mutate selections and bypass persistence.
+  #questions = $state.raw<readonly SessionQuestion[]>([]);
   #index = $state(0);
   #remainingMs = $state<number | null>(null);
   #submitted = $state(false);
@@ -50,6 +54,9 @@ export class PracticeSession {
   #sinceSave = 0;
   /** Set synchronously when submit/exit begins so no further mutation or timeout can interleave. */
   #closed = false;
+  /** Set synchronously by exit(); permanent. Nothing may write to a discarded attempt. */
+  #exited = false;
+  #exitPromise: Promise<void> | null = null;
   #inflight: Promise<SubmitResult> | null = null;
 
   private constructor(
@@ -66,13 +73,15 @@ export class PracticeSession {
     this.#clock = clock;
     this.#remainingMs = remainingAt(clock, services.now());
     const byId = new Map(services.catalog.questions.map((q) => [q.id, q]));
-    this.#questions = questions.map((q) => ({
-      position: q.position,
-      questionId: q.questionId,
-      optionOrder: [...q.optionOrder],
-      multi: byId.get(q.questionId)?.multi ?? false,
-      selected: [...q.selected],
-    }));
+    this.#questions = questions.map((q) =>
+      view({
+        position: q.position,
+        questionId: q.questionId,
+        optionOrder: q.optionOrder,
+        multi: byId.get(q.questionId)?.multi ?? false,
+        selected: q.selected,
+      }),
+    );
   }
 
   get questions(): readonly SessionQuestion[] { return this.#questions; }
@@ -116,11 +125,14 @@ export class PracticeSession {
     const { attempt } = found;
     const questions = [...found.questions].sort((a, b) => a.position - b.position);
     if (questions.length === 0) throw new CorruptAttemptError('no questions');
+    if (questions.some((q, i) => q.position !== i)) throw new CorruptAttemptError('positions are not 0..n-1');
     const known = new Set(services.catalog.questions.map((q) => q.id));
     if (questions.some((q) => !known.has(q.questionId))) throw new CorruptAttemptError('unknown question');
     if (attempt.kind === 'practice') {
       if (attempt.topicId === null) throw new CorruptAttemptError('practice attempt without topic');
       const expected = Math.min(practiceCount(attempt.topicId), buildPool(services.catalog, attempt.topicId).length);
+      // Depends on the CURRENT catalog: a content update that shrinks a pool relaxes the check, and one that
+      // grows it may flag an old attempt as partial; accepted, since the cost is only a discarded attempt.
       if (questions.length < expected) throw new CorruptAttemptError('partial attempt');
     }
     const now = services.now();
@@ -130,23 +142,30 @@ export class PracticeSession {
   }
 
   goTo(index: number): void {
-    if (this.#closed) return;
+    if (this.#closed || this.#exited) return;
     if (!Number.isInteger(index) || index < 0 || index >= this.#questions.length) return;
     this.#index = index;
   }
 
   async select(position: number, keys: string[]): Promise<void> {
-    if (this.#closed) return;
-    const q = this.#questions[position];
-    if (!q) return;
-    const selected = q.multi ? [...keys] : keys.slice(0, 1);
-    this.#questions[position] = { ...q, selected };
-    await this.services.repos.attempts.saveAnswer(this.attemptId, position, selected);
+    if (this.#closed || this.#exited) return;
+    const prev = this.#questions[position];
+    if (!prev) return;
+    const selected = prev.multi ? [...keys] : keys.slice(0, 1);
+    const next = view({ ...prev, selected });
+    this.#questions = this.#questions.with(position, next);
+    try {
+      await this.services.repos.attempts.saveAnswer(this.attemptId, position, selected);
+    } catch (e) {
+      // Keep memory equal to the DB: undo, unless a newer select already replaced ours.
+      if (this.#questions[position] === next) this.#questions = this.#questions.with(position, prev);
+      throw e;
+    }
   }
 
   /** Advance the clock. Not re-entrant-safe by design: UI calls it from one interval. */
   async tick(elapsedMs: number): Promise<void> {
-    if (this.#closed || this.#clock.limitMs === null) return;
+    if (this.#closed || this.#exited || this.#clock.limitMs === null) return;
     const now = this.services.now();
     if (this.#clock.mode === 'freeze') {
       this.#clock = advanceFreeze(this.#clock, elapsedMs);
@@ -163,14 +182,14 @@ export class PracticeSession {
   }
 
   async flushClock(): Promise<void> {
-    if (this.#closed || this.#clock.limitMs === null) return;
+    if (this.#closed || this.#exited || this.#clock.limitMs === null) return;
     this.#sinceSave = 0;
     await this.services.repos.attempts.saveClock(this.attemptId, this.#clock, this.services.now());
   }
 
   openKnowledge(): void {
     if (!this.allowReview) throw new KnowledgeNotAllowedError();
-    if (this.#closed) return;
+    if (this.#closed || this.#exited) return;
     this.#knowledgeOpen = true; // the clock is deliberately not paused
   }
 
@@ -181,7 +200,8 @@ export class PracticeSession {
   submit(reason: Reason): Promise<SubmitResult> {
     if (this.#result) return Promise.resolve(this.#result);
     if (this.#inflight) return this.#inflight;
-    if (this.#closed) return Promise.reject(new Error('Session was exited'));
+    if (this.#exited) return Promise.reject(new Error('Session was exited'));
+    if (this.#closed) return Promise.reject(new Error('Session is closed'));
     this.#closed = true;
     const run = this.#doSubmit(reason).finally(() => {
       this.#inflight = null;
@@ -218,10 +238,11 @@ export class PracticeSession {
         passed: result.passed,
         reason,
         at: this.services.now(),
-        grades: items.map((it, position) => ({ position, isCorrect: it.isCorrect })),
+        grades: items.map((it, position) => ({ position, isCorrect: it.isCorrect, selected: it.selected })),
       });
     } catch (e) {
-      this.#closed = false; // nothing was committed as submitted; allow a retry
+      // Nothing was committed as submitted; allow a retry, but never resurrect an exited session.
+      if (!this.#exited) this.#closed = false;
       throw e;
     }
     // From here the attempt IS submitted in the DB. Expose the result before any follow-up
@@ -230,15 +251,46 @@ export class PracticeSession {
     this.#result = result;
     this.#submitted = true;
     this.#knowledgeOpen = false;
-    await rebuildStatsFor(this.services.rebuildDeps, items.map((i) => i.questionId));
-    await this.onSubmitted();
+    // Both follow-ups always run so UI state refreshes even if the stats rebuild failed; first error wins.
+    let failure: { error: unknown } | null = null;
+    try {
+      await rebuildStatsFor(this.services.rebuildDeps, items.map((i) => i.questionId));
+    } catch (error) {
+      failure = { error };
+    }
+    try {
+      await this.onSubmitted();
+    } catch (error) {
+      failure ??= { error };
+    }
+    if (failure) throw failure.error;
     return result;
   }
 
-  async exit(): Promise<void> {
-    if (this.#closed && this.#result) return;
-    this.#closed = true;
+  /**
+   * Leave and discard. If a submit is in flight we wait for it to settle first (the user chose to
+   * leave, so the attempt is then discarded anyway) and do NOT expose its result: the attempt no
+   * longer exists, so `result` is cleared and stats are rebuilt without it. After a completed
+   * submit, exit() is a no-op: the submitted attempt is history and must be kept.
+   */
+  exit(): Promise<void> {
+    if (this.#exitPromise) return this.#exitPromise;
+    if (this.#result && !this.#inflight) return Promise.resolve();
+    this.#exited = true;
     this.#knowledgeOpen = false;
-    await this.services.repos.attempts.discard(this.attemptId);
+    this.#exitPromise = (async () => {
+      const pending = this.#inflight;
+      if (pending) await pending.catch(() => {});
+      const ids = this.#result ? this.#questions.map((q) => q.questionId) : [];
+      this.#result = null;
+      this.#submitted = false;
+      await this.services.repos.attempts.discard(this.attemptId);
+      if (ids.length > 0) {
+        // The attempt was submitted for a moment: drop its contribution to the stats cache.
+        await rebuildStatsFor(this.services.rebuildDeps, ids);
+        await this.onSubmitted();
+      }
+    })();
+    return this.#exitPromise;
   }
 }

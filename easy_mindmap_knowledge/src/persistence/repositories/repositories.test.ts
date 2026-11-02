@@ -141,12 +141,13 @@ describe('attempts', () => {
       reason: 'timeout',
       at: 5000,
       grades: [
-        { position: 0, isCorrect: true },
-        { position: 1, isCorrect: false },
+        { position: 0, isCorrect: true, selected: ['B'] },
+        { position: 1, isCorrect: false, selected: ['C', 'D'] },
       ],
     });
     const qs = await repo.questionsOf('a1');
     expect(qs.map((q) => q.isCorrect)).toEqual([true, false]);
+    expect(qs.map((q) => q.selected)).toEqual([['B'], ['C', 'D']]);
     const [row] = await repo.listSubmitted();
     expect(row).toMatchObject({
       id: 'a1',

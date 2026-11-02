@@ -59,7 +59,8 @@ export interface SubmitInput {
   passed: boolean;
   reason: 'manual' | 'timeout';
   at: number;
-  grades: { position: number; isCorrect: boolean }[];
+  /** `selected` is written with the grade so a graded row can never show nothing chosen. */
+  grades: { position: number; isCorrect: boolean; selected: string[] }[];
 }
 
 export function createAttemptsRepo(db: SqlExecutor) {
@@ -119,8 +120,8 @@ export function createAttemptsRepo(db: SqlExecutor) {
     /** Grades first, attempt row LAST, so a crash midway leaves it in_progress. */
     async markSubmitted(attemptId: string, s: SubmitInput): Promise<void> {
       for (const g of s.grades) {
-        await db.execute('UPDATE attempt_questions SET is_correct = $1 WHERE attempt_id = $2 AND position = $3', [
-          g.isCorrect ? 1 : 0, attemptId, g.position,
+        await db.execute('UPDATE attempt_questions SET is_correct = $1, selected = $2 WHERE attempt_id = $3 AND position = $4', [
+          g.isCorrect ? 1 : 0, JSON.stringify(g.selected), attemptId, g.position,
         ]);
       }
       await db.execute(
