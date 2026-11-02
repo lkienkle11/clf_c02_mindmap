@@ -3,3 +3,8 @@ export { LeitnerScheduler } from './logic/scheduler';
 export type { ReviewScheduler } from './logic/scheduler';
 export { rebuildStatsFor, reconcileStats } from './stats-rebuild';
 export type { RebuildDeps } from './stats-rebuild';
+export { reviewSummaries } from './logic/review-summary';
+export type { TopicReviewSummary, Urgency } from './logic/review-summary';
+export { buildReviewPlan } from './logic/build-review-plan';
+export type { ReviewMode, ReviewPlan } from './logic/build-review-plan';
+export { shouldShowDailyPrompt, localDateString } from './logic/prompt-gate';
