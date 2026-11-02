@@ -6,6 +6,7 @@
   import { getI18n } from '@/i18n/i18n.svelte';
   import Badge from '@/ui/Badge.svelte';
   import Button from '@/ui/Button.svelte';
+  import { isAllowedExternalUrl } from './external-url';
   import { renderLessonBody } from './markdown';
 
   interface Props {
@@ -25,15 +26,37 @@
   const previous = $derived(index > 0 ? siblings[index - 1] : null);
   const next = $derived(index >= 0 && index < siblings.length - 1 ? siblings[index + 1] : null);
   const isRead = $derived(appState.readIds.has(lesson.id));
-  const html = $derived(renderLessonBody(lesson.body[locale]));
+  const html = $derived(withoutDeadLinks(renderLessonBody(lesson.body[locale])));
   let saving = $state(false);
+  let error = $state<string | null>(null);
+
+  /** Links that may not be opened become plain text, so the body never contains a dead link. */
+  function withoutDeadLinks(source: string): string {
+    const doc = new DOMParser().parseFromString(source, 'text/html');
+    for (const a of doc.querySelectorAll('a')) {
+      if (!isAllowedExternalUrl(a.getAttribute('href') ?? '')) a.replaceWith(...a.childNodes);
+    }
+    return doc.body.innerHTML;
+  }
+
+  async function open(url: string): Promise<void> {
+    error = null;
+    try {
+      await openExternal(url);
+    } catch {
+      error = i18n.t('lesson.openFailed');
+    }
+  }
 
   async function complete(): Promise<void> {
     if (saving) return;
     saving = true;
+    error = null;
     try {
       await services.repos.lessonProgress.markRead(lesson.id, services.now());
       await appState.refresh();
+    } catch {
+      error = i18n.t('lesson.completeFailed');
     } finally {
       saving = false;
     }
@@ -43,23 +66,30 @@
     if (target) appState.open({ view: 'lesson', topicId: target.topicId, lessonId: target.id });
   }
 
-  /** Lesson bodies must never navigate the webview: every link goes through the allowlisted opener or nowhere. */
+  /** Lesson bodies must never navigate the webview: allowed links go through the injected opener, all else is blocked. */
   const interceptLinks: Attachment<HTMLElement> = (node) => {
+    const find = (e: MouseEvent): HTMLAnchorElement | null => (e.target instanceof Element ? e.target.closest('a') : null);
     const onclick = (e: MouseEvent): void => {
-      const link = e.target instanceof Element ? e.target.closest('a') : null;
+      const link = find(e);
       if (!link) return;
       e.preventDefault();
+      const plain = e.button === 0 && !e.ctrlKey && !e.metaKey && !e.shiftKey && !e.altKey;
       const href = link.getAttribute('href') ?? '';
-      if (href.startsWith('http')) openExternal(href).catch(() => {});
+      if (plain && isAllowedExternalUrl(href)) void open(href);
+    };
+    const onauxclick = (e: MouseEvent): void => {
+      if (find(e)) e.preventDefault();
     };
     node.addEventListener('click', onclick);
-    return () => node.removeEventListener('click', onclick);
+    node.addEventListener('auxclick', onauxclick);
+    return () => {
+      node.removeEventListener('click', onclick);
+      node.removeEventListener('auxclick', onauxclick);
+    };
   };
 
   function openVideo(): void {
-    if (lesson.videoQuery) {
-      openExternal(`https://www.youtube.com/results?search_query=${encodeURIComponent(lesson.videoQuery)}`).catch(() => {});
-    }
+    if (lesson.videoQuery) void open(`https://www.youtube.com/results?search_query=${encodeURIComponent(lesson.videoQuery)}`);
   }
 </script>
 
@@ -83,6 +113,10 @@
     <div>
       <Button variant="secondary" onclick={openVideo}><span aria-hidden="true">▶</span> {i18n.t('lesson.openVideo')}</Button>
     </div>
+  {/if}
+
+  {#if error}
+    <p role="alert" class="rounded-lg border border-danger bg-surface p-3 text-danger">{error}</p>
   {/if}
 
   <footer class="flex flex-wrap items-center justify-between gap-3">

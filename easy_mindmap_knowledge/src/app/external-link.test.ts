@@ -14,7 +14,13 @@ describe('openExternal', () => {
     expect(openUrl).toHaveBeenCalledWith(url);
   });
 
+  it('also opens AWS documentation URLs', async () => {
+    await openExternal('https://docs.aws.amazon.com/ec2/');
+    expect(openUrl).toHaveBeenCalledWith('https://docs.aws.amazon.com/ec2/');
+  });
+
   it.each([
+    'https://www.youtube.com@evil.com/results?q=1',
     'https://evil.example/results?x=1',
     'http://www.youtube.com/results?search_query=a',
     'https://www.youtube.com/watch?v=abc',

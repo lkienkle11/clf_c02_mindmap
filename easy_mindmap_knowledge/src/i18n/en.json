@@ -49,5 +49,7 @@
   "lesson.next": "Next lesson",
   "lesson.backToTree": "Back to the mindmap",
   "lesson.openVideo": "Open video search",
-  "lesson.optional": "Optional lesson"
+  "lesson.optional": "Optional lesson",
+  "lesson.completeFailed": "Could not save your progress. Please try again.",
+  "lesson.openFailed": "Could not open the link."
 }

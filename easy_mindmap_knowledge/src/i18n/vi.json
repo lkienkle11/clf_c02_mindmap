@@ -49,5 +49,7 @@
   "lesson.next": "Bài kế tiếp",
   "lesson.backToTree": "Quay lại sơ đồ",
   "lesson.openVideo": "Mở tìm kiếm video",
-  "lesson.optional": "Bài học tùy chọn"
+  "lesson.optional": "Bài học tùy chọn",
+  "lesson.completeFailed": "Không thể lưu tiến độ của bạn. Vui lòng thử lại.",
+  "lesson.openFailed": "Không thể mở liên kết."
 }

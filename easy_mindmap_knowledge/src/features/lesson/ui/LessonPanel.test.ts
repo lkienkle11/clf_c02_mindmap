@@ -60,25 +60,101 @@ describe('LessonPanel', () => {
     expect(screen.queryByRole('button', { name: 'Open video search' })).not.toBeInTheDocument();
   });
 
-  it('routes http links in the body through openExternal and prevents navigation', async () => {
-    const { openExternal } = await mountPanel('compute-ec2', { body: '[docs](https://example.com/a) and [rel](#x)' });
-    const http = screen.getByRole('link', { name: 'docs' });
-    const proceeded = await fireEvent.click(http);
-    expect(proceeded).toBe(false); // preventDefault was called
-    expect(openExternal).toHaveBeenCalledWith('https://example.com/a');
-    const other = await fireEvent.click(screen.getByRole('link', { name: 'rel' }));
-    expect(other).toBe(false);
-    expect(openExternal).toHaveBeenCalledTimes(1);
+  it('routes allowed links in the body through openExternal, even from a nested element, and prevents navigation', async () => {
+    const { openExternal } = await mountPanel('compute-ec2', { body: '[**docs**](https://docs.aws.amazon.com/ec2/)' });
+    const link = screen.getByRole('link', { name: 'docs' });
+    const proceeded = await fireEvent.click(screen.getByText('docs')); // the <strong> inside the <a>
+    expect(proceeded).toBe(false);
+    expect(openExternal).toHaveBeenCalledWith('https://docs.aws.amazon.com/ec2/');
+    expect(link).toHaveAttribute('href', 'https://docs.aws.amazon.com/ec2/');
   });
 
-  it('does nothing visible when openExternal rejects a non-allowlisted URL', async () => {
-    const reject = vi.fn(async () => {
-      throw new Error('not allowed');
+  it('prevents middle-click and modifier-click navigation without opening anything', async () => {
+    const { openExternal } = await mountPanel('compute-ec2', { body: '[docs](https://docs.aws.amazon.com/ec2/)' });
+    const link = screen.getByRole('link', { name: 'docs' });
+    expect(await fireEvent(link, new MouseEvent('auxclick', { bubbles: true, cancelable: true, button: 1 }))).toBe(false);
+    expect(await fireEvent.click(link, { ctrlKey: true })).toBe(false);
+    expect(await fireEvent.click(link, { metaKey: true })).toBe(false);
+    expect(openExternal).not.toHaveBeenCalled();
+  });
+
+  it('renders links that are not allowed as plain text without an href', async () => {
+    const { container } = await mountPanel('compute-ec2', {
+      body: '[evil](https://evil.example/x) [rel](#x) [js](javascript:alert(1)) [yt](https://www.youtube.com/results?search_query=a)',
     });
-    await mountPanel('compute-ec2', { body: '[x](https://evil.example)', openExternal: reject });
-    const proceeded = await fireEvent.click(screen.getByRole('link', { name: 'x' }));
-    expect(proceeded).toBe(false);
-    expect(reject).toHaveBeenCalledOnce();
+    const body = container.querySelector('[data-lesson-body]')!;
+    expect(body).toHaveTextContent('evil rel js yt');
+    expect(screen.queryByRole('link', { name: 'evil' })).not.toBeInTheDocument();
+    expect(screen.queryByRole('link', { name: 'rel' })).not.toBeInTheDocument();
+    expect(screen.queryByRole('link', { name: 'js' })).not.toBeInTheDocument();
+    expect(screen.getByRole('link', { name: 'yt' })).toBeInTheDocument();
+    expect(body.querySelectorAll('a')).toHaveLength(1);
+  });
+
+  it('shows an alert when openExternal rejects for a body link', async () => {
+    const reject = vi.fn(async () => {
+      throw new Error('boom');
+    });
+    await mountPanel('compute-ec2', { body: '[docs](https://docs.aws.amazon.com/)', openExternal: reject });
+    await fireEvent.click(screen.getByRole('link', { name: 'docs' }));
+    expect(await screen.findByRole('alert')).toHaveTextContent('Could not open the link');
+  });
+
+  it('shows an alert when openExternal rejects for the video button', async () => {
+    const reject = vi.fn(async () => {
+      throw new Error('boom');
+    });
+    await mountPanel('compute-video', { openExternal: reject });
+    await fireEvent.click(screen.getByRole('button', { name: 'Open video search' }));
+    expect(await screen.findByRole('alert')).toHaveTextContent('Could not open the link');
+  });
+
+  it('when markRead rejects it shows an alert and keeps the button usable', async () => {
+    const { services, markReadCalls } = await mountPanel('compute-ec2');
+    const original = services.repos.lessonProgress.markRead;
+    let fail = true;
+    services.repos.lessonProgress.markRead = async (id: string, at: number) => {
+      if (fail) throw new Error('db down');
+      return original(id, at);
+    };
+    const button = screen.getByRole('button', { name: 'Complete lesson' });
+    await fireEvent.click(button);
+    expect(await screen.findByRole('alert')).toHaveTextContent('Could not save your progress');
+    await waitFor(() => expect(button).toBeEnabled());
+    fail = false;
+    await fireEvent.click(button);
+    await waitFor(() => expect(markReadCalls).toHaveLength(1));
+    await waitFor(() => expect(screen.queryByRole('alert')).not.toBeInTheDocument());
+  });
+
+  it('when refresh rejects it shows an alert and re-enables the button', async () => {
+    const { appState } = await mountPanel('compute-ec2');
+    appState.refresh = async () => {
+      throw new Error('refresh failed');
+    };
+    const button = screen.getByRole('button', { name: 'Complete lesson' });
+    await fireEvent.click(button);
+    expect(await screen.findByRole('alert')).toBeInTheDocument();
+    await waitFor(() => expect(button).toBeEnabled());
+  });
+
+  it('double click calls markRead only once while pending', async () => {
+    const { services } = await mountPanel('compute-ec2');
+    let calls = 0;
+    let release: () => void = () => {};
+    services.repos.lessonProgress.markRead = () => {
+      calls++;
+      return new Promise<void>((resolve) => {
+        release = resolve;
+      });
+    };
+    const button = screen.getByRole('button', { name: 'Complete lesson' });
+    await fireEvent.click(button);
+    expect(button).toBeDisabled();
+    await fireEvent.click(button);
+    expect(calls).toBe(1);
+    release();
+    await waitFor(() => expect(button).toBeEnabled());
   });
 
   it('previous and next buttons move within the topic; ends are disabled', async () => {

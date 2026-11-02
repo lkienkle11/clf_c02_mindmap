@@ -1,11 +1,7 @@
 import { openUrl } from '@tauri-apps/plugin-opener';
+import { isAllowedExternalUrl } from '@/features/lesson';
 
-const ALLOWED_PREFIX = 'https://www.youtube.com/results?';
-
-/** True only for YouTube search URLs; the single external destination the app may open. */
-export function isAllowedExternalUrl(url: string): boolean {
-  return url.startsWith(ALLOWED_PREFIX);
-}
+export { isAllowedExternalUrl };
 
 export type OpenExternal = (url: string) => Promise<void>;
 
