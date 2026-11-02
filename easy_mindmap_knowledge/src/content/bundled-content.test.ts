@@ -5,7 +5,7 @@ import type { Lesson, Topic } from './types';
 
 // Checks on the real content/ folder. Every topic listed here has lessons and authored questions,
 // and the same content contract applies to all of them. Add a topic here when its content lands.
-const CONTENT_TOPICS = ['cloud-concepts', 'global-infrastructure', 'compute', 'storage', 'networking', 'databases', 'deploy-operate', 'shared-responsibility'];
+const CONTENT_TOPICS = ['cloud-concepts', 'global-infrastructure', 'compute', 'storage', 'networking', 'databases', 'deploy-operate', 'shared-responsibility', 'iam-security'];
 const AUTHORED_PER_TOPIC = 10;
 const CHOOSE_TWO_PER_TOPIC = 3;
 /** Largest share of the single-answer questions of one topic that may use the same correct key. */

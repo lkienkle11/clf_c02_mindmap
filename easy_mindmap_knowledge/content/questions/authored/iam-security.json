@@ -1,0 +1,317 @@
+[
+  {
+    "id": "auth-iam-security-01",
+    "topicId": "iam-security",
+    "text": "Which AWS service uses machine learning and pattern matching to discover personally identifiable information stored in Amazon S3 buckets?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Amazon GuardDuty"
+      },
+      {
+        "key": "B",
+        "text": "Amazon Inspector"
+      },
+      {
+        "key": "C",
+        "text": "Amazon Macie"
+      },
+      {
+        "key": "D",
+        "text": "AWS Shield"
+      }
+    ],
+    "correct": [
+      "C"
+    ],
+    "multi": false,
+    "orderDependent": false,
+    "explanation": "Amazon Macie discovers sensitive data such as PII in Amazon S3 and also flags buckets that are public or shared. GuardDuty detects threats from activity logs, and Inspector scans workloads for software vulnerabilities; neither inspects the content of S3 objects for PII.",
+    "source": "authored"
+  },
+  {
+    "id": "auth-iam-security-02",
+    "topicId": "iam-security",
+    "text": "An application running on an Amazon EC2 instance must read objects from an Amazon S3 bucket. What is the MOST secure way to give the application this access?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Store an IAM user's access keys in a configuration file on the instance"
+      },
+      {
+        "key": "B",
+        "text": "Attach an IAM role that allows reading the bucket to the instance"
+      },
+      {
+        "key": "C",
+        "text": "Use the access keys of the AWS account root user in the application"
+      },
+      {
+        "key": "D",
+        "text": "Make the bucket public so that no credentials are needed"
+      }
+    ],
+    "correct": [
+      "B"
+    ],
+    "multi": false,
+    "orderDependent": false,
+    "explanation": "An IAM role attached to the instance delivers temporary credentials that rotate automatically, so no long-term secrets are stored on the instance. Access keys in a file are long-term credentials that keep working if they leak.",
+    "source": "authored"
+  },
+  {
+    "id": "auth-iam-security-03",
+    "topicId": "iam-security",
+    "text": "Which actions follow AWS best practices for the AWS account root user? (Choose two.)",
+    "options": [
+      {
+        "key": "A",
+        "text": "Enable multi-factor authentication (MFA) for the root user"
+      },
+      {
+        "key": "B",
+        "text": "Use the root user for daily administrative tasks"
+      },
+      {
+        "key": "C",
+        "text": "Share the root user password with the operations team"
+      },
+      {
+        "key": "D",
+        "text": "Avoid creating access keys for the root user"
+      },
+      {
+        "key": "E",
+        "text": "Create root user access keys for use with the AWS CLI"
+      }
+    ],
+    "correct": [
+      "A",
+      "D"
+    ],
+    "multi": true,
+    "orderDependent": false,
+    "explanation": "AWS recommends protecting the root user with MFA and not creating root access keys, and using the root user only for the few tasks that require it. Daily work, shared passwords and root access keys all increase the risk of a full account compromise.",
+    "source": "authored"
+  },
+  {
+    "id": "auth-iam-security-04",
+    "topicId": "iam-security",
+    "text": "An IAM user has an identity-based policy that allows s3:DeleteObject on a bucket. The bucket policy contains a statement that explicitly denies s3:DeleteObject for that user. What happens when the user tries to delete an object?",
+    "options": [
+      {
+        "key": "A",
+        "text": "The request is allowed because identity-based policies are evaluated first"
+      },
+      {
+        "key": "B",
+        "text": "The request is denied because an explicit deny overrides any allow"
+      },
+      {
+        "key": "C",
+        "text": "The request is allowed only if the user signed in with MFA"
+      },
+      {
+        "key": "D",
+        "text": "The result depends on which policy was created most recently"
+      }
+    ],
+    "correct": [
+      "B"
+    ],
+    "multi": false,
+    "orderDependent": false,
+    "explanation": "AWS evaluates all applicable policies together, and an explicit Deny in any of them overrides every Allow. Order of evaluation or creation date does not change the result.",
+    "source": "authored"
+  },
+  {
+    "id": "auth-iam-security-05",
+    "topicId": "iam-security",
+    "text": "A company uses AWS Organizations with 40 AWS accounts. Employees should sign in once with their existing corporate directory credentials and then choose the account and permissions they need. Which AWS service should the company use?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Amazon Cognito"
+      },
+      {
+        "key": "B",
+        "text": "AWS Secrets Manager"
+      },
+      {
+        "key": "C",
+        "text": "Separate IAM users in each account"
+      },
+      {
+        "key": "D",
+        "text": "AWS IAM Identity Center"
+      }
+    ],
+    "correct": [
+      "D"
+    ],
+    "multi": false,
+    "orderDependent": false,
+    "explanation": "IAM Identity Center gives the workforce single sign-on to multiple AWS accounts and can connect to an existing identity provider. Amazon Cognito is meant for the customers who use your own web and mobile applications, not for employee access to AWS accounts.",
+    "source": "authored"
+  },
+  {
+    "id": "auth-iam-security-06",
+    "topicId": "iam-security",
+    "text": "A company is building a mobile app for consumers. Users must be able to sign up, sign in, and optionally sign in with their Google accounts. Which AWS service provides this functionality?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Amazon Cognito"
+      },
+      {
+        "key": "B",
+        "text": "AWS IAM Identity Center"
+      },
+      {
+        "key": "C",
+        "text": "AWS Identity and Access Management (IAM) users"
+      },
+      {
+        "key": "D",
+        "text": "AWS Directory Service"
+      }
+    ],
+    "correct": [
+      "A"
+    ],
+    "multi": false,
+    "orderDependent": false,
+    "explanation": "Amazon Cognito user pools provide sign-up and sign-in for web and mobile app users, including social identity providers such as Google. IAM Identity Center is for workforce access to AWS accounts and business applications, and IAM users are not meant for an app's end users.",
+    "source": "authored"
+  },
+  {
+    "id": "auth-iam-security-07",
+    "topicId": "iam-security",
+    "text": "A developer stores a database password in the source code of an application. The security team wants the password removed from the code and changed automatically on a regular schedule. Which AWS service should the developer use?",
+    "options": [
+      {
+        "key": "A",
+        "text": "AWS Key Management Service (AWS KMS)"
+      },
+      {
+        "key": "B",
+        "text": "AWS Certificate Manager (ACM)"
+      },
+      {
+        "key": "C",
+        "text": "AWS Secrets Manager"
+      },
+      {
+        "key": "D",
+        "text": "AWS CloudHSM"
+      }
+    ],
+    "correct": [
+      "C"
+    ],
+    "multi": false,
+    "orderDependent": false,
+    "explanation": "Secrets Manager stores secrets such as database credentials, lets applications retrieve them at runtime, and can rotate them automatically. AWS KMS manages encryption keys; it does not store and rotate application passwords.",
+    "source": "authored"
+  },
+  {
+    "id": "auth-iam-security-08",
+    "topicId": "iam-security",
+    "text": "A company runs a public web application behind an Application Load Balancer. It must block SQL injection attempts and wants expanded DDoS protection with access to AWS DDoS response experts. Which AWS services meet these requirements? (Choose two.)",
+    "options": [
+      {
+        "key": "A",
+        "text": "Amazon GuardDuty"
+      },
+      {
+        "key": "B",
+        "text": "AWS WAF"
+      },
+      {
+        "key": "C",
+        "text": "Amazon Inspector"
+      },
+      {
+        "key": "D",
+        "text": "Amazon Macie"
+      },
+      {
+        "key": "E",
+        "text": "AWS Shield Advanced"
+      }
+    ],
+    "correct": [
+      "B",
+      "E"
+    ],
+    "multi": true,
+    "orderDependent": false,
+    "explanation": "AWS WAF filters HTTP(S) requests with rules that can block SQL injection, and Shield Advanced adds expanded DDoS protection and access to the Shield Response Team. GuardDuty detects threats but does not block requests, and Inspector and Macie scan for vulnerabilities and sensitive data.",
+    "source": "authored"
+  },
+  {
+    "id": "auth-iam-security-09",
+    "topicId": "iam-security",
+    "text": "A security team needs a service that analyzes AWS CloudTrail events, VPC flow logs, and DNS logs to detect threats such as compromised credentials and communication with known malicious IP addresses. Which service meets this need?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Amazon Inspector"
+      },
+      {
+        "key": "B",
+        "text": "AWS Config"
+      },
+      {
+        "key": "C",
+        "text": "Amazon Macie"
+      },
+      {
+        "key": "D",
+        "text": "Amazon GuardDuty"
+      }
+    ],
+    "correct": [
+      "D"
+    ],
+    "multi": false,
+    "orderDependent": false,
+    "explanation": "Amazon GuardDuty is a threat detection service that analyzes these log sources with threat intelligence and machine learning. Amazon Inspector looks for software vulnerabilities in workloads, and AWS Config records resource configurations rather than detecting threats.",
+    "source": "authored"
+  },
+  {
+    "id": "auth-iam-security-10",
+    "topicId": "iam-security",
+    "text": "Which statements about AWS Key Management Service (AWS KMS) keys are correct? (Choose two.)",
+    "options": [
+      {
+        "key": "A",
+        "text": "Customer managed keys let the customer define the key policy"
+      },
+      {
+        "key": "B",
+        "text": "Customers can schedule AWS managed keys for deletion"
+      },
+      {
+        "key": "C",
+        "text": "AWS managed keys are rotated automatically every year"
+      },
+      {
+        "key": "D",
+        "text": "Customer managed keys have no monthly charge"
+      },
+      {
+        "key": "E",
+        "text": "AWS owned keys can be viewed in the customer's KMS console"
+      }
+    ],
+    "correct": [
+      "A",
+      "C"
+    ],
+    "multi": true,
+    "orderDependent": false,
+    "explanation": "With customer managed keys the customer controls the key policy, rotation and deletion, and AWS KMS rotates AWS managed keys automatically every year. Customers cannot delete AWS managed keys, customer managed keys have a monthly fee, and AWS owned keys are not visible in the customer's account.",
+    "source": "authored"
+  }
+]
