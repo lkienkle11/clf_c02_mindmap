@@ -8,3 +8,5 @@ export type { SubmitResult, SessionQuestion } from './session.svelte';
 export { DEFAULT_PRACTICE_OPTIONS, loadLastOptions, saveLastOptions } from './options';
 export type { PracticeOptions } from './options';
 export { NoQuestionsError, CorruptAttemptError, KnowledgeNotAllowedError } from './errors';
+export { default as PracticeScreen } from './ui/PracticeScreen.svelte';
+export { default as ResumeGate } from './ui/ResumeGate.svelte';

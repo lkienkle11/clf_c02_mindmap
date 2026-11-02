@@ -1,5 +1,7 @@
 import { describe, expect, it } from 'vitest';
-import { render, screen } from '@testing-library/svelte';
+import { render, screen, waitFor, within } from '@testing-library/svelte';
+import userEvent from '@testing-library/user-event';
+import { makePracticeEnv } from '@/testing/practice-env';
 import { loadCatalog } from '@/content/load-catalog';
 import { makeRawCatalog } from '@/testing/fixtures';
 import type { SqlExecutor } from '@/persistence';
@@ -21,5 +23,32 @@ describe('App shell', () => {
     expect(screen.getByRole('button', { name: /^cloud-concepts/ })).toBeInTheDocument();
     appState.open({ view: 'history' });
     expect(await screen.findByRole('heading', { name: 'History' })).toBeInTheDocument();
+  });
+
+  it('mounts the practice screen for the practice route', async () => {
+    const env = await makePracticeEnv();
+    env.appState.open({ view: 'practice', topicId: 'compute' });
+    render(App, { services: env.services, appState: env.appState, i18n: createI18n('en') });
+    expect(await screen.findByRole('button', { name: 'Start' })).toBeInTheDocument();
+  });
+
+  it('offers to resume an unfinished attempt on top of the tree and continues into the session', async () => {
+    const attempt = {
+      id: 'old', kind: 'practice' as const, topicId: 'compute', status: 'in_progress' as const, startedAt: 0, submittedAt: null,
+      submitReason: null, reviewAllowed: false, clock: { mode: 'freeze' as const, limitMs: null, remainingMs: null, deadlineAt: null },
+      heartbeatAt: null, scorePct: null, passed: null,
+    };
+    const questions = ['q1', 'q2', 'q3'].map((questionId, position) => ({
+      attemptId: 'old', position, questionId, optionOrder: ['A', 'B', 'C', 'D'], selected: [], isCorrect: null,
+    }));
+    const env = await makePracticeEnv({ inProgress: { attempt, questions } });
+    await env.appState.refresh();
+    render(App, { services: env.services, appState: env.appState, i18n: createI18n('en') });
+    const dlg = await screen.findByRole('dialog', { name: 'Unfinished attempt' });
+    expect(screen.getByRole('heading', { name: 'Mindmap' })).toBeInTheDocument();
+    await userEvent.click(within(dlg).getByRole('button', { name: 'Continue' }));
+    await waitFor(() => expect(env.appState.route).toEqual({ view: 'practice', topicId: 'compute' }));
+    expect(await screen.findByRole('navigation', { name: 'Questions' })).toBeInTheDocument();
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
   });
 });
