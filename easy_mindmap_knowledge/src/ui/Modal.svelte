@@ -1,3 +1,8 @@
+<script module lang="ts">
+  /** Open modals, oldest first; only the last one reacts to the keyboard. */
+  const openStack: symbol[] = [];
+</script>
+
 <script lang="ts">
   import type { Snippet } from 'svelte';
   import { tick } from 'svelte';
@@ -16,26 +21,31 @@
   const titleId = `modal-title-${uid}`;
   let dialog = $state<HTMLDivElement>();
   let opener: HTMLElement | null = null;
+  const self = Symbol('modal');
 
   const FOCUSABLE =
     'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
 
   $effect(() => {
     if (!open) return;
+    openStack.push(self);
     opener = document.activeElement instanceof HTMLElement ? document.activeElement : null;
     tick().then(() => {
       const first = dialog?.querySelector<HTMLElement>(FOCUSABLE);
       (first ?? dialog)?.focus();
     });
     return () => {
+      const at = openStack.indexOf(self);
+      if (at >= 0) openStack.splice(at, 1);
       opener?.focus();
       opener = null;
     };
   });
 
-  function onkeydown(e: KeyboardEvent) {
+  // Listens on the window, not the dialog, so Escape and the Tab trap survive focus falling to body.
+  function onWindowKeydown(e: KeyboardEvent) {
+    if (!open || openStack.at(-1) !== self) return;
     if (e.key === 'Escape') {
-      e.stopPropagation();
       onclose();
       return;
     }
@@ -62,6 +72,8 @@
   }
 </script>
 
+<svelte:window onkeydown={onWindowKeydown} />
+
 {#if open}
   <div
     data-testid="modal-backdrop"
@@ -70,7 +82,6 @@
     onclick={(e) => {
       if (closeOnBackdrop && e.target === e.currentTarget) onclose();
     }}
-    {onkeydown}
   >
     <div
       bind:this={dialog}

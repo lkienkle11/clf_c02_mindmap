@@ -52,4 +52,47 @@ describe('Modal', () => {
     await userEvent.click(screen.getByTestId('modal-backdrop'));
     expect(onclose).toHaveBeenCalledTimes(1);
   });
+
+  it('closes on Escape even when focus has fallen to body', async () => {
+    const onclose = vi.fn();
+    render(Modal, { open: true, title: 'Hi', onclose, children: body });
+    await waitFor(() => expect(screen.getByRole('dialog').contains(document.activeElement)).toBe(true));
+    (document.activeElement as HTMLElement).blur();
+    expect(document.activeElement).toBe(document.body);
+    await userEvent.keyboard('{Escape}');
+    expect(onclose).toHaveBeenCalledTimes(1);
+  });
+  it('wraps Tab from the last focusable to the first and Shift+Tab from the first to the last', async () => {
+    render(Modal, { open: true, title: 'Hi', onclose: () => {}, children: body });
+    await waitFor(() => expect(screen.getByRole('dialog').contains(document.activeElement)).toBe(true));
+    const first = screen.getByText('First');
+    const last = screen.getByText('Last');
+    last.focus();
+    await userEvent.tab();
+    expect(document.activeElement).toBe(first);
+    await userEvent.tab({ shift: true });
+    expect(document.activeElement).toBe(last);
+  });
+  it('pulls focus back in when Tab is pressed from body', async () => {
+    render(Modal, { open: true, title: 'Hi', onclose: () => {}, children: body });
+    await waitFor(() => expect(screen.getByRole('dialog').contains(document.activeElement)).toBe(true));
+    (document.activeElement as HTMLElement).blur();
+    await userEvent.tab();
+    expect(document.activeElement).toBe(screen.getByText('First'));
+  });
+  it('ignores the keyboard while closed', async () => {
+    const onclose = vi.fn();
+    render(Modal, { open: false, title: 'Hi', onclose, children: body });
+    await userEvent.keyboard('{Escape}');
+    expect(onclose).not.toHaveBeenCalled();
+  });
+  it('only the topmost of several open modals handles Escape', async () => {
+    const lower = vi.fn();
+    const upper = vi.fn();
+    render(Modal, { open: true, title: 'Lower', onclose: lower, children: body });
+    render(Modal, { open: true, title: 'Upper', onclose: upper, children: body });
+    await userEvent.keyboard('{Escape}');
+    expect(upper).toHaveBeenCalledTimes(1);
+    expect(lower).not.toHaveBeenCalled();
+  });
 });
