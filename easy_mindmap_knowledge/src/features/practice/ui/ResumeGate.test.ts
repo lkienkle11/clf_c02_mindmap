@@ -18,8 +18,9 @@ async function mount(found: { attempt: AttemptRow; questions: AttemptQuestionRow
   const env = await makePracticeEnv({ inProgress: found });
   await env.appState.refresh();
   const onresumed = vi.fn();
-  renderWithI18n(ResumeGate, { services: env.services, appState: env.appState, onresumed });
-  return { ...env, onresumed };
+  const onnotice = vi.fn();
+  renderWithI18n(ResumeGate, { services: env.services, appState: env.appState, onresumed, onnotice });
+  return { ...env, onresumed, onnotice };
 }
 
 describe('ResumeGate', () => {
@@ -60,7 +61,7 @@ describe('ResumeGate', () => {
   it('discards a corrupt attempt and tells the user', async () => {
     const env = await mount({ attempt: attempt(), questions: rows([]) });
     await userEvent.click(await screen.findByRole('button', { name: 'Continue' }));
-    expect(await screen.findByRole('status')).toHaveTextContent('could not be restored and was discarded');
+    await waitFor(() => expect(env.onnotice).toHaveBeenLastCalledWith(expect.stringContaining('could not be restored and was discarded')));
     expect(env.discarded).toEqual(['old']);
     expect(env.onresumed).not.toHaveBeenCalled();
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument();

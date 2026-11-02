@@ -43,7 +43,7 @@
       <ul class="flex flex-col gap-2">
         {#each missed as m (m.questionId)}
           <li class="flex flex-col gap-1 rounded-lg border border-border-subtle bg-surface p-3">
-            <span class="font-medium">{questionText(m.questionId)}</span>
+            <span lang="en" class="font-medium">{questionText(m.questionId)}</span>
             <span class="text-sm text-muted-foreground">{i18n.t('history.missed.stat', { misses: m.misses, seen: m.seen })}</span>
           </li>
         {/each}

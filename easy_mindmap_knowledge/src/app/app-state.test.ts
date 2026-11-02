@@ -250,7 +250,7 @@ describe('AppState', () => {
       await state.load();
       expect(state.dailyPromptVisible).toBe(false);
       expect(await services.repos.settings.get(SETTING_PROMPT_DATE)).toBeNull();
-      expect(state.reviewButtonVisible).toBe(false);
+      expect(state.reviewButtonVisible).toBe(true); // always present (spec 5.1); disabled when nothing is due
     });
 
     it('hideReviewButtonToday hides the button until the next day', async () => {

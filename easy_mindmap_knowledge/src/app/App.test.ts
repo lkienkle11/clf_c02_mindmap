@@ -25,6 +25,35 @@ describe('App shell', () => {
     expect(await screen.findByRole('heading', { name: 'History' })).toBeInTheDocument();
   });
 
+  it('keeps <html lang> in step with the chosen UI language', async () => {
+    const services = buildServices({ executor: emptyExecutor, catalog: loadCatalog(makeRawCatalog()), now: () => 0 });
+    const appState = new AppState(services);
+    await appState.load();
+    const i18n = createI18n('vi');
+    render(App, { services, appState, i18n });
+    await waitFor(() => expect(document.documentElement.lang).toBe('vi'));
+    i18n.setLocale('en');
+    await waitFor(() => expect(document.documentElement.lang).toBe('en'));
+  });
+
+  it('shows a resume notice in the shared bottom-right notice stack', async () => {
+    const env = await makePracticeEnv({
+      inProgress: {
+        attempt: {
+          id: 'bad', kind: 'practice', topicId: 'compute', status: 'in_progress', startedAt: 0, submittedAt: null,
+          submitReason: null, reviewAllowed: false, clock: { mode: 'freeze', limitMs: null, remainingMs: null, deadlineAt: null },
+          heartbeatAt: null, scorePct: null, passed: null,
+        },
+        questions: [],
+      },
+    });
+    await env.appState.refresh();
+    render(App, { services: env.services, appState: env.appState, i18n: createI18n('en') });
+    await userEvent.click(await screen.findByRole('button', { name: 'Continue' }));
+    const notice = await screen.findByText(/could not be restored and was discarded/);
+    expect(notice.closest('[data-testid="notices"]')).not.toBeNull();
+  });
+
   it('mounts the practice screen for the practice route', async () => {
     const env = await makePracticeEnv();
     env.appState.open({ view: 'practice', topicId: 'compute' });

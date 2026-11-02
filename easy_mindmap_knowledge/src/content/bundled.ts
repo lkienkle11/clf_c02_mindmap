@@ -3,11 +3,17 @@ import type { Catalog, Lesson, Question } from './types';
 
 type RawModules = Record<string, string>;
 
-const files = import.meta.glob('/content/**', {
+// content/review/ holds import notes for humans; they are never bundled into the app.
+const files = import.meta.glob(['/content/**', '!/content/review/**'], {
   eager: true,
   query: '?raw',
   import: 'default',
 }) as RawModules;
+
+/** Paths of the bundled content files (for tests and diagnostics). */
+export function bundledPaths(): string[] {
+  return Object.keys(files);
+}
 
 export interface FrontMatter {
   meta: Record<string, string>;

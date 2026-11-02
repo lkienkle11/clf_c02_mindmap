@@ -38,11 +38,11 @@ describe('TreeScreen', () => {
 
   it('locked topic: aria-label and title carry the lockedHint, shows a lock, never expands or navigates', async () => {
     const { appState } = await mountTree();
-    const locked = screen.getByRole('button', { name: /Score above 80% in compute to unlock/ });
+    const locked = screen.getByRole('button', { name: /Score 80% or higher in compute to unlock/ });
     expect(locked).toHaveAttribute('tabindex', '0');
     expect(locked).toHaveAttribute('aria-disabled', 'true');
     expect(within(locked).getByText('🔒')).toBeInTheDocument();
-    expect(locked.querySelector('title')).toHaveTextContent('Score above 80% in compute to unlock');
+    expect(locked.querySelector('title')).toHaveTextContent('Score 80% or higher in compute to unlock');
     await fireEvent.click(locked);
     await fireEvent.keyDown(locked, { key: 'Enter' });
     expect(screen.getAllByRole('button', { name: /^Practice/ })).toHaveLength(1); // only compute's leaves

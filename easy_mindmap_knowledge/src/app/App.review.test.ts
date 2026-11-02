@@ -93,7 +93,8 @@ describe('App daily review wiring', () => {
     const env = await mount();
     env.appState.stats = [];
     await userEvent.click(within(await dailyDialog()).getByRole('button', { name: 'Start now' }));
-    expect(await screen.findByText('Nothing to review right now')).toBeInTheDocument();
+    const texts = await screen.findAllByText('Nothing to review right now');
+    expect(texts.some((t) => t.closest('[data-testid="notices"]') !== null)).toBe(true);
     expect(env.appState.route).toEqual({ view: 'tree' });
   });
 

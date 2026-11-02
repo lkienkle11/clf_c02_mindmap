@@ -2,7 +2,6 @@
   import type { AppState } from '@/app/app-state.svelte';
   import type { Services } from '@/app/composition';
   import { getI18n } from '@/i18n/i18n.svelte';
-  import Button from '@/ui/Button.svelte';
   import { CorruptAttemptError } from '../errors';
   import { PracticeSession } from '../session.svelte';
   import ResumePrompt from './ResumePrompt.svelte';
@@ -14,15 +13,16 @@
     onresumed: (session: PracticeSession) => void;
     /** Attempt id of the session currently on screen; its in-progress row is not "unfinished". */
     activeAttemptId?: string | null;
+    /** A message for the app's shared notice stack (null clears it); the gate does not position notices itself. */
+    onnotice: (text: string | null) => void;
   }
 
-  let { services, appState, onresumed, activeAttemptId = null }: Props = $props();
+  let { services, appState, onresumed, activeAttemptId = null, onnotice }: Props = $props();
 
   const i18n = getI18n();
   const found = $derived(appState.resumeAttempt?.attempt.id === activeAttemptId ? null : appState.resumeAttempt);
   const open = $derived(found !== null && appState.view !== 'practice' && appState.view !== 'review');
   let busy = $state(false);
-  let notice = $state<string | null>(null);
 
   async function discard(attemptId: string): Promise<void> {
     await services.repos.attempts.discard(attemptId);
@@ -32,7 +32,7 @@
   async function resume(): Promise<void> {
     if (!found || busy) return;
     busy = true;
-    notice = null;
+    onnotice(null);
     try {
       const { session, autoSubmit } = await PracticeSession.resume(services, found, () => appState.refresh());
       if (autoSubmit) {
@@ -47,12 +47,12 @@
       if (e instanceof CorruptAttemptError) {
         try {
           await discard(found.attempt.id);
-          notice = i18n.t('practice.resume.corrupt');
+          onnotice(i18n.t('practice.resume.corrupt'));
         } catch {
-          notice = i18n.t('practice.resume.failed');
+          onnotice(i18n.t('practice.resume.failed'));
         }
       } else {
-        notice = i18n.t('practice.resume.failed');
+        onnotice(i18n.t('practice.resume.failed'));
       }
     } finally {
       busy = false;
@@ -62,11 +62,11 @@
   async function discardClicked(): Promise<void> {
     if (!found || busy) return;
     busy = true;
-    notice = null;
+    onnotice(null);
     try {
       await discard(found.attempt.id);
     } catch {
-      notice = i18n.t('practice.resume.failed');
+      onnotice(i18n.t('practice.resume.failed'));
     } finally {
       busy = false;
     }
@@ -75,9 +75,3 @@
 
 <ResumePrompt {open} {busy} oncontinue={resume} ondiscard={discardClicked} />
 
-{#if notice}
-  <div role="status" class="fixed right-4 bottom-4 z-40 flex max-w-sm items-center gap-3 rounded-lg border border-border bg-surface p-3 shadow-lg">
-    <p>{notice}</p>
-    <Button variant="ghost" onclick={() => (notice = null)}>{i18n.t('common.close')}</Button>
-  </div>
-{/if}

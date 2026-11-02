@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { buildLessons, buildQuestions, parseFrontMatter, parseJson } from './bundled';
+import { buildLessons, buildQuestions, bundledPaths, parseFrontMatter, parseJson } from './bundled';
 
 const P = '/content/lessons/compute/02-ec2';
 const file = (fm: string, body = 'Body') => `---\n${fm}\n---\n${body}\n`;
@@ -94,5 +94,14 @@ describe('JSON content errors name the file', () => {
   });
   it('buildQuestions rejects a file that is not an array, naming it', () => {
     expect(() => buildQuestions({ '/content/questions/authored/x.json': '{}' })).toThrow(/x\.json.*array/);
+  });
+});
+
+describe('bundle', () => {
+  it('ships lessons, questions and topics, but not the review notes under content/review', () => {
+    const paths = bundledPaths();
+    expect(paths).toContain('/content/topics.json');
+    expect(paths.some((p) => p.startsWith('/content/lessons/'))).toBe(true);
+    expect(paths.filter((p) => p.startsWith('/content/review/'))).toEqual([]);
   });
 });

@@ -9,6 +9,8 @@
   import { ReviewLauncher, ReviewPrompts, ReviewRun, ReviewScreen } from '@/features/review';
   import { SettingsScreen } from '@/features/settings';
   import AppHeader from './AppHeader.svelte';
+  import NoticeStack from './NoticeStack.svelte';
+  import type { Notice } from './NoticeStack.svelte';
   import type { AppState } from './app-state.svelte';
   import type { Services } from './composition';
   import { openExternal } from './external-link';
@@ -30,6 +32,24 @@
   $effect(() => {
     if (appState.view !== 'practice') resumed = null;
   });
+
+  // The webview's <html lang> follows the chosen UI language (screen readers, hyphenation, fonts).
+  $effect(() => {
+    document.documentElement.lang = i18n.locale;
+  });
+
+  const reviewNoticeKeys = {
+    empty: 'review.empty',
+    startFailed: 'review.startFailed',
+    hideFailed: 'review.hideFailed',
+  } as const;
+  let resumeNotice = $state<string | null>(null);
+  const notices = $derived<Notice[]>([
+    ...(launcher.notice
+      ? [{ id: 'review', text: i18n.t(reviewNoticeKeys[launcher.notice]), onclose: () => launcher.clearNotice() }]
+      : []),
+    ...(resumeNotice ? [{ id: 'resume', text: resumeNotice, onclose: () => (resumeNotice = null) }] : []),
+  ]);
 
   function onresumed(session: PracticeSession): void {
     if (session.kind === 'review') {
@@ -60,5 +80,6 @@
     <SettingsScreen {services} {appState} />
   {/if}
   <ReviewPrompts {services} {appState} {launcher} />
-  <ResumeGate {services} {appState} {onresumed} activeAttemptId={resumed?.attemptId ?? null} />
+  <ResumeGate {services} {appState} {onresumed} activeAttemptId={resumed?.attemptId ?? null} onnotice={(text) => (resumeNotice = text)} />
+  <NoticeStack {notices} />
 </main>

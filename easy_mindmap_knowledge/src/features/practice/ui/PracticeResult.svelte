@@ -13,13 +13,15 @@
     timedOut?: boolean;
     canRetry?: boolean;
     onretry?: () => void;
+    /** True when this pass completed the topic for the first time and opened the next one. */
+    unlocked?: boolean;
     /** 'review' shows the score and breakdown only: no pass mark, no unlock wording, no retry. */
     mode?: 'practice' | 'review';
     /** Replaces the default buttons (e.g. the review screen's next-batch / stop actions). */
     actions?: Snippet;
   }
 
-  let { services, result, onback, timedOut = false, canRetry = false, onretry, mode = 'practice', actions }: Props = $props();
+  let { services, result, onback, timedOut = false, canRetry = false, onretry, unlocked = false, mode = 'practice', actions }: Props = $props();
   const isReview = $derived(mode === 'review');
 
   const i18n = getI18n();
@@ -51,6 +53,9 @@
       <p class={cn('text-lg font-semibold', result.passed ? 'text-leaf-done-ink' : 'text-danger')}>
         {i18n.t(result.passed ? 'quiz.passed' : 'quiz.failed')}
       </p>
+      {#if result.passed && unlocked}
+        <p class="font-medium text-leaf-done-ink">{i18n.t('quiz.unlocked')}</p>
+      {/if}
       <p class="text-muted-foreground">{i18n.t('practice.result.threshold')}</p>
     {/if}
   </header>
@@ -62,7 +67,7 @@
         {@const q = questions.get(item.questionId)}
         <li data-question={item.questionId} class="flex flex-col gap-2 rounded-lg border border-border-subtle bg-surface p-4">
           <p class="text-sm text-muted-foreground">{i18n.t('practice.result.question', { n: i + 1 })}</p>
-          <p class="font-medium">{q?.text ?? item.questionId}</p>
+          <p lang="en" class="font-medium">{q?.text ?? item.questionId}</p>
           <p class={cn('font-semibold', item.isCorrect ? 'text-leaf-done-ink' : 'text-danger')}>
             {item.isCorrect ? `✓ ${i18n.t('practice.result.correct')}` : `✗ ${i18n.t('practice.result.incorrect')}`}
           </p>
@@ -73,18 +78,18 @@
                 {#if item.selected.length === 0}
                   {i18n.t('practice.result.noAnswer')}
                 {:else}
-                  <ul>{#each answerTexts(item.questionId, item.selected) as text (text)}<li>{text}</li>{/each}</ul>
+                  <ul lang="en">{#each answerTexts(item.questionId, item.selected) as text (text)}<li>{text}</li>{/each}</ul>
                 {/if}
               </dd>
             </div>
             <div>
               <dt class="text-sm text-muted-foreground">{i18n.t('practice.result.correctAnswer')}</dt>
-              <dd><ul>{#each answerTexts(item.questionId, item.correct) as text (text)}<li>{text}</li>{/each}</ul></dd>
+              <dd><ul lang="en">{#each answerTexts(item.questionId, item.correct) as text (text)}<li>{text}</li>{/each}</ul></dd>
             </div>
             {#if item.explanation}
               <div>
                 <dt class="text-sm text-muted-foreground">{i18n.t('practice.result.explanation')}</dt>
-                <dd>{item.explanation}</dd>
+                <dd lang="en">{item.explanation}</dd>
               </div>
             {/if}
           </dl>

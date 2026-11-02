@@ -52,7 +52,7 @@
         {@const ok = row.isCorrect === true}
         <li data-question={row.questionId} class="flex flex-col gap-1 rounded-lg border border-border-subtle p-3">
           <p class="text-sm text-muted-foreground">{i18n.t('practice.result.question', { n: row.position + 1 })}</p>
-          <p class="font-medium">{q?.text ?? row.questionId}</p>
+          <p lang="en" class="font-medium">{q?.text ?? row.questionId}</p>
           <p class={cn('font-semibold', ok ? 'text-leaf-done-ink' : 'text-danger')}>
             {ok ? `✓ ${i18n.t('practice.result.correct')}` : `✗ ${i18n.t('practice.result.incorrect')}`}
           </p>
@@ -63,18 +63,18 @@
                 {#if row.selected.length === 0}
                   {i18n.t('practice.result.noAnswer')}
                 {:else}
-                  <ul>{#each texts(row.questionId, row.selected, row.optionOrder) as text (text)}<li>{text}</li>{/each}</ul>
+                  <ul lang="en">{#each texts(row.questionId, row.selected, row.optionOrder) as text (text)}<li>{text}</li>{/each}</ul>
                 {/if}
               </dd>
             </div>
             <div>
               <dt class="text-sm text-muted-foreground">{i18n.t('practice.result.correctAnswer')}</dt>
-              <dd><ul>{#each texts(row.questionId, q?.correct ?? [], row.optionOrder) as text (text)}<li>{text}</li>{/each}</ul></dd>
+              <dd><ul lang="en">{#each texts(row.questionId, q?.correct ?? [], row.optionOrder) as text (text)}<li>{text}</li>{/each}</ul></dd>
             </div>
             {#if q?.explanation}
               <div>
                 <dt class="text-sm text-muted-foreground">{i18n.t('practice.result.explanation')}</dt>
-                <dd>{q.explanation}</dd>
+                <dd lang="en">{q.explanation}</dd>
               </div>
             {/if}
           </dl>

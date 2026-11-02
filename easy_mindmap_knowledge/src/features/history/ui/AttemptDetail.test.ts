@@ -51,4 +51,11 @@ describe('AttemptDetail', () => {
     await userEvent.click(screen.getByRole('button', { name: 'Close' }));
     expect(onclose).toHaveBeenCalled();
   });
+
+  it('marks the English question content with lang="en"', async () => {
+    await mount();
+    const item = within(screen.getByRole('dialog')).getAllByRole('listitem').filter((li) => li.getAttribute('data-question'))[0];
+    expect(within(item).getByText('Pick the first?').closest('[lang="en"]')).not.toBeNull();
+    expect(within(item).getByText('Your answer').closest('[lang="en"]')).toBeNull();
+  });
 });

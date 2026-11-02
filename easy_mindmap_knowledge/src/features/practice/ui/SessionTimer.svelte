@@ -7,7 +7,8 @@
   interface Props {
     services: Services;
     session: PracticeSession;
-    onerror: () => void;
+    /** 'submit' when the time ran out and saving the attempt failed; 'clock' when saving the clock failed. */
+    onerror: (what: 'submit' | 'clock') => void;
   }
 
   let { services, session, onerror }: Props = $props();
@@ -31,7 +32,8 @@
       inFlight = true;
       session
         .tick(elapsed)
-        .catch(() => onerror())
+        // Time is up => the failing step was the automatic submit, not the clock save.
+        .catch(() => onerror(session.remainingMs !== null && session.remainingMs <= 0 ? 'submit' : 'clock'))
         .finally(() => { inFlight = false; });
     }, 1000);
     return () => clearInterval(id);

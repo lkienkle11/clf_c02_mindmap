@@ -7,9 +7,17 @@ on:
       - 'easy_mindmap_knowledge/**'
       - '.github/workflows/mindmap-build.yml'
   push:
+    branches: [main]
     paths:
       - 'easy_mindmap_knowledge/**'
       - '.github/workflows/mindmap-build.yml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: mindmap-build-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   build:
@@ -47,7 +55,7 @@ jobs:
         working-directory: .
         run: |
           sudo apt-get update
-          sudo apt-get install -y libwebkit2gtk-4.1-dev libappindicator3-dev librsvg2-dev patchelf
+          sudo apt-get install -y libwebkit2gtk-4.1-dev libappindicator3-dev librsvg2-dev patchelf libxdo-dev libssl-dev
 
       - run: npm ci
       - run: npm test

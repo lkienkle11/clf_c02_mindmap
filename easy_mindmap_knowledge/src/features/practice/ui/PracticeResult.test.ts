@@ -12,11 +12,11 @@ const items: SubmitResult['items'] = [
   { questionId: 'q3', selected: [], correct: ['C'], isCorrect: false },
 ];
 
-async function mount(result: SubmitResult, timedOut = false) {
+async function mount(result: SubmitResult, timedOut = false, extra: Record<string, unknown> = {}) {
   const env = await makePracticeEnv();
   const onback = vi.fn();
   const onretry = vi.fn();
-  renderWithI18n(PracticeResult, { services: env.services, result, timedOut, canRetry: true, onback, onretry });
+  renderWithI18n(PracticeResult, { services: env.services, result, timedOut, canRetry: true, onback, onretry, ...extra });
   return { onback, onretry };
 }
 
@@ -28,7 +28,8 @@ describe('PracticeResult', () => {
     expect(heading).toHaveFocus();
     expect(screen.getByText('90%')).toBeInTheDocument();
     expect(screen.getByText('9 of 10 correct')).toBeInTheDocument();
-    expect(screen.getByText('Passed! Next topic unlocked')).toBeInTheDocument();
+    expect(screen.getByText('Passed!')).toBeInTheDocument();
+    expect(screen.queryByText(/unlocked/)).not.toBeInTheDocument();
     expect(screen.getByText('Pass mark: 80% or higher')).toBeInTheDocument();
   });
 
@@ -66,5 +67,20 @@ describe('PracticeResult', () => {
     await userEvent.click(screen.getByRole('button', { name: 'Try again' }));
     expect(onback).toHaveBeenCalledTimes(1);
     expect(onretry).toHaveBeenCalledTimes(1);
+  });
+
+  it('adds the unlock line only when this pass unlocked the next topic', async () => {
+    await mount({ scorePct: 90, correct: 9, total: 10, passed: true, items }, false, { unlocked: true });
+    expect(screen.getByText('Passed!')).toBeInTheDocument();
+    expect(screen.getByText('Next topic unlocked')).toBeInTheDocument();
+  });
+
+  it('marks the English question content with lang="en" (the UI may be Vietnamese)', async () => {
+    await mount({ scorePct: 33, correct: 1, total: 3, passed: false, items });
+    const row = screen.getAllByRole('listitem').filter((li) => li.getAttribute('data-question'))[0];
+    expect(within(row).getByText('Pick the first?').closest('[lang="en"]')).not.toBeNull();
+    expect(within(row).getByText('Because alpha.').closest('[lang="en"]')).not.toBeNull();
+    expect(within(row).getAllByText('Alpha')[0].closest('[lang="en"]')).not.toBeNull();
+    expect(within(row).getByText('Your answer').closest('[lang="en"]')).toBeNull();
   });
 });

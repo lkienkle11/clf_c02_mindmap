@@ -275,4 +275,25 @@ describe('PracticeSessionView', () => {
     await waitFor(() => expect(env.session.submitted).toBe(true));
     expect(env.session.submitReason).toBe('manual');
   });
+
+  it('marks the English question and options with lang="en"', async () => {
+    const env = await mount();
+    const q = env.services.catalog.questions.find((x) => x.id === env.session.questions[0].questionId)!;
+    const group = screen.getByRole('group', { name: q.text });
+    expect(group.querySelector('legend')).toHaveAttribute('lang', 'en');
+    const options = group.querySelectorAll('label > span');
+    expect(options.length).toBeGreaterThan(0);
+    for (const o of options) expect(o).toHaveAttribute('lang', 'en');
+  });
+
+  it('a time-out whose submit fails says the attempt was not saved, not the clock', async () => {
+    vi.useFakeTimers({ toFake: ['setInterval', 'clearInterval', 'Date'] });
+    vi.setSystemTime(1_000_000);
+    const env = await mount({ limitMs: 2_000 }, { now: () => Date.now() });
+    vi.spyOn(env.services.repos.attempts, 'markSubmitted').mockRejectedValue(new Error('disk full'));
+    await vi.advanceTimersByTimeAsync(3_000);
+    vi.useRealTimers();
+    expect(await screen.findByRole('alert')).toHaveTextContent('Time is up, but your attempt could not be saved.');
+    expect(screen.queryByText(/Could not save the clock/)).not.toBeInTheDocument();
+  });
 });

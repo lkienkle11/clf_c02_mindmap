@@ -37,7 +37,7 @@
 </script>
 
 <fieldset class="flex flex-col gap-3" aria-describedby={item.multi ? hintId : undefined}>
-  <legend tabindex="-1" class="mb-3 text-lg font-medium focus:outline-none focus-visible:outline-2 focus-visible:outline-ring">{question.text}</legend>
+  <legend lang="en" tabindex="-1" class="mb-3 text-lg font-medium focus:outline-none focus-visible:outline-2 focus-visible:outline-ring">{question.text}</legend>
   {#if item.multi}
     <p id={hintId} class="font-medium text-muted-foreground">{i18n.t('practice.chooseMany', { count: question.correct.length })}</p>
   {/if}
@@ -49,7 +49,7 @@
         {:else}
           <input class="mt-0.5 size-5" type="radio" name={`q-${item.position}`} value={key} checked={item.selected.includes(key)} onchange={() => choose([key])} />
         {/if}
-        <span>{textOf(key)}</span>
+        <span lang="en">{textOf(key)}</span>
       </label>
     {/each}
   </div>

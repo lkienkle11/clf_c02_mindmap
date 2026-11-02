@@ -16,11 +16,20 @@
 
   const i18n = getI18n();
   let open = $state(false);
+  const reasonId = $props.id();
   const total = $derived(appState.summaries.reduce((n, s) => n + s.dueCount, 0));
 </script>
 
+<!-- Always on the main view (spec 5.1) unless hidden for today; with nothing due it is disabled and says why. -->
 {#if appState.reviewButtonVisible}
-  <Button variant="secondary" onclick={() => (open = true)}>{i18n.t('review.button', { count: total })}</Button>
+  {#if appState.summaries.length > 0}
+    <Button variant="secondary" onclick={() => (open = true)}>{i18n.t('review.button', { count: total })}</Button>
+  {:else}
+    <span class="inline-flex items-center gap-2">
+      <Button variant="secondary" disabled aria-describedby={reasonId}>{i18n.t('nav.review')}</Button>
+      <span id={reasonId} class="text-sm text-muted-foreground">{i18n.t('review.empty')}</span>
+    </span>
+  {/if}
 {/if}
 
 {#if open && appState.summaries.length > 0}

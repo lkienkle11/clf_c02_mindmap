@@ -4,7 +4,22 @@ import userEvent from '@testing-library/user-event';
 import { makePracticeEnv } from '@/testing/practice-env';
 import { renderWithI18n } from '@/testing/render-with-i18n';
 import { DEFAULT_PRACTICE_OPTIONS, PracticeSession } from '../index';
+import type { AttemptRow } from '@/persistence';
+import type { Services } from '@/app/composition';
 import PracticeScreen from './PracticeScreen.svelte';
+
+const passedAttempt = (topicId: string): AttemptRow => ({
+  id: `p-${topicId}`, kind: 'practice', topicId, status: 'submitted', startedAt: 0, submittedAt: 1, submitReason: 'manual',
+  reviewAllowed: false, clock: { mode: 'freeze', limitMs: null, remainingMs: null, deadlineAt: null },
+  heartbeatAt: null, scorePct: 100, passed: true,
+});
+
+async function passedSession(services: Services, topicId: string, refresh: () => Promise<void>) {
+  const s = await PracticeSession.start(services, topicId, DEFAULT_PRACTICE_OPTIONS, refresh);
+  const byId = new Map(services.catalog.questions.map((q) => [q.id, q]));
+  for (const q of s.questions) await s.select(q.position, byId.get(q.questionId)!.correct);
+  return s;
+}
 
 describe('PracticeScreen', () => {
   it('walks setup, session and result, then Try again returns to setup', async () => {
@@ -45,5 +60,33 @@ describe('PracticeScreen', () => {
     renderWithI18n(PracticeScreen, { services: env.services, appState: env.appState, topicId: 'compute', initialSession: session });
     expect(await screen.findByText("Time's up, submitted automatically")).toBeInTheDocument();
     await waitFor(() => expect(screen.getByRole('heading', { name: 'Result' })).toHaveFocus());
+  });
+
+  it('says the next topic unlocked only on the first pass of a non-final topic', async () => {
+    const env = await makePracticeEnv();
+    const s = await passedSession(env.services, 'compute', () => env.appState.refresh());
+    env.appState.open({ view: 'practice', topicId: 'compute' });
+    renderWithI18n(PracticeScreen, { services: env.services, appState: env.appState, topicId: 'compute', initialSession: s });
+    await s.submit('manual');
+    expect(await screen.findByText('Passed!')).toBeInTheDocument();
+    expect(screen.getByText('Next topic unlocked')).toBeInTheDocument();
+  });
+
+  it('a redo of a finished topic passes without the unlock line', async () => {
+    const env = await makePracticeEnv({ submitted: [passedAttempt('compute')] });
+    const s = await passedSession(env.services, 'compute', () => env.appState.refresh());
+    renderWithI18n(PracticeScreen, { services: env.services, appState: env.appState, topicId: 'compute', initialSession: s });
+    await s.submit('manual');
+    expect(await screen.findByText('Passed!')).toBeInTheDocument();
+    expect(screen.queryByText('Next topic unlocked')).not.toBeInTheDocument();
+  });
+
+  it('passing Capstone (the last topic) never says a topic unlocked', async () => {
+    const env = await makePracticeEnv();
+    const s = await passedSession(env.services, 'capstone', () => env.appState.refresh());
+    renderWithI18n(PracticeScreen, { services: env.services, appState: env.appState, topicId: 'capstone', initialSession: s });
+    await s.submit('manual');
+    expect(await screen.findByText('Passed!')).toBeInTheDocument();
+    expect(screen.queryByText('Next topic unlocked')).not.toBeInTheDocument();
   });
 });

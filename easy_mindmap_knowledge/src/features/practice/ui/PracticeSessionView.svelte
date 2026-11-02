@@ -89,7 +89,7 @@
   <header class="flex flex-wrap items-center justify-between gap-3">
     <h1 class="text-xl font-semibold">{title}</h1>
     <p class="text-lg tabular-nums">{i18n.t('practice.progress', { current: session.index + 1, total })}</p>
-    <SessionTimer {services} {session} onerror={() => (alert = i18n.t('practice.tickFailed'))} />
+    <SessionTimer {services} {session} onerror={(what) => (alert = i18n.t(what === 'submit' ? 'practice.timeoutSubmitFailed' : 'practice.tickFailed'))} />
   </header>
 
   {#if alert}

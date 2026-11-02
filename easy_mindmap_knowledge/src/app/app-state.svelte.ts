@@ -53,8 +53,9 @@ export class AppState {
     return this.route.view;
   }
 
+  /** The Review button is always on the main view (spec 5.1) unless "Don't ask today" hid it for the day. */
   get reviewButtonVisible(): boolean {
-    return this.summaries.length > 0 && !this.reviewButtonHidden;
+    return !this.reviewButtonHidden;
   }
 
   /** Reconciles derived stats first, then loads everything. Returns the saved locale, if any. */
