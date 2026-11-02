@@ -25,5 +25,13 @@
   "review.due": "{count} cards due today",
   "review.empty": "Nothing to review right now",
   "history.title": "History",
-  "settings.language": "Language"
+  "settings.language": "Language",
+  "nav.tree": "Mindmap",
+  "nav.lesson": "Lesson",
+  "nav.practice": "Practice",
+  "nav.review": "Review",
+  "nav.history": "History",
+  "nav.settings": "Settings",
+  "app.topicCount": "{count} topics",
+  "app.loadError": "The app could not start"
 }

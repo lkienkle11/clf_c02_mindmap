@@ -25,5 +25,13 @@
   "review.due": "{count} thẻ cần ôn hôm nay",
   "review.empty": "Hiện chưa có gì cần ôn",
   "history.title": "Lịch sử",
-  "settings.language": "Ngôn ngữ"
+  "settings.language": "Ngôn ngữ",
+  "nav.tree": "Sơ đồ tư duy",
+  "nav.lesson": "Bài học",
+  "nav.practice": "Luyện tập",
+  "nav.review": "Ôn tập",
+  "nav.history": "Lịch sử",
+  "nav.settings": "Cài đặt",
+  "app.topicCount": "{count} chủ đề",
+  "app.loadError": "Không thể khởi động ứng dụng"
 }
