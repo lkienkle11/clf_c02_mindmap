@@ -33,5 +33,21 @@
   "nav.history": "History",
   "nav.settings": "Settings",
   "app.topicCount": "{count} topics",
-  "app.loadError": "The app could not start"
+  "app.loadError": "The app could not start",
+  "mindmap.treeLabel": "Knowledge mindmap",
+  "mindmap.tier.introduction": "Introduction",
+  "mindmap.tier.core": "Core",
+  "mindmap.tier.advanced": "Advanced",
+  "mindmap.tier.capstone": "Capstone",
+  "mindmap.lessonsRead": "{read}/{total} lessons",
+  "mindmap.status.unread": "Not read",
+  "mindmap.optional": "Optional",
+  "mindmap.practiceLockedLessons": "Read all required lessons first",
+  "mindmap.noQuestions": "No questions yet",
+  "lesson.completed": "Done",
+  "lesson.previous": "Previous lesson",
+  "lesson.next": "Next lesson",
+  "lesson.backToTree": "Back to the mindmap",
+  "lesson.openVideo": "Open video search",
+  "lesson.optional": "Optional lesson"
 }

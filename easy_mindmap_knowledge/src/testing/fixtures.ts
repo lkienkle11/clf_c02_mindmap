@@ -55,3 +55,22 @@ export function makeRawCatalog(): RawCatalog {
     ],
   };
 }
+
+/** Catalog input for UI tests: compute has 3 lessons (2 required + 1 optional video), cloud-concepts 1 lesson. */
+export function makeTreeRawCatalog(): RawCatalog {
+  const raw = makeRawCatalog();
+  const lessons = [
+    makeLesson({ id: 'cloud-intro', topicId: 'cloud-concepts', order: 1, title: { en: 'Cloud intro', vi: 'Giới thiệu đám mây' } }),
+    makeLesson({ id: 'compute-ec2', topicId: 'compute', order: 1, title: { en: 'EC2 basics', vi: 'EC2 cơ bản' }, body: { en: '## EC2\n\nVirtual **servers**.', vi: '## EC2\n\nMáy chủ ảo.' } }),
+    makeLesson({ id: 'compute-lambda', topicId: 'compute', order: 2, title: { en: 'Lambda', vi: 'Lambda' } }),
+    makeLesson({
+      id: 'compute-video', topicId: 'compute', order: 3, required: false, videoQuery: 'aws ec2 tutorial',
+      title: { en: 'EC2 video', vi: 'Video EC2' },
+    }),
+  ];
+  raw.lessons = lessons;
+  raw.topics[0] = { ...raw.topics[0], lessonIds: ['cloud-intro'] };
+  raw.topics[2] = { ...raw.topics[2], lessonIds: ['compute-ec2', 'compute-lambda', 'compute-video'] };
+  raw.questions.push(makeQuestion({ id: 'q-cloud', topicId: 'cloud-concepts' }));
+  return raw;
+}

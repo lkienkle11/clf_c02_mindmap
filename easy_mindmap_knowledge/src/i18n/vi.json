@@ -33,5 +33,21 @@
   "nav.history": "Lịch sử",
   "nav.settings": "Cài đặt",
   "app.topicCount": "{count} chủ đề",
-  "app.loadError": "Không thể khởi động ứng dụng"
+  "app.loadError": "Không thể khởi động ứng dụng",
+  "mindmap.treeLabel": "Sơ đồ tư duy kiến thức",
+  "mindmap.tier.introduction": "Giới thiệu",
+  "mindmap.tier.core": "Cốt lõi",
+  "mindmap.tier.advanced": "Nâng cao",
+  "mindmap.tier.capstone": "Tổng kết",
+  "mindmap.lessonsRead": "{read}/{total} bài",
+  "mindmap.status.unread": "Chưa đọc",
+  "mindmap.optional": "Tùy chọn",
+  "mindmap.practiceLockedLessons": "Hãy đọc hết các bài bắt buộc trước",
+  "mindmap.noQuestions": "Chưa có câu hỏi",
+  "lesson.completed": "Đã hoàn thành",
+  "lesson.previous": "Bài trước",
+  "lesson.next": "Bài kế tiếp",
+  "lesson.backToTree": "Quay lại sơ đồ",
+  "lesson.openVideo": "Mở tìm kiếm video",
+  "lesson.optional": "Bài học tùy chọn"
 }

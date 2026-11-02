@@ -12,13 +12,13 @@ import App from './App.svelte';
 const emptyExecutor: SqlExecutor = { execute: async () => {}, select: async () => [] };
 
 describe('App shell', () => {
-  it('mounts and shows the placeholder for the default view', async () => {
+  it('mounts the tree for the default view and a placeholder for the others', async () => {
     const services = buildServices({ executor: emptyExecutor, catalog: loadCatalog(makeRawCatalog()), now: () => 0 });
     const appState = new AppState(services);
     await appState.load();
     render(App, { services, appState, i18n: createI18n('en') });
     expect(screen.getByRole('heading', { name: 'Mindmap' })).toBeInTheDocument();
-    expect(screen.getByText('13 topics')).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /^cloud-concepts/ })).toBeInTheDocument();
     appState.open({ view: 'history' });
     expect(await screen.findByRole('heading', { name: 'History' })).toBeInTheDocument();
   });

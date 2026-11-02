@@ -15,6 +15,9 @@
   --color-leaf-review-soft: #fef3c7;
   --color-leaf-review-ink: #92400e;
   --color-water: #2563eb;
+  --color-track: #e7d5c6;
+  --color-tier: #92400e;
+  --color-tier-foreground: #ffffff;
 
   /* Semantic tokens (light theme only) */
   --color-background: #f9fafb;
