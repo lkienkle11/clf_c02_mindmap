@@ -1,0 +1,317 @@
+[
+  {
+    "id": "auth-storage-01",
+    "topicId": "storage",
+    "text": "Which statement about Amazon S3 durability and availability is correct?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Durability measures how often data can be reached when it is requested"
+      },
+      {
+        "key": "B",
+        "text": "S3 Standard is designed for 99.999999999% availability"
+      },
+      {
+        "key": "C",
+        "text": "S3 One Zone-IA stores each object in at least three Availability Zones"
+      },
+      {
+        "key": "D",
+        "text": "Durability describes protection against data loss, and S3 storage classes are designed for 99.999999999% durability"
+      }
+    ],
+    "correct": [
+      "D"
+    ],
+    "multi": false,
+    "orderDependent": false,
+    "explanation": "Durability is about not losing data, and S3 storage classes are designed for eleven 9s of durability. Availability is about being able to reach the data, and S3 Standard is designed for 99.99% availability, so the eleven 9s figure is not an availability number.",
+    "source": "authored"
+  },
+  {
+    "id": "auth-storage-02",
+    "topicId": "storage",
+    "text": "A company stores monthly reports in Amazon S3. After the first month the reports are rarely read, but when an auditor asks for one it must be returned within milliseconds. The reports cannot be re-created. Which storage class is the MOST cost-effective choice?",
+    "options": [
+      {
+        "key": "A",
+        "text": "S3 One Zone-IA"
+      },
+      {
+        "key": "B",
+        "text": "S3 Standard-IA"
+      },
+      {
+        "key": "C",
+        "text": "S3 Glacier Deep Archive"
+      },
+      {
+        "key": "D",
+        "text": "S3 Standard"
+      }
+    ],
+    "correct": [
+      "B"
+    ],
+    "multi": false,
+    "orderDependent": false,
+    "explanation": "S3 Standard-IA costs less than S3 Standard for rarely read data, keeps millisecond access, and stores data across multiple Availability Zones. One Zone-IA keeps data in a single Availability Zone, which is not suitable for data that cannot be re-created, and Deep Archive needs hours to restore.",
+    "source": "authored"
+  },
+  {
+    "id": "auth-storage-03",
+    "topicId": "storage",
+    "text": "A company wants to recover objects in an Amazon S3 bucket if they are accidentally deleted or overwritten, and wants to make sure no object in the account can be made public by mistake. Which S3 features should the company use? (Choose two.)",
+    "options": [
+      {
+        "key": "A",
+        "text": "S3 Versioning"
+      },
+      {
+        "key": "B",
+        "text": "S3 Transfer Acceleration"
+      },
+      {
+        "key": "C",
+        "text": "S3 Block Public Access"
+      },
+      {
+        "key": "D",
+        "text": "S3 Intelligent-Tiering"
+      },
+      {
+        "key": "E",
+        "text": "S3 static website hosting"
+      }
+    ],
+    "correct": [
+      "A",
+      "C"
+    ],
+    "multi": true,
+    "orderDependent": false,
+    "explanation": "Versioning keeps earlier versions and uses delete markers, so deleted or overwritten objects can be restored, and Block Public Access overrides policies that would make data public. Transfer Acceleration and Intelligent-Tiering affect speed and cost, not protection.",
+    "source": "authored"
+  },
+  {
+    "id": "auth-storage-04",
+    "topicId": "storage",
+    "text": "An application on an Amazon EC2 instance runs a self-managed relational database. It needs a low-latency disk, and the data must survive when the instance is stopped and started. Which storage should the application use?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Instance store volumes"
+      },
+      {
+        "key": "B",
+        "text": "Amazon S3"
+      },
+      {
+        "key": "C",
+        "text": "Amazon Elastic Block Store (Amazon EBS)"
+      },
+      {
+        "key": "D",
+        "text": "S3 Glacier Flexible Retrieval"
+      }
+    ],
+    "correct": [
+      "C"
+    ],
+    "multi": false,
+    "orderDependent": false,
+    "explanation": "An EBS volume is block storage that attaches to the instance like a disk and persists independently of the instance's life. Instance store data is lost when the instance stops, and Amazon S3 is object storage accessed through an API, not a disk for a database.",
+    "source": "authored"
+  },
+  {
+    "id": "auth-storage-05",
+    "topicId": "storage",
+    "text": "A company's Linux web servers run in several Availability Zones and must read and write the same set of files at the same time. The storage must grow automatically as files are added. Which AWS service should the company use?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Amazon Elastic File System (Amazon EFS)"
+      },
+      {
+        "key": "B",
+        "text": "Amazon Elastic Block Store (Amazon EBS)"
+      },
+      {
+        "key": "C",
+        "text": "EC2 instance store"
+      },
+      {
+        "key": "D",
+        "text": "Amazon FSx for Windows File Server"
+      }
+    ],
+    "correct": [
+      "A"
+    ],
+    "multi": false,
+    "orderDependent": false,
+    "explanation": "Amazon EFS is a managed NFS file system that many Linux instances across Availability Zones can mount at once, and it grows and shrinks automatically. An EBS volume lives in one Availability Zone and is normally attached to one instance, and FSx for Windows File Server targets Windows SMB workloads.",
+    "source": "authored"
+  },
+  {
+    "id": "auth-storage-06",
+    "topicId": "storage",
+    "text": "Which statements about Amazon EBS snapshots are correct? (Choose two.)",
+    "options": [
+      {
+        "key": "A",
+        "text": "Snapshots are kept on the instance store of the attached instance"
+      },
+      {
+        "key": "B",
+        "text": "Snapshots are incremental and save only the blocks that changed since the last snapshot"
+      },
+      {
+        "key": "C",
+        "text": "AWS automatically creates a daily snapshot of every EBS volume"
+      },
+      {
+        "key": "D",
+        "text": "A snapshot can be used to create a new volume in another Availability Zone of the same Region"
+      },
+      {
+        "key": "E",
+        "text": "A snapshot can be restored only to the Availability Zone where it was taken"
+      }
+    ],
+    "correct": [
+      "B",
+      "D"
+    ],
+    "multi": true,
+    "orderDependent": false,
+    "explanation": "EBS snapshots are incremental, are stored in Amazon S3, and can restore volumes in any Availability Zone of the Region. AWS does not back up EBS volumes automatically; the customer creates snapshots or schedules them with a tool such as AWS Backup.",
+    "source": "authored"
+  },
+  {
+    "id": "auth-storage-07",
+    "topicId": "storage",
+    "text": "A company keeps application log files in Amazon S3. The logs are read often for 30 days, rarely for the next 11 months, and must then be deleted. Which S3 feature can move the logs to cheaper storage and delete them automatically?",
+    "options": [
+      {
+        "key": "A",
+        "text": "S3 Versioning"
+      },
+      {
+        "key": "B",
+        "text": "S3 Block Public Access"
+      },
+      {
+        "key": "C",
+        "text": "S3 Cross-Region Replication"
+      },
+      {
+        "key": "D",
+        "text": "S3 Lifecycle configuration"
+      }
+    ],
+    "correct": [
+      "D"
+    ],
+    "multi": false,
+    "orderDependent": false,
+    "explanation": "S3 Lifecycle rules use transition actions to move objects to cheaper storage classes and expiration actions to delete them on a schedule. Versioning keeps extra copies rather than removing them, and replication copies data to another bucket.",
+    "source": "authored"
+  },
+  {
+    "id": "auth-storage-08",
+    "topicId": "storage",
+    "text": "A company must move 200 TB of file shares from its on-premises NAS to Amazon EFS over its existing network connection. The company wants the transfer automated, encrypted, and checked for data integrity. Which AWS service meets these requirements?",
+    "options": [
+      {
+        "key": "A",
+        "text": "AWS Storage Gateway Tape Gateway"
+      },
+      {
+        "key": "B",
+        "text": "AWS DataSync"
+      },
+      {
+        "key": "C",
+        "text": "AWS Backup"
+      },
+      {
+        "key": "D",
+        "text": "Amazon S3 Transfer Acceleration"
+      }
+    ],
+    "correct": [
+      "B"
+    ],
+    "multi": false,
+    "orderDependent": false,
+    "explanation": "AWS DataSync is an online transfer service that copies data from NFS or SMB shares to Amazon EFS, Amazon FSx, or Amazon S3 with encryption and integrity validation. Tape Gateway replaces tape libraries, and S3 Transfer Acceleration speeds uploads to S3 buckets only.",
+    "source": "authored"
+  },
+  {
+    "id": "auth-storage-09",
+    "topicId": "storage",
+    "text": "A law firm must keep scanned case records for 10 years. The records are almost never read, and waiting up to 2 days to retrieve one is acceptable. Which S3 storage class has the lowest storage cost for this need?",
+    "options": [
+      {
+        "key": "A",
+        "text": "S3 Standard-IA"
+      },
+      {
+        "key": "B",
+        "text": "S3 Glacier Instant Retrieval"
+      },
+      {
+        "key": "C",
+        "text": "S3 Glacier Deep Archive"
+      },
+      {
+        "key": "D",
+        "text": "S3 Intelligent-Tiering"
+      }
+    ],
+    "correct": [
+      "C"
+    ],
+    "multi": false,
+    "orderDependent": false,
+    "explanation": "S3 Glacier Deep Archive is the lowest-cost storage class and is meant for long-term archives that are read less than once a year, with retrievals that take hours. Glacier Instant Retrieval and Standard-IA keep millisecond access, which this workload does not need and which costs more to store.",
+    "source": "authored"
+  },
+  {
+    "id": "auth-storage-10",
+    "topicId": "storage",
+    "text": "Which AWS storage options provide block storage for Amazon EC2 instances? (Choose two.)",
+    "options": [
+      {
+        "key": "A",
+        "text": "Amazon S3"
+      },
+      {
+        "key": "B",
+        "text": "Amazon Elastic File System (Amazon EFS)"
+      },
+      {
+        "key": "C",
+        "text": "Amazon Elastic Block Store (Amazon EBS)"
+      },
+      {
+        "key": "D",
+        "text": "AWS Storage Gateway Tape Gateway"
+      },
+      {
+        "key": "E",
+        "text": "EC2 instance store"
+      }
+    ],
+    "correct": [
+      "C",
+      "E"
+    ],
+    "multi": true,
+    "orderDependent": false,
+    "explanation": "Amazon EBS volumes and instance store volumes both appear to the instance as block devices, like disks. Amazon S3 is object storage and Amazon EFS is file storage.",
+    "source": "authored"
+  }
+]
