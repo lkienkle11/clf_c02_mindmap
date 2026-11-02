@@ -1,0 +1,317 @@
+[
+  {
+    "id": "auth-networking-01",
+    "topicId": "networking",
+    "text": "What makes a subnet in an Amazon VPC a public subnet?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Its name includes the word \"public\""
+      },
+      {
+        "key": "B",
+        "text": "It is created in the first Availability Zone of the Region"
+      },
+      {
+        "key": "C",
+        "text": "Its route table has a direct route to an internet gateway"
+      },
+      {
+        "key": "D",
+        "text": "Every instance in it has its own NAT gateway"
+      }
+    ],
+    "correct": [
+      "C"
+    ],
+    "multi": false,
+    "orderDependent": false,
+    "explanation": "A subnet is public because its route table sends internet-bound traffic directly to an internet gateway. The name or Availability Zone does not matter, and a NAT gateway gives private subnets outbound-only access rather than making them public.",
+    "source": "authored"
+  },
+  {
+    "id": "auth-networking-02",
+    "topicId": "networking",
+    "text": "A security team sees repeated attacks from one IP address range and wants to stop that range from reaching every instance in a subnet. Which VPC feature should the team use?",
+    "options": [
+      {
+        "key": "A",
+        "text": "A security group rule"
+      },
+      {
+        "key": "B",
+        "text": "A network ACL deny rule"
+      },
+      {
+        "key": "C",
+        "text": "A Route 53 failover routing policy"
+      },
+      {
+        "key": "D",
+        "text": "A NAT gateway"
+      }
+    ],
+    "correct": [
+      "B"
+    ],
+    "multi": false,
+    "orderDependent": false,
+    "explanation": "Network ACLs work at the subnet level and support explicit deny rules, so they can block a specific IP range. Security groups support allow rules only, so they cannot express \"deny this range\".",
+    "source": "authored"
+  },
+  {
+    "id": "auth-networking-03",
+    "topicId": "networking",
+    "text": "Which statements about security groups in Amazon VPC are correct? (Choose two.)",
+    "options": [
+      {
+        "key": "A",
+        "text": "They are stateful, so response traffic for an allowed request is allowed automatically"
+      },
+      {
+        "key": "B",
+        "text": "They support explicit deny rules for specific IP addresses"
+      },
+      {
+        "key": "C",
+        "text": "They automatically apply to every instance in a subnet"
+      },
+      {
+        "key": "D",
+        "text": "A newly created security group allows no inbound traffic until inbound rules are added"
+      },
+      {
+        "key": "E",
+        "text": "Their rules are evaluated in number order, and the first match wins"
+      }
+    ],
+    "correct": [
+      "A",
+      "D"
+    ],
+    "multi": true,
+    "orderDependent": false,
+    "explanation": "Security groups are stateful, allow rules only, and a new one starts with no inbound rules. Deny rules, subnet-wide scope, and numbered first-match evaluation describe network ACLs.",
+    "source": "authored"
+  },
+  {
+    "id": "auth-networking-04",
+    "topicId": "networking",
+    "text": "A company must connect a new branch office network to its VPC within a day. Traffic must be encrypted, and sending it over the internet is acceptable. Which AWS service meets these requirements?",
+    "options": [
+      {
+        "key": "A",
+        "text": "AWS Direct Connect"
+      },
+      {
+        "key": "B",
+        "text": "VPC peering"
+      },
+      {
+        "key": "C",
+        "text": "Amazon CloudFront"
+      },
+      {
+        "key": "D",
+        "text": "AWS Site-to-Site VPN"
+      }
+    ],
+    "correct": [
+      "D"
+    ],
+    "multi": false,
+    "orderDependent": false,
+    "explanation": "AWS Site-to-Site VPN creates encrypted IPsec tunnels over the internet and can be set up quickly. Direct Connect needs a physical connection at a Direct Connect location and is not encrypted by default, and VPC peering only connects two VPCs.",
+    "source": "authored"
+  },
+  {
+    "id": "auth-networking-05",
+    "topicId": "networking",
+    "text": "Which statement describes VPC peering?",
+    "options": [
+      {
+        "key": "A",
+        "text": "A one-to-one private connection between two VPCs that is not transitive"
+      },
+      {
+        "key": "B",
+        "text": "A central hub that connects many VPCs and on-premises networks"
+      },
+      {
+        "key": "C",
+        "text": "A dedicated physical connection from a data center to AWS"
+      },
+      {
+        "key": "D",
+        "text": "A service that caches content at edge locations"
+      }
+    ],
+    "correct": [
+      "A"
+    ],
+    "multi": false,
+    "orderDependent": false,
+    "explanation": "VPC peering links exactly two VPCs over private IP addresses, and traffic cannot pass through one peered VPC to reach a third. A central hub for many networks is AWS Transit Gateway, and a dedicated physical link is AWS Direct Connect.",
+    "source": "authored"
+  },
+  {
+    "id": "auth-networking-06",
+    "topicId": "networking",
+    "text": "A company is designing a VPC for a web application. Web servers in one subnet must receive requests that start from the internet. Which components does the company need? (Choose two.)",
+    "options": [
+      {
+        "key": "A",
+        "text": "A NAT gateway in the subnet"
+      },
+      {
+        "key": "B",
+        "text": "An internet gateway attached to the VPC"
+      },
+      {
+        "key": "C",
+        "text": "A VPC peering connection"
+      },
+      {
+        "key": "D",
+        "text": "An AWS Direct Connect connection"
+      },
+      {
+        "key": "E",
+        "text": "A route in the subnet's route table that sends internet-bound traffic to the internet gateway"
+      }
+    ],
+    "correct": [
+      "B",
+      "E"
+    ],
+    "multi": true,
+    "orderDependent": false,
+    "explanation": "Inbound internet access needs an internet gateway on the VPC and a route to it from the subnet's route table, which makes the subnet public. A NAT gateway only allows connections that start from inside the VPC, so it cannot accept requests from the internet.",
+    "source": "authored"
+  },
+  {
+    "id": "auth-networking-07",
+    "topicId": "networking",
+    "text": "A company runs its application in three AWS Regions. It wants Amazon Route 53 to send each user to the Region that gives that user the fastest response. Which routing policy should the company use?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Weighted routing"
+      },
+      {
+        "key": "B",
+        "text": "Geolocation routing"
+      },
+      {
+        "key": "C",
+        "text": "Latency routing"
+      },
+      {
+        "key": "D",
+        "text": "Simple routing"
+      }
+    ],
+    "correct": [
+      "C"
+    ],
+    "multi": false,
+    "orderDependent": false,
+    "explanation": "Latency routing answers each query with the Region that offers the user the lowest latency. Geolocation routing chooses by the user's location regardless of speed, and weighted routing splits traffic by fixed proportions.",
+    "source": "authored"
+  },
+  {
+    "id": "auth-networking-08",
+    "topicId": "networking",
+    "text": "A company wants users in Germany to see the German version of its website and users in Japan to see the Japanese version, based on where the users are located. Which Amazon Route 53 routing policy meets this requirement?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Latency routing"
+      },
+      {
+        "key": "B",
+        "text": "Geolocation routing"
+      },
+      {
+        "key": "C",
+        "text": "Failover routing"
+      },
+      {
+        "key": "D",
+        "text": "Multivalue answer routing"
+      }
+    ],
+    "correct": [
+      "B"
+    ],
+    "multi": false,
+    "orderDependent": false,
+    "explanation": "Geolocation routing chooses the answer based on where the user is, such as the country, so each country can get its own site version. Latency routing picks the fastest Region, which may not match the user's country or language.",
+    "source": "authored"
+  },
+  {
+    "id": "auth-networking-09",
+    "topicId": "networking",
+    "text": "A company connects its data center to AWS with AWS Direct Connect. An auditor asks whether the traffic on this connection is encrypted by default. Which answer is correct?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Yes, Direct Connect always encrypts traffic with IPsec"
+      },
+      {
+        "key": "B",
+        "text": "Yes, because Direct Connect sends traffic over the public internet with TLS"
+      },
+      {
+        "key": "C",
+        "text": "No, and encryption cannot be added to a Direct Connect connection"
+      },
+      {
+        "key": "D",
+        "text": "No, Direct Connect is not encrypted by default, but encryption can be added, for example by running a VPN over it"
+      }
+    ],
+    "correct": [
+      "D"
+    ],
+    "multi": false,
+    "orderDependent": false,
+    "explanation": "Direct Connect is a private, dedicated connection, but it is not encrypted by default; encryption such as a VPN over the connection can be added. Direct Connect does not use the public internet, so TLS over the internet is not how it works.",
+    "source": "authored"
+  },
+  {
+    "id": "auth-networking-10",
+    "topicId": "networking",
+    "text": "A startup is building a serverless backend with AWS Lambda. It needs a managed front door for its REST API that handles authorization and traffic management, and it wants users to reach the API through the company's own domain name. Which AWS services should the startup use? (Choose two.)",
+    "options": [
+      {
+        "key": "A",
+        "text": "Amazon API Gateway"
+      },
+      {
+        "key": "B",
+        "text": "AWS Transit Gateway"
+      },
+      {
+        "key": "C",
+        "text": "Amazon Route 53"
+      },
+      {
+        "key": "D",
+        "text": "AWS Direct Connect"
+      },
+      {
+        "key": "E",
+        "text": "A NAT gateway"
+      }
+    ],
+    "correct": [
+      "A",
+      "C"
+    ],
+    "multi": true,
+    "orderDependent": false,
+    "explanation": "Amazon API Gateway creates, secures, and manages APIs in front of backends such as Lambda, and Amazon Route 53 provides DNS for the custom domain name. Transit Gateway and Direct Connect connect private networks and do not publish APIs.",
+    "source": "authored"
+  }
+]

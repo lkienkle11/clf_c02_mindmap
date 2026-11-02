@@ -3,7 +3,7 @@
   { "id": "global-infrastructure", "order": 2, "tier": "introduction", "title": { "en": "Global Infrastructure", "vi": "Hạ tầng toàn cầu" }, "lessonIds": ["global-infrastructure-regions", "global-infrastructure-availability-zones", "global-infrastructure-edge", "global-infrastructure-extending-aws", "global-infrastructure-further"] },
   { "id": "compute", "order": 3, "tier": "core", "title": { "en": "Compute", "vi": "Điện toán" }, "lessonIds": ["compute-ec2-basics", "compute-purchasing-options", "compute-scaling-load-balancing", "compute-containers-serverless", "compute-further"] },
   { "id": "storage", "order": 4, "tier": "core", "title": { "en": "Storage", "vi": "Lưu trữ" }, "lessonIds": ["storage-s3-basics", "storage-s3-classes", "storage-block-file", "storage-hybrid-backup", "storage-further"] },
-  { "id": "networking", "order": 5, "tier": "core", "title": { "en": "Networking", "vi": "Mạng" }, "lessonIds": [] },
+  { "id": "networking", "order": 5, "tier": "core", "title": { "en": "Networking", "vi": "Mạng" }, "lessonIds": ["networking-vpc-basics", "networking-security-groups-nacls", "networking-hybrid-connectivity", "networking-dns-delivery", "networking-further"] },
   { "id": "databases", "order": 6, "tier": "core", "title": { "en": "Databases", "vi": "Cơ sở dữ liệu" }, "lessonIds": [] },
   { "id": "deploy-operate", "order": 7, "tier": "core", "title": { "en": "Deploying and Operating", "vi": "Triển khai và vận hành" }, "lessonIds": [] },
   { "id": "shared-responsibility", "order": 8, "tier": "advanced", "title": { "en": "Shared Responsibility", "vi": "Trách nhiệm chia sẻ" }, "lessonIds": [] },
