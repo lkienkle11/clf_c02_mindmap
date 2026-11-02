@@ -9,12 +9,12 @@ const files = import.meta.glob('/content/**', {
   import: 'default',
 }) as RawModules;
 
-interface FrontMatter {
+export interface FrontMatter {
   meta: Record<string, string>;
   body: string;
 }
 
-function parseFrontMatter(text: string, path: string): FrontMatter {
+export function parseFrontMatter(text: string, path: string): FrontMatter {
   const m = /^---\r?\n([\s\S]*?)\r?\n---\r?\n?([\s\S]*)$/.exec(text);
   if (!m) throw new Error(`missing front matter in ${path}`);
   const meta: Record<string, string> = {};
@@ -29,28 +29,41 @@ function parseFrontMatter(text: string, path: string): FrontMatter {
   return { meta, body: m[2].trim() };
 }
 
-function buildLessons(all: RawModules): Lesson[] {
-  const byId = new Map<string, { en?: FrontMatter; vi?: FrontMatter }>();
+const LESSON_PATH = /^\/content\/lessons\/(?:([^/]+)\/)?([^/]+)\.(en|vi)\.md$/;
+
+export function buildLessons(all: RawModules): Lesson[] {
+  type Part = { fm: FrontMatter; path: string };
+  const byId = new Map<string, { topicId: string; order: number; en?: Part; vi?: Part }>();
   for (const [path, text] of Object.entries(all)) {
-    const m = /\.(en|vi)\.md$/.exec(path);
-    if (!m || !path.startsWith('/content/lessons/')) continue;
+    const m = LESSON_PATH.exec(path);
+    if (!m) continue;
+    const [, topicId, name, lang] = m;
+    if (!topicId) throw new Error(`lesson file has no topic folder: ${path}`);
+    const prefix = /^(\d+)-/.exec(name);
+    if (!prefix) throw new Error(`lesson filename needs a numeric NN- prefix: ${path}`);
     const fm = parseFrontMatter(text, path);
-    const id = fm.meta.id;
+    const { id, title, required } = fm.meta;
     if (!id) throw new Error(`lesson front matter missing id in ${path}`);
-    const entry = byId.get(id) ?? {};
-    entry[m[1] as 'en' | 'vi'] = fm;
+    if (!title) throw new Error(`lesson front matter missing title in ${path}`);
+    if (required !== undefined && required !== 'true' && required !== 'false') {
+      throw new Error(`lesson front matter required must be true or false in ${path}`);
+    }
+    const entry = byId.get(id) ?? { topicId, order: parseInt(prefix[1], 10) };
+    if (entry[lang as 'en' | 'vi']) throw new Error(`duplicate lesson id "${id}" for ${lang} in ${path}`);
+    entry[lang as 'en' | 'vi'] = { fm, path };
     byId.set(id, entry);
   }
-  return [...byId.entries()].map(([id, { en, vi }]) => {
-    if (!en || !vi) throw new Error(`lesson ${id} needs both .en.md and .vi.md`);
+  return [...byId.entries()].map(([id, { topicId, order, en, vi }]) => {
+    if (!en) throw new Error(`lesson ${id} is missing its .en.md file (has ${vi?.path})`);
+    if (!vi) throw new Error(`lesson ${id} is missing its .vi.md file (has ${en.path})`);
     return {
       id,
-      topicId: en.meta.topicId,
-      order: Number(en.meta.order),
-      required: en.meta.required !== 'false',
-      title: { en: en.meta.title, vi: vi.meta.title },
-      body: { en: en.body, vi: vi.body },
-      ...(en.meta.videoQuery ? { videoQuery: en.meta.videoQuery } : {}),
+      topicId,
+      order,
+      required: en.fm.meta.required !== 'false',
+      title: { en: en.fm.meta.title, vi: vi.fm.meta.title },
+      body: { en: en.fm.body, vi: vi.fm.body },
+      ...(en.fm.meta.videoQuery ? { videoQuery: en.fm.meta.videoQuery } : {}),
     };
   });
 }

@@ -96,3 +96,50 @@ describe('loadBundledCatalog', () => {
     expect(c.topics).toHaveLength(13);
   });
 });
+
+describe('loadCatalog shape checks', () => {
+  const bad = (mutate: (r: any) => void) => {
+    const raw: any = makeRawCatalog();
+    mutate(raw);
+    return () => loadCatalog(raw);
+  };
+  it('rejects a topic without a string id', () => {
+    expect(bad((r) => { r.topics[0].id = 5; })).toThrow(/topic.*id/);
+  });
+  it('rejects an invalid tier', () => {
+    expect(bad((r) => { r.topics[0].tier = 'expert'; })).toThrow(/tier/);
+  });
+  it('rejects an empty topic title', () => {
+    expect(bad((r) => { r.topics[0].title.vi = ''; })).toThrow(/title/);
+  });
+  it('rejects non-array lessonIds', () => {
+    expect(bad((r) => { r.topics[0].lessonIds = 'x'; })).toThrow(/lessonIds/);
+  });
+  it('rejects a lesson without id or topicId', () => {
+    expect(bad((r) => { delete r.lessons[0].id; })).toThrow(/lesson.*id/);
+    expect(bad((r) => { delete r.lessons[0].topicId; })).toThrow(/lesson.*topicId/);
+  });
+  it('rejects a lesson with bad localized title or body', () => {
+    expect(bad((r) => { r.lessons[0].title = { en: 'x' }; })).toThrow(/title/);
+    expect(bad((r) => { r.lessons[0].body = null; })).toThrow(/body/);
+  });
+  it('rejects a question without id, options array or malformed option', () => {
+    expect(bad((r) => { delete r.questions[0].id; })).toThrow(/question.*id/);
+    expect(bad((r) => { r.questions[0].options = null; })).toThrow(/options/);
+    expect(bad((r) => { r.questions[0].options[0] = { key: 'A' }; })).toThrow(/option/);
+  });
+  it('rejects bad correct, source or text', () => {
+    expect(bad((r) => { r.questions[0].correct = 'A'; })).toThrow(/correct/);
+    expect(bad((r) => { r.questions[0].source = 'other'; })).toThrow(/source/);
+    expect(bad((r) => { r.questions[0].text = ''; })).toThrow(/text/);
+  });
+  it('rejects a lesson whose topic is unknown', () => {
+    expect(bad((r) => { r.lessons[0].topicId = 'ghost'; })).toThrow(/unknown topic/);
+  });
+  it('rejects a question whose topic is unknown', () => {
+    expect(bad((r) => { r.questions[0].topicId = 'ghost'; })).toThrow(/unknown topic/);
+  });
+  it('rejects a topic listing a lesson that belongs to another topic', () => {
+    expect(bad((r) => { r.topics[0].lessonIds = ['compute-ec2']; })).toThrow(/belongs to/);
+  });
+});
