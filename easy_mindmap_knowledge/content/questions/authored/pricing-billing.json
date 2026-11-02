@@ -1,0 +1,317 @@
+[
+  {
+    "id": "auth-pricing-billing-01",
+    "topicId": "pricing-billing",
+    "text": "A company agrees to use a consistent amount of compute, measured in dollars per hour, for a 3-year term and receives lower prices than On-Demand. Which AWS pricing principle does this describe?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Pay as you go"
+      },
+      {
+        "key": "B",
+        "text": "Save when you commit"
+      },
+      {
+        "key": "C",
+        "text": "Pay less by using more"
+      },
+      {
+        "key": "D",
+        "text": "Trade fixed expense for variable expense"
+      }
+    ],
+    "correct": [
+      "B"
+    ],
+    "multi": false,
+    "orderDependent": false,
+    "explanation": "Committing to steady usage for one or three years, as with Savings Plans or Reserved Instances, is the 'save when you commit' principle. 'Pay less by using more' refers to tiered volume pricing, which needs no commitment.",
+    "source": "authored"
+  },
+  {
+    "id": "auth-pricing-billing-02",
+    "topicId": "pricing-billing",
+    "text": "A company uploads 50 TB of video files from its office to Amazon S3 over the internet. Customers then download the videos from the S3 bucket over the internet. Which charges will the company incur? (Choose two.)",
+    "options": [
+      {
+        "key": "A",
+        "text": "Charges for the IAM users that upload the files"
+      },
+      {
+        "key": "B",
+        "text": "Storage charges for the data kept in Amazon S3"
+      },
+      {
+        "key": "C",
+        "text": "Data transfer charges for the upload into Amazon S3"
+      },
+      {
+        "key": "D",
+        "text": "Data transfer charges for downloads to the internet"
+      },
+      {
+        "key": "E",
+        "text": "A monthly fee for using AWS Organizations consolidated billing"
+      }
+    ],
+    "correct": [
+      "B",
+      "D"
+    ],
+    "multi": true,
+    "orderDependent": false,
+    "explanation": "Stored data is billed per GB per month, and data transferred out of AWS to the internet is charged. Data transferred into AWS from the internet is free, and IAM and consolidated billing have no additional charge.",
+    "source": "authored"
+  },
+  {
+    "id": "auth-pricing-billing-03",
+    "topicId": "pricing-billing",
+    "text": "A company has 12 AWS accounts, each paid with a different credit card. Finance wants one monthly bill for all accounts and wants the combined usage to count toward volume pricing tiers. What should the company use?",
+    "options": [
+      {
+        "key": "A",
+        "text": "AWS Cost Explorer"
+      },
+      {
+        "key": "B",
+        "text": "AWS Budgets"
+      },
+      {
+        "key": "C",
+        "text": "AWS Pricing Calculator"
+      },
+      {
+        "key": "D",
+        "text": "Consolidated billing in AWS Organizations"
+      }
+    ],
+    "correct": [
+      "D"
+    ],
+    "multi": false,
+    "orderDependent": false,
+    "explanation": "Consolidated billing in AWS Organizations gives one bill paid by the management account and combines usage across accounts for volume discounts. Cost Explorer and Budgets analyze and track costs but do not merge accounts into one bill.",
+    "source": "authored"
+  },
+  {
+    "id": "auth-pricing-billing-04",
+    "topicId": "pricing-billing",
+    "text": "A finance team wants to receive an email when the forecasted monthly cost of an AWS account is expected to exceed its planned amount. Which AWS service or feature should the team use?",
+    "options": [
+      {
+        "key": "A",
+        "text": "AWS Cost Explorer"
+      },
+      {
+        "key": "B",
+        "text": "AWS Cost and Usage Report"
+      },
+      {
+        "key": "C",
+        "text": "AWS Budgets"
+      },
+      {
+        "key": "D",
+        "text": "AWS Compute Optimizer"
+      }
+    ],
+    "correct": [
+      "C"
+    ],
+    "multi": false,
+    "orderDependent": false,
+    "explanation": "AWS Budgets sends alerts by email or Amazon SNS when actual or forecasted costs cross a threshold. Cost Explorer can show a cost forecast but does not send threshold alerts.",
+    "source": "authored"
+  },
+  {
+    "id": "auth-pricing-billing-05",
+    "topicId": "pricing-billing",
+    "text": "A company is designing a new three-tier web application on AWS. Before deploying anything, it wants an estimate of the monthly cost of the planned EC2 instances, load balancer, and database. Which AWS tool should it use?",
+    "options": [
+      {
+        "key": "A",
+        "text": "AWS Pricing Calculator"
+      },
+      {
+        "key": "B",
+        "text": "AWS Cost Explorer"
+      },
+      {
+        "key": "C",
+        "text": "AWS Budgets"
+      },
+      {
+        "key": "D",
+        "text": "AWS Cost Anomaly Detection"
+      }
+    ],
+    "correct": [
+      "A"
+    ],
+    "multi": false,
+    "orderDependent": false,
+    "explanation": "AWS Pricing Calculator estimates the cost of planned AWS services before they are built. Cost Explorer only analyzes costs that the account has already incurred.",
+    "source": "authored"
+  },
+  {
+    "id": "auth-pricing-billing-06",
+    "topicId": "pricing-billing",
+    "text": "A data team wants the most detailed AWS billing data available, with hourly line items, delivered to an Amazon S3 bucket so it can query the data with Amazon Athena. What should the team use?",
+    "options": [
+      {
+        "key": "A",
+        "text": "AWS Budgets reports"
+      },
+      {
+        "key": "B",
+        "text": "AWS Cost Explorer graphs"
+      },
+      {
+        "key": "C",
+        "text": "AWS Pricing Calculator estimates"
+      },
+      {
+        "key": "D",
+        "text": "AWS Cost and Usage Report"
+      }
+    ],
+    "correct": [
+      "D"
+    ],
+    "multi": false,
+    "orderDependent": false,
+    "explanation": "The AWS Cost and Usage Report, created through AWS Data Exports, delivers the most comprehensive cost and usage data to an S3 bucket for tools such as Athena. Cost Explorer offers visual analysis in the console but not the full line-item dataset in S3.",
+    "source": "authored"
+  },
+  {
+    "id": "auth-pricing-billing-07",
+    "topicId": "pricing-billing",
+    "text": "A company added a tag named Project to all of its resources. In AWS Cost Explorer, the team cannot group costs by this tag. What must the team do?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Turn on AWS CloudTrail in every Region"
+      },
+      {
+        "key": "B",
+        "text": "Activate Project as a cost allocation tag"
+      },
+      {
+        "key": "C",
+        "text": "Purchase a Compute Savings Plan for the account"
+      },
+      {
+        "key": "D",
+        "text": "Create an AWS Budgets budget for each project"
+      }
+    ],
+    "correct": [
+      "B"
+    ],
+    "multi": false,
+    "orderDependent": false,
+    "explanation": "User-defined tags must be activated as cost allocation tags before they appear in Cost Explorer and cost reports. CloudTrail records API activity and does not make tags available for cost grouping.",
+    "source": "authored"
+  },
+  {
+    "id": "auth-pricing-billing-08",
+    "topicId": "pricing-billing",
+    "text": "Which are benefits of consolidated billing in AWS Organizations? (Choose two.)",
+    "options": [
+      {
+        "key": "A",
+        "text": "One bill for all accounts in the organization"
+      },
+      {
+        "key": "B",
+        "text": "Each member account gets its own AWS Support plan at no cost"
+      },
+      {
+        "key": "C",
+        "text": "Reserved Instance and Savings Plans discounts can be shared across accounts"
+      },
+      {
+        "key": "D",
+        "text": "Member accounts are never charged for data transfer"
+      },
+      {
+        "key": "E",
+        "text": "All member accounts automatically receive AWS Free Tier credits again"
+      }
+    ],
+    "correct": [
+      "A",
+      "C"
+    ],
+    "multi": true,
+    "orderDependent": false,
+    "explanation": "Consolidated billing produces one bill paid by the management account and lets Reserved Instance and Savings Plans discounts apply across accounts, in addition to combining usage for volume tiers. It does not add free support plans, remove data transfer charges, or renew Free Tier credits.",
+    "source": "authored"
+  },
+  {
+    "id": "auth-pricing-billing-09",
+    "topicId": "pricing-billing",
+    "text": "A startup created a new AWS account in 2026 and chose the Free account plan. What happens when its AWS Free Tier credits are used up?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Usage continues and is billed at On-Demand rates automatically"
+      },
+      {
+        "key": "B",
+        "text": "The account receives a new set of 12-month free offers"
+      },
+      {
+        "key": "C",
+        "text": "The Free plan ends and the account must be upgraded to continue"
+      },
+      {
+        "key": "D",
+        "text": "AWS moves all running instances to Spot pricing to save money"
+      }
+    ],
+    "correct": [
+      "C"
+    ],
+    "multi": false,
+    "orderDependent": false,
+    "explanation": "The Free account plan ends after six months or when the credits are used up, whichever comes first, and the account must be upgraded to the Paid plan to continue. Accounts on the Free plan are not billed automatically, which is the key difference from the Paid plan.",
+    "source": "authored"
+  },
+  {
+    "id": "auth-pricing-billing-10",
+    "topicId": "pricing-billing",
+    "text": "A company wants to lower the cost of Amazon EC2 instances that run at low CPU utilization most of the time. It also wants to be alerted automatically when daily spending suddenly rises far above its normal pattern. Which AWS services meet these needs? (Choose two.)",
+    "options": [
+      {
+        "key": "A",
+        "text": "AWS Compute Optimizer"
+      },
+      {
+        "key": "B",
+        "text": "AWS Pricing Calculator"
+      },
+      {
+        "key": "C",
+        "text": "Migration Evaluator"
+      },
+      {
+        "key": "D",
+        "text": "AWS Artifact"
+      },
+      {
+        "key": "E",
+        "text": "AWS Cost Anomaly Detection"
+      }
+    ],
+    "correct": [
+      "A",
+      "E"
+    ],
+    "multi": true,
+    "orderDependent": false,
+    "explanation": "Compute Optimizer uses utilization metrics to recommend smaller, right-sized instances, and Cost Anomaly Detection uses machine learning to alert on unusual spend. Pricing Calculator and Migration Evaluator estimate future or migration costs, not the cost of running resources.",
+    "source": "authored"
+  }
+]
