@@ -24,6 +24,11 @@
   let choice = $state.raw<{ id: string | null } | null>(null);
   const expandedTopicId = $derived(choice ? choice.id : currentTopicId);
 
+  function expand(topicId: string): void {
+    if (appState.statuses.get(topicId) === 'locked') return;
+    choice = { id: topicId };
+  }
+
   function toggle(topicId: string): void {
     if (appState.statuses.get(topicId) === 'locked') return;
     choice = { id: expandedTopicId === topicId ? null : topicId };
@@ -35,5 +40,5 @@
     <h1 class="text-2xl font-semibold">{i18n.t('nav.tree')}</h1>
     {@render actions?.()}
   </div>
-  <TreeCanvas {services} {appState} {expandedTopicId} ontoggle={toggle} />
+  <TreeCanvas {services} {appState} {expandedTopicId} ontoggle={toggle} onexpand={expand} />
 </section>

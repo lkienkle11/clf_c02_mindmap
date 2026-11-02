@@ -6,6 +6,7 @@
   import type { TopicReviewSummary } from '@/features/review';
   import { getI18n } from '@/i18n/i18n.svelte';
   import LeafNode from './LeafNode.svelte';
+  import TopicMenu from './TopicMenu.svelte';
   import { clamp, splitTwo } from './text';
 
   interface Props {
@@ -25,9 +26,11 @@
     ontoggle: (topicId: string) => void;
     onopenlesson: (topicId: string, lessonId: string) => void;
     onopenpractice: (topicId: string) => void;
+    onexpand: (topicId: string) => void;
+    onopenhistory: (topicId: string) => void;
   }
 
-  let { branch, topic, status, prevTitle, lessons, readIds, review, hasQuestions, expanded, canvasWidth, trunkX, ontoggle, onopenlesson, onopenpractice }: Props = $props();
+  let { branch, topic, status, prevTitle, lessons, readIds, review, hasQuestions, expanded, canvasWidth, trunkX, ontoggle, onopenlesson, onopenpractice, onexpand, onopenhistory }: Props = $props();
 
   const i18n = getI18n();
   const locale = $derived(i18n.locale);
@@ -88,6 +91,8 @@
         ? i18n.t('mindmap.practiceLockedLessons')
         : undefined,
   );
+  // A finished topic may always be redone (when it has questions); the lesson gate only applies to the first run.
+  const redoReason = $derived(status === 'done' && hasQuestions ? undefined : practiceReason);
   const practiceName = $derived(i18n.t('nav.practice'));
   const stopId = $derived(lessons.find((l) => l.required && !readIds.has(l.id))?.id ?? 'practice');
 </script>
@@ -145,6 +150,18 @@
   {/if}
 </g>
 
+{#if !locked}
+  <!-- above the node, clear of the spine and the water; a sibling of the node button so it never toggles it -->
+  <TopicMenu
+    x={node.cx - 22}
+    y={branch.y - node.h / 2 - 50}
+    topicTitle={title}
+    practiceReason={redoReason}
+    onredo={() => onopenpractice(topic.id)}
+    onlessons={() => onexpand(topic.id)}
+    onhistory={() => onopenhistory(topic.id)}
+  />
+{/if}
 
 {#each branch.leaves as leaf (leaf.id)}
   {#if leaf.kind === 'lesson'}

@@ -18,7 +18,7 @@ export type Route =
   | { view: 'lesson'; topicId: string; lessonId: string }
   | { view: 'practice'; topicId: string }
   | { view: 'review' }
-  | { view: 'history' }
+  | { view: 'history'; topicId?: string }
   | { view: 'settings' };
 
 export type View = Route['view'];

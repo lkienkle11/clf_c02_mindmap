@@ -12,9 +12,10 @@
     appState: AppState;
     expandedTopicId: string | null;
     ontoggle: (topicId: string) => void;
+    onexpand: (topicId: string) => void;
   }
 
-  let { services, appState, expandedTopicId, ontoggle }: Props = $props();
+  let { services, appState, expandedTopicId, ontoggle, onexpand }: Props = $props();
 
   const i18n = getI18n();
   const catalog = $derived(services.catalog);
@@ -33,6 +34,10 @@
 
   function openLesson(topicId: string, lessonId: string): void {
     appState.open({ view: 'lesson', topicId, lessonId });
+  }
+
+  function openHistory(topicId: string): void {
+    appState.open({ view: 'history', topicId });
   }
 
   function openPractice(topicId: string): void {
@@ -76,6 +81,8 @@
           {ontoggle}
           onopenlesson={openLesson}
           onopenpractice={openPractice}
+          {onexpand}
+          onopenhistory={openHistory}
         />
       {/if}
     {/each}
