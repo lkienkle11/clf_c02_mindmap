@@ -91,10 +91,9 @@ describe('ReviewRun', () => {
   });
 
   it('adoptSingle wraps a resumed review attempt', async () => {
-    const s = await PracticeSession.startReview(services, all.slice(0, 5), onSubmitted);
+    await PracticeSession.startReview(services, all.slice(0, 5), onSubmitted);
     const found = (await services.repos.attempts.findInProgress())!;
     const { session } = await PracticeSession.resume(services, found, onSubmitted);
-    void s;
     const run = ReviewRun.adoptSingle(session);
     expect(run.batchCount).toBe(1);
     expect(run.remainingAfterCurrent).toBe(0);
@@ -102,5 +101,16 @@ describe('ReviewRun', () => {
     await finish(run);
     expect(run.finished).toBe(true);
     expect(run.results).toHaveLength(1);
+  });
+
+  it('stop() during an in-flight submit waits for it, then discards that batch', async () => {
+    const run = await ReviewRun.start(services, plan, onSubmitted);
+    for (const q of run.session.questions) await run.session.select(q.position, ['A']);
+    const submitting = run.session.submit('manual');
+    await run.stop();
+    await submitting.catch(() => {});
+    expect(await services.repos.attempts.findInProgress()).toBeNull();
+    expect(await services.repos.attempts.listSubmitted()).toHaveLength(0);
+    expect(await services.repos.questionStats.get('r0')).toBeNull();
   });
 });

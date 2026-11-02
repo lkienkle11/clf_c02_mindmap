@@ -73,7 +73,10 @@ export class AppState {
       repos.attempts.listSubmitted(),
       repos.attempts.findInProgress(),
       repos.questionStats.listAll(),
-      repos.settings.get(SETTING_BUTTON_HIDDEN_DATE),
+      repos.settings.get(SETTING_BUTTON_HIDDEN_DATE).catch((e: unknown) => {
+        console.error('Could not read the review button setting', e);
+        return null;
+      }),
     ]);
     if (seq !== this.refreshSeq) return;
     const completed = completedTopicIds(submitted);
@@ -93,11 +96,17 @@ export class AppState {
    * killing the app with it open will not bring it back the same day (spec 5.1).
    */
   async #decideDailyPrompt(): Promise<void> {
-    const today = localDateString(this.services.now());
-    const lastShown = await this.services.repos.settings.get(SETTING_PROMPT_DATE);
-    if (!shouldShowDailyPrompt({ summaries: this.summaries, lastShownDate: lastShown, today })) return;
-    this.dailyPromptVisible = true;
-    await this.services.repos.settings.set(SETTING_PROMPT_DATE, today);
+    // A settings failure must never break startup, and must never risk showing the modal twice a day:
+    // persist first, show only if that worked, and treat an unreadable date as "do not show".
+    try {
+      const today = localDateString(this.services.now());
+      const lastShown = await this.services.repos.settings.get(SETTING_PROMPT_DATE);
+      if (!shouldShowDailyPrompt({ summaries: this.summaries, lastShownDate: lastShown, today })) return;
+      await this.services.repos.settings.set(SETTING_PROMPT_DATE, today);
+      this.dailyPromptVisible = true;
+    } catch (e) {
+      console.error('Could not decide the daily review prompt', e);
+    }
   }
 
   dismissDailyPrompt(): void {

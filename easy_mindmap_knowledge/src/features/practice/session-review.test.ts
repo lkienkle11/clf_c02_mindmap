@@ -57,6 +57,11 @@ describe('PracticeSession.startReview', () => {
     expect(await services.repos.attempts.findInProgress()).toBeNull();
   });
 
+  it('rejects duplicate ids', async () => {
+    await expect(PracticeSession.startReview(services, ['r1', 'r2', 'r1'], onSubmitted)).rejects.toThrow(/duplicate.*r1/i);
+    expect(await services.repos.attempts.findInProgress()).toBeNull();
+  });
+
   it('resume restores order and selection', async () => {
     const s = await PracticeSession.startReview(services, ids, onSubmitted);
     await s.select(1, ['B']);

@@ -1,5 +1,5 @@
 // @vitest-environment node
-import { beforeEach, describe, expect, it } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { loadCatalog } from '@/content/load-catalog';
 import { makeRawCatalog, makeQuestion } from '@/testing/fixtures';
 import { createNodeSqliteExecutor } from '@/testing/node-sqlite-executor';
@@ -180,6 +180,70 @@ describe('AppState', () => {
       const fresh = new AppState(services);
       await fresh.load();
       expect(fresh.dailyPromptVisible).toBe(true);
+    });
+
+    describe('settings failures', () => {
+      afterEach(() => vi.restoreAllMocks());
+
+      it('failing settings.set: load resolves, locale returned, no prompt', async () => {
+        await passTopic1Long();
+        await services.repos.settings.set('locale', 'en');
+        const err = vi.spyOn(console, 'error').mockImplementation(() => {});
+        const real = services.repos.settings.set.bind(services.repos.settings);
+        services.repos.settings.set = async (k, v) => {
+          if (k === SETTING_PROMPT_DATE) throw new Error('disk full');
+          return real(k, v);
+        };
+        expect(await state.load()).toBe('en');
+        expect(state.dailyPromptVisible).toBe(false);
+        expect(err).toHaveBeenCalled();
+      });
+
+      it('failing settings.get of the prompt key: no prompt, load resolves', async () => {
+        await passTopic1Long();
+        vi.spyOn(console, 'error').mockImplementation(() => {});
+        const real = services.repos.settings.get.bind(services.repos.settings);
+        services.repos.settings.get = async (k) => {
+          if (k === SETTING_PROMPT_DATE) throw new Error('read fail');
+          return real(k);
+        };
+        await state.load();
+        expect(state.dailyPromptVisible).toBe(false);
+      });
+
+      it('failing settings.get of the button key: refresh resolves, button stays visible', async () => {
+        await passTopic1Long();
+        vi.spyOn(console, 'error').mockImplementation(() => {});
+        const real = services.repos.settings.get.bind(services.repos.settings);
+        services.repos.settings.get = async (k) => {
+          if (k === SETTING_BUTTON_HIDDEN_DATE) throw new Error('read fail');
+          return real(k);
+        };
+        await state.load();
+        expect(state.reviewButtonHidden).toBe(false);
+        expect(state.reviewButtonVisible).toBe(true);
+      });
+
+      it('persists the date BEFORE showing the prompt', async () => {
+        await passTopic1Long();
+        const real = services.repos.settings.set.bind(services.repos.settings);
+        const seen: boolean[] = [];
+        services.repos.settings.set = async (k, v) => {
+          if (k === SETTING_PROMPT_DATE) seen.push(state.dailyPromptVisible);
+          return real(k, v);
+        };
+        await state.load();
+        expect(seen).toEqual([false]);
+        expect(state.dailyPromptVisible).toBe(true);
+      });
+
+      it('hideReviewButtonToday still rejects when the write fails and does not hide', async () => {
+        await passTopic1Long();
+        await state.load();
+        services.repos.settings.set = async () => { throw new Error('disk full'); };
+        await expect(state.hideReviewButtonToday()).rejects.toThrow('disk full');
+        expect(state.reviewButtonHidden).toBe(false);
+      });
     });
 
     it('no summaries: never shows the prompt and writes nothing', async () => {

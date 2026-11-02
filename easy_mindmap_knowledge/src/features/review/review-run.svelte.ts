@@ -77,7 +77,11 @@ export class ReviewRun {
     }
   }
 
-  /** "Dừng ở đây": submitted batches stay; an unsubmitted current batch is discarded like Thoát. */
+  /**
+   * "Dừng ở đây": submitted batches stay; an unsubmitted current batch is discarded like Thoát.
+   * If the current batch's submit is in flight, stop() waits for it and then discards that batch
+   * (same as PracticeSession.exit()); it is then not counted and its stats are rebuilt without it.
+   */
   async stop(): Promise<void> {
     if (this.#stopped) return;
     this.#stopped = true;

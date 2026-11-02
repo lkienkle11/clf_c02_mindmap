@@ -136,6 +136,8 @@ export class PracticeSession {
     onSubmitted: () => Promise<void>,
   ): Promise<PracticeSession> {
     if (questionIds.length === 0) throw new NoQuestionsError('review');
+    const dup = questionIds.find((id, i) => questionIds.indexOf(id) !== i);
+    if (dup !== undefined) throw new Error(`Duplicate question id "${dup}" in review batch`);
     const byId = new Map(services.catalog.questions.map((q) => [q.id, q]));
     const now = services.now();
     const rng = makeRng(now % 0x100000000);
