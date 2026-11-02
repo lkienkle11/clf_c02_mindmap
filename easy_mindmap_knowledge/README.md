@@ -38,7 +38,9 @@ xattr -dr com.apple.quarantine "src-tauri/target/release/bundle/macos/AWS CLF-C0
 
 ## User data
 
-All progress lives in a SQLite file `mindmap.db` in the app config directory of the bundle identifier `app.awsclf.mindmap`. On macOS: `~/Library/Application Support/app.awsclf.mindmap/mindmap.db`. To reset the app, quit it and delete that directory. The schema is created on first launch by the embedded migration `src-tauri/migrations/0001_init.sql`.
+All progress lives in a SQLite file `mindmap.db` in the app config directory of the bundle identifier `app.awsclf.mindmap`. On macOS: `~/Library/Application Support/app.awsclf.mindmap/mindmap.db`. To reset the app, quit it and delete that directory. The schema is created on first launch by the embedded migrations in `src-tauri/migrations/`.
+
+Never edit a migration that has shipped (for example `0001_init.sql`): installed apps have already applied it and will not run it again. Change the schema only by adding a new `NNNN_description.sql` file and registering it in `src-tauri/src/lib.rs` with the next version number. The tests apply every file in that folder in name order.
 
 ## Content
 
@@ -61,9 +63,10 @@ npx tsx scripts/import-cards/build.ts
 
 Follow the conventions set by the topics 1 and 2 content (Task 18 of the plan):
 
-1. Lessons: one pair of files per lesson, `content/lessons/<topic>/<NN>-slug.en.md` and `<NN>-slug.vi.md`. The front matter has `id`, `title`, `required` (true/false) and `videoQuery`; the body is Markdown.
-2. Authored questions: `content/questions/authored/<topic>.json`, same shape as the existing files.
-3. Run `npm test`, which validates the catalog.
+1. Lessons: one pair of files per lesson, `content/lessons/<topic>/<NN>-slug.en.md` and `<NN>-slug.vi.md`. The front matter has `id`, `title`, `required` (true/false) and `videoQuery`; the body is Markdown. Both files of a pair must sit in the same topic folder and share the same `NN-` prefix.
+2. Topic: in `content/topics.json`, set the topic's `lessonIds` to the lesson ids of that folder, in `NN-` order. The list must match the lesson files exactly (same ids, same order, no extra or missing id); the app refuses to start otherwise, and the error names the topic and the ids. A topic may have no lessons yet: it can still be practised and shows that lessons come in a later update.
+3. Authored questions: `content/questions/authored/<topic>.json`, same shape as the existing files. Option keys and option texts must be unique within a question.
+4. Run `npm test`, which validates the catalog.
 
 ## Windows and Linux: NOT VERIFIED
 

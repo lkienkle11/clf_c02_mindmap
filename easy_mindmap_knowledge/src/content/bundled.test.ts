@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { buildLessons, parseFrontMatter } from './bundled';
+import { buildLessons, buildQuestions, parseFrontMatter, parseJson } from './bundled';
 
 const P = '/content/lessons/compute/02-ec2';
 const file = (fm: string, body = 'Body') => `---\n${fm}\n---\n${body}\n`;
@@ -64,5 +64,35 @@ describe('buildLessons', () => {
   it('throws when two files share id and language', () => {
     const files = pair({ '/content/lessons/compute/03-dup.en.md': file('id: compute-ec2\ntitle: T') });
     expect(() => buildLessons(files)).toThrow(/duplicate.*03-dup\.en\.md/);
+  });
+  it('throws naming both files when the language partners sit in different folders', () => {
+    const files: Record<string, string> = {
+      [`${P}.en.md`]: file('id: compute-ec2\ntitle: T'),
+      '/content/lessons/storage/02-ec2.vi.md': file('id: compute-ec2\ntitle: T'),
+    };
+    expect(() => buildLessons(files)).toThrow(/compute\/02-ec2\.en\.md.*storage\/02-ec2\.vi\.md|storage\/02-ec2\.vi\.md.*compute\/02-ec2\.en\.md/);
+  });
+  it('throws naming both files when the language partners have different NN prefixes', () => {
+    const files: Record<string, string> = {
+      [`${P}.en.md`]: file('id: compute-ec2\ntitle: T'),
+      '/content/lessons/compute/03-ec2.vi.md': file('id: compute-ec2\ntitle: T'),
+    };
+    expect(() => buildLessons(files)).toThrow(/02-ec2\.en\.md.*03-ec2\.vi\.md|03-ec2\.vi\.md.*02-ec2\.en\.md/);
+  });
+});
+
+describe('JSON content errors name the file', () => {
+  it('parseJson wraps a syntax error with the path', () => {
+    expect(() => parseJson('{ nope', '/content/topics.json')).toThrow(/\/content\/topics\.json/);
+  });
+  it('buildQuestions names the broken question file', () => {
+    const files = {
+      '/content/questions/authored/ok.json': '[]',
+      '/content/questions/authored/broken.json': '[ { "id": ',
+    };
+    expect(() => buildQuestions(files)).toThrow(/\/content\/questions\/authored\/broken\.json/);
+  });
+  it('buildQuestions rejects a file that is not an array, naming it', () => {
+    expect(() => buildQuestions({ '/content/questions/authored/x.json': '{}' })).toThrow(/x\.json.*array/);
   });
 });

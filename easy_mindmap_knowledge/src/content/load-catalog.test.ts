@@ -134,3 +134,45 @@ describe('loadCatalog shape checks', () => {
     expect(bad((r) => { r.topics[0].lessonIds = ['compute-ec2']; })).toThrow(/belongs to/);
   });
 });
+
+describe('loadCatalog: topic.lessonIds must match the lesson files (final review I2)', () => {
+  // compute owns compute-ec2 (order 1) in the base fixture; add a second lesson (order 2).
+  const raw2 = () => {
+    const raw = makeRawCatalog();
+    raw.lessons.push(makeLesson({ id: 'compute-s3', order: 2 }));
+    raw.topics[2] = { ...raw.topics[2], lessonIds: ['compute-ec2', 'compute-s3'] };
+    return raw;
+  };
+
+  it('accepts lessonIds equal to the topic lessons ordered by order', () => {
+    expect(() => loadCatalog(raw2())).not.toThrow();
+  });
+  it('rejects a lesson file whose id is missing from its topic lessonIds, naming topic and id', () => {
+    const raw = raw2();
+    raw.topics[2] = { ...raw.topics[2], lessonIds: ['compute-ec2'] };
+    expect(() => loadCatalog(raw)).toThrow(/topic compute.*missing.*compute-s3/);
+  });
+  it('rejects lessonIds in a different order from the lesson order', () => {
+    const raw = raw2();
+    raw.topics[2] = { ...raw.topics[2], lessonIds: ['compute-s3', 'compute-ec2'] };
+    expect(() => loadCatalog(raw)).toThrow(/topic compute.*order.*compute-ec2, compute-s3/);
+  });
+  it('rejects two lessons of one topic with the same order', () => {
+    const raw = raw2();
+    raw.lessons[1] = { ...raw.lessons[1], order: 1 };
+    expect(() => loadCatalog(raw)).toThrow(/topic compute.*same order 1/);
+  });
+});
+
+describe('loadCatalog: option text', () => {
+  it('rejects duplicate option text within one question, naming the question and the text', () => {
+    const raw = makeRawCatalog();
+    raw.questions[0] = makeQuestion({ id: 'q1', options: [{ key: 'A', text: 'EC2' }, { key: 'B', text: 'EC2' }] });
+    expect(() => loadCatalog(raw)).toThrow(/question q1.*duplicate option text.*"EC2"/);
+  });
+  it('rejects duplicate option keys', () => {
+    const raw = makeRawCatalog();
+    raw.questions[0] = makeQuestion({ id: 'q1', options: [{ key: 'A', text: 'EC2' }, { key: 'A', text: 'S3' }] });
+    expect(() => loadCatalog(raw)).toThrow(/question q1.*duplicate option key.*"A"/);
+  });
+});

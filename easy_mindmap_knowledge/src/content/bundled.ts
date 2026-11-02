@@ -48,8 +48,13 @@ export function buildLessons(all: RawModules): Lesson[] {
     if (required !== undefined && required !== 'true' && required !== 'false') {
       throw new Error(`lesson front matter required must be true or false in ${path}`);
     }
-    const entry = byId.get(id) ?? { topicId, order: parseInt(prefix[1], 10) };
+    const order = parseInt(prefix[1], 10);
+    const entry = byId.get(id) ?? { topicId, order };
     if (entry[lang as 'en' | 'vi']) throw new Error(`duplicate lesson id "${id}" for ${lang} in ${path}`);
+    if (entry.topicId !== topicId || entry.order !== order) {
+      const partner = (entry.en ?? entry.vi)?.path;
+      throw new Error(`lesson ${id}: ${partner} and ${path} must share the topic folder and the NN- prefix`);
+    }
     entry[lang as 'en' | 'vi'] = { fm, path };
     byId.set(id, entry);
   }
@@ -68,17 +73,30 @@ export function buildLessons(all: RawModules): Lesson[] {
   });
 }
 
-function buildQuestions(all: RawModules): Question[] {
+/** JSON.parse whose error names the content file. */
+export function parseJson(text: string, path: string): unknown {
+  try {
+    return JSON.parse(text);
+  } catch (e) {
+    throw new Error(`invalid JSON in ${path}: ${e instanceof Error ? e.message : String(e)}`);
+  }
+}
+
+export function buildQuestions(all: RawModules): Question[] {
   return Object.entries(all)
     .filter(([path]) => path.startsWith('/content/questions/') && path.endsWith('.json'))
-    .flatMap(([, text]) => JSON.parse(text) as Question[]);
+    .flatMap(([path, text]) => {
+      const parsed = parseJson(text, path);
+      if (!Array.isArray(parsed)) throw new Error(`${path} must contain a JSON array of questions`);
+      return parsed as Question[];
+    });
 }
 
 export function loadBundledCatalog(): Catalog {
   const topicsRaw = files['/content/topics.json'];
   if (topicsRaw === undefined) throw new Error('content/topics.json is missing');
   return loadCatalog({
-    topics: JSON.parse(topicsRaw),
+    topics: parseJson(topicsRaw, '/content/topics.json'),
     lessons: buildLessons(files),
     questions: buildQuestions(files),
   });

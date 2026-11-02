@@ -77,10 +77,45 @@ function validateTopics(topics: Topic[], lessons: Lesson[]): void {
         throw new Error(`lesson ${lid} belongs to topic ${lesson.topicId}, not ${t.id}`);
       }
     }
+    checkLessonIdsMatch(t, lessons.filter((l) => l.topicId === t.id));
+  }
+}
+
+/**
+ * The tree draws leaves from `topic.lessonIds` while unlocking reads the lessons by topicId, so the two
+ * must be the same list: same ids, same order (lesson `order`, i.e. the NN- file prefix).
+ */
+function checkLessonIdsMatch(t: Topic, own: Lesson[]): void {
+  const sorted = [...own].sort((a, b) => a.order - b.order);
+  for (let i = 1; i < sorted.length; i++) {
+    if (sorted[i].order === sorted[i - 1].order) {
+      throw new Error(`topic ${t.id} has lessons ${sorted[i - 1].id} and ${sorted[i].id} with the same order ${sorted[i].order}`);
+    }
+  }
+  const expected = sorted.map((l) => l.id);
+  const listed = new Set(t.lessonIds);
+  const missing = expected.filter((id) => !listed.has(id));
+  if (missing.length > 0) {
+    throw new Error(`topic ${t.id} lessonIds is missing lesson(s) of this topic: ${missing.join(', ')}`);
+  }
+  assertUnique(`lessonIds entry in topic ${t.id}:`, t.lessonIds);
+  if (t.lessonIds.join('\n') !== expected.join('\n')) {
+    throw new Error(
+      `topic ${t.id} lessonIds must follow the lesson order: expected [${expected.join(', ')}], got [${t.lessonIds.join(', ')}]`,
+    );
   }
 }
 
 function validateQuestion(q: Question): void {
+  // UI lists are keyed by option key or text; a duplicate would crash them, so reject it here.
+  const seenKeys = new Set<string>();
+  const seenTexts = new Set<string>();
+  for (const o of q.options) {
+    if (seenKeys.has(o.key)) throw new Error(`question ${q.id} has duplicate option key "${o.key}"`);
+    if (seenTexts.has(o.text)) throw new Error(`question ${q.id} has duplicate option text "${o.text}"`);
+    seenKeys.add(o.key);
+    seenTexts.add(o.text);
+  }
   const keys = new Set(q.options.map((o) => o.key));
   for (const k of q.correct) {
     if (!keys.has(k)) throw new Error(`question ${q.id} has correct key "${k}" not in options`);
