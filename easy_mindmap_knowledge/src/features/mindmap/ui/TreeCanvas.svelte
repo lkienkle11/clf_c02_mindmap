@@ -1,6 +1,7 @@
 <script lang="ts">
   import type { AppState } from '@/app/app-state.svelte';
   import type { Services } from '@/app/composition';
+  import { buildPool } from '@/features/practice';
   import { getI18n } from '@/i18n/i18n.svelte';
   import { layoutTree } from '../logic/tree-layout';
   import { stopLeafId, waterPath } from '../logic/water-path';
@@ -29,6 +30,8 @@
       stopLeafId: currentTopicId ? stopLeafId(catalog.lessonsOf(currentTopicId), appState.readIds) : null,
     }),
   );
+  // The practice pool decides, so Capstone (no own questions, pools every topic) counts as practisable.
+  const withQuestions = $derived(new Set(topics.filter((t) => buildPool(catalog, t.id).length > 0).map((t) => t.id)));
   const summaryById = $derived(new Map(appState.summaries.map((s) => [s.topicId, s])));
   const topicById = $derived(new Map(topics.map((t, i) => [t.id, { topic: t, prev: i > 0 ? topics[i - 1] : null }])));
 
@@ -74,7 +77,7 @@
           lessons={catalog.lessonsOf(branch.topicId)}
           readIds={appState.readIds}
           review={summaryById.get(branch.topicId) ?? null}
-          hasQuestions={catalog.questionsOf(branch.topicId).length > 0}
+          hasQuestions={withQuestions.has(branch.topicId)}
           expanded={branch.topicId === expandedTopicId}
           canvasWidth={layout.width}
           trunkX={layout.trunk.x}

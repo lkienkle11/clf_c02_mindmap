@@ -45,8 +45,12 @@
     const days = review.daysOverdue;
     return days === 0 ? i18n.t('review.badgeToday') : i18n.t(days === 1 ? 'review.badge.one' : 'review.badge', { count: days });
   });
+  // Honest note for a topic whose lessons are not written yet (ruling R17): it is practisable anyway.
+  const lessonsNote = $derived(lessons.length === 0 ? i18n.t('mindmap.lessonsLater') : null);
   const ariaLabel = $derived(
-    locked ? `${title}. ${hint}` : `${title}, ${statusText}, ${badge}${reviewText ? `, ${reviewText}` : ''}`,
+    locked
+      ? `${title}. ${hint}`
+      : `${title}, ${statusText}, ${lessonsNote ?? badge}${reviewText ? `, ${reviewText}` : ''}`,
   );
 
   const icons: Record<TopicStatus, string> = { done: '✓', current: '▶', locked: '🔒' };
@@ -195,7 +199,7 @@
       ariaLabel={practiceReason ? `${practiceName}, ${practiceReason}` : practiceName}
       tone={status === 'current' && stopId === 'practice' ? 'current' : 'todo'}
       disabled={practiceReason !== undefined}
-      reason={practiceReason}
+      reason={practiceReason ?? lessonsNote ?? undefined}
       {canvasWidth}
       onactivate={() => onopenpractice(topic.id)}
     />

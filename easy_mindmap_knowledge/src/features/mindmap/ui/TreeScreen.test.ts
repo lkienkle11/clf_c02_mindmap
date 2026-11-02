@@ -120,6 +120,43 @@ describe('TreeScreen', () => {
   });
 });
 
+describe('TreeScreen topics without lessons (ruling R17)', () => {
+  const NOTE = 'Lessons for this topic are coming in a later update';
+
+  it('a current topic with questions but no lessons is practisable and says lessons come later', async () => {
+    // storage has a question (q2) and no lessons; it becomes current after the first three topics.
+    const { appState } = await mountTree({ passed: [...PASSED, 'compute'] });
+    const p = practiceButton();
+    expect(p).not.toHaveAttribute('aria-disabled', 'true');
+    expect(screen.queryByText('Read all required lessons first')).not.toBeInTheDocument();
+    expect(screen.getByText(NOTE)).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /^storage/ })).toHaveAccessibleName(new RegExp(NOTE));
+    await fireEvent.click(p);
+    expect(appState.route).toEqual({ view: 'practice', topicId: 'storage' });
+  });
+
+  it('a topic with lessons never shows the note', async () => {
+    await mountTree({ read: ['compute-ec2', 'compute-lambda'] });
+    expect(screen.queryByText(NOTE)).not.toBeInTheDocument();
+  });
+
+  it('capstone has no own questions but is practisable with the pooled questions', async () => {
+    const all = ['cloud-concepts', 'global-infrastructure', 'compute', 'storage', 'networking', 'databases', 'deploy-operate',
+      'shared-responsibility', 'iam-security', 'pricing-billing', 'migration-caf', 'support-ai-other'];
+    const { appState } = await mountTree({ passed: all });
+    const p = practiceButton();
+    expect(p).not.toHaveAttribute('aria-disabled', 'true');
+    expect(screen.queryByText('No questions yet')).not.toBeInTheDocument();
+    await fireEvent.click(p);
+    expect(appState.route).toEqual({ view: 'practice', topicId: 'capstone' });
+  });
+
+  it('speaks Vietnamese', async () => {
+    await mountTree({ passed: [...PASSED, 'compute'], locale: 'vi' });
+    expect(screen.getByText('Bài học cho chủ đề này sẽ có trong bản cập nhật sau')).toBeInTheDocument();
+  });
+});
+
 describe('TreeScreen review badge', () => {
   const summary = (topicId: string, daysOverdue: number) => ({ topicId, dueCount: 3, daysOverdue, urgency: 'soon' as const });
   const nodeOf = (name: RegExp) => screen.getByRole('button', { name });

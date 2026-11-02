@@ -94,8 +94,15 @@ describe('practiceUnlocked', () => {
   it('true when only optional lessons are unread', () => {
     expect(practiceUnlocked(ls, new Set(['l1', 'l2']))).toBe(true);
   });
-  it('false when there are no lessons', () => {
-    expect(practiceUnlocked([], new Set())).toBe(false);
+  // Ruling R17: practice unlocks when EVERY REQUIRED lesson is read, vacuously true without lessons.
+  it('true when the topic has no lessons at all', () => {
+    expect(practiceUnlocked([], new Set())).toBe(true);
+  });
+  it('true when the topic has only optional lessons, even unread', () => {
+    expect(practiceUnlocked([lesson('v1', 1, false), lesson('v2', 2, false)], new Set())).toBe(true);
+  });
+  it('false with a single unread required lesson', () => {
+    expect(practiceUnlocked([lesson('only', 1, true)], new Set())).toBe(false);
   });
 });
 

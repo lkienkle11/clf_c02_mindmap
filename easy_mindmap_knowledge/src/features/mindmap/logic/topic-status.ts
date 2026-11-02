@@ -31,9 +31,11 @@ export function topicStatuses(topics: Topic[], completed: Set<string>): Map<stri
   return result;
 }
 
-/** All required lessons read. A topic with no lessons never unlocks practice. */
+/**
+ * Every REQUIRED lesson is read (ruling R17). Vacuously true for a topic with no lessons or only
+ * optional ones, so a topic whose lessons are not written yet can still be practised.
+ */
 export function practiceUnlocked(lessons: Lesson[], readIds: Set<string>): boolean {
-  if (lessons.length === 0) return false;
   return lessons.every((l) => !l.required || readIds.has(l.id));
 }
 
