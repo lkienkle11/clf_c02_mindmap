@@ -1,0 +1,317 @@
+[
+  {
+    "id": "auth-deploy-operate-01",
+    "topicId": "deploy-operate",
+    "text": "A team creates an AWS CloudFormation stack, and one of the resources in the template fails to create. What does CloudFormation do by default?",
+    "options": [
+      {
+        "key": "A",
+        "text": "It keeps the resources that were created and marks the stack as complete"
+      },
+      {
+        "key": "B",
+        "text": "It rolls back the stack and deletes the resources it created"
+      },
+      {
+        "key": "C",
+        "text": "It retries the failed resource in another AWS Region"
+      },
+      {
+        "key": "D",
+        "text": "It converts the template into AWS CDK code for manual repair"
+      }
+    ],
+    "correct": [
+      "B"
+    ],
+    "multi": false,
+    "orderDependent": false,
+    "explanation": "When stack creation fails, CloudFormation rolls back and deletes the resources it created, so you do not end up with a half-built environment. It does not leave a partial stack marked as complete or move resources to another Region.",
+    "source": "authored"
+  },
+  {
+    "id": "auth-deploy-operate-02",
+    "topicId": "deploy-operate",
+    "text": "A security group rule in a production VPC was changed last week, and the security team must find out which IAM user made the change and when. Which AWS service provides this information?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Amazon CloudWatch"
+      },
+      {
+        "key": "B",
+        "text": "AWS Health Dashboard"
+      },
+      {
+        "key": "C",
+        "text": "AWS X-Ray"
+      },
+      {
+        "key": "D",
+        "text": "AWS CloudTrail"
+      }
+    ],
+    "correct": [
+      "D"
+    ],
+    "multi": false,
+    "orderDependent": false,
+    "explanation": "AWS CloudTrail records API activity as events, including who made the call, when and from where, so it answers \"who changed this rule\". CloudWatch tracks performance metrics and logs, not the identity behind API calls.",
+    "source": "authored"
+  },
+  {
+    "id": "auth-deploy-operate-03",
+    "topicId": "deploy-operate",
+    "text": "Which tasks can a company perform with Amazon CloudWatch? (Choose two.)",
+    "options": [
+      {
+        "key": "A",
+        "text": "Stop an idle Amazon EC2 instance automatically when its CPU utilization stays low"
+      },
+      {
+        "key": "B",
+        "text": "Identify which IAM user called the DeleteBucket API"
+      },
+      {
+        "key": "C",
+        "text": "Collect and search log files from applications and AWS services"
+      },
+      {
+        "key": "D",
+        "text": "Evaluate whether resource configurations comply with company rules over time"
+      },
+      {
+        "key": "E",
+        "text": "Accept and track agreements such as a Business Associate Addendum"
+      }
+    ],
+    "correct": [
+      "A",
+      "C"
+    ],
+    "multi": true,
+    "orderDependent": false,
+    "explanation": "CloudWatch alarms can run EC2 actions such as stop when a metric crosses a threshold, and CloudWatch Logs collects and searches log data. Identifying the caller of an API is CloudTrail, and evaluating configuration compliance over time is AWS Config.",
+    "source": "authored"
+  },
+  {
+    "id": "auth-deploy-operate-04",
+    "topicId": "deploy-operate",
+    "text": "A compliance team wants to continuously check that every Amazon EBS volume is encrypted and to see how each volume's configuration has changed over the past months. Which AWS service should the team use?",
+    "options": [
+      {
+        "key": "A",
+        "text": "AWS CodePipeline"
+      },
+      {
+        "key": "B",
+        "text": "Amazon EventBridge Scheduler"
+      },
+      {
+        "key": "C",
+        "text": "AWS Config"
+      },
+      {
+        "key": "D",
+        "text": "AWS CloudShell"
+      }
+    ],
+    "correct": [
+      "C"
+    ],
+    "multi": false,
+    "orderDependent": false,
+    "explanation": "AWS Config records resource configuration history and uses Config rules to flag noncompliant resources, such as unencrypted EBS volumes. EventBridge Scheduler only runs tasks on a schedule and keeps no configuration history.",
+    "source": "authored"
+  },
+  {
+    "id": "auth-deploy-operate-05",
+    "topicId": "deploy-operate",
+    "text": "Administrators must connect to Amazon EC2 instances in private subnets. Company policy forbids opening inbound SSH ports, running bastion hosts and distributing SSH keys. Which AWS capability meets these requirements?",
+    "options": [
+      {
+        "key": "A",
+        "text": "AWS Systems Manager Session Manager"
+      },
+      {
+        "key": "B",
+        "text": "AWS CloudFormation change sets"
+      },
+      {
+        "key": "C",
+        "text": "Amazon CloudWatch dashboards"
+      },
+      {
+        "key": "D",
+        "text": "AWS CodeDeploy"
+      }
+    ],
+    "correct": [
+      "A"
+    ],
+    "multi": false,
+    "orderDependent": false,
+    "explanation": "Session Manager opens secure sessions to managed nodes without open inbound ports, bastion hosts or SSH keys, with access controlled by IAM policies. CodeDeploy deploys application revisions; it does not provide interactive access to instances.",
+    "source": "authored"
+  },
+  {
+    "id": "auth-deploy-operate-06",
+    "topicId": "deploy-operate",
+    "text": "A company wants to release a new version of its web application with the option to return to the previous version within seconds. The old environment must keep running until the new one is proven. Which deployment strategy meets these requirements?",
+    "options": [
+      {
+        "key": "A",
+        "text": "All at once in place"
+      },
+      {
+        "key": "B",
+        "text": "Blue/green"
+      },
+      {
+        "key": "C",
+        "text": "Rolling in place"
+      },
+      {
+        "key": "D",
+        "text": "Manual redeploy from backups"
+      }
+    ],
+    "correct": [
+      "B"
+    ],
+    "multi": false,
+    "orderDependent": false,
+    "explanation": "A blue/green deployment runs the new version next to the old one and switches traffic, so rollback means switching traffic back to the still-running old environment. All-at-once and rolling deployments change the existing servers, so rolling back requires redeploying the old version.",
+    "source": "authored"
+  },
+  {
+    "id": "auth-deploy-operate-07",
+    "topicId": "deploy-operate",
+    "text": "Which statements about AWS Elastic Beanstalk are correct? (Choose two.)",
+    "options": [
+      {
+        "key": "A",
+        "text": "It provisions capacity, load balancing and auto scaling for an uploaded application"
+      },
+      {
+        "key": "B",
+        "text": "It adds an hourly service fee on top of the cost of the underlying resources"
+      },
+      {
+        "key": "C",
+        "text": "It supports only applications packaged as Docker containers"
+      },
+      {
+        "key": "D",
+        "text": "Developers keep control over the AWS resources that run the application"
+      },
+      {
+        "key": "E",
+        "text": "It records all API calls made in the account for auditing"
+      }
+    ],
+    "correct": [
+      "A",
+      "D"
+    ],
+    "multi": true,
+    "orderDependent": false,
+    "explanation": "Elastic Beanstalk takes uploaded code and handles provisioning, load balancing, scaling and health monitoring, while developers keep control over the underlying resources. It has no additional charge, supports several languages besides Docker, and API auditing is CloudTrail's job.",
+    "source": "authored"
+  },
+  {
+    "id": "auth-deploy-operate-08",
+    "topicId": "deploy-operate",
+    "text": "An operations team wants to know whether an ongoing AWS service issue affects its own resources and to see upcoming scheduled maintenance, such as an EC2 instance retirement, for its account. Which AWS tool should the team check?",
+    "options": [
+      {
+        "key": "A",
+        "text": "AWS Config"
+      },
+      {
+        "key": "B",
+        "text": "Amazon CloudWatch Logs"
+      },
+      {
+        "key": "C",
+        "text": "AWS CodePipeline"
+      },
+      {
+        "key": "D",
+        "text": "AWS Health Dashboard"
+      }
+    ],
+    "correct": [
+      "D"
+    ],
+    "multi": false,
+    "orderDependent": false,
+    "explanation": "The AWS Health Dashboard shows public service events and account-specific events, including scheduled changes that affect your resources. CloudWatch Logs stores your own log data and does not report AWS-side events for your account.",
+    "source": "authored"
+  },
+  {
+    "id": "auth-deploy-operate-09",
+    "topicId": "deploy-operate",
+    "text": "Developers want every commit to be compiled and unit tested automatically by a fully managed service, without setting up or patching build servers. Which AWS service meets this requirement?",
+    "options": [
+      {
+        "key": "A",
+        "text": "AWS CodeDeploy"
+      },
+      {
+        "key": "B",
+        "text": "AWS Elastic Beanstalk"
+      },
+      {
+        "key": "C",
+        "text": "AWS CodeBuild"
+      },
+      {
+        "key": "D",
+        "text": "AWS Systems Manager Patch Manager"
+      }
+    ],
+    "correct": [
+      "C"
+    ],
+    "multi": false,
+    "orderDependent": false,
+    "explanation": "AWS CodeBuild is a fully managed build service that compiles source code, runs unit tests and produces deployable artifacts. CodeDeploy only deploys revisions that are already built; it does not compile or test code.",
+    "source": "authored"
+  },
+  {
+    "id": "auth-deploy-operate-10",
+    "topicId": "deploy-operate",
+    "text": "What are benefits of using AWS CloudFormation? (Choose two.)",
+    "options": [
+      {
+        "key": "A",
+        "text": "It patches the guest operating system of EC2 instances automatically"
+      },
+      {
+        "key": "B",
+        "text": "It provisions the same infrastructure repeatably in different Regions or accounts"
+      },
+      {
+        "key": "C",
+        "text": "It sends alerts when CPU utilization crosses a threshold"
+      },
+      {
+        "key": "D",
+        "text": "It records the configuration history of every resource for compliance audits"
+      },
+      {
+        "key": "E",
+        "text": "It manages related resources as a single stack that can be created or deleted together"
+      }
+    ],
+    "correct": [
+      "B",
+      "E"
+    ],
+    "multi": true,
+    "orderDependent": false,
+    "explanation": "CloudFormation templates let you build identical infrastructure repeatably, and a stack groups related resources so they are created, updated and deleted together. OS patching is a Systems Manager task, CPU alerts come from CloudWatch, and configuration history comes from AWS Config.",
+    "source": "authored"
+  }
+]
