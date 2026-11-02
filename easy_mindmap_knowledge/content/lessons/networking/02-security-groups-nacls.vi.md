@@ -10,7 +10,7 @@ Lưu lượng bên trong một VPC có thể được lọc ở hai nơi:
 1. **Network access control list (network ACL)** kiểm tra lưu lượng vào và ra một **subnet**.
 2. **Security group** kiểm tra lưu lượng vào và ra một **tài nguyên**, như một EC2 instance.
 
-Bạn có thể bảo vệ instance chỉ bằng security group; network ACL bổ sung một lớp thứ hai tùy chọn (phòng thủ nhiều lớp, defense in depth).
+Chỉ riêng security group đã có thể bảo vệ instance; network ACL (subnet nào cũng có một; network ACL mặc định cho phép mọi lưu lượng) bổ sung lớp thứ hai khi bạn tùy chỉnh quy tắc của nó (phòng thủ nhiều lớp, defense in depth).
 
 ## Security group
 

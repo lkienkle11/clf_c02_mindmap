@@ -34,7 +34,7 @@ Mẹo thi: khớp **điểm nghẽn** trong tình huống với họ instance. "
 ## Bẫy thường gặp
 
 - Dừng instance **không** làm dừng phí lưu trữ EBS.
-- Dữ liệu trên ổ **instance store** bị mất khi instance bị dừng hoặc bị xóa (xem thêm ở chủ đề Lưu trữ).
+- Dữ liệu trên ổ **instance store** bị mất khi instance bị dừng, ngủ đông (hibernate) hoặc bị xóa (xem thêm ở chủ đề Lưu trữ).
 - Theo mô hình trách nhiệm chia sẻ, vá hệ điều hành khách (guest OS) trên EC2 là việc của **khách hàng**.
 
 ## Ý chính

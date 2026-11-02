@@ -6,7 +6,7 @@ videoQuery: AWS Storage Gateway DataSync AWS Backup explained
 ---
 ## Bridging on-premises and AWS
 
-Many companies keep some systems on premises for a while. These services connect that data to AWS, move it, or protect it.
+These services connect on-premises data to AWS, move it, or protect it.
 
 ## AWS Storage Gateway: hybrid cloud storage
 
@@ -24,7 +24,7 @@ Many companies keep some systems on premises for a while. These services connect
 
 ## AWS Snow Family: offline transfer and edge devices
 
-The **AWS Snow Family** (for example **AWS Snowball Edge**) is a set of rugged devices that AWS ships to you. You load data locally and ship the device back, which suits very large datasets or sites with poor connectivity. Note: **Snow Family devices are no longer available to new customers**; AWS points them to DataSync or the AWS Data Transfer Terminal. Exam questions may still mention Snowball Edge for large offline transfers.
+The **AWS Snow Family** (for example **AWS Snowball Edge**) is a set of rugged devices that AWS ships to you. You load data locally and ship the device back, which suits very large datasets or sites with poor connectivity. Note: [Snowball Edge is no longer available to new customers](https://docs.aws.amazon.com/snowball/latest/developer-guide/snowball-edge-availability-change.html) (since November 2025), and AWS has announced end of support for Snowball devices in commercial Regions on December 31, 2026. AWS points new customers to DataSync, the AWS Data Transfer Terminal or AWS Partner solutions. Exam questions may still mention Snowball Edge.
 
 ## AWS Backup: one place for backup policy
 
@@ -42,13 +42,12 @@ The **AWS Snow Family** (for example **AWS Snowball Edge**) is a set of rugged d
 ## Common traps
 
 - Storage Gateway gives **ongoing hybrid access**; DataSync **moves** data.
-- AWS Backup manages backups across services; an EBS snapshot protects just one volume.
 
 ## Key points
 
 - Storage Gateway links on-premises apps to AWS storage using standard protocols.
 - DataSync is the online way to move large amounts of data into AWS.
-- Snow devices are offline transfer, now closed to new customers.
+- Snowball Edge is offline transfer; closed to new customers, support ends December 31, 2026.
 - AWS Backup centralizes and automates backups.
 
 ## Sources

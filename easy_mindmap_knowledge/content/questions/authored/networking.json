@@ -268,7 +268,7 @@
       },
       {
         "key": "D",
-        "text": "No, Direct Connect is not encrypted by default, but encryption can be added, for example by running a VPN over it"
+        "text": "No, it is not encrypted by default, but encryption can be added"
       }
     ],
     "correct": [
@@ -276,7 +276,7 @@
     ],
     "multi": false,
     "orderDependent": false,
-    "explanation": "Direct Connect is a private, dedicated connection, but it is not encrypted by default; encryption such as a VPN over the connection can be added. Direct Connect does not use the public internet, so TLS over the internet is not how it works.",
+    "explanation": "Direct Connect is a private, dedicated connection, but it is not encrypted by default; encryption can be added, for example by running a VPN over the connection or using MACsec on supported links. Direct Connect does not use the public internet, so TLS over the internet is not how it works.",
     "source": "authored"
   },
   {

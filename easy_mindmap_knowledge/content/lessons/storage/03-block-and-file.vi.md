@@ -26,7 +26,7 @@ Một **Amazon Elastic Block Store (EBS) volume** hoạt động như ổ cứng
 
 ## Instance store: nhanh nhưng tạm thời
 
-**Instance store** là lưu trữ khối trên các ổ đĩa **gắn vật lý vào máy chủ chủ (host)**. Nó nhanh và đã nằm trong giá instance, nhưng dữ liệu **mất khi instance bị dừng, ngủ đông (hibernate) hoặc bị xóa**. Dùng nó cho cache, bộ đệm và dữ liệu tạm.
+**Instance store** là lưu trữ khối trên các ổ đĩa **gắn vật lý vào máy chủ vật lý (host)**. Nó nhanh và đã nằm trong giá instance, nhưng dữ liệu **mất khi instance bị dừng, ngủ đông (hibernate) hoặc bị xóa**. Dùng nó cho cache, bộ đệm và dữ liệu tạm.
 
 ## Amazon EFS: hệ thống tệp dùng chung cho Linux
 

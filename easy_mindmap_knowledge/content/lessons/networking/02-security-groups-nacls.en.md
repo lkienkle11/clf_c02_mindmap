@@ -11,7 +11,7 @@ Traffic inside a VPC can be filtered at two places:
 1. A **network access control list (network ACL)** checks traffic entering and leaving a **subnet**.
 2. A **security group** checks traffic entering and leaving a **resource**, such as an EC2 instance.
 
-You can protect instances with security groups alone; network ACLs add an optional second layer (defense in depth).
+Security groups alone can protect instances; network ACLs (every subnet has one; the default allows all traffic) add a second layer when you customize their rules (defense in depth).
 
 ## Security groups
 

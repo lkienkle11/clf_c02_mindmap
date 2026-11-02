@@ -12,7 +12,7 @@ videoQuery: Amazon S3 basics buckets objects versioning explained
 
 These two words are easy to mix up:
 
-- **Durability**: how unlikely it is that your data is **lost**. S3 storage classes are designed for 99.999999999% (eleven 9s) durability.
+- **Durability**: how unlikely it is that your data is **lost**. Current S3 storage classes are designed for 99.999999999% (eleven 9s) durability.
 - **Availability**: how often you can **reach** the data when you ask for it. It differs by storage class; S3 Standard is designed for 99.99%.
 
 | Term | Question it answers | S3 Standard design |

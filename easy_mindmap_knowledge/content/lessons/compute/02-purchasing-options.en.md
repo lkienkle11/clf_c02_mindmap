@@ -6,17 +6,17 @@ videoQuery: EC2 pricing models On-Demand Reserved Instances Savings Plans Spot e
 ---
 ## Same server, different deals
 
-The same EC2 instance can be bought in several ways. The right choice depends on three questions: **How long** will the workload run? **Can it be interrupted?** Are there **licensing or compliance** rules about the hardware?
+The same EC2 instance can be bought in several ways. Ask: **How long** will it run? **Can it be interrupted?** Are there **licensing or compliance** rules?
 
 ## The options
 
 - **On-Demand Instances**: pay for compute while the instance runs, with no commitment. Best for short-term, spiky or unpredictable workloads.
 - **Savings Plans**: commit to a steady amount of compute spend (measured in dollars per hour) for **1 or 3 years** and get lower prices. **Compute Savings Plans** are the most flexible: they apply across instance families, sizes and Regions, and also to AWS Fargate and AWS Lambda. **EC2 Instance Savings Plans** give a deeper discount in exchange for committing to one instance family in one Region.
-- **Reserved Instances (RIs)**: commit to a specific instance configuration, such as the instance type and Region, for **1 or 3 years**. Good for steady, predictable workloads that will not change shape.
+- **Reserved Instances (RIs)**: commit to a specific instance configuration, such as the instance type and Region, for **1 or 3 years**. Paying more upfront (All Upfront, then Partial, then No Upfront) generally saves more. **Standard** RIs give the largest discount; **Convertible** RIs give less but can be exchanged for a different configuration.
 - **Spot Instances**: use spare EC2 capacity at a steep discount. AWS can **reclaim** the instance when it needs the capacity back, giving a **two-minute warning**. Only for workloads that are flexible and can be interrupted, such as batch jobs and data analysis.
 - **Dedicated Hosts**: a whole physical server for your use, with visibility of its sockets and cores. Use it to **bring your own** per-socket, per-core or per-VM software licenses, or for compliance needs.
 - **Dedicated Instances**: instances that run on hardware dedicated to your account, without the host-level visibility and control of Dedicated Hosts.
-- **On-Demand Capacity Reservations**: reserve capacity in a specific Availability Zone for any duration so it is there when you need it. They guarantee capacity but give no discount by themselves.
+- **On-Demand Capacity Reservations**: reserve capacity in a specific Availability Zone for any duration. They guarantee capacity but give no discount by themselves.
 
 ## Quick decision table
 
@@ -32,7 +32,7 @@ The same EC2 instance can be bought in several ways. The right choice depends on
 
 - "Lowest cost" alone is not enough to pick Spot: if the job **cannot be interrupted**, Spot is wrong.
 - A 24-hour job that runs once a year has no long-term pattern, so a 1-year commitment wastes money; On-Demand fits.
-- Dedicated Hosts, not Dedicated Instances, are the answer when the question mentions **sockets, cores or licenses**.
+- **Sockets, cores or licenses** point to Dedicated Hosts, not Dedicated Instances.
 
 ## Key points
 

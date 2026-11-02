@@ -208,7 +208,7 @@
       },
       {
         "key": "D",
-        "text": "Amazon Lightsail"
+        "text": "Amazon EC2 Spot Instances"
       }
     ],
     "correct": [
@@ -216,7 +216,7 @@
     ],
     "multi": false,
     "orderDependent": false,
-    "explanation": "AWS Fargate is a serverless compute engine for containers that works with Amazon ECS and Amazon EKS, so the team does not manage servers. Amazon ECR only stores container images; it does not run them.",
+    "explanation": "AWS Fargate is a serverless compute engine for containers that works with Amazon ECS and Amazon EKS, so the team does not manage servers. Amazon ECR only stores container images, and Spot Instances are still EC2 instances that the team would have to manage.",
     "source": "authored"
   },
   {

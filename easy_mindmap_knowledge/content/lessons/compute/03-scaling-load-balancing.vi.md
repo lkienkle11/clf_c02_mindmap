@@ -32,7 +32,7 @@ Load balancer (bộ cân bằng tải) là một điểm truy cập duy nhất c
 | Network Load Balancer | Tầng 4: TCP, UDP, TLS | Hiệu năng rất cao, địa chỉ IP tĩnh |
 | Gateway Load Balancer | Tầng 3 (gói IP) | Thiết bị ảo của bên thứ ba như tường lửa |
 
-Classic Load Balancer cũ hơn là thế hệ trước.
+Classic Load Balancer là loại cũ, thuộc thế hệ trước.
 
 ## Chúng phối hợp ra sao
 

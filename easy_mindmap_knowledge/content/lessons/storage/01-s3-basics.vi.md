@@ -11,7 +11,7 @@ required: true
 
 Hai từ này rất dễ nhầm:
 
-- **Độ bền (durability)**: khả năng dữ liệu của bạn **bị mất** thấp đến mức nào. Các storage class của S3 được thiết kế cho độ bền 99,999999999% (mười một số 9).
+- **Độ bền (durability)**: khả năng dữ liệu của bạn **bị mất** thấp đến mức nào. Các storage class hiện hành của S3 được thiết kế cho độ bền 99,999999999% (mười một số 9).
 - **Tính sẵn sàng (availability)**: bạn **truy cập được** dữ liệu thường xuyên đến mức nào khi cần. Con số này khác nhau giữa các storage class; S3 Standard được thiết kế cho 99,99%.
 
 | Thuật ngữ | Câu hỏi nó trả lời | Thiết kế của S3 Standard |
@@ -32,7 +32,7 @@ Một bucket có thể lưu trữ **website tĩnh** (HTML, CSS, hình ảnh và 
 ## Bảo mật cơ bản
 
 - Bucket và object **mặc định là riêng tư**; quyền truy cập được cấp qua IAM policy và bucket policy.
-- Các thiết lập **S3 Block Public Access** ở cấp tài khoản hoặc cấp bucket sẽ ghi đè các policy có thể làm dữ liệu bị công khai. Hãy giữ chúng bật trừ khi bạn thật sự cần truy cập công khai.
+- Các thiết lập **S3 Block Public Access** ở cấp tài khoản hoặc cấp bucket được ưu tiên hơn (override) các policy có thể làm dữ liệu bị công khai. Hãy giữ chúng bật trừ khi bạn thật sự cần truy cập công khai.
 - **Mã hóa khi lưu trữ (encryption at rest)**: từ tháng 1 năm 2023, S3 tự động mã hóa mọi object mới bằng mã hóa phía máy chủ với khóa do S3 quản lý (SSE-S3), không tốn thêm phí. Bạn có thể chọn dùng khóa AWS KMS thay thế.
 
 ## Bẫy thường gặp

@@ -43,7 +43,7 @@ Một mô hình phổ biến dùng **cả hai**: Direct Connect làm đường c
 
 - "Chuyên dụng" hoặc "không dùng internet công cộng" nghĩa là Direct Connect; "mã hóa qua internet" nghĩa là Site-to-Site VPN.
 - Bản thân Direct Connect không được mã hóa.
-- VPC peering không nối tiếp được; với thiết kế hub-and-spoke, hãy dùng Transit Gateway.
+- VPC peering không có tính bắc cầu; với thiết kế hub-and-spoke, hãy dùng Transit Gateway.
 
 ## Ý chính
 

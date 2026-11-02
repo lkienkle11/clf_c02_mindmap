@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { loadBundledCatalog } from './bundled';
 import { isAllowedExternalUrl } from '@/features/lesson/ui/external-url';
-import type { Lesson } from './types';
+import type { Lesson, Topic } from './types';
 
 // Checks on the real content/ folder. Every topic listed here has lessons and authored questions,
 // and the same content contract applies to all of them. Add a topic here when its content lands.
@@ -18,6 +18,9 @@ const norm = (s: string) => s.trim().toLowerCase().replace(/\s+/g, ' ');
 const links = (s: string) => [...s.matchAll(LINK)].map((m) => m[1]);
 const SOURCE_HOSTS = ['docs.aws.amazon.com', 'aws.amazon.com'];
 const KEY_POINTS = { en: /^## Key points\s*$/m, vi: /^## Ý chính\s*$/m };
+
+/** Ids of the topics that declare lessons, in topic order. */
+const topicsWithLessons = (topics: Topic[]) => topics.filter((t) => t.lessonIds.length > 0).map((t) => t.id);
 
 /**
  * Prose words of a lesson body, counted the same way for every lesson: the Sources section is
@@ -45,6 +48,15 @@ function sourcesSection(body: string): string | null {
 describe('loadBundledCatalog (real content folder)', () => {
   it('loads 13 topics without throwing', () => {
     expect(catalog.topics).toHaveLength(13);
+  });
+
+  it('runs the content contract on every topic that has lessons (CONTENT_TOPICS has not drifted)', () => {
+    expect(topicsWithLessons(catalog.topics)).toEqual(CONTENT_TOPICS);
+  });
+
+  it('the drift guard catches a topic with lessons that is missing from CONTENT_TOPICS', () => {
+    const extra = { ...catalog.topics[catalog.topics.length - 1], id: 'not-listed', lessonIds: ['x'] };
+    expect(topicsWithLessons([...catalog.topics, extra])).not.toEqual(CONTENT_TOPICS);
   });
 
   it('has unique lesson and question ids', () => {

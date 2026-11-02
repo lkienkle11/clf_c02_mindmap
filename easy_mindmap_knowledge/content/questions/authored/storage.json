@@ -18,7 +18,7 @@
       },
       {
         "key": "D",
-        "text": "Durability describes protection against data loss, and S3 storage classes are designed for 99.999999999% durability"
+        "text": "Durability refers to data loss, and current classes are designed for eleven 9s"
       }
     ],
     "correct": [
@@ -26,7 +26,7 @@
     ],
     "multi": false,
     "orderDependent": false,
-    "explanation": "Durability is about not losing data, and S3 storage classes are designed for eleven 9s of durability. Availability is about being able to reach the data, and S3 Standard is designed for 99.99% availability, so the eleven 9s figure is not an availability number.",
+    "explanation": "Durability is about not losing data, and current S3 storage classes are designed for 99.999999999% (eleven 9s) durability. Availability is about being able to reach the data, and S3 Standard is designed for 99.99% availability, so the eleven 9s figure is not an availability number.",
     "source": "authored"
   },
   {
