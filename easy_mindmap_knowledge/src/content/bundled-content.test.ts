@@ -3,8 +3,13 @@ import { loadBundledCatalog } from './bundled';
 import { isAllowedExternalUrl } from '@/features/lesson/ui/external-url';
 import type { Lesson } from './types';
 
-// Checks on the real content/ folder (Task 18 onward). Topics listed here have authored content.
-const AUTHORED_TOPICS = ['cloud-concepts', 'global-infrastructure'];
+// Checks on the real content/ folder. Every topic listed here has lessons and authored questions,
+// and the same content contract applies to all of them. Add a topic here when its content lands.
+const CONTENT_TOPICS = ['cloud-concepts', 'global-infrastructure'];
+const AUTHORED_PER_TOPIC = 10;
+const CHOOSE_TWO_PER_TOPIC = 3;
+/** Largest share of the single-answer questions of one topic that may use the same correct key. */
+const MAX_KEY_SHARE = 0.35;
 const FORBIDDEN_OPTION = /all of the above|none of the above|both [A-F] and [A-F]/i;
 const LINK = /\]\((\S+?)\)/g;
 
@@ -49,7 +54,7 @@ describe('loadBundledCatalog (real content folder)', () => {
     expect(new Set(qIds).size).toBe(qIds.length);
   });
 
-  describe.each(AUTHORED_TOPICS)('topic %s lessons', (topicId) => {
+  describe.each(CONTENT_TOPICS)('topic %s lessons', (topicId) => {
     const lessons = catalog.lessonsOf(topicId);
     const required = lessons.filter((l) => l.required);
     const optional = lessons.filter((l) => !l.required);
@@ -95,14 +100,16 @@ describe('loadBundledCatalog (real content folder)', () => {
     });
   });
 
-  describe.each(AUTHORED_TOPICS)('topic %s authored questions', (topicId) => {
+  describe.each(CONTENT_TOPICS)('topic %s authored questions', (topicId) => {
     const authored = catalog.questionsOf(topicId).filter((q) => q.source === 'authored');
 
-    it('has 8-10 authored questions with ids auth-<topic>-NN and at least 2 multi-answer', () => {
-      expect(authored.length).toBeGreaterThanOrEqual(8);
-      expect(authored.length).toBeLessThanOrEqual(10);
-      for (const q of authored) expect(q.id).toMatch(new RegExp(`^auth-${topicId}-\\d{2}$`));
-      expect(authored.filter((q) => q.multi).length).toBeGreaterThanOrEqual(2);
+    it(`has ${AUTHORED_PER_TOPIC} authored questions with ids auth-<topic>-NN and ${CHOOSE_TWO_PER_TOPIC} choose-two`, () => {
+      expect(authored).toHaveLength(AUTHORED_PER_TOPIC);
+      expect(authored.map((q) => q.id)).toEqual(
+        authored.map((_, i) => `auth-${topicId}-${String(i + 1).padStart(2, '0')}`),
+      );
+      for (const q of authored) expect(q.topicId, q.id).toBe(topicId);
+      expect(authored.filter((q) => q.multi)).toHaveLength(CHOOSE_TWO_PER_TOPIC);
     });
 
     it('every question is well formed', () => {
@@ -117,6 +124,8 @@ describe('loadBundledCatalog (real content folder)', () => {
         expect(q.correct.length === 1 || q.correct.length === 2, q.id).toBe(true);
         expect(q.text.includes('(Choose two.)'), q.id).toBe(q.multi);
         for (const o of q.options) expect(o.text, q.id).not.toMatch(FORBIDDEN_OPTION);
+        const texts = q.options.map((o) => norm(o.text));
+        expect(new Set(texts).size, `${q.id} duplicate option text`).toBe(texts.length);
       }
     });
 
@@ -124,9 +133,10 @@ describe('loadBundledCatalog (real content folder)', () => {
       const single = authored.filter((q) => !q.multi);
       const counts = new Map<string, number>();
       for (const q of single) counts.set(q.correct[0], (counts.get(q.correct[0]) ?? 0) + 1);
-      for (const [key, n] of counts) expect(n / single.length, `share of key ${key}`).toBeLessThanOrEqual(0.4);
-      const pairs = new Set(authored.filter((q) => q.multi).map((q) => [...q.correct].sort().join('+')));
-      expect(pairs.size, 'distinct choose-two pairs').toBeGreaterThan(1);
+      for (const [key, n] of counts) expect(n / single.length, `share of key ${key}`).toBeLessThanOrEqual(MAX_KEY_SHARE);
+      const multi = authored.filter((q) => q.multi);
+      const pairs = new Set(multi.map((q) => [...q.correct].sort().join('+')));
+      expect(pairs.size, 'distinct choose-two pairs').toBe(multi.length);
     });
   });
 
