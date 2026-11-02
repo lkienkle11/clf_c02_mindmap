@@ -13,6 +13,18 @@
       "skillPath": "skills/frontend-ui-engineering/SKILL.md",
       "computedHash": "22ee43d0367d2c3f611585eead5f0c413bcefa947da34b25a4935726ed76533e"
     },
+    "refactoring": {
+      "source": "citypaul/.dotfiles",
+      "sourceType": "github",
+      "skillPath": "claude/.claude/skills/refactoring/SKILL.md",
+      "computedHash": "758c7846216f8d15ebadff756f3e8d623163efd65a928aecb4a133475c3b1df4"
+    },
+    "structure-codebase": {
+      "source": "citypaul/.dotfiles",
+      "sourceType": "github",
+      "skillPath": "claude/.claude/skills/structure-codebase/SKILL.md",
+      "computedHash": "1a801ba98e11f45a4c3d1533a1757b3c4d3355790b573b41ad927e1dda6d2234"
+    },
     "svelte-code-writer": {
       "source": "sveltejs/ai-tools",
       "sourceType": "github",
