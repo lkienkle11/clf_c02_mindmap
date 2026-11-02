@@ -1,8 +1,8 @@
 {
   "$schema": "../node_modules/@tauri-apps/cli/config.schema.json",
-  "productName": "easy-mindmap-knowledge",
+  "productName": "AWS CLF-C02 Mindmap",
   "version": "0.1.0",
-  "identifier": "com.tauri.dev",
+  "identifier": "app.awsclf.mindmap",
   "build": {
     "frontendDist": "../dist",
     "devUrl": "http://localhost:1420",
@@ -13,19 +13,25 @@
     "windows": [
       {
         "title": "AWS CLF-C02 Mindmap",
-        "width": 800,
-        "height": 600,
+        "width": 1280,
+        "height": 820,
         "resizable": true,
-        "fullscreen": false
+        "fullscreen": false,
+        "minWidth": 960,
+        "minHeight": 640,
+        "center": true
       }
     ],
     "security": {
-      "csp": null
+      "csp": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self' data:; connect-src 'self' ipc: http://ipc.localhost",
+      "devCsp": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self' data:; connect-src 'self' ipc: http://ipc.localhost ws://localhost:1420 http://localhost:1420"
     }
   },
   "bundle": {
     "active": true,
-    "targets": "all",
+    "targets": [
+      "app"
+    ],
     "icon": [
       "icons/32x32.png",
       "icons/128x128.png",
@@ -35,6 +41,9 @@
     ],
     "android": {
       "debugApplicationIdSuffix": ".debug"
+    },
+    "macOS": {
+      "minimumSystemVersion": "13.0"
     }
   }
 }
