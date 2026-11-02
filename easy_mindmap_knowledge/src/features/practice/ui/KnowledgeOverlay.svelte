@@ -10,10 +10,12 @@
     topicId: string | null;
     open: boolean;
     timeLeft: string | null;
+    /** False for untimed reviews, where "the clock keeps running" would be untrue. */
+    showClockNotice?: boolean;
     onclose: () => void;
   }
 
-  let { services, topicId, open, timeLeft, onclose }: Props = $props();
+  let { services, topicId, open, timeLeft, showClockNotice = true, onclose }: Props = $props();
 
   const i18n = getI18n();
   const lessons = $derived(
@@ -32,9 +34,11 @@
 </script>
 
 <Modal {open} title={i18n.t('practice.reviewKnowledge')} {onclose}>
-  <p class="mb-4 rounded-lg bg-muted p-3 text-sm">
-    {i18n.t('practice.reviewNotice')}{#if timeLeft} <strong class="tabular-nums">{timeLeft}</strong>{/if}
-  </p>
+  {#if showClockNotice}
+    <p class="mb-4 rounded-lg bg-muted p-3 text-sm">
+      {i18n.t('practice.reviewNotice')}{#if timeLeft} <strong class="tabular-nums">{timeLeft}</strong>{/if}
+    </p>
+  {/if}
   {#each lessons as lesson (lesson.id)}
     <article class="mb-6">
       <h3 class="mb-2 text-lg font-semibold">{lesson.title[i18n.locale]}</h3>

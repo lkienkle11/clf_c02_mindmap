@@ -1,4 +1,5 @@
 <script lang="ts">
+  import type { Snippet } from 'svelte';
   import type { Services } from '@/app/composition';
   import { getI18n } from '@/i18n/i18n.svelte';
   import Button from '@/ui/Button.svelte';
@@ -8,13 +9,18 @@
   interface Props {
     services: Services;
     result: SubmitResult;
-    timedOut: boolean;
-    canRetry: boolean;
     onback: () => void;
-    onretry: () => void;
+    timedOut?: boolean;
+    canRetry?: boolean;
+    onretry?: () => void;
+    /** 'review' shows the score and breakdown only: no pass mark, no unlock wording, no retry. */
+    mode?: 'practice' | 'review';
+    /** Replaces the default buttons (e.g. the review screen's next-batch / stop actions). */
+    actions?: Snippet;
   }
 
-  let { services, result, timedOut, canRetry, onback, onretry }: Props = $props();
+  let { services, result, onback, timedOut = false, canRetry = false, onretry, mode = 'practice', actions }: Props = $props();
+  const isReview = $derived(mode === 'review');
 
   const i18n = getI18n();
   const questions = $derived(new Map(services.catalog.questions.map((q) => [q.id, q])));
@@ -35,16 +41,18 @@
 
 <div class="mx-auto flex max-w-3xl flex-col gap-6 p-6">
   <header class="flex flex-col items-start gap-2">
-    <h1 tabindex="-1" class="text-2xl font-semibold focus:outline-none" {@attach focusOnMount}>{i18n.t('practice.result.title')}</h1>
-    {#if timedOut}
+    <h1 tabindex="-1" class="text-2xl font-semibold focus:outline-none" {@attach focusOnMount}>{i18n.t(isReview ? 'review.result.title' : 'practice.result.title')}</h1>
+    {#if timedOut && !isReview}
       <p role="status" class="rounded-lg bg-muted p-3 font-medium">{i18n.t('practice.timeUp')}</p>
     {/if}
     <p class="text-6xl font-bold tabular-nums">{result.scorePct}%</p>
     <p class="text-lg">{i18n.t('practice.result.correctCount', { correct: result.correct, total: result.total })}</p>
-    <p class={cn('text-lg font-semibold', result.passed ? 'text-leaf-done-ink' : 'text-danger')}>
-      {i18n.t(result.passed ? 'quiz.passed' : 'quiz.failed')}
-    </p>
-    <p class="text-muted-foreground">{i18n.t('practice.result.threshold')}</p>
+    {#if !isReview}
+      <p class={cn('text-lg font-semibold', result.passed ? 'text-leaf-done-ink' : 'text-danger')}>
+        {i18n.t(result.passed ? 'quiz.passed' : 'quiz.failed')}
+      </p>
+      <p class="text-muted-foreground">{i18n.t('practice.result.threshold')}</p>
+    {/if}
   </header>
 
   <section aria-labelledby="breakdown-title">
@@ -86,9 +94,13 @@
   </section>
 
   <div class="flex flex-wrap gap-3">
-    <Button onclick={onback}>{i18n.t('practice.result.backToMap')}</Button>
-    {#if canRetry}
-      <Button variant="secondary" onclick={onretry}>{i18n.t('practice.result.tryAgain')}</Button>
+    {#if actions}
+      {@render actions()}
+    {:else}
+      <Button onclick={onback}>{i18n.t('practice.result.backToMap')}</Button>
+      {#if canRetry && onretry}
+        <Button variant="secondary" onclick={onretry}>{i18n.t('practice.result.tryAgain')}</Button>
+      {/if}
     {/if}
   </div>
 </div>

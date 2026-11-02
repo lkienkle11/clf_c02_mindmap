@@ -8,7 +8,7 @@ import {
   reviewSummaries,
   shouldShowDailyPrompt,
 } from '@/features/review';
-import type { ReviewMode, ReviewPlan, TopicReviewSummary } from '@/features/review';
+import type { ReviewMode, ReviewPlan, ReviewRun, TopicReviewSummary } from '@/features/review';
 import type { AttemptQuestionRow, AttemptRow, QuestionStat } from '@/persistence';
 import type { Locale } from '@/i18n/i18n.svelte';
 import type { Services } from './composition';
@@ -39,6 +39,8 @@ export class AppState {
   reviewButtonHidden = $state(false);
   resumeAttempt = $state.raw<{ attempt: AttemptRow; questions: AttemptQuestionRow[] } | null>(null);
   submittedAttempts = $state.raw<AttemptRow[]>([]);
+  /** The batched review in progress; the review route reads it, and it is cleared when that route closes. */
+  reviewRun = $state.raw<ReviewRun | null>(null);
 
   private readonly services: Services;
   private refreshSeq = 0;

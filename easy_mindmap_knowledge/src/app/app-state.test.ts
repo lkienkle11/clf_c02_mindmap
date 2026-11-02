@@ -283,3 +283,15 @@ describe('AppState', () => {
     });
   });
 });
+
+describe('AppState review run slot', () => {
+  it('starts empty and holds a run for the review route', () => {
+    const fresh = new AppState(services);
+    expect(fresh.reviewRun).toBeNull();
+    const run = {} as unknown as NonNullable<AppState['reviewRun']>;
+    fresh.reviewRun = run;
+    expect(fresh.reviewRun).toBe(run);
+    fresh.reviewRun = null;
+    expect(fresh.reviewRun).toBeNull();
+  });
+});

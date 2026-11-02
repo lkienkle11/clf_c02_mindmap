@@ -26,7 +26,14 @@
   const current = $derived(session.questions[session.index]);
   const question = $derived(current ? questionsById.get(current.questionId) : undefined);
   const unanswered = $derived(session.questions.filter((q) => q.selected.length === 0).length);
-  const title = $derived(session.topicId === null ? i18n.t('nav.practice') : services.catalog.topic(session.topicId).title[i18n.locale]);
+  const isReview = $derived(session.kind === 'review');
+  const title = $derived(
+    isReview ? i18n.t('nav.review') : session.topicId === null ? i18n.t('nav.practice') : services.catalog.topic(session.topicId).title[i18n.locale],
+  );
+  // A review mixes topics, so "Review knowledge" follows the question on screen.
+  const knowledgeTopicId = $derived(isReview ? (question?.topicId ?? null) : session.topicId);
+  const canReviewKnowledge = $derived(session.allowReview && (!isReview || knowledgeTopicId !== null));
+  const reviewReason = $derived(session.allowReview ? i18n.t('review.noLesson') : i18n.t('practice.reviewDisabled'));
   const timeLeft = $derived(session.remainingMs === null ? null : formatClock(session.remainingMs));
 
   let submitOpen = $state(false);
@@ -108,11 +115,11 @@
 
   <div class="flex flex-wrap items-start gap-3 border-t border-border-subtle pt-4">
     <div class="flex flex-col gap-1">
-      <Button variant="secondary" disabled={!session.allowReview} aria-describedby={session.allowReview ? undefined : 'review-reason'} onclick={() => session.openKnowledge()}>
+      <Button variant="secondary" disabled={!canReviewKnowledge} aria-describedby={canReviewKnowledge ? undefined : 'review-reason'} onclick={() => session.openKnowledge()}>
         {i18n.t('practice.reviewKnowledge')}
       </Button>
-      {#if !session.allowReview}
-        <p id="review-reason" class="text-sm text-muted-foreground">{i18n.t('practice.reviewDisabled')}</p>
+      {#if !canReviewKnowledge}
+        <p id="review-reason" class="text-sm text-muted-foreground">{reviewReason}</p>
       {/if}
     </div>
     <Button disabled={busy} onclick={() => (submitOpen = true)}>{i18n.t('practice.submit')}</Button>
@@ -120,7 +127,7 @@
   </div>
 </div>
 
-<KnowledgeOverlay {services} topicId={session.topicId} open={session.knowledgeOpen} {timeLeft} onclose={() => session.closeKnowledge()} />
+<KnowledgeOverlay {services} topicId={knowledgeTopicId} open={session.knowledgeOpen} {timeLeft} showClockNotice={!isReview} onclose={() => session.closeKnowledge()} />
 
 <Modal open={submitOpen} title={i18n.t('practice.submitTitle')} onclose={() => (submitOpen = false)}>
   <p class="mb-5">
@@ -132,8 +139,8 @@
   </div>
 </Modal>
 
-<Modal open={exitOpen} title={i18n.t('practice.exitTitle')} onclose={() => (exitOpen = false)}>
-  <p class="mb-5">{i18n.t('practice.exitBody')}</p>
+<Modal open={exitOpen} title={i18n.t(isReview ? 'review.exitTitle' : 'practice.exitTitle')} onclose={() => (exitOpen = false)}>
+  <p class="mb-5">{i18n.t(isReview ? 'review.exitBody' : 'practice.exitBody')}</p>
   <div class="flex justify-end gap-3">
     <Button variant="secondary" onclick={() => (exitOpen = false)}>{i18n.t('common.cancel')}</Button>
     <Button class="bg-danger text-danger-foreground hover:bg-danger/90" disabled={busy} onclick={exit}>{i18n.t('practice.exitConfirm')}</Button>

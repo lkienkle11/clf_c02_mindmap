@@ -3,8 +3,9 @@ import { AppState } from '@/app/app-state.svelte';
 import { buildServices } from '@/app/composition';
 import type { Services } from '@/app/composition';
 import { loadCatalog } from '@/content/load-catalog';
-import type { AttemptQuestionRow, AttemptRow, SqlExecutor } from '@/persistence';
+import type { AttemptQuestionRow, AttemptRow, QuestionStat, SqlExecutor } from '@/persistence';
 import { makeLesson, makeQuestion, makeRawCatalog } from './fixtures';
+import type { RawCatalog } from './fixtures';
 
 const noopExecutor: SqlExecutor = { execute: async () => {}, select: async () => [] };
 
@@ -27,12 +28,20 @@ export interface PracticeEnvOptions {
   now?: () => number;
   inProgress?: { attempt: AttemptRow; questions: AttemptQuestionRow[] } | null;
   failSaveAnswer?: boolean;
+  /** Replaces the default catalog. */
+  rawCatalog?: RawCatalog;
+  stats?: QuestionStat[];
+  submitted?: AttemptRow[];
+  /** attempts.create rejects (a start that fails). */
+  failCreate?: boolean;
+  /** settings.set rejects for this key. */
+  failSettingKey?: string;
 }
 
 export async function makePracticeEnv(o: PracticeEnvOptions = {}) {
   const base = buildServices({
     executor: noopExecutor,
-    catalog: loadCatalog(makePracticeRawCatalog()),
+    catalog: loadCatalog(o.rawCatalog ?? makePracticeRawCatalog()),
     now: o.now ?? (() => 1_000_000),
     newId: (() => { let n = 0; return () => `att-${++n}`; })(),
   });
@@ -40,19 +49,31 @@ export async function makePracticeEnv(o: PracticeEnvOptions = {}) {
   const discarded: string[] = [];
   const markReadCalls: string[] = [];
   const saved: { position: number; selected: string[] }[] = [];
+  const submittedIds: string[] = [];
+  const created: string[] = [];
   const state = { inProgress: o.inProgress ?? null, failSaveAnswer: o.failSaveAnswer ?? false };
   const services: Services = {
     ...base,
     repos: {
       ...base.repos,
-      settings: { get: async (k) => store.get(k) ?? null, set: async (k, v) => { store.set(k, v); } },
+      settings: {
+        get: async (k) => store.get(k) ?? null,
+        set: async (k, v) => {
+          if (k === o.failSettingKey) throw new Error('settings write failed');
+          store.set(k, v);
+        },
+      },
       lessonProgress: { ...base.repos.lessonProgress, markRead: async (id) => { markReadCalls.push(id); }, readIds: async () => new Set() },
-      questionStats: { ...base.repos.questionStats, listAll: async () => [] },
+      questionStats: { ...base.repos.questionStats, listAll: async () => o.stats ?? [] },
       attempts: {
         ...base.repos.attempts,
-        listSubmitted: async () => [],
+        listSubmitted: async () => o.submitted ?? [],
+        create: async (a) => {
+          if (o.failCreate) throw new Error('disk full');
+          created.push(a.id);
+        },
         findInProgress: async () => state.inProgress,
-        markSubmitted: async () => { state.inProgress = null; },
+        markSubmitted: async (id) => { submittedIds.push(id); state.inProgress = null; },
         discard: async (id) => { discarded.push(id); state.inProgress = null; },
         saveAnswer: async (_id, position, selected) => {
           if (state.failSaveAnswer) throw new Error('disk full');
@@ -63,5 +84,5 @@ export async function makePracticeEnv(o: PracticeEnvOptions = {}) {
   };
   const appState = new AppState(services);
   await appState.refresh();
-  return { services, appState, store, discarded, markReadCalls, saved, state };
+  return { services, appState, store, discarded, markReadCalls, saved, state, submittedIds, created };
 }

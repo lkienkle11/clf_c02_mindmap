@@ -3,6 +3,7 @@
   import type { TopicStatus } from '../logic/topic-status';
   import type { Branch } from '../logic/tree-layout';
   import type { Lesson, Topic } from '@/content/types';
+  import type { TopicReviewSummary } from '@/features/review';
   import { getI18n } from '@/i18n/i18n.svelte';
   import LeafNode from './LeafNode.svelte';
   import { clamp, splitTwo } from './text';
@@ -15,6 +16,8 @@
     prevTitle: string | null;
     lessons: Lesson[];
     readIds: Set<string>;
+    /** Due-for-review summary; the badge only shows on a done topic. */
+    review: TopicReviewSummary | null;
     hasQuestions: boolean;
     expanded: boolean;
     canvasWidth: number;
@@ -24,7 +27,7 @@
     onopenpractice: (topicId: string) => void;
   }
 
-  let { branch, topic, status, prevTitle, lessons, readIds, hasQuestions, expanded, canvasWidth, trunkX, ontoggle, onopenlesson, onopenpractice }: Props = $props();
+  let { branch, topic, status, prevTitle, lessons, readIds, review, hasQuestions, expanded, canvasWidth, trunkX, ontoggle, onopenlesson, onopenpractice }: Props = $props();
 
   const i18n = getI18n();
   const locale = $derived(i18n.locale);
@@ -34,7 +37,14 @@
   const badge = $derived(i18n.t('mindmap.lessonsRead', { read: readCount, total: lessons.length }));
   const hint = $derived(i18n.t('mindmap.lockedHint', { topic: prevTitle ?? title }));
   const statusText = $derived(i18n.t(status === 'done' ? 'mindmap.status.done' : status === 'current' ? 'mindmap.status.next' : 'mindmap.status.locked'));
-  const ariaLabel = $derived(locked ? `${title}. ${hint}` : `${title}, ${statusText}, ${badge}`);
+  const reviewText = $derived.by(() => {
+    if (status !== 'done' || !review) return null;
+    const days = review.daysOverdue;
+    return days === 0 ? i18n.t('review.badgeToday') : i18n.t(days === 1 ? 'review.badge.one' : 'review.badge', { count: days });
+  });
+  const ariaLabel = $derived(
+    locked ? `${title}. ${hint}` : `${title}, ${statusText}, ${badge}${reviewText ? `, ${reviewText}` : ''}`,
+  );
 
   const icons: Record<TopicStatus, string> = { done: '✓', current: '▶', locked: '🔒' };
   const nodeTones: Record<TopicStatus, string> = {
@@ -86,6 +96,15 @@
 <!-- badge first so a locked topic's hover hint paints over it -->
 {#if !expanded}
   <text x={node.cx} y={branch.y + node.h / 2 + 15} text-anchor="middle" font-size="10" class="fill-muted-foreground" aria-hidden="true">{badge}</text>
+{/if}
+{#if reviewText}
+  <!-- below the lessons-read count when collapsed; the topic itself keeps its green colours -->
+  {@const pillW = reviewText.length * 6.4 + 16}
+  {@const pillY = branch.y + node.h / 2 + (expanded ? 8 : 22)}
+  <g aria-hidden="true" data-testid="review-badge">
+    <rect x={node.cx - pillW / 2} y={pillY} width={pillW} height="20" rx="10" class="fill-leaf-review-soft" />
+    <text x={node.cx} y={pillY + 14} text-anchor="middle" font-size="11" font-weight="600" class="fill-leaf-review-ink">{reviewText}</text>
+  </g>
 {/if}
 <g
   role="button"

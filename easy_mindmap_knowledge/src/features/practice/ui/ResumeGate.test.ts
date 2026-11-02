@@ -82,3 +82,19 @@ describe('ResumeGate', () => {
     expect(await screen.findByRole('button', { name: 'Bỏ lượt này' })).toBeInTheDocument();
   });
 });
+
+describe('ResumeGate on the review screen', () => {
+  it('stays hidden while a review screen is on screen', async () => {
+    const env = await mount({ attempt: attempt({ kind: 'review', topicId: null }), questions: rows() });
+    expect(await screen.findByRole('dialog')).toBeInTheDocument();
+    env.appState.open({ view: 'review' });
+    await waitFor(() => expect(screen.queryByRole('dialog')).not.toBeInTheDocument());
+  });
+
+  it('Continue on a review attempt hands the restored review session over', async () => {
+    const env = await mount({ attempt: attempt({ kind: 'review', topicId: null, reviewAllowed: true }), questions: rows() });
+    await userEvent.click(await screen.findByRole('button', { name: 'Continue' }));
+    await waitFor(() => expect(env.onresumed).toHaveBeenCalledTimes(1));
+    expect(env.onresumed.mock.calls[0][0].kind).toBe('review');
+  });
+});

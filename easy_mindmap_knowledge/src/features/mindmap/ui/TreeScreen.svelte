@@ -1,4 +1,5 @@
 <script lang="ts">
+  import type { Snippet } from 'svelte';
   import type { AppState } from '@/app/app-state.svelte';
   import type { Services } from '@/app/composition';
   import { getI18n } from '@/i18n/i18n.svelte';
@@ -7,9 +8,11 @@
   interface Props {
     services: Services;
     appState: AppState;
+    /** Small controls shown beside the title, e.g. the Review button. */
+    actions?: Snippet;
   }
 
-  let { services, appState }: Props = $props();
+  let { services, appState, actions }: Props = $props();
 
   const i18n = getI18n();
   const currentTopicId = $derived(
@@ -28,6 +31,9 @@
 </script>
 
 <section class="p-4">
-  <h1 class="mb-4 text-2xl font-semibold">{i18n.t('nav.tree')}</h1>
+  <div class="mb-4 flex flex-wrap items-center justify-between gap-3">
+    <h1 class="text-2xl font-semibold">{i18n.t('nav.tree')}</h1>
+    {@render actions?.()}
+  </div>
   <TreeCanvas {services} {appState} {expandedTopicId} ontoggle={toggle} />
 </section>

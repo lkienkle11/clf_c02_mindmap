@@ -10,3 +10,5 @@ export type { PracticeOptions } from './options';
 export { NoQuestionsError, CorruptAttemptError, KnowledgeNotAllowedError } from './errors';
 export { default as PracticeScreen } from './ui/PracticeScreen.svelte';
 export { default as ResumeGate } from './ui/ResumeGate.svelte';
+export { default as PracticeSessionView } from './ui/PracticeSessionView.svelte';
+export { default as PracticeResult } from './ui/PracticeResult.svelte';

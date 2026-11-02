@@ -119,3 +119,48 @@ describe('TreeScreen', () => {
     expect(appState.route).toEqual({ view: 'tree' });
   });
 });
+
+describe('TreeScreen review badge', () => {
+  const summary = (topicId: string, daysOverdue: number) => ({ topicId, dueCount: 3, daysOverdue, urgency: 'soon' as const });
+  const nodeOf = (name: RegExp) => screen.getByRole('button', { name });
+
+  it('marks a done topic that has due questions, with the days since it was due', async () => {
+    const { appState } = await mountTree();
+    appState.summaries = [summary('cloud-concepts', 3)];
+    expect(await screen.findByText('Needs review · 3 days')).toBeInTheDocument();
+    expect(nodeOf(/^cloud-concepts/)).toHaveAccessibleName(/Needs review · 3 days/);
+  });
+
+  it('says "today" when zero full days have passed and "1 day" for one', async () => {
+    const { appState } = await mountTree();
+    appState.summaries = [summary('cloud-concepts', 0), summary('global-infrastructure', 1)];
+    expect(await screen.findByText('Needs review · today')).toBeInTheDocument();
+    expect(screen.getByText('Needs review · 1 day')).toBeInTheDocument();
+  });
+
+  it('shows no badge without a summary, nor on a topic that is not done', async () => {
+    const { appState } = await mountTree();
+    expect(screen.queryByText(/Needs review/)).not.toBeInTheDocument();
+    appState.summaries = [summary('compute', 5), summary('storage', 2)]; // compute is current, storage locked
+    await Promise.resolve();
+    expect(screen.queryByText(/Needs review/)).not.toBeInTheDocument();
+  });
+
+  it('keeps the topic green and its status unchanged', async () => {
+    const { appState } = await mountTree();
+    const before = nodeOf(/^cloud-concepts/).querySelector('rect:not(.fill-none)')?.getAttribute('class');
+    appState.summaries = [summary('cloud-concepts', 4)];
+    await screen.findByText('Needs review · 4 days');
+    const after = nodeOf(/^cloud-concepts/).querySelector('rect:not(.fill-none)')?.getAttribute('class');
+    expect(before).toContain('fill-leaf-done-soft');
+    expect(after).toBe(before);
+    expect(appState.statuses.get('cloud-concepts')).toBe('done');
+    expect(nodeOf(/^cloud-concepts/)).toHaveAccessibleName(/Done/);
+  });
+
+  it('speaks Vietnamese', async () => {
+    const { appState } = await mountTree({ locale: 'vi' });
+    appState.summaries = [summary('cloud-concepts', 3)];
+    expect(await screen.findByText('Cần ôn · 3 ngày')).toBeInTheDocument();
+  });
+});

@@ -28,6 +28,7 @@
       stopLeafId: currentTopicId ? stopLeafId(catalog.lessonsOf(currentTopicId), appState.readIds) : null,
     }),
   );
+  const summaryById = $derived(new Map(appState.summaries.map((s) => [s.topicId, s])));
   const topicById = $derived(new Map(topics.map((t, i) => [t.id, { topic: t, prev: i > 0 ? topics[i - 1] : null }])));
 
   function openLesson(topicId: string, lessonId: string): void {
@@ -67,6 +68,7 @@
           prevTitle={entry.prev ? entry.prev.title[i18n.locale] : null}
           lessons={catalog.lessonsOf(branch.topicId)}
           readIds={appState.readIds}
+          review={summaryById.get(branch.topicId) ?? null}
           hasQuestions={catalog.questionsOf(branch.topicId).length > 0}
           expanded={branch.topicId === expandedTopicId}
           canvasWidth={layout.width}
