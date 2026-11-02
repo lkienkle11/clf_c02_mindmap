@@ -1,0 +1,317 @@
+[
+  {
+    "id": "auth-databases-01",
+    "topicId": "databases",
+    "text": "Which AWS service is a serverless key-value and document database that delivers single-digit millisecond performance at any scale?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Amazon RDS"
+      },
+      {
+        "key": "B",
+        "text": "Amazon DynamoDB"
+      },
+      {
+        "key": "C",
+        "text": "Amazon Redshift"
+      },
+      {
+        "key": "D",
+        "text": "Amazon Neptune"
+      }
+    ],
+    "correct": [
+      "B"
+    ],
+    "multi": false,
+    "orderDependent": false,
+    "explanation": "Amazon DynamoDB is a serverless NoSQL database for key-value and document data with single-digit millisecond performance. Amazon RDS is a relational database that runs on DB instances you size, not a serverless key-value store.",
+    "source": "authored"
+  },
+  {
+    "id": "auth-databases-02",
+    "topicId": "databases",
+    "text": "A company runs its order database on Amazon RDS for PostgreSQL. The database must keep running with automatic failover if the Availability Zone that hosts it becomes unavailable. What should the company configure?",
+    "options": [
+      {
+        "key": "A",
+        "text": "A read replica in the same Availability Zone"
+      },
+      {
+        "key": "B",
+        "text": "A larger DB instance class"
+      },
+      {
+        "key": "C",
+        "text": "An Amazon ElastiCache cluster in front of the database"
+      },
+      {
+        "key": "D",
+        "text": "A Multi-AZ deployment"
+      }
+    ],
+    "correct": [
+      "D"
+    ],
+    "multi": false,
+    "orderDependent": false,
+    "explanation": "A Multi-AZ deployment keeps a synchronous standby in another Availability Zone and fails over to it automatically. A read replica is for read scaling and is not promoted automatically, and a replica in the same AZ would fail with it.",
+    "source": "authored"
+  },
+  {
+    "id": "auth-databases-03",
+    "topicId": "databases",
+    "text": "A company moves a self-managed MySQL database from Amazon EC2 to Amazon RDS for MySQL. Which tasks will AWS now handle for the company? (Choose two.)",
+    "options": [
+      {
+        "key": "A",
+        "text": "Patching the operating system of the database host"
+      },
+      {
+        "key": "B",
+        "text": "Designing the database schema and indexes"
+      },
+      {
+        "key": "C",
+        "text": "Tuning slow SQL queries written by the application team"
+      },
+      {
+        "key": "D",
+        "text": "Taking automated backups that allow point-in-time restore"
+      },
+      {
+        "key": "E",
+        "text": "Deciding which users are allowed to connect to the database"
+      }
+    ],
+    "correct": [
+      "A",
+      "D"
+    ],
+    "multi": true,
+    "orderDependent": false,
+    "explanation": "With Amazon RDS, AWS patches the operating system and database software and takes automated backups with point-in-time restore. Schema design, query tuning and control of database access remain the customer's responsibility.",
+    "source": "authored"
+  },
+  {
+    "id": "auth-databases-04",
+    "topicId": "databases",
+    "text": "Analysts run heavy reporting queries against a production Amazon RDS for MySQL database, and the application becomes slow during these reports. The company wants to offload the reporting reads with minimal changes. What should the company do?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Enable Multi-AZ and send the reports to the standby"
+      },
+      {
+        "key": "B",
+        "text": "Move the reports to AWS Database Migration Service"
+      },
+      {
+        "key": "C",
+        "text": "Create a read replica and point the reporting queries at it"
+      },
+      {
+        "key": "D",
+        "text": "Increase the backup retention period"
+      }
+    ],
+    "correct": [
+      "C"
+    ],
+    "multi": false,
+    "orderDependent": false,
+    "explanation": "A read replica is a read-only copy that takes read traffic, such as reports, away from the primary DB instance. The standby in a Multi-AZ DB instance deployment cannot serve read traffic; it exists only for failover.",
+    "source": "authored"
+  },
+  {
+    "id": "auth-databases-05",
+    "topicId": "databases",
+    "text": "A retail company wants to run complex SQL analytics over several years of sales data collected from many sources to produce business intelligence reports. Which AWS service is designed for this workload?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Amazon Redshift"
+      },
+      {
+        "key": "B",
+        "text": "Amazon DynamoDB"
+      },
+      {
+        "key": "C",
+        "text": "Amazon ElastiCache"
+      },
+      {
+        "key": "D",
+        "text": "Amazon DocumentDB"
+      }
+    ],
+    "correct": [
+      "A"
+    ],
+    "multi": false,
+    "orderDependent": false,
+    "explanation": "Amazon Redshift is a managed data warehouse built for analytical (OLAP) SQL queries over large data sets. DynamoDB is an operational NoSQL database for fast key-based access, not for large analytical queries.",
+    "source": "authored"
+  },
+  {
+    "id": "auth-databases-06",
+    "topicId": "databases",
+    "text": "A company plans to move an on-premises Oracle database to Amazon Aurora PostgreSQL. Before the data is moved, the tables, views and stored procedures must be converted to the new engine. Which AWS tool converts the schema?",
+    "options": [
+      {
+        "key": "A",
+        "text": "AWS DataSync"
+      },
+      {
+        "key": "B",
+        "text": "AWS Backup"
+      },
+      {
+        "key": "C",
+        "text": "Amazon RDS read replicas"
+      },
+      {
+        "key": "D",
+        "text": "AWS Schema Conversion Tool (AWS SCT)"
+      }
+    ],
+    "correct": [
+      "D"
+    ],
+    "multi": false,
+    "orderDependent": false,
+    "explanation": "AWS SCT (or DMS Schema Conversion) converts database schemas and code objects from one engine to another for heterogeneous migrations. AWS DataSync moves files and objects between storage systems; it does not convert database schemas.",
+    "source": "authored"
+  },
+  {
+    "id": "auth-databases-07",
+    "topicId": "databases",
+    "text": "Which statements about Amazon DynamoDB are correct? (Choose two.)",
+    "options": [
+      {
+        "key": "A",
+        "text": "Customers must choose a weekly maintenance window for engine patching"
+      },
+      {
+        "key": "B",
+        "text": "On-demand capacity mode charges per request and needs no capacity planning"
+      },
+      {
+        "key": "C",
+        "text": "It supports SQL joins across tables like a relational database"
+      },
+      {
+        "key": "D",
+        "text": "Each table is limited to a single Availability Zone"
+      },
+      {
+        "key": "E",
+        "text": "Global tables replicate a table across multiple AWS Regions"
+      }
+    ],
+    "correct": [
+      "B",
+      "E"
+    ],
+    "multi": true,
+    "orderDependent": false,
+    "explanation": "On-demand mode bills per read and write request and scales without capacity planning, and global tables replicate data across the Regions you choose. DynamoDB has no maintenance windows, does not support joins, and replicates data across three Availability Zones by default.",
+    "source": "authored"
+  },
+  {
+    "id": "auth-databases-08",
+    "topicId": "databases",
+    "text": "A social media start-up needs to store members and their connections so it can quickly answer questions such as \"Which friends of my friends like the same bands?\" Which AWS database service fits this data best?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Amazon Timestream"
+      },
+      {
+        "key": "B",
+        "text": "Amazon Neptune"
+      },
+      {
+        "key": "C",
+        "text": "Amazon Redshift"
+      },
+      {
+        "key": "D",
+        "text": "Amazon ElastiCache"
+      }
+    ],
+    "correct": [
+      "B"
+    ],
+    "multi": false,
+    "orderDependent": false,
+    "explanation": "Amazon Neptune is a graph database built to store and query highly connected data and relationships. Timestream is for time series data such as sensor readings, not for relationships between people.",
+    "source": "authored"
+  },
+  {
+    "id": "auth-databases-09",
+    "topicId": "databases",
+    "text": "An application on Amazon RDS reads the same product details thousands of times per minute, and the database is under heavy read load. The company wants to keep frequently read data in memory to reduce latency and database load. Which service should it add?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Amazon Redshift"
+      },
+      {
+        "key": "B",
+        "text": "AWS Database Migration Service"
+      },
+      {
+        "key": "C",
+        "text": "Amazon ElastiCache"
+      },
+      {
+        "key": "D",
+        "text": "Amazon DocumentDB"
+      }
+    ],
+    "correct": [
+      "C"
+    ],
+    "multi": false,
+    "orderDependent": false,
+    "explanation": "Amazon ElastiCache is a managed in-memory cache (Valkey, Redis OSS or Memcached) that serves frequently read data quickly and offloads the database. Redshift is a data warehouse for analytics and does not act as a cache in front of RDS.",
+    "source": "authored"
+  },
+  {
+    "id": "auth-databases-10",
+    "topicId": "databases",
+    "text": "Which are characteristics of Amazon Aurora? (Choose two.)",
+    "options": [
+      {
+        "key": "A",
+        "text": "It is a NoSQL key-value database with no schema"
+      },
+      {
+        "key": "B",
+        "text": "It runs only on customer-managed Amazon EC2 instances"
+      },
+      {
+        "key": "C",
+        "text": "It is compatible with MySQL and PostgreSQL"
+      },
+      {
+        "key": "D",
+        "text": "It is designed as a graph database for connected data"
+      },
+      {
+        "key": "E",
+        "text": "Its storage keeps copies of the data across three Availability Zones"
+      }
+    ],
+    "correct": [
+      "C",
+      "E"
+    ],
+    "multi": true,
+    "orderDependent": false,
+    "explanation": "Aurora is a managed relational engine compatible with MySQL and PostgreSQL, and its cluster volume stores copies of the data across three Availability Zones. It is not a NoSQL or graph database, and AWS manages it through Amazon RDS rather than on your own EC2 instances.",
+    "source": "authored"
+  }
+]
