@@ -129,7 +129,8 @@ describe('generated bank', () => {
   it('is accepted by loadCatalog with topics.json', () => {
     const read = (rel: string) => JSON.parse(readFileSync(fileURLToPath(new URL(rel, import.meta.url)), 'utf8'));
     const cat = loadCatalog({
-      topics: read('../../content/topics.json'),
+      // Lessons are out of scope here (bundled-content.test.ts covers them), so drop lesson references.
+      topics: read('../../content/topics.json').map((t: { lessonIds: string[] }) => ({ ...t, lessonIds: [] })),
       lessons: [],
       questions: read('../../content/questions/imported.json'),
     });

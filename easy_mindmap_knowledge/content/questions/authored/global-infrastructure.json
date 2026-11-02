@@ -1,0 +1,165 @@
+[
+  {
+    "id": "auth-global-infrastructure-01",
+    "topicId": "global-infrastructure",
+    "text": "Which statement best describes an AWS Availability Zone?",
+    "options": [
+      { "key": "A", "text": "One or more discrete data centers with redundant power, networking, and connectivity within an AWS Region" },
+      { "key": "B", "text": "A geographic area that contains several AWS Regions" },
+      { "key": "C", "text": "A site that Amazon CloudFront uses to cache content close to users" },
+      { "key": "D", "text": "AWS hardware installed in a customer's own data center" }
+    ],
+    "correct": ["A"],
+    "multi": false,
+    "orderDependent": false,
+    "explanation": "An Availability Zone is one or more discrete data centers with redundant power, networking, and connectivity, and it sits inside a Region. A Region contains AZs (not the other way round), a CloudFront cache site is an edge location, and hardware in a customer data center is AWS Outposts.",
+    "source": "authored"
+  },
+  {
+    "id": "auth-global-infrastructure-02",
+    "topicId": "global-infrastructure",
+    "text": "A healthcare company in Europe must keep patient records inside the European Union to comply with a regulation. What should be the company's FIRST consideration when it chooses an AWS Region for this workload?",
+    "options": [
+      { "key": "A", "text": "Compliance with the data residency requirement" },
+      { "key": "B", "text": "The lowest price per instance-hour among all Regions" },
+      { "key": "C", "text": "The Region with the newest AWS services" },
+      { "key": "D", "text": "The Region closest to the company's software developers" }
+    ],
+    "correct": ["A"],
+    "multi": false,
+    "orderDependent": false,
+    "explanation": "Legal and regulatory requirements come first, because a Region outside the EU cannot be used no matter how cheap or feature-rich it is. Price, service availability, and latency are weighed only among the Regions that meet the compliance requirement.",
+    "source": "authored"
+  },
+  {
+    "id": "auth-global-infrastructure-03",
+    "topicId": "global-infrastructure",
+    "text": "A company is selecting an AWS Region for a new customer-facing application and has no regulatory restrictions on data location. Which factors should the company evaluate? (Choose two.)",
+    "options": [
+      { "key": "A", "text": "Latency between the Region and the application's end users" },
+      { "key": "B", "text": "Pricing of the required services in the Region" },
+      { "key": "C", "text": "The number of IAM users in the company's AWS account" },
+      { "key": "D", "text": "The AWS Support plan the company has purchased" },
+      { "key": "E", "text": "The total size of the company's existing Amazon S3 buckets" }
+    ],
+    "correct": ["A", "B"],
+    "multi": true,
+    "orderDependent": false,
+    "explanation": "Region selection weighs compliance, latency to users, cost, and service availability; prices for the same service differ between Regions. IAM is a global service and a Support plan applies to the whole account, so neither changes from one Region to another.",
+    "source": "authored"
+  },
+  {
+    "id": "auth-global-infrastructure-04",
+    "topicId": "global-infrastructure",
+    "text": "An online learning platform stores video lessons in an Amazon S3 bucket in one AWS Region. Students on other continents complain that videos load slowly. Which AWS service will improve load times by caching the videos closer to the students?",
+    "options": [
+      { "key": "A", "text": "Amazon CloudFront" },
+      { "key": "B", "text": "AWS Global Accelerator" },
+      { "key": "C", "text": "AWS Outposts" },
+      { "key": "D", "text": "Amazon Route 53" }
+    ],
+    "correct": ["A"],
+    "multi": false,
+    "orderDependent": false,
+    "explanation": "Amazon CloudFront is a content delivery network that caches content such as videos at edge locations near viewers and can use an S3 bucket as its origin. AWS Global Accelerator also uses edge locations but improves the network path to endpoints rather than caching content.",
+    "source": "authored"
+  },
+  {
+    "id": "auth-global-infrastructure-05",
+    "topicId": "global-infrastructure",
+    "text": "A multiplayer game uses UDP traffic. The company needs fixed static IP addresses that send players over the AWS global network to the nearest healthy endpoint in one of several AWS Regions. Which AWS service meets these requirements?",
+    "options": [
+      { "key": "A", "text": "AWS Global Accelerator" },
+      { "key": "B", "text": "Amazon CloudFront" },
+      { "key": "C", "text": "AWS Local Zones" },
+      { "key": "D", "text": "AWS Wavelength" }
+    ],
+    "correct": ["A"],
+    "multi": false,
+    "orderDependent": false,
+    "explanation": "AWS Global Accelerator provides static anycast IP addresses and routes TCP or UDP traffic over the AWS global network to healthy endpoints in one or more Regions. CloudFront is aimed at caching and accelerating web content, not at giving static IP entry points for UDP games.",
+    "source": "authored"
+  },
+  {
+    "id": "auth-global-infrastructure-06",
+    "topicId": "global-infrastructure",
+    "text": "A media company has video editors working from several studios across one large city. The editing application needs single-digit millisecond latency to the editors, and the company does not want to install or host any hardware itself. Which AWS infrastructure option should the company use?",
+    "options": [
+      { "key": "A", "text": "AWS Local Zones" },
+      { "key": "B", "text": "AWS Outposts" },
+      { "key": "C", "text": "Amazon CloudFront edge locations" },
+      { "key": "D", "text": "An additional Availability Zone in a distant Region" }
+    ],
+    "correct": ["A"],
+    "multi": false,
+    "orderDependent": false,
+    "explanation": "Local Zones place compute, storage, and other services close to large population and industry centers for low-latency workloads such as media production. Outposts would also be low latency, but it requires AWS hardware to be installed at the customer's own site, which the company wants to avoid.",
+    "source": "authored"
+  },
+  {
+    "id": "auth-global-infrastructure-07",
+    "topicId": "global-infrastructure",
+    "text": "A developer wants users of a mobile app on a 5G network to reach the app's backend with ultra-low latency. Which AWS service places AWS compute and storage at the edge of telecommunications providers' networks?",
+    "options": [
+      { "key": "A", "text": "AWS Wavelength" },
+      { "key": "B", "text": "AWS Local Zones" },
+      { "key": "C", "text": "AWS Outposts" },
+      { "key": "D", "text": "AWS Direct Connect" }
+    ],
+    "correct": ["A"],
+    "multi": false,
+    "orderDependent": false,
+    "explanation": "AWS Wavelength deploys AWS compute and storage inside telecommunications providers' data centers at the edge of their networks, for low latency to mobile devices. Local Zones are placed near large cities but are not inside the mobile carriers' networks.",
+    "source": "authored"
+  },
+  {
+    "id": "auth-global-infrastructure-08",
+    "topicId": "global-infrastructure",
+    "text": "A company runs its web application on Amazon EC2 instances that are all in a single Availability Zone. Which changes will keep the application available if that Availability Zone fails? (Choose two.)",
+    "options": [
+      { "key": "A", "text": "Run instances in at least two Availability Zones in the Region" },
+      { "key": "B", "text": "Use a load balancer to distribute traffic across instances in multiple Availability Zones" },
+      { "key": "C", "text": "Change the existing instances to a larger instance type" },
+      { "key": "D", "text": "Add more instances in the same Availability Zone" },
+      { "key": "E", "text": "Move the application servers to an edge location" }
+    ],
+    "correct": ["A", "B"],
+    "multi": true,
+    "orderDependent": false,
+    "explanation": "Availability Zones do not share single points of failure, so running instances in several AZs behind a load balancer keeps the application up when one AZ fails. Larger or additional instances in the same AZ would all fail together with that AZ.",
+    "source": "authored"
+  },
+  {
+    "id": "auth-global-infrastructure-09",
+    "topicId": "global-infrastructure",
+    "text": "Which statement about AWS Regions is correct?",
+    "options": [
+      { "key": "A", "text": "Data stored in a Region stays in that Region unless the customer copies or replicates it elsewhere" },
+      { "key": "B", "text": "Every AWS Region contains exactly two Availability Zones" },
+      { "key": "C", "text": "Every AWS service is available in every Region" },
+      { "key": "D", "text": "An edge location is a smaller type of AWS Region" }
+    ],
+    "correct": ["A"],
+    "multi": false,
+    "orderDependent": false,
+    "explanation": "Resources and data created in one Region do not exist in another Region unless the customer explicitly copies or replicates them, which supports data residency. Public Regions are built with at least three Availability Zones, and service availability differs between Regions.",
+    "source": "authored"
+  },
+  {
+    "id": "auth-global-infrastructure-10",
+    "topicId": "global-infrastructure",
+    "text": "Which are valid reasons for a company to deploy a workload in more than one AWS Region? (Choose two.)",
+    "options": [
+      { "key": "A", "text": "To recover from a disaster that makes an entire Region unavailable" },
+      { "key": "B", "text": "To give lower latency to users on different continents" },
+      { "key": "C", "text": "To get more Availability Zones inside a single Region" },
+      { "key": "D", "text": "To stop needing AWS Identity and Access Management (IAM)" },
+      { "key": "E", "text": "Because AWS requires every production workload to run in two Regions" }
+    ],
+    "correct": ["A", "B"],
+    "multi": true,
+    "orderDependent": false,
+    "explanation": "Multiple Regions support disaster recovery and business continuity, lower latency for users around the world, and data sovereignty. Deploying to another Region does not add AZs to the first Region, and AWS does not require multi-Region deployments.",
+    "source": "authored"
+  }
+]

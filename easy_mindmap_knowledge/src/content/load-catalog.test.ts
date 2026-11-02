@@ -1,6 +1,5 @@
 import { describe, expect, it } from 'vitest';
 import { loadCatalog } from './load-catalog';
-import { loadBundledCatalog } from './bundled';
 import { makeLesson, makeQuestion, makeRawCatalog } from '@/testing/fixtures';
 
 describe('loadCatalog', () => {
@@ -86,14 +85,6 @@ describe('loadCatalog', () => {
 
   it('rejects non-array input', () => {
     expect(() => loadCatalog({ topics: {}, lessons: [], questions: [] })).toThrow(/topics/);
-  });
-});
-
-describe('loadBundledCatalog', () => {
-  // Enabled in Task 18, once lesson and question content exists in content/.
-  it.skip('loads the real content folder', () => {
-    const c = loadBundledCatalog();
-    expect(c.topics).toHaveLength(13);
   });
 });
 

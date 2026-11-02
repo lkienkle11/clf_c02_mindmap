@@ -1,0 +1,317 @@
+[
+  {
+    "id": "auth-cloud-concepts-01",
+    "topicId": "cloud-concepts",
+    "text": "A company runs its customer-facing website entirely on AWS but keeps its payroll system on servers in its own data center. The two environments are connected through a private network link. Which cloud deployment model is the company using?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Cloud deployment"
+      },
+      {
+        "key": "B",
+        "text": "Hybrid deployment"
+      },
+      {
+        "key": "C",
+        "text": "On-premises deployment"
+      },
+      {
+        "key": "D",
+        "text": "Edge-only deployment"
+      }
+    ],
+    "correct": [
+      "B"
+    ],
+    "multi": false,
+    "orderDependent": false,
+    "explanation": "A hybrid deployment connects cloud resources with infrastructure that stays outside the cloud, such as an on-premises data center. It is not a pure cloud deployment, because the payroll system still runs in the company's own data center.",
+    "source": "authored"
+  },
+  {
+    "id": "auth-cloud-concepts-02",
+    "topicId": "cloud-concepts",
+    "text": "A startup wants to deploy its web application code without managing the underlying servers, operating systems, capacity planning, or patching. Which cloud computing model best fits this requirement?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Infrastructure as a Service (IaaS)"
+      },
+      {
+        "key": "B",
+        "text": "Platform as a Service (PaaS)"
+      },
+      {
+        "key": "C",
+        "text": "Software as a Service (SaaS)"
+      },
+      {
+        "key": "D",
+        "text": "On-premises virtualization"
+      }
+    ],
+    "correct": [
+      "B"
+    ],
+    "multi": false,
+    "orderDependent": false,
+    "explanation": "With PaaS the provider manages the hardware and operating systems so the customer can focus on deploying and managing its own application. SaaS would not fit because the startup is deploying its own code, not using a finished application.",
+    "source": "authored"
+  },
+  {
+    "id": "auth-cloud-concepts-03",
+    "topicId": "cloud-concepts",
+    "text": "Which cloud computing model gives a customer the MOST control over the operating system, networking, and storage configuration of its resources?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Software as a Service (SaaS)"
+      },
+      {
+        "key": "B",
+        "text": "Platform as a Service (PaaS)"
+      },
+      {
+        "key": "C",
+        "text": "Infrastructure as a Service (IaaS)"
+      },
+      {
+        "key": "D",
+        "text": "Function as a Service (FaaS)"
+      }
+    ],
+    "correct": [
+      "C"
+    ],
+    "multi": false,
+    "orderDependent": false,
+    "explanation": "IaaS provides the basic building blocks (virtual servers, networking, storage) and gives the highest level of flexibility and management control. PaaS and SaaS hand more of that management to the provider, so the customer controls less.",
+    "source": "authored"
+  },
+  {
+    "id": "auth-cloud-concepts-04",
+    "topicId": "cloud-concepts",
+    "text": "A company is calculating the total cost of ownership (TCO) of its current on-premises data center so that it can compare it with AWS. Which costs should it include on the on-premises side? (Choose two.)",
+    "options": [
+      {
+        "key": "A",
+        "text": "Electricity and cooling for the server room"
+      },
+      {
+        "key": "B",
+        "text": "Salaries of the staff who install and maintain the servers"
+      },
+      {
+        "key": "C",
+        "text": "AWS Support plan fees"
+      },
+      {
+        "key": "D",
+        "text": "Data transfer out from Amazon CloudFront"
+      },
+      {
+        "key": "E",
+        "text": "Subscriptions bought through AWS Marketplace"
+      }
+    ],
+    "correct": [
+      "A",
+      "B"
+    ],
+    "multi": true,
+    "orderDependent": false,
+    "explanation": "On-premises TCO includes more than hardware: power, cooling, space and the people who run the infrastructure all count. The other options are AWS charges, which belong on the cloud side of the comparison.",
+    "source": "authored"
+  },
+  {
+    "id": "auth-cloud-concepts-05",
+    "topicId": "cloud-concepts",
+    "text": "A company wants to reduce the energy its cloud workloads consume by maximizing the utilization of the resources it runs and removing idle resources. Which pillar of the AWS Well-Architected Framework does this goal belong to?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Performance Efficiency"
+      },
+      {
+        "key": "B",
+        "text": "Reliability"
+      },
+      {
+        "key": "C",
+        "text": "Sustainability"
+      },
+      {
+        "key": "D",
+        "text": "Operational Excellence"
+      }
+    ],
+    "correct": [
+      "C"
+    ],
+    "multi": false,
+    "orderDependent": false,
+    "explanation": "The Sustainability pillar focuses on minimizing the environmental impact of cloud workloads, and maximizing utilization is one of its design principles. Performance Efficiency is about using resources efficiently to meet performance needs, not about environmental impact.",
+    "source": "authored"
+  },
+  {
+    "id": "auth-cloud-concepts-06",
+    "topicId": "cloud-concepts",
+    "text": "A company wants to grant each employee only the permissions needed for their job and to monitor and audit every change made in its AWS environment. Which pillar of the AWS Well-Architected Framework do these goals belong to?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Operational Excellence"
+      },
+      {
+        "key": "B",
+        "text": "Security"
+      },
+      {
+        "key": "C",
+        "text": "Reliability"
+      },
+      {
+        "key": "D",
+        "text": "Performance Efficiency"
+      }
+    ],
+    "correct": [
+      "B"
+    ],
+    "multi": false,
+    "orderDependent": false,
+    "explanation": "Least-privilege access and maintaining traceability are design principles of the Security pillar, which focuses on protecting information and systems. Operational Excellence also uses monitoring, but its goal is running workloads well and improving procedures, not controlling access.",
+    "source": "authored"
+  },
+  {
+    "id": "auth-cloud-concepts-07",
+    "topicId": "cloud-concepts",
+    "text": "A company wants its new application to follow the cloud design principle of designing for failure. Which practices support this principle? (Choose two.)",
+    "options": [
+      {
+        "key": "A",
+        "text": "Run copies of the application in multiple Availability Zones"
+      },
+      {
+        "key": "B",
+        "text": "Automatically replace instances that fail health checks"
+      },
+      {
+        "key": "C",
+        "text": "Run production on one large server to keep the design simple"
+      },
+      {
+        "key": "D",
+        "text": "Turn off health checks to reduce monitoring costs"
+      },
+      {
+        "key": "E",
+        "text": "Test recovery procedures only after a real outage has happened"
+      }
+    ],
+    "correct": [
+      "A",
+      "B"
+    ],
+    "multi": true,
+    "orderDependent": false,
+    "explanation": "Designing for failure means assuming components will fail, so you avoid single points of failure by spreading copies across Availability Zones and recover automatically. A single large server is a single point of failure, and recovery should be tested before an outage, not after.",
+    "source": "authored"
+  },
+  {
+    "id": "auth-cloud-concepts-08",
+    "topicId": "cloud-concepts",
+    "text": "An order-processing application stops working whenever its payment component is slow, because the web tier calls the payment component directly and waits for each response. Which design approach would MOST reduce the impact of a slow payment component on the rest of the application?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Loosely couple the components by placing a message queue between them"
+      },
+      {
+        "key": "B",
+        "text": "Move the web tier to a single, larger server"
+      },
+      {
+        "key": "C",
+        "text": "Run the payment component and web tier on the same server"
+      },
+      {
+        "key": "D",
+        "text": "Purchase more capacity in advance for the web tier"
+      }
+    ],
+    "correct": [
+      "A"
+    ],
+    "multi": false,
+    "orderDependent": false,
+    "explanation": "Loose coupling through a queue such as Amazon SQS lets the web tier accept orders without waiting, so a slow or failed component does not take down the others. Putting components on one larger or shared server makes them more tightly coupled, not less.",
+    "source": "authored"
+  },
+  {
+    "id": "auth-cloud-concepts-09",
+    "topicId": "cloud-concepts",
+    "text": "A company's IT team used to spend most of its time replacing failed disks and upgrading power supplies in the company's server room. After moving to AWS, the team now works on new features for customers. Which advantage of cloud computing does this describe?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Stop spending money running and maintaining data centers"
+      },
+      {
+        "key": "B",
+        "text": "Go global in minutes"
+      },
+      {
+        "key": "C",
+        "text": "Benefit from massive economies of scale"
+      },
+      {
+        "key": "D",
+        "text": "Trade fixed expense for variable expense"
+      }
+    ],
+    "correct": [
+      "A"
+    ],
+    "multi": false,
+    "orderDependent": false,
+    "explanation": "AWS takes over the heavy lifting of racking, stacking, and powering servers, so the team can focus on projects that differentiate the business. Economies of scale is about lower prices from aggregated usage, not about where the team spends its time.",
+    "source": "authored"
+  },
+  {
+    "id": "auth-cloud-concepts-10",
+    "topicId": "cloud-concepts",
+    "text": "A development team runs its test environment on Amazon EC2 instances 24 hours a day, but uses it only during office hours. CPU utilization of the instances never goes above 15%. Which actions follow cloud cost optimization practices? (Choose two.)",
+    "options": [
+      {
+        "key": "A",
+        "text": "Stop the instances outside office hours"
+      },
+      {
+        "key": "B",
+        "text": "Right-size the instances to smaller instance types"
+      },
+      {
+        "key": "C",
+        "text": "Launch additional instances to spread the load"
+      },
+      {
+        "key": "D",
+        "text": "Move the instances to a Region with more Availability Zones"
+      },
+      {
+        "key": "E",
+        "text": "Buy larger instances so that utilization stays low"
+      }
+    ],
+    "correct": [
+      "A",
+      "B"
+    ],
+    "multi": true,
+    "orderDependent": false,
+    "explanation": "Paying only for what you use means stopping idle resources, and low utilization shows the instances are larger than needed, so they should be right-sized. Adding more or larger instances would increase cost without any benefit for this workload.",
+    "source": "authored"
+  }
+]

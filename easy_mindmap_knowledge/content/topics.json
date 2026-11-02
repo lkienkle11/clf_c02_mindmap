@@ -1,6 +1,6 @@
 [
-  { "id": "cloud-concepts", "order": 1, "tier": "introduction", "title": { "en": "Cloud Concepts", "vi": "Khái niệm điện toán đám mây" }, "lessonIds": [] },
-  { "id": "global-infrastructure", "order": 2, "tier": "introduction", "title": { "en": "Global Infrastructure", "vi": "Hạ tầng toàn cầu" }, "lessonIds": [] },
+  { "id": "cloud-concepts", "order": 1, "tier": "introduction", "title": { "en": "Cloud Concepts", "vi": "Khái niệm điện toán đám mây" }, "lessonIds": ["cloud-concepts-models", "cloud-concepts-advantages", "cloud-concepts-economics", "cloud-concepts-well-architected", "cloud-concepts-further"] },
+  { "id": "global-infrastructure", "order": 2, "tier": "introduction", "title": { "en": "Global Infrastructure", "vi": "Hạ tầng toàn cầu" }, "lessonIds": ["global-infrastructure-regions", "global-infrastructure-availability-zones", "global-infrastructure-edge", "global-infrastructure-extending-aws", "global-infrastructure-further"] },
   { "id": "compute", "order": 3, "tier": "core", "title": { "en": "Compute", "vi": "Điện toán" }, "lessonIds": [] },
   { "id": "storage", "order": 4, "tier": "core", "title": { "en": "Storage", "vi": "Lưu trữ" }, "lessonIds": [] },
   { "id": "networking", "order": 5, "tier": "core", "title": { "en": "Networking", "vi": "Mạng" }, "lessonIds": [] },
