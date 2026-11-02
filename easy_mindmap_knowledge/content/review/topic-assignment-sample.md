@@ -6,25 +6,25 @@
 
 A company needs to provide customer service by using voice calls and web chat features. Which AWS service should the company use to meet these requirements?
 
-Topic: Tổng hợp (null)
+Topic: support-ai-other
 
 ### q_5f9737aea692
 
 A company wants to use Amazon EC2 instances to provide a static website to users all over the world. The company needs to minimize latency for the users. Which solution meets these requirements?
 
-Topic: global-infrastructure
+Topic: Tổng hợp (null)
 
-### q_760713dc304c
+### q_c07cdb1e1d6e
 
-A company&apos;s cloud environment includes Amazon EC2 instances and Application Load Balancers. The company wants to improve protections for its cloud resources against DDoS attacks. The company also wants to have real-time visibility into any DDoS attacks. Which AWS service will meet these requirements?
+A company's cloud environment includes Amazon EC2 instances and Application Load Balancers. The company wants to improve protections for its cloud resources against DDoS attacks. The company also wants to have real-time visibility into any DDoS attacks. Which AWS service will meet these requirements?
 
 Topic: iam-security
 
-### q_23f513dab63c
+### q_7061d4ff0c64
 
-A developer needs to interact with AWS by using the AWS CLI. Which security feature or AWS service must be provisioned in the developer&apos;s account to meet this requirement?
+A developer needs to interact with AWS by using the AWS CLI. Which security feature or AWS service must be provisioned in the developer's account to meet this requirement?
 
-Topic: Tổng hợp (null)
+Topic: iam-security
 
 ### q_6a9a6e56f161
 
@@ -66,7 +66,7 @@ Topic: pricing-billing
 
 A company needs to use SQL syntax to perform a direct query of objects in an Amazon S3 bucket. Which AWS service can the company use to meet this requirement?
 
-Topic: storage
+Topic: support-ai-other
 
 ### q_7b025a8943a2
 
@@ -78,7 +78,7 @@ Topic: databases
 
 A company wants to run its application on Amazon EC2 instances. The company needs to keep the application on-premises to meet a compliance requirement. Which AWS offering will meet these requirements?
 
-Topic: compute
+Topic: Tổng hợp (null)
 
 ### q_edf378c5d991
 
@@ -96,7 +96,7 @@ Topic: migration-caf
 
 A development team wants to deploy multiple test environments for an application in a fast, repeatable manner. Which AWS service should the team use?
 
-Topic: compute
+Topic: deploy-operate
 
 ### q_c8af8972e58a
 
@@ -108,7 +108,7 @@ Topic: pricing-billing
 
 An administrator observed that multiple AWS resources were deleted yesterday. Which AWS service will help identify the cause and determine which user deleted the resources?
 
-Topic: iam-security
+Topic: deploy-operate
 
 ### q_0829657d54e6
 
@@ -126,19 +126,19 @@ Topic: compute
 
 A team of researchers is going to collect data at remote locations around the world. Many locations do not have internet connectivity. The team needs to capture the data in the field, and transfer it to the AWS Cloud later. Which AWS service will support these requirements?
 
-Topic: migration-caf
+Topic: storage
 
 ### q_5f53ee83b17e
 
 A company needs an AWS service that provides a clear baseline of what the company runs in its on-premises data centers. The company needs the projected cost to run its on-premises workloads in the AWS Cloud. What AWS service or tool will meet these requirements?
 
-Topic: Tổng hợp (null)
+Topic: migration-caf
 
 ### q_8752ac68916e
 
 Which of the following services can be used to block network traffic to an instance? (Choose two.)
 
-Topic: Tổng hợp (null)
+Topic: networking
 
 ### q_82890c946888
 
@@ -168,7 +168,7 @@ Topic: networking
 
 According to security best practices, how should an Amazon EC2 instance be given access to an Amazon S3 bucket?
 
-Topic: iam-security
+Topic: Tổng hợp (null)
 
 ### q_8f3d719c6f61
 
@@ -176,8 +176,8 @@ Which AWS services or features give users the ability to create a network connec
 
 Topic: networking
 
-### q_564fdebacd6c
+### q_0925c9a0e4cc
 
-A company&apos;s application developers need to quickly provision and manage AWS services by using scripts. Which AWS offering should the developers use to meet these requirements?
+A company's application developers need to quickly provision and manage AWS services by using scripts. Which AWS offering should the developers use to meet these requirements?
 
 Topic: deploy-operate

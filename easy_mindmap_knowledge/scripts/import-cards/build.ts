@@ -2,7 +2,9 @@ import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { buildImported } from './build-imported';
-import { parseCards } from './parse-cards';
+import type { DuplicateCard, MismatchedCard, SkippedCard } from './parse-cards';
+import { parseCardsDetailed } from './parse-cards';
+import { stableQuestionId } from './stable-id';
 
 const here = (rel: string) => fileURLToPath(new URL(rel, import.meta.url));
 
@@ -10,12 +12,14 @@ export interface BuildPaths {
   sourcePath: string;
   outPath: string;
   samplePath: string;
+  exclusionsPath: string;
 }
 
 export const DEFAULT_PATHS: BuildPaths = {
   sourcePath: here('../../../export_cards_to_knowt/results/questions.txt'),
   outPath: here('../../content/questions/imported.json'),
   samplePath: here('../../content/review/topic-assignment-sample.md'),
+  exclusionsPath: here('../../content/review/import-exclusions.md'),
 };
 
 const SAMPLE_SIZE = 30;
@@ -38,15 +42,46 @@ function write(path: string, content: string): void {
   writeFileSync(path, content);
 }
 
+const snippet = (t: string): string => (t.length > 80 ? t.slice(0, 80) : t).replace(/\|/g, '\\|');
+
+function writeExclusions(
+  path: string,
+  skipped: SkippedCard[],
+  duplicates: DuplicateCard[],
+  mismatched: MismatchedCard[],
+): void {
+  const lines = [
+    '# Import exclusions',
+    '',
+    `Skipped (no answer): ${skipped.length}. Duplicates dropped: ${duplicates.length}. Mismatched multi flag (excluded): ${mismatched.length}.`,
+    '',
+    '| card | id | text (first 80 chars) | reason |',
+    '| --- | --- | --- | --- |',
+  ];
+  for (const m of mismatched) {
+    lines.push(`| card ${m.cardNumber} | ${stableQuestionId(m.card)} | ${snippet(m.card.text)} | excluded: ${m.reason} |`);
+  }
+  for (const k of skipped) {
+    lines.push(`| card ${k.cardNumber} | n/a | ${snippet(k.text)} | skipped: ${k.reason} |`);
+  }
+  for (const d of duplicates) {
+    lines.push(`| card ${d.cardNumber} | ${stableQuestionId(d.card)} | ${snippet(d.card.text)} | duplicate of card ${d.duplicateOf} |`);
+  }
+  lines.push('');
+  write(path, lines.join('\n'));
+}
+
 export function runBuild(paths: BuildPaths = DEFAULT_PATHS): number {
-  // Source defect guard: a card whose multi flag disagrees with its answer count
-  // (e.g. "Choose two" with a single key marked) is incomplete and would be rejected
-  // by loadCatalog, so it is left out of the bank rather than shipped mis-keyed.
-  const cards = parseCards(readFileSync(paths.sourcePath, 'utf8')).filter(
-    (c) => c.multi === c.correctKeys.length > 1,
-  );
+  const { cards, skipped, duplicates, mismatched } = parseCardsDetailed(readFileSync(paths.sourcePath, 'utf8'));
   const questions = buildImported(cards);
   write(paths.outPath, JSON.stringify(questions, null, 2) + '\n');
+  const list = (name: string, items: { cardNumber: number }[]) =>
+    console.log(`${name}: ${items.length}${items.length ? ` (cards ${items.map((i) => i.cardNumber).join(', ')})` : ''}`);
+  list('skipped (no answer)', skipped);
+  list('duplicates dropped', duplicates);
+  list('mismatched (excluded)', mismatched.map((m) => ({ cardNumber: m.cardNumber })));
+  for (const m of mismatched) console.log(`  card ${m.cardNumber} id ${stableQuestionId(m.card)}`);
+  writeExclusions(paths.exclusionsPath, skipped, duplicates, mismatched);
 
   const rand = rng(SEED);
   const pool = [...questions];

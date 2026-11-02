@@ -72,11 +72,13 @@ describe('parseCards (sample)', () => {
 });
 
 describe('parseCards (real file)', () => {
-  const { cards, skipped, duplicates } = parseCardsDetailed(readFileSync(realPath, 'utf8'));
+  const { cards, skipped, duplicates, mismatched } = parseCardsDetailed(readFileSync(realPath, 'utf8'));
 
-  it('has 669 cards, 81 multi, skips 116 and 271, drops 2 exact duplicates', () => {
-    expect(cards).toHaveLength(669);
-    expect(cards.filter((c) => c.multi)).toHaveLength(81);
+  it('has 668 cards, 80 multi, skips 116 and 271, drops 2 duplicates, 1 mismatched', () => {
+    expect(cards).toHaveLength(668);
+    expect(cards.filter((c) => c.multi)).toHaveLength(80);
+    expect(mismatched).toHaveLength(1);
+    expect(mismatched[0].reason).toMatch(/multi/i);
     expect(skipped.map((s) => s.cardNumber)).toEqual([116, 271]);
     expect(duplicates).toHaveLength(2);
     for (const d of duplicates) expect(d.duplicateOf).toBeLessThan(d.cardNumber);
@@ -92,7 +94,7 @@ describe('parseCards (real file)', () => {
 
   it('stable ids are unique and repeatable', () => {
     const ids = cards.map(stableQuestionId);
-    expect(new Set(ids).size).toBe(669);
+    expect(new Set(ids).size).toBe(668);
     expect(cards.map(stableQuestionId)).toEqual(ids);
     expect(ids[0]).toMatch(/^q_[0-9a-f]{12}$/);
   });
@@ -103,7 +105,7 @@ describe('dedupe', () => {
   it('drops exact duplicates and reports them', () => {
     const r = parseCardsDetailed([card('x'), card('x')].join('===\n'));
     expect(r.cards).toHaveLength(1);
-    expect(r.duplicates).toEqual([{ cardNumber: 2, duplicateOf: 1 }]);
+    expect(r.duplicates).toEqual([expect.objectContaining({ cardNumber: 2, duplicateOf: 1 })]);
   });
   it('keeps same text with different options, with distinct ids', () => {
     const r = parseCardsDetailed([card('x'), card('y')].join('===\n'));
@@ -126,5 +128,30 @@ describe('isOrderDependent', () => {
     expect(isOrderDependent(['A', 'All of the above'])).toBe(true);
     expect(isOrderDependent(['Both A and B', 'x'])).toBe(true);
     expect(isOrderDependent(['Amazon S3', 'Amazon EC2'])).toBe(false);
+  });
+});
+
+describe('mismatched multi flag', () => {
+  it('reports a Choose-two card with one key and excludes it from cards', () => {
+    const raw = 'Pick? (Choose two.)\nA. a\nB. b\nC. c\n---\nA. a\n===\nOk?\nA. a\nB. b\n---\nA. a\n';
+    const r = parseCardsDetailed(raw);
+    expect(r.cards).toHaveLength(1);
+    expect(r.mismatched).toEqual([expect.objectContaining({ cardNumber: 1, reason: expect.stringContaining('multi') })]);
+    expect(parseCards(raw)).toHaveLength(1);
+  });
+});
+
+describe('html entity decoding', () => {
+  const one = (q: string, a: string) => parseCards(`${q}\nA. ${a}\nB. other\n---\nA. ${a}\n`)[0];
+  it('decodes named and numeric entities', () => {
+    const c = one('A company&apos;s &quot;app&quot; &lt;x&gt; &#39;y&#39; &#x41;', 'R&amp;D');
+    expect(c.text).toBe(`A company's "app" <x> 'y' A`);
+    expect(c.options[0].text).toBe('R&D');
+  });
+  it('does not double-decode &amp;', () => {
+    expect(one('a &amp;lt; b', 'x').text).toBe('a &lt; b');
+  });
+  it('leaves plain apostrophes unchanged', () => {
+    expect(one("company's", 'x').text).toBe("company's");
   });
 });

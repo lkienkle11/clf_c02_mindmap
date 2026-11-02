@@ -30,7 +30,7 @@
   },
   {
     "id": "q_59c0c5331867",
-    "topicId": null,
+    "topicId": "support-ai-other",
     "text": "Which of the following are benefits of using AWS Trusted Advisor? (Choose two.)",
     "options": [
       {
@@ -151,7 +151,7 @@
   },
   {
     "id": "q_1d1949cc3d83",
-    "topicId": "compute",
+    "topicId": "storage",
     "text": "A company is using a third-party service to back up 10 TB of data to a tape library. The on-premises backup server is running out of space. The company wants to use AWS services for the backups without changing its existing backup workflows. Which AWS service should the company use to meet these requirements?",
     "options": [
       {
@@ -209,7 +209,7 @@
   },
   {
     "id": "q_5ea0307c02be",
-    "topicId": "shared-responsibility",
+    "topicId": "iam-security",
     "text": "Which tasks are the customer’s responsibility, according to the AWS shared responsibility model? (Choose two.)",
     "options": [
       {
@@ -335,7 +335,7 @@
   },
   {
     "id": "q_ad5132cf5577",
-    "topicId": "compute",
+    "topicId": "storage",
     "text": "A company wants a fully managed Windows file server for its Windows-based applications. Which AWS service will meet this requirement?",
     "options": [
       {
@@ -364,7 +364,7 @@
   },
   {
     "id": "q_d5e1a0429d64",
-    "topicId": "pricing-billing",
+    "topicId": "cloud-concepts",
     "text": "Which of the following is an advantage that users experience when they move on-premises workloads to the AWS Cloud?",
     "options": [
       {
@@ -451,7 +451,7 @@
   },
   {
     "id": "q_21dcc39b6973",
-    "topicId": null,
+    "topicId": "pricing-billing",
     "text": "A company has an uninterruptible application that runs on Amazon EC2 instances. The application constantly processes a backlog of files in an Amazon Simple Queue Service (Amazon SQS) queue. This usage is expected to continue to grow for years. What is the MOST cost-effective EC2 instance purchasing model to meet these requirements?",
     "options": [
       {
@@ -654,7 +654,7 @@
   },
   {
     "id": "q_5e32ce5af5bf",
-    "topicId": "deploy-operate",
+    "topicId": "networking",
     "text": "Which AWS service or feature provides log information of the inbound and outbound traffic on network interfaces in a VPC?",
     "options": [
       {
@@ -770,7 +770,7 @@
   },
   {
     "id": "q_48c53ad0bd7a",
-    "topicId": "iam-security",
+    "topicId": "pricing-billing",
     "text": "Which AWS service or feature allows users to create new AWS accounts, group multiple accounts to organize workflows, and apply policies to groups of accounts?",
     "options": [
       {
@@ -799,7 +799,7 @@
   },
   {
     "id": "q_24d14321f84a",
-    "topicId": null,
+    "topicId": "storage",
     "text": "A company wants to store and retrieve files in Amazon S3 for its existing on-premises applications by using industry-standard file system protocols. Which AWS service will meet these requirements?",
     "options": [
       {
@@ -857,7 +857,7 @@
   },
   {
     "id": "q_b1b3b59e4755",
-    "topicId": "compute",
+    "topicId": "deploy-operate",
     "text": "A company wants a unified tool to provide a consistent method to interact with AWS services. Which AWS service or tool will meet this requirement?",
     "options": [
       {
@@ -886,7 +886,7 @@
   },
   {
     "id": "q_f4e3a3d1d6f5",
-    "topicId": "iam-security",
+    "topicId": "support-ai-other",
     "text": "A company needs to evaluate its AWS environment and provide best practice recommendations in five categories: cost, performance, service limits, fault tolerance and security. Which AWS service can the company use to meet these requirements?",
     "options": [
       {
@@ -915,7 +915,7 @@
   },
   {
     "id": "q_9f24bb9f4cbc",
-    "topicId": null,
+    "topicId": "migration-caf",
     "text": "Which perspective in the AWS Cloud Adoption Framework (AWS CAF) includes capabilities for configuration management and patch management?",
     "options": [
       {
@@ -978,7 +978,7 @@
   },
   {
     "id": "q_ed4aff43991b",
-    "topicId": "pricing-billing",
+    "topicId": "compute",
     "text": "Which Amazon EC2 pricing model is the MOST cost efficient for an uninterruptible workload that runs once a year for 24 hours?",
     "options": [
       {
@@ -1065,7 +1065,7 @@
   },
   {
     "id": "q_f7af7498b31e",
-    "topicId": null,
+    "topicId": "pricing-billing",
     "text": "A company wants to migrate its on-premises workloads to the AWS Cloud. The company wants to separate workloads for chargeback to different departments. Which AWS services or features will meet these requirements? (Choose two.)",
     "options": [
       {
@@ -1215,7 +1215,7 @@
   },
   {
     "id": "q_bc3ca1e94daa",
-    "topicId": null,
+    "topicId": "compute",
     "text": "Which pricing model will interrupt a running Amazon EC2 instance if capacity becomes temporarily unavailable?",
     "options": [
       {
@@ -1244,7 +1244,7 @@
   },
   {
     "id": "q_56b19c1e74b3",
-    "topicId": null,
+    "topicId": "migration-caf",
     "text": "Which options are AWS Cloud Adoption Framework (AWS CAF) security perspective capabilities? (Choose two.)",
     "options": [
       {
@@ -1336,7 +1336,7 @@
   },
   {
     "id": "q_9d9b868845a8",
-    "topicId": "databases",
+    "topicId": "support-ai-other",
     "text": "A company is using a central data platform to manage multiple types of data for its customers. The company wants to use AWS services to discover, transform, and visualize the data. (Choose two.)",
     "options": [
       {
@@ -1578,7 +1578,7 @@
   },
   {
     "id": "q_da6d9a622bd5",
-    "topicId": "global-infrastructure",
+    "topicId": "compute",
     "text": "A company wants its Amazon EC2 instances to operate in a highly available environment, even if there is a natural disaster in a particular geographic area. Which approach will achieve this goal?",
     "options": [
       {
@@ -1665,7 +1665,7 @@
   },
   {
     "id": "q_860183f0f1e0",
-    "topicId": null,
+    "topicId": "support-ai-other",
     "text": "A global company wants to migrate its third-party applications to the AWS Cloud. The company wants help from a global team of experts to complete the migration faster and more reliably in accordance with AWS internal best practices. Which AWS service or resource will meet these requirements?",
     "options": [
       {
@@ -1694,7 +1694,7 @@
   },
   {
     "id": "q_822206bdbfef",
-    "topicId": null,
+    "topicId": "global-infrastructure",
     "text": "Which option is an environment that consists of one or more data centers?",
     "options": [
       {
@@ -1723,7 +1723,7 @@
   },
   {
     "id": "q_fbf56b3d37b0",
-    "topicId": "migration-caf",
+    "topicId": "storage",
     "text": "A company is moving an on-premises data center to the AWS Cloud. The company must migrate 50 petabytes of file storage data to AWS with the least possible operational overhead. Which AWS service or resource should the company use to meet these requirements?",
     "options": [
       {
@@ -1752,7 +1752,7 @@
   },
   {
     "id": "q_54b23f513d3b",
-    "topicId": null,
+    "topicId": "support-ai-other",
     "text": "A company has an application with robust hardware requirements. The application must be accessed by students who are using lightweight, low-cost laptops. Which AWS service will help the company deploy the application without investing in backend infrastructure or high-end client hardware?",
     "options": [
       {
@@ -1839,7 +1839,7 @@
   },
   {
     "id": "q_d2f4ce962043",
-    "topicId": "iam-security",
+    "topicId": "deploy-operate",
     "text": "Which AWS service helps users audit API activity across their AWS account?",
     "options": [
       {
@@ -2163,7 +2163,7 @@
   },
   {
     "id": "q_7d4d65d78f25",
-    "topicId": "storage",
+    "topicId": "iam-security",
     "text": "A company wants to identify Amazon S3 buckets that are shared with another AWS account. Which AWS service or feature will meet these requirements?",
     "options": [
       {
@@ -2569,7 +2569,7 @@
   },
   {
     "id": "q_90a03997e6ae",
-    "topicId": null,
+    "topicId": "migration-caf",
     "text": "A company is planning to migrate its application to the AWS Cloud. Which AWS tool or set of resources should the company use to analyze and assess its readiness for migration?",
     "options": [
       {
@@ -2627,7 +2627,7 @@
   },
   {
     "id": "q_ed5bab584802",
-    "topicId": null,
+    "topicId": "storage",
     "text": "A company is storing sensitive customer data in an Amazon S3 bucket. The company wants to protect the data from accidental deletion or overwriting. Which S3 feature should the company use to meet these requirements?",
     "options": [
       {
@@ -2748,7 +2748,7 @@
   },
   {
     "id": "q_3a5802016d25",
-    "topicId": "databases",
+    "topicId": "compute",
     "text": "Which actions are examples of a company’s effort to rightsize its AWS resources to control cloud costs? (Choose two.)",
     "options": [
       {
@@ -2782,7 +2782,7 @@
   },
   {
     "id": "q_5b1ed7ad25ab",
-    "topicId": "iam-security",
+    "topicId": "networking",
     "text": "Which AWS service or feature can a company use to apply security rules to specific Amazon EC2 instances?",
     "options": [
       {
@@ -2932,7 +2932,7 @@
   },
   {
     "id": "q_689303d0d4ce",
-    "topicId": null,
+    "topicId": "deploy-operate",
     "text": "Which AWS service or feature is a browser-based, pre-authenticated service that can be launched directly from the AWS Management Console?",
     "options": [
       {
@@ -3140,7 +3140,7 @@
   },
   {
     "id": "q_6b5287e7e4ac",
-    "topicId": null,
+    "topicId": "pricing-billing",
     "text": "A company needs to use third-party software for its workload on AWS. Which AWS service or feature can the company use to purchase the software?",
     "options": [
       {
@@ -3227,7 +3227,7 @@
   },
   {
     "id": "q_4b4b61775da2",
-    "topicId": "iam-security",
+    "topicId": "shared-responsibility",
     "text": "Which task is a responsibility of AWS, according to the AWS shared responsibility model?",
     "options": [
       {
@@ -3343,7 +3343,7 @@
   },
   {
     "id": "q_8abc7139d568",
-    "topicId": "iam-security",
+    "topicId": "databases",
     "text": "Which actions are the responsibility of AWS, according to the AWS shared responsibility model? (Choose two.)",
     "options": [
       {
@@ -3406,7 +3406,7 @@
   },
   {
     "id": "q_24e9052bfa69",
-    "topicId": null,
+    "topicId": "support-ai-other",
     "text": "A company needs to engage third-party consultants to help maintain and support its AWS environment and the company’s business needs. Which AWS service or resource will meet these requirements?",
     "options": [
       {
@@ -3551,7 +3551,7 @@
   },
   {
     "id": "q_da1bb57090df",
-    "topicId": null,
+    "topicId": "shared-responsibility",
     "text": "Which option is a shared control between AWS and the customer, according to the AWS shared responsibility model?",
     "options": [
       {
@@ -3609,7 +3609,7 @@
   },
   {
     "id": "q_8593b30c29a4",
-    "topicId": null,
+    "topicId": "compute",
     "text": "A company often does not use all of its current Amazon EC2 capacity to run stateless workloads. The company wants to optimize its EC2 costs. Which EC2 instance type will meet these requirements?",
     "options": [
       {
@@ -3753,9 +3753,9 @@
     "source": "imported"
   },
   {
-    "id": "q_ef97beb50721",
+    "id": "q_af50321ba430",
     "topicId": "storage",
-    "text": "A company has a physical tape library to store data backups. The tape library is running out of space. The company needs to extend the tape library&apos;s capacity to the AWS Cloud. Which AWS service should the company use to meet this requirement?",
+    "text": "A company has a physical tape library to store data backups. The tape library is running out of space. The company needs to extend the tape library's capacity to the AWS Cloud. Which AWS service should the company use to meet this requirement?",
     "options": [
       {
         "key": "A",
@@ -3782,8 +3782,8 @@
     "source": "imported"
   },
   {
-    "id": "q_0819f476375e",
-    "topicId": null,
+    "id": "q_8848520dc9d5",
+    "topicId": "cloud-concepts",
     "text": "A company is using the AWS Free Tier for several AWS services for an application. What will happen if the Free Tier usage period expires or if the application use exceeds the Free Tier usage limits?",
     "options": [
       {
@@ -3800,7 +3800,7 @@
       },
       {
         "key": "D",
-        "text": "The company&apos;s AWS account will be frozen and can be restarted after a payment plan is established."
+        "text": "The company's AWS account will be frozen and can be restarted after a payment plan is established."
       }
     ],
     "correct": [
@@ -3870,7 +3870,7 @@
   },
   {
     "id": "q_5f53ee83b17e",
-    "topicId": null,
+    "topicId": "migration-caf",
     "text": "A company needs an AWS service that provides a clear baseline of what the company runs in its on-premises data centers. The company needs the projected cost to run its on-premises workloads in the AWS Cloud. What AWS service or tool will meet these requirements?",
     "options": [
       {
@@ -3986,7 +3986,7 @@
   },
   {
     "id": "q_9d37a7fce025",
-    "topicId": "storage",
+    "topicId": "support-ai-other",
     "text": "Which of the following is a managed AWS service that is used specifically for extract, transform, and load (ETL) data?",
     "options": [
       {
@@ -4015,7 +4015,7 @@
   },
   {
     "id": "q_7e4823459948",
-    "topicId": "migration-caf",
+    "topicId": "storage",
     "text": "A company wants to migrate petabytes of data from its on-premises data center to AWS. The company does not want to use an internet connection to perform the migration. Which AWS service will meet these requirements?",
     "options": [
       {
@@ -4194,7 +4194,7 @@
   },
   {
     "id": "q_5f9737aea692",
-    "topicId": "global-infrastructure",
+    "topicId": null,
     "text": "A company wants to use Amazon EC2 instances to provide a static website to users all over the world. The company needs to minimize latency for the users. Which solution meets these requirements?",
     "options": [
       {
@@ -4257,7 +4257,7 @@
   },
   {
     "id": "q_bf5df2f4a2d8",
-    "topicId": "migration-caf",
+    "topicId": "storage",
     "text": "A team of researchers is going to collect data at remote locations around the world. Many locations do not have internet connectivity. The team needs to capture the data in the field, and transfer it to the AWS Cloud later. Which AWS service will support these requirements?",
     "options": [
       {
@@ -4285,13 +4285,13 @@
     "source": "imported"
   },
   {
-    "id": "q_27b806575d29",
+    "id": "q_d11ce823a152",
     "topicId": "cloud-concepts",
     "text": "Which of the following are benefits that a company receives when it moves an on-premises production workload to AWS? (Choose two.)",
     "options": [
       {
         "key": "A",
-        "text": "AWS trains the company&apos;s staff on the use of all the AWS services."
+        "text": "AWS trains the company's staff on the use of all the AWS services."
       },
       {
         "key": "B",
@@ -4320,7 +4320,7 @@
   },
   {
     "id": "q_c96d5ce8ebfc",
-    "topicId": "pricing-billing",
+    "topicId": "compute",
     "text": "A company has decided to adopt Amazon EC2 infrastructure and wants to scale various stateless services for short-term usage. Which EC2 pricing model is MOST cost-efficient to meet these requirements?",
     "options": [
       {
@@ -4349,7 +4349,7 @@
   },
   {
     "id": "q_b1581f589ff9",
-    "topicId": null,
+    "topicId": "support-ai-other",
     "text": "Which of the following are benefits of AWS Trusted Advisor? (Choose two.)",
     "options": [
       {
@@ -4383,7 +4383,7 @@
   },
   {
     "id": "q_ec555d274906",
-    "topicId": null,
+    "topicId": "storage",
     "text": "A company wants to save costs by archiving data that is no longer frequently accessed by end users. Which Amazon S3 feature will meet this requirement?",
     "options": [
       {
@@ -4441,7 +4441,7 @@
   },
   {
     "id": "q_42a8ed428ae7",
-    "topicId": "migration-caf",
+    "topicId": "storage",
     "text": "A company wants an AWS service to collect and process 10 TB of data locally and transfer the data to AWS. The company has intermittent connectivity. Which AWS service will meet these requirements?",
     "options": [
       {
@@ -4499,7 +4499,7 @@
   },
   {
     "id": "q_5ca7b74d193f",
-    "topicId": null,
+    "topicId": "compute",
     "text": "What is a benefit of using AWS serverless computing?",
     "options": [
       {
@@ -4585,9 +4585,9 @@
     "source": "imported"
   },
   {
-    "id": "q_2daf441d472a",
+    "id": "q_21d0ab3ce633",
     "topicId": "iam-security",
-    "text": "A global company wants to use a managed security service for protection from SQL injection attacks. The service also must provide detailed logging information about access to the company&apos;s ecommerce applications. Which AWS service will meet these requirements?",
+    "text": "A global company wants to use a managed security service for protection from SQL injection attacks. The service also must provide detailed logging information about access to the company's ecommerce applications. Which AWS service will meet these requirements?",
     "options": [
       {
         "key": "A",
@@ -4614,9 +4614,9 @@
     "source": "imported"
   },
   {
-    "id": "q_a9316a2eb115",
+    "id": "q_1a4206a18676",
     "topicId": "pricing-billing",
-    "text": "A company is migrating its on-premises server to an Amazon EC2 instance. The server must stay active at all times for the next 12 months. Which EC2 pricing option is the MOST cost-effective for the company&apos;s workload?",
+    "text": "A company is migrating its on-premises server to an Amazon EC2 instance. The server must stay active at all times for the next 12 months. Which EC2 pricing option is the MOST cost-effective for the company's workload?",
     "options": [
       {
         "key": "A",
@@ -4643,9 +4643,9 @@
     "source": "imported"
   },
   {
-    "id": "q_44f19ee3adc2",
+    "id": "q_587ebd261839",
     "topicId": "shared-responsibility",
-    "text": "Which of the following is the customer&apos;s responsibility under the AWS shared responsibility model? (Choose two.)",
+    "text": "Which of the following is the customer's responsibility under the AWS shared responsibility model? (Choose two.)",
     "options": [
       {
         "key": "A",
@@ -4822,9 +4822,9 @@
     "source": "imported"
   },
   {
-    "id": "q_dbba2764bd4d",
+    "id": "q_d31d8dde2043",
     "topicId": "iam-security",
-    "text": "An external auditor has requested that a company provide a list of all its IAM users, including the status of users&apos; credentials and access keys. What is the SIMPLEST way to provide this information?",
+    "text": "An external auditor has requested that a company provide a list of all its IAM users, including the status of users' credentials and access keys. What is the SIMPLEST way to provide this information?",
     "options": [
       {
         "key": "A",
@@ -4832,7 +4832,7 @@
       },
       {
         "key": "B",
-        "text": "Take a screenshot of each user&apos;s page in the AWS Management Console, then provide the screenshots to the auditor."
+        "text": "Take a screenshot of each user's page in the AWS Management Console, then provide the screenshots to the auditor."
       },
       {
         "key": "C",
@@ -4881,7 +4881,7 @@
   },
   {
     "id": "q_26c6c9e1d58a",
-    "topicId": "shared-responsibility",
+    "topicId": "networking",
     "text": "Which tasks are customer responsibilities, according to the AWS shared responsibility model? (Choose two.)",
     "options": [
       {
@@ -4978,7 +4978,7 @@
   },
   {
     "id": "q_5dacc5eb4e1c",
-    "topicId": null,
+    "topicId": "deploy-operate",
     "text": "Which capabilities are in the platform perspective of the AWS Cloud Adoption Framework (AWS CAF)? (Choose two.)",
     "options": [
       {
@@ -5012,7 +5012,7 @@
   },
   {
     "id": "q_fb99e9825af9",
-    "topicId": null,
+    "topicId": "compute",
     "text": "According to the AWS shared responsibility model, the customer is responsible for applying the latest security updates and patches for which of the following?",
     "options": [
       {
@@ -5099,7 +5099,7 @@
   },
   {
     "id": "q_d185d25f405f",
-    "topicId": null,
+    "topicId": "shared-responsibility",
     "text": "Who is responsible for managing IAM user access and secret keys according to the AWS shared responsibility model?",
     "options": [
       {
@@ -5128,7 +5128,7 @@
   },
   {
     "id": "q_e9d079553b48",
-    "topicId": null,
+    "topicId": "pricing-billing",
     "text": "A company needs to run a pre-installed third-party firewall on an Amazon EC2 instance. Which AWS service or feature can provide this solution?",
     "options": [
       {
@@ -5249,7 +5249,7 @@
   },
   {
     "id": "q_d3b78e770134",
-    "topicId": "iam-security",
+    "topicId": "shared-responsibility",
     "text": "Which of the following is entirely the responsibility of AWS, according to the AWS shared responsibility model?",
     "options": [
       {
@@ -5278,7 +5278,7 @@
   },
   {
     "id": "q_3e155519b988",
-    "topicId": null,
+    "topicId": "iam-security",
     "text": "Which of the following is a characteristic of the AWS account root user?",
     "options": [
       {
@@ -5307,7 +5307,7 @@
   },
   {
     "id": "q_ec9f2e45232c",
-    "topicId": null,
+    "topicId": "deploy-operate",
     "text": "An Amazon EC2 instance previously used for development is inaccessible and no longer appears in the AWS Management Console. Which AWS service should be used to determine what action made this EC2 instance inaccessible?",
     "options": [
       {
@@ -5335,9 +5335,9 @@
     "source": "imported"
   },
   {
-    "id": "q_564fdebacd6c",
+    "id": "q_0925c9a0e4cc",
     "topicId": "deploy-operate",
-    "text": "A company&apos;s application developers need to quickly provision and manage AWS services by using scripts. Which AWS offering should the developers use to meet these requirements?",
+    "text": "A company's application developers need to quickly provision and manage AWS services by using scripts. Which AWS offering should the developers use to meet these requirements?",
     "options": [
       {
         "key": "A",
@@ -5394,7 +5394,7 @@
   },
   {
     "id": "q_ba0c5660dc42",
-    "topicId": "compute",
+    "topicId": "deploy-operate",
     "text": "A development team wants to deploy multiple test environments for an application in a fast, repeatable manner. Which AWS service should the team use?",
     "options": [
       {
@@ -5452,7 +5452,7 @@
   },
   {
     "id": "q_a8cbe4ca36bb",
-    "topicId": null,
+    "topicId": "global-infrastructure",
     "text": "Which AWS Cloud deployment model uses AWS Outposts as part of the application deployment infrastructure?",
     "options": [
       {
@@ -5510,7 +5510,7 @@
   },
   {
     "id": "q_55b01fe322eb",
-    "topicId": null,
+    "topicId": "support-ai-other",
     "text": "Which AWS service could an administrator use to provide desktop environments for several employees?",
     "options": [
       {
@@ -5539,7 +5539,7 @@
   },
   {
     "id": "q_cefb0844cef2",
-    "topicId": null,
+    "topicId": "support-ai-other",
     "text": "Which AWS service or feature is used to send both text and email messages from distributed applications?",
     "options": [
       {
@@ -5568,7 +5568,7 @@
   },
   {
     "id": "q_223a2dfbe202",
-    "topicId": null,
+    "topicId": "networking",
     "text": "Which AWS service or feature gives users the ability to capture information about network traffic in a VPC?",
     "options": [
       {
@@ -5684,7 +5684,7 @@
   },
   {
     "id": "q_b3172b72379e",
-    "topicId": null,
+    "topicId": "deploy-operate",
     "text": "An ecommerce company wants to use Amazon EC2 Auto Scaling to add and remove EC2 instances based on CPU utilization. Which AWS service or feature can initiate an Amazon EC2 Auto Scaling action to achieve this goal?",
     "options": [
       {
@@ -5800,7 +5800,7 @@
   },
   {
     "id": "q_84e672a08627",
-    "topicId": "storage",
+    "topicId": "support-ai-other",
     "text": "A company has been storing monthly reports in an Amazon S3 bucket. The company exports the report data into comma-separated values (.csv) files. A developer wants to write a simple query that can read all of these files and generate a summary report. Which AWS service or feature should the developer use to meet these requirements with the LEAST amount of operational overhead?",
     "options": [
       {
@@ -5887,7 +5887,7 @@
   },
   {
     "id": "q_7880cdf20a82",
-    "topicId": null,
+    "topicId": "support-ai-other",
     "text": "A company needs to search for text in documents that are stored in Amazon S3. Which AWS service will meet these requirements?",
     "options": [
       {
@@ -5949,9 +5949,9 @@
     "source": "imported"
   },
   {
-    "id": "q_94357dbb285a",
-    "topicId": null,
-    "text": "A user needs a relational database but does not have the resources to manage the hardware, resiliency, and replication. Which AWS service option meets the user&apos;s requirements?",
+    "id": "q_87abc8812308",
+    "topicId": "databases",
+    "text": "A user needs a relational database but does not have the resources to manage the hardware, resiliency, and replication. Which AWS service option meets the user's requirements?",
     "options": [
       {
         "key": "A",
@@ -6037,7 +6037,7 @@
   },
   {
     "id": "q_a8f739fbce2c",
-    "topicId": null,
+    "topicId": "migration-caf",
     "text": "A company is migrating to the AWS Cloud. The company wants to understand and identify potential security misconfigurations or unexpected behaviors. The company wants to prioritize any protective controls it might need. Which AWS Cloud Adoption Framework (AWS CAF) security perspective capability will meet these requirements?",
     "options": [
       {
@@ -6187,7 +6187,7 @@
   },
   {
     "id": "q_f501e57e3c45",
-    "topicId": "pricing-billing",
+    "topicId": "compute",
     "text": "A company runs thousands of simultaneous simulations using AWS Batch. Each simulation is stateless, is fault tolerant, and runs for up to 3 hours. Which pricing model enables the company to optimize costs and meet these requirements?",
     "options": [
       {
@@ -6216,7 +6216,7 @@
   },
   {
     "id": "q_04a9f4df9512",
-    "topicId": "databases",
+    "topicId": null,
     "text": "Which AWS services are supported by Savings Plans? (Choose two.)",
     "options": [
       {
@@ -6308,7 +6308,7 @@
   },
   {
     "id": "q_c0cab4ad56fa",
-    "topicId": "databases",
+    "topicId": "support-ai-other",
     "text": "A library wants to automate the classification of electronic books based on the contents of the books. Which AWS service should the library use to meet this requirement?",
     "options": [
       {
@@ -6337,7 +6337,7 @@
   },
   {
     "id": "q_7dbf3cfd3482",
-    "topicId": null,
+    "topicId": "shared-responsibility",
     "text": "Which task is a responsibility of AWS, according to the AWS shared responsibility model?",
     "options": [
       {
@@ -6550,7 +6550,7 @@
   },
   {
     "id": "q_e6b995e99171",
-    "topicId": null,
+    "topicId": "networking",
     "text": "A company created an Amazon EC2 instance. The company wants to control the incoming and outgoing network traffic at the instance level. Which AWS resource or service will meet this requirement?",
     "options": [
       {
@@ -6608,7 +6608,7 @@
   },
   {
     "id": "q_b447fe78db1e",
-    "topicId": null,
+    "topicId": "deploy-operate",
     "text": "A company wants a web application to interact with various AWS services. Which AWS service or resource will meet this requirement?",
     "options": [
       {
@@ -6666,7 +6666,7 @@
   },
   {
     "id": "q_45f1f721d56b",
-    "topicId": null,
+    "topicId": "migration-caf",
     "text": "Which options are AWS Cloud Adoption Framework (AWS CAF) governance perspective capabilities? (Choose two.)",
     "options": [
       {
@@ -6879,7 +6879,7 @@
   },
   {
     "id": "q_2fbce2e85698",
-    "topicId": null,
+    "topicId": "compute",
     "text": "A company needs Amazon EC2 instances for a workload that can tolerate interruptions. Which EC2 instance purchasing option meets this requirement with the LARGEST discount compared to On-Demand prices?",
     "options": [
       {
@@ -6907,9 +6907,9 @@
     "source": "imported"
   },
   {
-    "id": "q_fb864f8581b8",
+    "id": "q_748e0d7f3dd0",
     "topicId": "migration-caf",
-    "text": "A company is planning to migrate to the AWS Cloud. The company wants to identify measurable business outcomes that will explain the value of the company&apos;s decision to migrate. Which phase of the cloud transformation journey includes these activities?",
+    "text": "A company is planning to migrate to the AWS Cloud. The company wants to identify measurable business outcomes that will explain the value of the company's decision to migrate. Which phase of the cloud transformation journey includes these activities?",
     "options": [
       {
         "key": "A",
@@ -6995,7 +6995,7 @@
   },
   {
     "id": "q_d4d093462288",
-    "topicId": null,
+    "topicId": "migration-caf",
     "text": "Which guideline is a well-architected design principle for building cloud applications?",
     "options": [
       {
@@ -7053,7 +7053,7 @@
   },
   {
     "id": "q_b6f83704b7d7",
-    "topicId": null,
+    "topicId": "migration-caf",
     "text": "Which of the following are pillars of the AWS Well-Architected Framework? (Choose two.)",
     "options": [
       {
@@ -7116,7 +7116,7 @@
   },
   {
     "id": "q_1bf40c0a46fd",
-    "topicId": null,
+    "topicId": "compute",
     "text": "Which design principles should a company apply to AWS Cloud workloads to maximize sustainability and minimize environmental impact? (Choose two.)",
     "options": [
       {
@@ -7150,7 +7150,7 @@
   },
   {
     "id": "q_886db8064c1c",
-    "topicId": null,
+    "topicId": "cloud-concepts",
     "text": "In which ways does the AWS Cloud offer lower total cost of ownership (TCO) of computing resources than on-premises data centers? (Choose two.)",
     "options": [
       {
@@ -7184,7 +7184,7 @@
   },
   {
     "id": "q_dbe88b4d85b0",
-    "topicId": null,
+    "topicId": "iam-security",
     "text": "Which AWS service or feature identifies whether an Amazon S3 bucket or an IAM role has been shared with an external entity?",
     "options": [
       {
@@ -7334,7 +7334,7 @@
   },
   {
     "id": "q_8d4bd058fa75",
-    "topicId": null,
+    "topicId": "storage",
     "text": "Which AWS service provides on-premises applications with low-latency access to data that is stored in the AWS Cloud?",
     "options": [
       {
@@ -7363,7 +7363,7 @@
   },
   {
     "id": "q_f29fdaa761e7",
-    "topicId": null,
+    "topicId": "networking",
     "text": "What does Amazon CloudFront provide?",
     "options": [
       {
@@ -7450,7 +7450,7 @@
   },
   {
     "id": "q_38f22f74a648",
-    "topicId": null,
+    "topicId": "storage",
     "text": "Which Amazon S3 feature or storage class uses the AWS backbone network and edge locations to reduce latencies from the end user to Amazon S3?",
     "options": [
       {
@@ -7595,7 +7595,7 @@
   },
   {
     "id": "q_239a160f0c63",
-    "topicId": null,
+    "topicId": "global-infrastructure",
     "text": "Which benefit of cloud computing gives a company the ability to deploy applications to users all over the world through a network of AWS Regions, Availability Zones, and edge locations?",
     "options": [
       {
@@ -7711,7 +7711,7 @@
   },
   {
     "id": "q_7d1828bb3384",
-    "topicId": "deploy-operate",
+    "topicId": "support-ai-other",
     "text": "Which AWS service uses a combination of publishers and subscribers?",
     "options": [
       {
@@ -7769,7 +7769,7 @@
   },
   {
     "id": "q_2cd6d9907a47",
-    "topicId": null,
+    "topicId": "deploy-operate",
     "text": "Which AWS service or tool will monitor AWS resources and applications in real time?",
     "options": [
       {
@@ -7827,7 +7827,7 @@
   },
   {
     "id": "q_54edb01c38ac",
-    "topicId": "migration-caf",
+    "topicId": null,
     "text": "An ecommerce company has migrated its IT infrastructure from an on-premises data center to the AWS Cloud. Which cost is the company’s direct responsibility?",
     "options": [
       {
@@ -7856,7 +7856,7 @@
   },
   {
     "id": "q_54f32b72d744",
-    "topicId": null,
+    "topicId": "pricing-billing",
     "text": "Which AWS resource can help a company reduce its costs in exchange for a usage commitment when using Amazon EC2 instances?",
     "options": [
       {
@@ -7885,7 +7885,7 @@
   },
   {
     "id": "q_2eb4b06e1d1d",
-    "topicId": null,
+    "topicId": "migration-caf",
     "text": "Which perspective in the AWS Cloud Adoption Framework (AWS CAF) includes a capability for well-designed data and analytics architecture?",
     "options": [
       {
@@ -8069,7 +8069,7 @@
   },
   {
     "id": "q_6618bfe4df85",
-    "topicId": null,
+    "topicId": "networking",
     "text": "A company wants to use AWS Managed Services (AMS) for operational support and wants to understand the scope of AMS. Which AMS feature will meet these requirements?",
     "options": [
       {
@@ -8155,9 +8155,9 @@
     "source": "imported"
   },
   {
-    "id": "q_8b0e2a99ed74",
+    "id": "q_a156df8180c7",
     "topicId": "compute",
-    "text": "A company is in the process of finding correct Amazon EC2 instance types and sizes to meet its performance and capacity requirements. The company wants to find the lowest possible cost. Which option accurately characterizes the company&apos;s actions?",
+    "text": "A company is in the process of finding correct Amazon EC2 instance types and sizes to meet its performance and capacity requirements. The company wants to find the lowest possible cost. Which option accurately characterizes the company's actions?",
     "options": [
       {
         "key": "A",
@@ -8184,9 +8184,9 @@
     "source": "imported"
   },
   {
-    "id": "q_618c273c3a28",
+    "id": "q_60fd78a2e515",
     "topicId": "iam-security",
-    "text": "A company wants to manage sign-in security for workforce users. The company needs to create workforce users and centrally manage their access across all the company&apos;s AWS accounts and applications. Which AWS service will meet these requirements?",
+    "text": "A company wants to manage sign-in security for workforce users. The company needs to create workforce users and centrally manage their access across all the company's AWS accounts and applications. Which AWS service will meet these requirements?",
     "options": [
       {
         "key": "A",
@@ -8213,9 +8213,9 @@
     "source": "imported"
   },
   {
-    "id": "q_14b7a6485983",
-    "topicId": "pricing-billing",
-    "text": "A company wants a report that lists the status of multi-factor authentication (MFA) devices that all users in the company&apos;s AWS account use. Which AWS feature or service will meet this requirement?",
+    "id": "q_7edafd3d564a",
+    "topicId": "iam-security",
+    "text": "A company wants a report that lists the status of multi-factor authentication (MFA) devices that all users in the company's AWS account use. Which AWS feature or service will meet this requirement?",
     "options": [
       {
         "key": "A",
@@ -8271,9 +8271,9 @@
     "source": "imported"
   },
   {
-    "id": "q_81b4223b4c43",
+    "id": "q_403968ccdd0c",
     "topicId": "iam-security",
-    "text": "A company is launching a mobile app in the AWS Cloud. The company wants the app&apos;s users to sign in through social media identity providers (IdPs). Which AWS service will meet this requirement?",
+    "text": "A company is launching a mobile app in the AWS Cloud. The company wants the app's users to sign in through social media identity providers (IdPs). Which AWS service will meet this requirement?",
     "options": [
       {
         "key": "A",
@@ -8301,7 +8301,7 @@
   },
   {
     "id": "q_6a3f4c8ceace",
-    "topicId": null,
+    "topicId": "migration-caf",
     "text": "Which complimentary AWS service or tool creates data-driven business cases for cloud planning?",
     "options": [
       {
@@ -8359,7 +8359,7 @@
   },
   {
     "id": "q_1ed4d1c36e49",
-    "topicId": "compute",
+    "topicId": "deploy-operate",
     "text": "A company wants to deploy a non-containerized Java-based web application on AWS. The company wants to use a managed service to quickly deploy the application. The company wants the service to automatically provision capacity, load balance, scale, and monitor application health. Which AWS service will meet these requirements?",
     "options": [
       {
@@ -8388,7 +8388,7 @@
   },
   {
     "id": "q_8918b7b0b0a7",
-    "topicId": "networking",
+    "topicId": "deploy-operate",
     "text": "Which AWS service or tool gives users the ability to connect with AWS and deploy resources programmatically?",
     "options": [
       {
@@ -8417,7 +8417,7 @@
   },
   {
     "id": "q_4583d0e8c8cd",
-    "topicId": "pricing-billing",
+    "topicId": "compute",
     "text": "A company has deployed a web application to Amazon EC2 instances. The EC2 instances have low usage. Which AWS service or feature should the company use to rightsize the EC2 instances?",
     "options": [
       {
@@ -8446,7 +8446,7 @@
   },
   {
     "id": "q_1254a92cbe02",
-    "topicId": "iam-security",
+    "topicId": null,
     "text": "According to security best practices, how should an Amazon EC2 instance be given access to an Amazon S3 bucket?",
     "options": [
       {
@@ -8538,7 +8538,7 @@
   },
   {
     "id": "q_790e2e344caf",
-    "topicId": null,
+    "topicId": "pricing-billing",
     "text": "A company needs to categorize and track AWS usage cost based on business categories. Which AWS service or feature should the company use to meet these requirements?",
     "options": [
       {
@@ -8838,7 +8838,7 @@
   },
   {
     "id": "q_b40da0151b48",
-    "topicId": null,
+    "topicId": "iam-security",
     "text": "Which of the following is an advantage that the AWS Cloud provides to users?",
     "options": [
       {
@@ -8925,7 +8925,7 @@
   },
   {
     "id": "q_2ed663e44158",
-    "topicId": "iam-security",
+    "topicId": "networking",
     "text": "A company runs many Amazon EC2 instances in its VPC. The company wants to use a native AWS security resource to control network traffic between certain EC2 instances. Which AWS service or feature will meet this requirement?",
     "options": [
       {
@@ -9046,7 +9046,7 @@
   },
   {
     "id": "q_4e0e4222070b",
-    "topicId": "iam-security",
+    "topicId": "networking",
     "text": "Which AWS service or feature can a user configure to limit network access at the subnet level?",
     "options": [
       {
@@ -9104,7 +9104,7 @@
   },
   {
     "id": "q_f8fbec243363",
-    "topicId": "iam-security",
+    "topicId": "pricing-billing",
     "text": "A company wants to enhance security by launching a third-party ISP intrusion detection system from its AWS account. Which AWS service or resource should the company use to meet this requirement?",
     "options": [
       {
@@ -9133,7 +9133,7 @@
   },
   {
     "id": "q_d6de63877389",
-    "topicId": "shared-responsibility",
+    "topicId": "compute",
     "text": "What is a customer responsibility when using AWS Lambda according to the AWS shared responsibility model?",
     "options": [
       {
@@ -9162,7 +9162,7 @@
   },
   {
     "id": "q_72464862a1de",
-    "topicId": null,
+    "topicId": "cloud-concepts",
     "text": "How does the AWS Cloud help companies build agility into their processes and cloud infrastructure?",
     "options": [
       {
@@ -9220,7 +9220,7 @@
   },
   {
     "id": "q_daa6807d238b",
-    "topicId": null,
+    "topicId": "migration-caf",
     "text": "Which AWS Cloud Adoption Framework (AWS CAF) perspective focuses on managing identities and permissions at scale?",
     "options": [
       {
@@ -9336,7 +9336,7 @@
   },
   {
     "id": "q_4083b78600ce",
-    "topicId": "compute",
+    "topicId": "networking",
     "text": "A company hosts its website on Amazon EC2 instances. The company needs to ensure that the website reaches a global audience and provides minimum latency to users. Which AWS service should the company use to meet these requirements?",
     "options": [
       {
@@ -9457,7 +9457,7 @@
   },
   {
     "id": "q_7fe438a142fa",
-    "topicId": "databases",
+    "topicId": "support-ai-other",
     "text": "A company has 5 TB of data stored in Amazon S3. The company plans to occasionally run queries on the data for analysis. Which AWS service should the company use to run these queries in the MOST cost-effective manner?",
     "options": [
       {
@@ -9515,7 +9515,7 @@
   },
   {
     "id": "q_638ac895dbe5",
-    "topicId": "pricing-billing",
+    "topicId": "compute",
     "text": "A company is moving its development and test environments to AWS to increase agility and reduce cost. Because these are not production workloads and the servers are not fully utilized, occasional unavailability is acceptable. What is the MOST cost-effective Amazon EC2 pricing model that will meet these requirements?",
     "options": [
       {
@@ -9544,7 +9544,7 @@
   },
   {
     "id": "q_e54cc0316cae",
-    "topicId": null,
+    "topicId": "compute",
     "text": "A company deploys its application on Amazon EC2 instances. The application occasionally experiences sudden increases in demand. The company wants to ensure that its application can respond to changes in demand at the lowest possible cost. Which AWS service or concept will meet these requirements?",
     "options": [
       {
@@ -9636,7 +9636,7 @@
   },
   {
     "id": "q_7596d83ffa02",
-    "topicId": "iam-security",
+    "topicId": "deploy-operate",
     "text": "A company needs to identify who accessed an AWS service and what action was performed for a given time period. Which AWS service should the company use to meet this requirement?",
     "options": [
       {
@@ -9693,9 +9693,9 @@
     "source": "imported"
   },
   {
-    "id": "q_953c92af82fd",
-    "topicId": "iam-security",
-    "text": "What does &quot;security of the cloud” refer to in the AWS shared responsibility model?",
+    "id": "q_144b9ff336bb",
+    "topicId": "shared-responsibility",
+    "text": "What does \"security of the cloud” refer to in the AWS shared responsibility model?",
     "options": [
       {
         "key": "A",
@@ -9752,7 +9752,7 @@
   },
   {
     "id": "q_63070260ad11",
-    "topicId": null,
+    "topicId": "pricing-billing",
     "text": "Which AWS service can be used at no additional cost?",
     "options": [
       {
@@ -9868,7 +9868,7 @@
   },
   {
     "id": "q_16391b741a3f",
-    "topicId": null,
+    "topicId": "networking",
     "text": "Which AWS service or feature gives users the ability to connect VPCs and on-premises networks to a central hub?",
     "options": [
       {
@@ -10104,9 +10104,9 @@
     "source": "imported"
   },
   {
-    "id": "q_432358e7c2ba",
+    "id": "q_144d82720e24",
     "topicId": "deploy-operate",
-    "text": "A company is using AWS for all its IT infrastructure. The company&apos;s developers are allowed to deploy applications on their own. The developers want to deploy their applications without having to provision the infrastructure themselves. Which AWS service should the developers use to meet these requirements?",
+    "text": "A company is using AWS for all its IT infrastructure. The company's developers are allowed to deploy applications on their own. The developers want to deploy their applications without having to provision the infrastructure themselves. Which AWS service should the developers use to meet these requirements?",
     "options": [
       {
         "key": "A",
@@ -10192,7 +10192,7 @@
   },
   {
     "id": "q_333be20217e5",
-    "topicId": "pricing-billing",
+    "topicId": "cloud-concepts",
     "text": "Which of the following are economic benefits of using the AWS Cloud? (Choose two.)",
     "options": [
       {
@@ -10284,7 +10284,7 @@
   },
   {
     "id": "q_d5f59f823c3c",
-    "topicId": null,
+    "topicId": "iam-security",
     "text": "Which AWS service provides users with AWS issued reports, certifications, accreditations, and third-party attestations?",
     "options": [
       {
@@ -10405,7 +10405,7 @@
   },
   {
     "id": "q_24e9d798f280",
-    "topicId": null,
+    "topicId": "support-ai-other",
     "text": "A company runs an on-premises contact center for customers. The company needs to migrate to a cloud-based solution that can deliver artificial intelligence features to improve user experience. Which AWS service will meet these requirements?",
     "options": [
       {
@@ -10433,9 +10433,9 @@
     "source": "imported"
   },
   {
-    "id": "q_7fa4a6e60dc6",
+    "id": "q_044699b3e6e2",
     "topicId": "cloud-concepts",
-    "text": "A company needs the ability to acquire resources when the resources are needed. The company also needs the ability to release the resources when the resources are no longer needed. Which AWS concept represents the company&apos;s goals?",
+    "text": "A company needs the ability to acquire resources when the resources are needed. The company also needs the ability to release the resources when the resources are no longer needed. Which AWS concept represents the company's goals?",
     "options": [
       {
         "key": "A",
@@ -10492,7 +10492,7 @@
   },
   {
     "id": "q_465dbd436e02",
-    "topicId": "networking",
+    "topicId": null,
     "text": "A company wants to log in securely to Linux Amazon EC2 instances. How can the company accomplish this goal?",
     "options": [
       {
@@ -10666,7 +10666,7 @@
   },
   {
     "id": "q_b6c4aa92dbdb",
-    "topicId": null,
+    "topicId": "databases",
     "text": "Which AWS services can host PostgreSQL databases? (Choose two.)",
     "options": [
       {
@@ -10700,7 +10700,7 @@
   },
   {
     "id": "q_73bad8e4869c",
-    "topicId": null,
+    "topicId": "databases",
     "text": "A company wants to migrate its on-premises relational databases to the AWS Cloud. The company wants to use infrastructure as close to its current geographical location as possible. Which AWS service or resource should the company use to select its Amazon RDS deployment area?",
     "options": [
       {
@@ -10729,7 +10729,7 @@
   },
   {
     "id": "q_a871f520588b",
-    "topicId": "iam-security",
+    "topicId": "deploy-operate",
     "text": "Which AWS service can generate information that can be used by external auditors?",
     "options": [
       {
@@ -10787,7 +10787,7 @@
   },
   {
     "id": "q_93a03013a1f1",
-    "topicId": "global-infrastructure",
+    "topicId": "compute",
     "text": "A company wants its Amazon EC2 instances to operate in a highly available environment, even if there is a natural disaster in a particular geographic area. Which solution achieves this goal?",
     "options": [
       {
@@ -10874,7 +10874,7 @@
   },
   {
     "id": "q_b2efe52ee26d",
-    "topicId": "iam-security",
+    "topicId": "support-ai-other",
     "text": "A company uses Amazon WorkSpaces. Which task is the responsibility of AWS, according to the AWS shared responsibility model?",
     "options": [
       {
@@ -10961,7 +10961,7 @@
   },
   {
     "id": "q_c9a26de19235",
-    "topicId": null,
+    "topicId": "migration-caf",
     "text": "Which combination of AWS services can be used to move a commercial relational database to an Amazon-managed open-source database? (Choose two.)",
     "options": [
       {
@@ -11237,7 +11237,7 @@
   },
   {
     "id": "q_a9d4cd2d30b3",
-    "topicId": "support-ai-other",
+    "topicId": null,
     "text": "A company wants its AWS usage to be more sustainable. The company wants to track, measure, review, and forecast polluting emissions that result from its AWS applications. Which AWS service or tool can the company use to meet these requirements?",
     "options": [
       {
@@ -11295,7 +11295,7 @@
   },
   {
     "id": "q_d63798499b69",
-    "topicId": null,
+    "topicId": "support-ai-other",
     "text": "A company needs to provide customer service by using voice calls and web chat features. Which AWS service should the company use to meet these requirements?",
     "options": [
       {
@@ -11353,7 +11353,7 @@
   },
   {
     "id": "q_0abae2c91deb",
-    "topicId": null,
+    "topicId": "networking",
     "text": "A company is building an application that needs to deliver images and videos globally with minimal latency. Which approach can the company use to accomplish this in a cost effective manner?",
     "options": [
       {
@@ -11411,7 +11411,7 @@
   },
   {
     "id": "q_d85d0639dabc",
-    "topicId": null,
+    "topicId": "compute",
     "text": "Which AWS compute service gives users the ability to securely and reliably run containers at scale?",
     "options": [
       {
@@ -11498,7 +11498,7 @@
   },
   {
     "id": "q_368f262368d2",
-    "topicId": "deploy-operate",
+    "topicId": null,
     "text": "Which AWS service can be used to send alerts when a specific Amazon CloudWatch alarm is invoked?",
     "options": [
       {
@@ -11527,7 +11527,7 @@
   },
   {
     "id": "q_6d754900f157",
-    "topicId": null,
+    "topicId": "networking",
     "text": "A cloud practitioner wants to use a highly available and scalable DNS service for its AWS workload. Which AWS service will meet this requirement?",
     "options": [
       {
@@ -11555,9 +11555,9 @@
     "source": "imported"
   },
   {
-    "id": "q_0c05bbedd2fb",
+    "id": "q_44074d105d77",
     "topicId": "compute",
-    "text": "According to the AWS shared responsibility model, which task is the customer&apos;s responsibility?",
+    "text": "According to the AWS shared responsibility model, which task is the customer's responsibility?",
     "options": [
       {
         "key": "A",
@@ -11648,7 +11648,7 @@
   },
   {
     "id": "q_f4f00538be9a",
-    "topicId": "shared-responsibility",
+    "topicId": "databases",
     "text": "Which option is a customer responsibility when using Amazon DynamoDB under the AWS Shared Responsibility Model?",
     "options": [
       {
@@ -11822,7 +11822,7 @@
   },
   {
     "id": "q_97736b328a7f",
-    "topicId": "iam-security",
+    "topicId": "deploy-operate",
     "text": "Which AWS service or feature supports governance, compliance, and risk auditing of AWS accounts?",
     "options": [
       {
@@ -11851,7 +11851,7 @@
   },
   {
     "id": "q_626b0755738a",
-    "topicId": null,
+    "topicId": "deploy-operate",
     "text": "Which AWS Cloud design principle is a company using when the company implements AWS CloudTrail?",
     "options": [
       {
@@ -11967,7 +11967,7 @@
   },
   {
     "id": "q_910df268e269",
-    "topicId": null,
+    "topicId": "iam-security",
     "text": "Which AWS service supports user sign-up functionality and authentication to mobile and web applications?",
     "options": [
       {
@@ -12054,7 +12054,7 @@
   },
   {
     "id": "q_b6700f25b62c",
-    "topicId": null,
+    "topicId": "iam-security",
     "text": "Which task is the responsibility of the customer, according to the AWS shared responsibility model?",
     "options": [
       {
@@ -12083,7 +12083,7 @@
   },
   {
     "id": "q_566013175508",
-    "topicId": "iam-security",
+    "topicId": "deploy-operate",
     "text": "A company wants to manage its cloud resources by using infrastructure as code (IaC) templates. The company needs to meet compliance requirements. Which AWS service should the company use to meet these requirements?",
     "options": [
       {
@@ -12111,9 +12111,9 @@
     "source": "imported"
   },
   {
-    "id": "q_c0aba54e5fdb",
+    "id": "q_77dcf3d5cb74",
     "topicId": "deploy-operate",
-    "text": "A systems administrator wants to monitor the CPU utilization of a company&apos;s Amazon EC2 instances. Which AWS service can provide this information?",
+    "text": "A systems administrator wants to monitor the CPU utilization of a company's Amazon EC2 instances. Which AWS service can provide this information?",
     "options": [
       {
         "key": "A",
@@ -12141,7 +12141,7 @@
   },
   {
     "id": "q_e8b70b738a9b",
-    "topicId": "migration-caf",
+    "topicId": "pricing-billing",
     "text": "A company wants to migrate all of its on-premises infrastructure to the AWS Cloud. Before migration, the company wants estimate of costs for running its as-is infrastructure. Which AWS service or principle should the company use to meet this requirement?",
     "options": [
       {
@@ -12170,7 +12170,7 @@
   },
   {
     "id": "q_52472f8c8cc8",
-    "topicId": null,
+    "topicId": "pricing-billing",
     "text": "An independent software vendor wants to deliver and share its custom Amazon Machine Images (AMIs) to prospective customers. Which AWS service will meet these requirements?",
     "options": [
       {
@@ -12227,9 +12227,9 @@
     "source": "imported"
   },
   {
-    "id": "q_bc606015aece",
+    "id": "q_a79a4b607893",
     "topicId": "deploy-operate",
-    "text": "Which AWS service supports a company&apos;s ability to treat infrastructure as code?",
+    "text": "Which AWS service supports a company's ability to treat infrastructure as code?",
     "options": [
       {
         "key": "A",
@@ -12372,9 +12372,9 @@
     "source": "imported"
   },
   {
-    "id": "q_41fc09b40443",
+    "id": "q_5b0dac58ac8d",
     "topicId": "pricing-billing",
-    "text": "A company&apos;s application is running on Amazon EC2 instances. The company is planning a partial migration to a serverless architecture in the next year and wants to pay for resources up front. Which AWS purchasing option will optimize the company&apos;s costs?",
+    "text": "A company's application is running on Amazon EC2 instances. The company is planning a partial migration to a serverless architecture in the next year and wants to pay for resources up front. Which AWS purchasing option will optimize the company's costs?",
     "options": [
       {
         "key": "A",
@@ -12402,7 +12402,7 @@
   },
   {
     "id": "q_e8073c1da080",
-    "topicId": null,
+    "topicId": "cloud-concepts",
     "text": "A retail company is building a new mobile app. The company is evaluating whether to build the app at an on-premises data center or in the AWS Cloud. Which of the following are benefits of building this app in the AWS Cloud? (Choose two.)",
     "options": [
       {
@@ -12436,7 +12436,7 @@
   },
   {
     "id": "q_16bb9539ef13",
-    "topicId": null,
+    "topicId": "storage",
     "text": "A company must archive its documents by using a write-once, read-many (WORM) model to meet legal and compliance obligations. Which feature of Amazon S3 can the company use to meet this requirement?",
     "options": [
       {
@@ -12465,7 +12465,7 @@
   },
   {
     "id": "q_2b5b9ced71de",
-    "topicId": "pricing-billing",
+    "topicId": "compute",
     "text": "A company has batch workloads that need to run for short periods of time on Amazon EC2. The workloads can handle interruptions and can start again from where they ended. What is the MOST cost-effective EC2 instance purchasing option to meet these requirements?",
     "options": [
       {
@@ -12494,7 +12494,7 @@
   },
   {
     "id": "q_008b74ba0943",
-    "topicId": null,
+    "topicId": "databases",
     "text": "A company needs to deploy a PostgreSQL database into Amazon RDS. The database must be highly available and fault tolerant. Which AWS solution should the company use to meet these requirements?",
     "options": [
       {
@@ -12523,7 +12523,7 @@
   },
   {
     "id": "q_d18177901800",
-    "topicId": "storage",
+    "topicId": "iam-security",
     "text": "What is the MOST secure way to store passwords on AWS?",
     "options": [
       {
@@ -12615,7 +12615,7 @@
   },
   {
     "id": "q_9cfa8622081d",
-    "topicId": null,
+    "topicId": "global-infrastructure",
     "text": "A company needs to host an application in a specific geographic area to comply with regulations. Which feature of the AWS global infrastructure will help the company meet this requirement?",
     "options": [
       {
@@ -12707,7 +12707,7 @@
   },
   {
     "id": "q_43dc7228889f",
-    "topicId": null,
+    "topicId": "compute",
     "text": "When designing AWS workloads to be operational even when there are component failures, what is an AWS best practice?",
     "options": [
       {
@@ -12827,9 +12827,9 @@
     "source": "imported"
   },
   {
-    "id": "q_6b879be84bc3",
-    "topicId": "shared-responsibility",
-    "text": "Which task is the customer&apos;s responsibility, according to the AWS shared responsibility model?",
+    "id": "q_73b10ecd267e",
+    "topicId": "compute",
+    "text": "Which task is the customer's responsibility, according to the AWS shared responsibility model?",
     "options": [
       {
         "key": "A",
@@ -12886,7 +12886,7 @@
   },
   {
     "id": "q_55b6abeef526",
-    "topicId": null,
+    "topicId": "support-ai-other",
     "text": "A company wants to use automated video analysis to identify employees that are accessing its offices. Which AWS service will meet this requirement?",
     "options": [
       {
@@ -13065,7 +13065,7 @@
   },
   {
     "id": "q_7ddb6ab0326a",
-    "topicId": null,
+    "topicId": "compute",
     "text": "An ecommerce company wants to distribute traffic between the Amazon EC2 instances that host its website. Which AWS service or resource will meet these requirements?",
     "options": [
       {
@@ -13128,7 +13128,7 @@
   },
   {
     "id": "q_867955ccd39e",
-    "topicId": null,
+    "topicId": "shared-responsibility",
     "text": "According to the AWS shared responsibility model, which of the following are AWS responsibilities? (Choose two.)",
     "options": [
       {
@@ -13249,7 +13249,7 @@
   },
   {
     "id": "q_2eeced28f2f0",
-    "topicId": null,
+    "topicId": "compute",
     "text": "A company has temporary workload that is also variable. The company needs to use Amazon EC2 instances for the workload. The EC2 instances need to handle short bursts of work that cannot stop before finishing. Which purchase option will meet these requirements?",
     "options": [
       {
@@ -13277,9 +13277,9 @@
     "source": "imported"
   },
   {
-    "id": "q_e417c2e16dc4",
-    "topicId": null,
-    "text": "A company&apos;s employees are working from home. The company wants its employees to use their personal devices to connect to a managed workstation in the AWS Cloud. Which AWS service should the company use to provide the remote environment?",
+    "id": "q_a34ab2d3e28b",
+    "topicId": "support-ai-other",
+    "text": "A company's employees are working from home. The company wants its employees to use their personal devices to connect to a managed workstation in the AWS Cloud. Which AWS service should the company use to provide the remote environment?",
     "options": [
       {
         "key": "A",
@@ -13336,7 +13336,7 @@
   },
   {
     "id": "q_a31da552d63b",
-    "topicId": "storage",
+    "topicId": "support-ai-other",
     "text": "A company needs to use SQL syntax to perform a direct query of objects in an Amazon S3 bucket. Which AWS service can the company use to meet this requirement?",
     "options": [
       {
@@ -13422,9 +13422,9 @@
     "source": "imported"
   },
   {
-    "id": "q_9222a98ac875",
+    "id": "q_4f49c935f946",
     "topicId": "pricing-billing",
-    "text": "A company is using multiple AWS accounts for different business teams. The finance team wants to receive one bill for all of the company&apos;s accounts. Which AWS service or tool should the finance team use to meet this requirement?",
+    "text": "A company is using multiple AWS accounts for different business teams. The finance team wants to receive one bill for all of the company's accounts. Which AWS service or tool should the finance team use to meet this requirement?",
     "options": [
       {
         "key": "A",
@@ -13452,7 +13452,7 @@
   },
   {
     "id": "q_d901bbeb9455",
-    "topicId": null,
+    "topicId": "networking",
     "text": "A company needs a firewall that will control network connections to and from a single Amazon EC2 instance. This firewall will not control network connections to and from other instances that are in the same subnet. Which AWS service or feature can the company use to meet these requirements?",
     "options": [
       {
@@ -13568,7 +13568,7 @@
   },
   {
     "id": "q_98e137023d33",
-    "topicId": null,
+    "topicId": "deploy-operate",
     "text": "A company needs to perform an audit of recent AWS account activity. The audit will investigate who initiated an event and what actions were performed. Which AWS service should the company use to meet these requirements?",
     "options": [
       {
@@ -13597,7 +13597,7 @@
   },
   {
     "id": "q_1c8b69987517",
-    "topicId": null,
+    "topicId": "cloud-concepts",
     "text": "Which design principles are included in the reliability pillar of the AWS Well-Architected Framework? (Choose two.)",
     "options": [
       {
@@ -13631,7 +13631,7 @@
   },
   {
     "id": "q_4ded600d9f34",
-    "topicId": null,
+    "topicId": "databases",
     "text": "A company is using Amazon DynamoDB. Which task is the company’s responsibility, according to the AWS shared responsibility model?",
     "options": [
       {
@@ -13660,7 +13660,7 @@
   },
   {
     "id": "q_1a8720c74350",
-    "topicId": "compute",
+    "topicId": "storage",
     "text": "A company needs to use AWS technology to deploy a static website. Which solution meets this requirement with the LEAST amount of operational overhead?",
     "options": [
       {
@@ -13718,7 +13718,7 @@
   },
   {
     "id": "q_e6e821f7cdf3",
-    "topicId": "global-infrastructure",
+    "topicId": "cloud-concepts",
     "text": "A company wants to deploy an application in multiple Availability Zones in a single AWS Region. Which benefit will this deployment provide to the company?",
     "options": [
       {
@@ -13805,7 +13805,7 @@
   },
   {
     "id": "q_4edaa663800e",
-    "topicId": "pricing-billing",
+    "topicId": "compute",
     "text": "A company is running big data analytics and massive parallel computations on its AWS test and development servers. The company can tolerate occasional downtime. What is the MOST cost-effective Amazon EC2 purchasing option for the company to use?",
     "options": [
       {
@@ -13863,7 +13863,7 @@
   },
   {
     "id": "q_4d61f5df0c2f",
-    "topicId": null,
+    "topicId": "support-ai-other",
     "text": "A new AWS user needs to interact with AWS Support by using API calls. Which AWS Support plan will meet this requirement MOST cost-effectively?",
     "options": [
       {
@@ -13921,7 +13921,7 @@
   },
   {
     "id": "q_30d7208f1d9a",
-    "topicId": null,
+    "topicId": "pricing-billing",
     "text": "A company will run a predictable compute workload on Amazon EC2 instances for the next 3 years. The workload is critical for the company. The company wants to optimize costs to run the workload. Which solution will meet these requirements?",
     "options": [
       {
@@ -13950,7 +13950,7 @@
   },
   {
     "id": "q_e8f0123baccb",
-    "topicId": "pricing-billing",
+    "topicId": "compute",
     "text": "A company has a test AWS environment. A company is planning on testing an application within AWS. The application testing can be interrupted and does not need to run continuously. Which Amazon EC2 purchasing option will meet these requirements MOST cost-effectively?",
     "options": [
       {
@@ -14007,9 +14007,9 @@
     "source": "imported"
   },
   {
-    "id": "q_c94d07e35d59",
+    "id": "q_4b5fbd7b521a",
     "topicId": "iam-security",
-    "text": "A company wants to centrally manage its employee&apos;s access to multiple AWS accounts. Which AWS service or feature should the company use to meet this requirement?",
+    "text": "A company wants to centrally manage its employee's access to multiple AWS accounts. Which AWS service or feature should the company use to meet this requirement?",
     "options": [
       {
         "key": "A",
@@ -14337,7 +14337,7 @@
   },
   {
     "id": "q_d62f18492400",
-    "topicId": null,
+    "topicId": "networking",
     "text": "Which AWS service or feature allows a company to have its own logically isolated section of the AWS Cloud?",
     "options": [
       {
@@ -14573,9 +14573,9 @@
     "source": "imported"
   },
   {
-    "id": "q_760713dc304c",
+    "id": "q_c07cdb1e1d6e",
     "topicId": "iam-security",
-    "text": "A company&apos;s cloud environment includes Amazon EC2 instances and Application Load Balancers. The company wants to improve protections for its cloud resources against DDoS attacks. The company also wants to have real-time visibility into any DDoS attacks. Which AWS service will meet these requirements?",
+    "text": "A company's cloud environment includes Amazon EC2 instances and Application Load Balancers. The company wants to improve protections for its cloud resources against DDoS attacks. The company also wants to have real-time visibility into any DDoS attacks. Which AWS service will meet these requirements?",
     "options": [
       {
         "key": "A",
@@ -14603,7 +14603,7 @@
   },
   {
     "id": "q_8752ac68916e",
-    "topicId": null,
+    "topicId": "networking",
     "text": "Which of the following services can be used to block network traffic to an instance? (Choose two.)",
     "options": [
       {
@@ -14695,7 +14695,7 @@
   },
   {
     "id": "q_b38b188bd752",
-    "topicId": null,
+    "topicId": "databases",
     "text": "Which task is the responsibility of AWS, according to the AWS shared responsibility model?",
     "options": [
       {
@@ -14840,7 +14840,7 @@
   },
   {
     "id": "q_b6d7a9f7b924",
-    "topicId": "databases",
+    "topicId": "networking",
     "text": "A company has a website on AWS. The company wants to deliver the website to a worldwide audience and provide low-latency response times for global users. Which AWS service will meet these requirements?",
     "options": [
       {
@@ -14985,7 +14985,7 @@
   },
   {
     "id": "q_a82dd006dfb8",
-    "topicId": "compute",
+    "topicId": "global-infrastructure",
     "text": "A company has applications that control on-premises factory equipment. Which AWS service should the company use to run these applications with the LEAST latency?",
     "options": [
       {
@@ -15043,7 +15043,7 @@
   },
   {
     "id": "q_8bc907a66e58",
-    "topicId": null,
+    "topicId": "support-ai-other",
     "text": "A company runs its production workload in the AWS Cloud. The company needs to choose one of the AWS Support Plans. Which of the AWS Support Plans will meet these requirements at the LOWEST cost?",
     "options": [
       {
@@ -15129,9 +15129,9 @@
     "source": "imported"
   },
   {
-    "id": "q_23f513dab63c",
-    "topicId": null,
-    "text": "A developer needs to interact with AWS by using the AWS CLI. Which security feature or AWS service must be provisioned in the developer&apos;s account to meet this requirement?",
+    "id": "q_7061d4ff0c64",
+    "topicId": "iam-security",
+    "text": "A developer needs to interact with AWS by using the AWS CLI. Which security feature or AWS service must be provisioned in the developer's account to meet this requirement?",
     "options": [
       {
         "key": "A",
@@ -15246,7 +15246,7 @@
   },
   {
     "id": "q_8aafe00b2b87",
-    "topicId": "shared-responsibility",
+    "topicId": "compute",
     "text": "What is a customer responsibility under the AWS shared responsibility model when using AWS Lambda?",
     "options": [
       {
@@ -15304,7 +15304,7 @@
   },
   {
     "id": "q_a227eb0c738c",
-    "topicId": null,
+    "topicId": "shared-responsibility",
     "text": "Which tasks are the responsibility of AWS according to the AWS shared responsibility model? (Choose two.)",
     "options": [
       {
@@ -15337,9 +15337,9 @@
     "source": "imported"
   },
   {
-    "id": "q_442ba534573d",
-    "topicId": null,
-    "text": "A company&apos;s compliance officer wants to review the AWS Service Organization Control (SOC) reports. Which AWS service or feature should the compliance officer use to complete this task?",
+    "id": "q_8c41d3ce0dc2",
+    "topicId": "iam-security",
+    "text": "A company's compliance officer wants to review the AWS Service Organization Control (SOC) reports. Which AWS service or feature should the compliance officer use to complete this task?",
     "options": [
       {
         "key": "A",
@@ -15367,7 +15367,7 @@
   },
   {
     "id": "q_b3802c5eaf59",
-    "topicId": null,
+    "topicId": "deploy-operate",
     "text": "A company has a compliance requirement to record and evaluate configuration changes, as well as perform remediation actions on AWS resources. Which AWS service should the company use?",
     "options": [
       {
@@ -15517,7 +15517,7 @@
   },
   {
     "id": "q_e307758c7391",
-    "topicId": null,
+    "topicId": "support-ai-other",
     "text": "A company needs to use dashboards and charts to analyze insights from business data. Which AWS service will provide the dashboards and charts for these insights?",
     "options": [
       {
@@ -15604,7 +15604,7 @@
   },
   {
     "id": "q_5cfba44f46ca",
-    "topicId": null,
+    "topicId": "global-infrastructure",
     "text": "Which AWS service supports a hybrid architecture that gives users the ability to extend AWS infrastructure, AWS services, APIs, and tools to data centers, co-location environments, or on-premises facilities?",
     "options": [
       {
@@ -15662,7 +15662,7 @@
   },
   {
     "id": "q_7ebfaa2be391",
-    "topicId": null,
+    "topicId": "compute",
     "text": "What is a benefit of using an Elastic Load Balancing (ELB) load balancer with applications running in the AWS Cloud?",
     "options": [
       {
@@ -15720,7 +15720,7 @@
   },
   {
     "id": "q_a6eacc5f1532",
-    "topicId": null,
+    "topicId": "iam-security",
     "text": "A company wants to securely store Amazon RDS database credentials and automatically rotate user passwords periodically. Which AWS service or capability will meet these requirements?",
     "options": [
       {
@@ -15836,7 +15836,7 @@
   },
   {
     "id": "q_27c19e01e8a3",
-    "topicId": null,
+    "topicId": "shared-responsibility",
     "text": "Which tasks are responsibilities of the customer, according to the AWS shared responsibility model? (Choose two.)",
     "options": [
       {
@@ -15903,9 +15903,9 @@
     "source": "imported"
   },
   {
-    "id": "q_a47a596f07db",
+    "id": "q_41f4d02ba0bc",
     "topicId": "deploy-operate",
-    "text": "A developer needs to use a standardized template to create copies of a company&apos;s AWS architecture for development, test, and production environments. Which AWS service should the developer use to meet this requirement?",
+    "text": "A developer needs to use a standardized template to create copies of a company's AWS architecture for development, test, and production environments. Which AWS service should the developer use to meet this requirement?",
     "options": [
       {
         "key": "A",
@@ -16107,7 +16107,7 @@
   },
   {
     "id": "q_63c92bac529c",
-    "topicId": null,
+    "topicId": "support-ai-other",
     "text": "A company migrated its systems to the AWS Cloud. The systems are rightsized, and a security review did not reveal any issues. The company must ensure that additional developments, integrations, changes, and system usage growth do not jeopardize this optimized AWS infrastructure. Which AWS service should the company use to report ongoing optimization and security?",
     "options": [
       {
@@ -16223,7 +16223,7 @@
   },
   {
     "id": "q_1d5a2f3f7166",
-    "topicId": null,
+    "topicId": "compute",
     "text": "A company wants a cost-effective option when running its applications in an Amazon EC2 instance for short time periods. The applications can be interrupted. Which EC2 instance type will meet these requirements?",
     "options": [
       {
@@ -16252,7 +16252,7 @@
   },
   {
     "id": "q_46a9cfc0afd1",
-    "topicId": "compute",
+    "topicId": "support-ai-other",
     "text": "A company wants to provide managed Windows virtual desktops and applications to its remote employees over secure network connections. Which AWS services can the company use to meet these requirements? (Choose two.)",
     "options": [
       {
@@ -16407,7 +16407,7 @@
   },
   {
     "id": "q_2dba8c390de6",
-    "topicId": null,
+    "topicId": "networking",
     "text": "A company wants to securely access an Amazon S3 bucket from an Amazon EC2 instance without accessing the internet. What should the company use to accomplish this goal?",
     "options": [
       {
@@ -16586,7 +16586,7 @@
   },
   {
     "id": "q_d193e5d2e69e",
-    "topicId": null,
+    "topicId": "support-ai-other",
     "text": "A company wants to monitor for misconfigured security groups that are allowing unrestricted access to specific ports. Which AWS service will meet this requirement?",
     "options": [
       {
@@ -16673,7 +16673,7 @@
   },
   {
     "id": "q_933e41841907",
-    "topicId": null,
+    "topicId": "compute",
     "text": "What is the recommended use case for Amazon EC2 On-Demand Instances?",
     "options": [
       {
@@ -16731,7 +16731,7 @@
   },
   {
     "id": "q_9a47c2ac7d1e",
-    "topicId": "iam-security",
+    "topicId": "deploy-operate",
     "text": "An administrator observed that multiple AWS resources were deleted yesterday. Which AWS service will help identify the cause and determine which user deleted the resources?",
     "options": [
       {
@@ -16823,7 +16823,7 @@
   },
   {
     "id": "q_1e65e3d42550",
-    "topicId": null,
+    "topicId": "compute",
     "text": "A company hosts a web application on AWS. The company has improved the availability of its application by provisioning multiple Amazon EC2 instances. The company wants to distribute its traffic across the EC2 instances while providing a single point of contact to the web clients. Which AWS service can distribute the traffic to multiple EC2 instances as targets?",
     "options": [
       {
@@ -17026,7 +17026,7 @@
   },
   {
     "id": "q_594195ada196",
-    "topicId": null,
+    "topicId": "networking",
     "text": "A company deployed an application in multiple AWS Regions around the world. The company wants to improve the application’s performance and availability. Which AWS service will meet these requirements?",
     "options": [
       {
@@ -17054,9 +17054,9 @@
     "source": "imported"
   },
   {
-    "id": "q_d84966c91c84",
+    "id": "q_0aae093d728b",
     "topicId": "databases",
-    "text": "A company wants to migrate its on-premises SQL Server database to the AWS Cloud. The company wants AWS to handle the day-to-day administration of the database. Which AWS service will meet the company&apos;s requirements?",
+    "text": "A company wants to migrate its on-premises SQL Server database to the AWS Cloud. The company wants AWS to handle the day-to-day administration of the database. Which AWS service will meet the company's requirements?",
     "options": [
       {
         "key": "A",
@@ -17239,7 +17239,7 @@
   },
   {
     "id": "q_87f390534132",
-    "topicId": "pricing-billing",
+    "topicId": "compute",
     "text": "A company is deploying a machine learning (ML) research project that will require a lot of compute power over several months. The ML processing jobs do not need to run at specific times. Which Amazon EC2 instance purchasing option will meet these requirements at the lowest cost?",
     "options": [
       {
@@ -17360,7 +17360,7 @@
   },
   {
     "id": "q_a628ea9711ed",
-    "topicId": null,
+    "topicId": "cloud-concepts",
     "text": "A company wants to migrate to the AWS Cloud. The company needs the ability to acquire resources when the resources are necessary. The company also needs the ability to release those resources when the resources are no longer necessary. Which architecture concept of the AWS Cloud meets these requirements?",
     "options": [
       {
@@ -17504,9 +17504,9 @@
     "source": "imported"
   },
   {
-    "id": "q_14141363c493",
-    "topicId": null,
-    "text": "Which AWS Well-Architected Framework concept represents a system&apos;s ability to remain functional when the system encounters operational problems?",
+    "id": "q_8dbda4b2d28d",
+    "topicId": "migration-caf",
+    "text": "Which AWS Well-Architected Framework concept represents a system's ability to remain functional when the system encounters operational problems?",
     "options": [
       {
         "key": "A",
@@ -17563,7 +17563,7 @@
   },
   {
     "id": "q_44e32e452c74",
-    "topicId": null,
+    "topicId": "compute",
     "text": "Which AWS services or features provide disaster recovery solutions for Amazon EC2 instances? (Choose two.)",
     "options": [
       {
@@ -17655,7 +17655,7 @@
   },
   {
     "id": "q_c8ff1f6dc2a1",
-    "topicId": "pricing-billing",
+    "topicId": "compute",
     "text": "Which AWS service or tool provides recommendations to help users get rightsized Amazon EC2 instances based on historical workload usage data?",
     "options": [
       {
@@ -17742,7 +17742,7 @@
   },
   {
     "id": "q_b8b1969fd4d3",
-    "topicId": "iam-security",
+    "topicId": "storage",
     "text": "A company wants a fully managed service that centralizes and automates data protection across AWS services and hybrid workloads. Which AWS service will meet these requirements?",
     "options": [
       {
@@ -17916,7 +17916,7 @@
   },
   {
     "id": "q_551197cd3991",
-    "topicId": null,
+    "topicId": "pricing-billing",
     "text": "A company has multiple AWS accounts. The company needs to receive a consolidated bill from AWS and must centrally manage security and compliance. Which AWS service or feature should the company use to meet these requirements?",
     "options": [
       {
@@ -17945,7 +17945,7 @@
   },
   {
     "id": "q_4451cf4350e2",
-    "topicId": null,
+    "topicId": "compute",
     "text": "For which use case are Amazon EC2 On-Demand Instances MOST cost-effective?",
     "options": [
       {
@@ -18326,9 +18326,9 @@
     "source": "imported"
   },
   {
-    "id": "q_d4684e4e25b7",
-    "topicId": null,
-    "text": "A company wants to run its application&apos;s code without having to provision and manage servers. Which AWS service will meet this requirement?",
+    "id": "q_4c026ba7851a",
+    "topicId": "compute",
+    "text": "A company wants to run its application's code without having to provision and manage servers. Which AWS service will meet this requirement?",
     "options": [
       {
         "key": "A",
@@ -18384,9 +18384,9 @@
     "source": "imported"
   },
   {
-    "id": "q_8aaeb859771f",
-    "topicId": null,
-    "text": "A company wants to allow its employees to work remotely from home. The company&apos;s employees use Windows or Linux desktops. The company&apos;s employees need access from anywhere and at anytime by using any supported devices. Which AWS service will meet these requirements?",
+    "id": "q_559c800b1841",
+    "topicId": "support-ai-other",
+    "text": "A company wants to allow its employees to work remotely from home. The company's employees use Windows or Linux desktops. The company's employees need access from anywhere and at anytime by using any supported devices. Which AWS service will meet these requirements?",
     "options": [
       {
         "key": "A",
@@ -18472,7 +18472,7 @@
   },
   {
     "id": "q_c6e6746d2ee9",
-    "topicId": null,
+    "topicId": "networking",
     "text": "A company has deployed several public applications behind Application Load Balancers. The company wants to improve the performance of the applications. Which AWS service will meet these requirements?",
     "options": [
       {
@@ -18588,7 +18588,7 @@
   },
   {
     "id": "q_b64dc24b949c",
-    "topicId": null,
+    "topicId": "support-ai-other",
     "text": "A company wants to consolidate its call centers to improve the customer voice and chat experience with call center agents. Which AWS service or tool will meet these requirements?",
     "options": [
       {
@@ -18704,7 +18704,7 @@
   },
   {
     "id": "q_ecc1a999b1f1",
-    "topicId": "compute",
+    "topicId": null,
     "text": "A company wants to run its application on Amazon EC2 instances. The company needs to keep the application on-premises to meet a compliance requirement. Which AWS offering will meet these requirements?",
     "options": [
       {
@@ -18733,7 +18733,7 @@
   },
   {
     "id": "q_5317ae93313c",
-    "topicId": null,
+    "topicId": "networking",
     "text": "A company wants to connect its supported AWS services and VPCs. The company does not want to expose its internal traffic to the public internet. Which AWS service will meet these requirements?",
     "options": [
       {
@@ -18791,7 +18791,7 @@
   },
   {
     "id": "q_e7bee2939470",
-    "topicId": null,
+    "topicId": "global-infrastructure",
     "text": "A company needs to run some of its workload in the AWS Cloud. The company needs to keep some of the workload in its own on-site data center due to compliance reasons. Which AWS service will meet these requirements?",
     "options": [
       {
@@ -18878,7 +18878,7 @@
   },
   {
     "id": "q_1b91d151f190",
-    "topicId": null,
+    "topicId": "iam-security",
     "text": "A company wants to establish a schedule for rotating database user credentials. Which AWS service will support this requirement with the LEAST amount of operational overhead?",
     "options": [
       {
@@ -19057,7 +19057,7 @@
   },
   {
     "id": "q_fda2759e876f",
-    "topicId": null,
+    "topicId": "deploy-operate",
     "text": "A developer needs to maintain a development environment infrastructure and a production environment infrastructure in a repeatable fashion. Which AWS service should the developer use to meet these requirements?",
     "options": [
       {
@@ -19115,7 +19115,7 @@
   },
   {
     "id": "q_7102a4bac729",
-    "topicId": "databases",
+    "topicId": "compute",
     "text": "A company wants to run a NoSQL database on Amazon EC2 instances. Which task is the responsibility of AWS in this scenario?",
     "options": [
       {
@@ -19144,7 +19144,7 @@
   },
   {
     "id": "q_7d5a67fa2102",
-    "topicId": null,
+    "topicId": "networking",
     "text": "Which AWS service helps deliver highly available applications with fast failover for multi-Region and Multi-AZ architectures?",
     "options": [
       {
@@ -19173,7 +19173,7 @@
   },
   {
     "id": "q_d03d5453a424",
-    "topicId": "compute",
+    "topicId": "support-ai-other",
     "text": "A company has a set of ecommerce applications. The applications need to be able to send messages to each other. Which AWS service meets this requirement?",
     "options": [
       {
@@ -19236,7 +19236,7 @@
   },
   {
     "id": "q_10406d92a839",
-    "topicId": null,
+    "topicId": "storage",
     "text": "A user wants to review all Amazon S3 buckets with ACLs and S3 bucket policies in the S3 console. Which AWS service or resource will meet this requirement?",
     "options": [
       {
@@ -19381,7 +19381,7 @@
   },
   {
     "id": "q_9e6c9d987920",
-    "topicId": null,
+    "topicId": "compute",
     "text": "Which responsibility belongs to AWS when a company hosts its databases on Amazon EC2 instances?",
     "options": [
       {
@@ -19410,7 +19410,7 @@
   },
   {
     "id": "q_25b6c4328b47",
-    "topicId": null,
+    "topicId": "cloud-concepts",
     "text": "Which of the following are advantages of moving to the AWS Cloud? (Choose two.)",
     "options": [
       {
@@ -19536,7 +19536,7 @@
   },
   {
     "id": "q_c582cd897c65",
-    "topicId": null,
+    "topicId": "compute",
     "text": "Which tool should a developer use to integrate AWS service features directly into an application?",
     "options": [
       {
@@ -19681,7 +19681,7 @@
   },
   {
     "id": "q_d02c09293d45",
-    "topicId": "pricing-billing",
+    "topicId": "cloud-concepts",
     "text": "How does AWS Cloud computing help businesses reduce costs? (Choose two.)",
     "options": [
       {

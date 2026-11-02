@@ -9,7 +9,17 @@ const NO_ANSWER = '(No correct answer marked in the source document)';
 
 const OPTION_LINE = /^([A-F])\.\s*(.*)$/;
 
-const clean = (s: string): string => s.replace(/\s+/g, ' ').trim();
+const NAMED_ENTITIES: Record<string, string> = { '&apos;': "'", '&quot;': '"', '&lt;': '<', '&gt;': '>' };
+
+// &amp; is decoded last so that "&amp;lt;" becomes "&lt;" and not "<".
+export const decodeEntities = (s: string): string =>
+  s
+    .replace(/&#x([0-9a-f]+);/gi, (_, h: string) => String.fromCodePoint(parseInt(h, 16)))
+    .replace(/&#(\d+);/g, (_, d: string) => String.fromCodePoint(parseInt(d, 10)))
+    .replace(/&(apos|quot|lt|gt);/g, (m) => NAMED_ENTITIES[m])
+    .replace(/&amp;/g, '&');
+
+const clean = (s: string): string => decodeEntities(s).replace(/\s+/g, ' ').trim();
 
 function parseCard(block: string, n: number): RawCard {
   const lines = block.split('\n').map((l) => l.trim());
@@ -50,11 +60,19 @@ function parseCard(block: string, n: number): RawCard {
 export interface SkippedCard {
   cardNumber: number;
   reason: string;
+  text: string;
+}
+
+export interface MismatchedCard {
+  cardNumber: number;
+  reason: string;
+  card: RawCard;
 }
 
 export interface DuplicateCard {
   cardNumber: number;
   duplicateOf: number;
+  card: RawCard;
 }
 
 const fingerprint = (c: RawCard): string =>
@@ -64,10 +82,12 @@ export function parseCardsDetailed(raw: string): {
   cards: RawCard[];
   skipped: SkippedCard[];
   duplicates: DuplicateCard[];
+  mismatched: MismatchedCard[];
 } {
   const cards: RawCard[] = [];
   const skipped: SkippedCard[] = [];
   const duplicates: DuplicateCard[] = [];
+  const mismatched: MismatchedCard[] = [];
   const seen = new Map<string, number>();
   raw
     .replace(/\r\n?/g, '\n')
@@ -76,19 +96,31 @@ export function parseCardsDetailed(raw: string): {
     .forEach((block, i) => {
       const n = i + 1;
       if (block.split('\n').some((l) => l.trim() === NO_ANSWER)) {
-        skipped.push({ cardNumber: n, reason: 'no correct answer marked in source' });
+        skipped.push({
+          cardNumber: n,
+          reason: 'no correct answer marked in source',
+          text: clean(block.split('\n').find((l) => l.trim() !== '') ?? ''),
+        });
       } else {
         const card = parseCard(block, n);
+        if (card.multi !== card.correctKeys.length > 1) {
+          mismatched.push({
+            cardNumber: n,
+            reason: `multi=${card.multi} but ${card.correctKeys.length} correct key(s) marked`,
+            card,
+          });
+          return;
+        }
         const first = seen.get(fingerprint(card));
         if (first !== undefined) {
-          duplicates.push({ cardNumber: n, duplicateOf: first });
+          duplicates.push({ cardNumber: n, duplicateOf: first, card });
         } else {
           seen.set(fingerprint(card), n);
           cards.push(card);
         }
       }
     });
-  return { cards, skipped, duplicates };
+  return { cards, skipped, duplicates, mismatched };
 }
 
 export function parseCards(raw: string): RawCard[] {
