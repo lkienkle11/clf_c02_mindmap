@@ -1,0 +1,55 @@
+# Windows and Linux jobs have NOT been run by the author; only the macOS build was verified locally.
+name: mindmap-build
+
+on:
+  pull_request:
+    paths:
+      - 'easy_mindmap_knowledge/**'
+      - '.github/workflows/mindmap-build.yml'
+  push:
+    paths:
+      - 'easy_mindmap_knowledge/**'
+      - '.github/workflows/mindmap-build.yml'
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: macos-latest
+            bundles: app
+          - os: windows-latest
+            bundles: nsis
+          - os: ubuntu-latest
+            bundles: deb
+    runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        working-directory: easy_mindmap_knowledge
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: easy_mindmap_knowledge/package-lock.json
+
+      - uses: dtolnay/rust-toolchain@stable
+
+      - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: easy_mindmap_knowledge/src-tauri
+
+      - name: Install Linux dependencies
+        if: matrix.os == 'ubuntu-latest'
+        working-directory: .
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libwebkit2gtk-4.1-dev libappindicator3-dev librsvg2-dev patchelf
+
+      - run: npm ci
+      - run: npm test
+      - run: npm run check
+      - run: npx tauri build --bundles ${{ matrix.bundles }}
