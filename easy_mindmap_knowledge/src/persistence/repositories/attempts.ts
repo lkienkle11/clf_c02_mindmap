@@ -72,8 +72,28 @@ export function createAttemptsRepo(db: SqlExecutor) {
     return rows.map(toQuestion);
   }
 
+  /** Most ids per `IN (...)` query, well under SQLite's bound-parameter limit. */
+  const CHUNK = 500;
+
+  /** Rows of many attempts with one query per 500 ids; every requested id gets an entry (maybe empty). */
+  async function questionsOfMany(attemptIds: string[]): Promise<Map<string, AttemptQuestionRow[]>> {
+    const ids = [...new Set(attemptIds)];
+    const out = new Map<string, AttemptQuestionRow[]>(ids.map((id) => [id, []]));
+    for (let i = 0; i < ids.length; i += CHUNK) {
+      const chunk = ids.slice(i, i + CHUNK);
+      const marks = chunk.map((_, j) => `$${j + 1}`).join(', ');
+      const rows = await db.select<QuestionDb>(
+        `SELECT * FROM attempt_questions WHERE attempt_id IN (${marks}) ORDER BY attempt_id, position`,
+        chunk,
+      );
+      for (const r of rows) out.get(r.attempt_id)?.push(toQuestion(r));
+    }
+    return out;
+  }
+
   return {
     questionsOf,
+    questionsOfMany,
 
     /**
      * Questions first, attempt row LAST: a kill midway can leave orphan question rows

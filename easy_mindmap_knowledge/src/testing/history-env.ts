@@ -16,26 +16,31 @@ export const makeRow = (attemptId: string, position: number, over: Partial<Attem
 export interface HistoryEnvOptions {
   attempts?: AttemptRow[];
   rows?: Record<string, AttemptQuestionRow[]>;
-  /** questionsOf rejects this many times before working. */
+  /** questionsOfMany rejects this many times before working. */
   failRowsTimes?: number;
-  /** questionsOf waits for this promise (a slow load). */
+  /** questionsOfMany waits for this promise (a slow load). */
   gate?: Promise<void>;
   failSettingKey?: string;
 }
 
 export async function makeHistoryEnv(o: HistoryEnvOptions = {}) {
   const env = await makePracticeEnv({ submitted: o.attempts ?? [], failSettingKey: o.failSettingKey });
-  const state = { fails: o.failRowsTimes ?? 0, calls: 0 };
+  const state = { fails: o.failRowsTimes ?? 0, calls: 0, perAttemptCalls: 0, requested: [] as string[][] };
   env.services.repos.attempts = {
     ...env.services.repos.attempts,
     questionsOf: async (id: string) => {
+      state.perAttemptCalls += 1;
+      return o.rows?.[id] ?? [];
+    },
+    questionsOfMany: async (ids: string[]) => {
       state.calls += 1;
+      state.requested.push([...ids]);
       if (o.gate) await o.gate;
       if (state.fails > 0) {
         state.fails -= 1;
         throw new Error('read failed');
       }
-      return o.rows?.[id] ?? [];
+      return new Map(ids.map((id) => [id, o.rows?.[id] ?? []]));
     },
   };
   return { ...env, rowsState: state };

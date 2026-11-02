@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { untrack } from 'svelte';
   import type { AppState } from '@/app/app-state.svelte';
   import type { Services } from '@/app/composition';
   import { getI18n } from '@/i18n/i18n.svelte';
@@ -18,35 +19,33 @@
   let { services, appState }: Props = $props();
 
   const i18n = getI18n();
-  const BATCH = 8;
 
   let status = $state<'loading' | 'ready' | 'error'>('loading');
+  /** Question rows by attempt id; grows as more attempts are shown, never reloaded for an id it holds. */
   let rowsByAttempt = $state.raw(new Map<string, AttemptQuestionRow[]>());
   let selected = $state.raw<AttemptRow | null>(null);
   let loadSeq = 0;
 
+  /** Loads, with one bulk query, the rows of the given attempts that are not loaded yet. */
   async function load(list: AttemptRow[]): Promise<void> {
     const seq = ++loadSeq;
+    const have = untrack(() => rowsByAttempt);
+    const missing = list.map((a) => a.id).filter((id) => !have.has(id));
+    if (missing.length === 0) {
+      status = 'ready';
+      return;
+    }
     status = 'loading';
     try {
-      const next = new Map<string, AttemptQuestionRow[]>();
-      for (let i = 0; i < list.length; i += BATCH) {
-        const batch = list.slice(i, i + BATCH);
-        const got = await Promise.all(batch.map((a) => services.repos.attempts.questionsOf(a.id)));
-        batch.forEach((a, j) => next.set(a.id, got[j]));
-      }
+      const got = await services.repos.attempts.questionsOfMany(missing);
       if (seq !== loadSeq) return;
-      rowsByAttempt = next;
+      rowsByAttempt = new Map([...have, ...got]);
       status = 'ready';
     } catch (e) {
       console.error('Could not load the history', e);
       if (seq === loadSeq) status = 'error';
     }
   }
-
-  $effect(() => {
-    void load(appState.submittedAttempts);
-  });
 
   const filterTopic = $derived(appState.route.view === 'history' ? (appState.route.topicId ?? null) : null);
   const topicById = $derived(new Map(services.catalog.topics.map((t) => [t.id, t])));
@@ -58,6 +57,10 @@
   const shown = $derived(
     appState.submittedAttempts.filter((a) => a.status === 'submitted' && (filterTopic === null || a.topicId === filterTopic)),
   );
+  // Only the attempts on screen need their rows (most-missed and the detail dialog both read `shown`).
+  $effect(() => {
+    void load(shown);
+  });
   const newestFirst = $derived([...shown].sort((x, y) => (y.submittedAt ?? 0) - (x.submittedAt ?? 0) || (x.id < y.id ? 1 : -1)));
   const points = $derived(scoreSeries(shown));
   const weak = $derived(filterTopic === null ? weakTopics(shown, 5) : null);
@@ -91,7 +94,7 @@
   {:else if status === 'error'}
     <div role="alert" class="flex flex-col items-start gap-3">
       <p class="font-medium text-danger">{i18n.t('history.loadFailed')}</p>
-      <Button variant="secondary" onclick={() => load(appState.submittedAttempts)}>{i18n.t('common.retry')}</Button>
+      <Button variant="secondary" onclick={() => load(shown)}>{i18n.t('common.retry')}</Button>
     </div>
   {:else if shown.length === 0}
     <div class="flex flex-col items-start gap-3">

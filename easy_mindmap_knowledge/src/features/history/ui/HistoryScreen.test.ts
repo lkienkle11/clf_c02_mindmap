@@ -52,7 +52,7 @@ describe('HistoryScreen', () => {
     await userEvent.click(screen.getByRole('button', { name: 'Try again' }));
     expect(await screen.findByRole('table', { name: 'Attempts' })).toBeInTheDocument();
     expect(screen.queryByRole('alert')).not.toBeInTheDocument();
-    expect(rowsState.calls).toBeGreaterThan(4);
+    expect(rowsState.calls).toBe(2);
   });
 
   it('fills the chart, table, weak topics and most-missed questions', async () => {
@@ -101,5 +101,22 @@ describe('HistoryScreen', () => {
     const dialog = await screen.findByRole('dialog');
     expect(within(dialog).getAllByRole('listitem').filter((l) => l.getAttribute('data-question'))).toHaveLength(2);
     expect(within(dialog).getByText('No answer')).toBeInTheDocument();
+  });
+
+  it('loads the question rows of all shown attempts with ONE bulk call, never per attempt', async () => {
+    const { rowsState } = await mount();
+    await screen.findByRole('table', { name: 'Attempts' });
+    expect(rowsState.calls).toBe(1);
+    expect(rowsState.perAttemptCalls).toBe(0);
+    expect([...rowsState.requested[0]].sort()).toEqual(['a1', 'a2', 'a3', 'a4']);
+  });
+
+  it('with a topic filter, loads only the rows of the attempts of that topic', async () => {
+    const { rowsState, appState } = await mount({}, { view: 'history', topicId: 'storage' });
+    await screen.findByRole('table', { name: 'Attempts' });
+    expect(rowsState.requested).toEqual([['a4']]);
+    appState.open({ view: 'history' });
+    await waitFor(() => expect(rowsState.requested).toHaveLength(2));
+    expect([...rowsState.requested[1]].sort()).toEqual(['a1', 'a2', 'a3']); // a4 is already loaded
   });
 });

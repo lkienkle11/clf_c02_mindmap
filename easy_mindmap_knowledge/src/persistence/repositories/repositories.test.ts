@@ -185,6 +185,33 @@ describe('attempts', () => {
     expect(await db.select('SELECT * FROM attempt_questions WHERE attempt_id = $1', ['a1'])).toEqual([]);
   });
 
+  it('questionsOfMany returns each attempt\'s rows in position order, and nothing for unknown ids', async () => {
+    const repo = createAttemptsRepo(db);
+    await repo.create(attempt(), questions());
+    await repo.create(attempt({ id: 'a2' }), questions('a2'));
+    await repo.create(attempt({ id: 'a3' }), questions('a3'));
+    const got = await repo.questionsOfMany(['a2', 'a1', 'nope']);
+    expect([...got.keys()].sort()).toEqual(['a1', 'a2', 'nope']);
+    expect(got.get('a1')).toEqual(await repo.questionsOf('a1'));
+    expect(got.get('a2')!.map((q) => q.position)).toEqual([0, 1]);
+    expect(got.get('nope')).toEqual([]);
+  });
+
+  it('questionsOfMany makes one query per 500 ids and none for an empty list', async () => {
+    const selects: { sql: string; n: number }[] = [];
+    const repo = createAttemptsRepo({
+      execute: (q, p) => db.execute(q, p),
+      select: (q, p) => { selects.push({ sql: q, n: p?.length ?? 0 }); return db.select(q, p); },
+    });
+    expect((await repo.questionsOfMany([])).size).toBe(0);
+    expect(selects).toEqual([]);
+    const ids = Array.from({ length: 1001 }, (_, i) => `x${i}`);
+    await repo.questionsOfMany(ids);
+    expect(selects.map((s) => s.n)).toEqual([500, 500, 1]);
+    expect(selects[0].sql).toContain('IN ($1, $2');
+    expect(selects[0].sql).toContain('$500)');
+  });
+
   it('listSubmitted excludes in_progress attempts', async () => {
     const repo = createAttemptsRepo(db);
     await repo.create(attempt({ id: 'a1' }), questions('a1'));
