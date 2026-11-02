@@ -74,7 +74,21 @@ export function createAttemptsRepo(db: SqlExecutor) {
   return {
     questionsOf,
 
+    /**
+     * Questions first, attempt row LAST: a kill midway can leave orphan question rows
+     * (invisible, no attempt row) but never an in_progress attempt with missing questions.
+     */
     async create(a: AttemptRow, questions: AttemptQuestionRow[]): Promise<void> {
+      for (const q of questions) {
+        await db.execute(
+          `INSERT INTO attempt_questions (attempt_id, position, question_id, option_order, selected, is_correct)
+           VALUES ($1, $2, $3, $4, $5, $6)`,
+          [
+            a.id, q.position, q.questionId, JSON.stringify(q.optionOrder), JSON.stringify(q.selected),
+            q.isCorrect === null ? null : q.isCorrect ? 1 : 0,
+          ],
+        );
+      }
       await db.execute(
         `INSERT INTO attempts
            (id, kind, topic_id, status, started_at, submitted_at, submit_reason, review_allowed,
@@ -86,16 +100,6 @@ export function createAttemptsRepo(db: SqlExecutor) {
           a.heartbeatAt, a.scorePct, a.passed === null ? null : a.passed ? 1 : 0,
         ],
       );
-      for (const q of questions) {
-        await db.execute(
-          `INSERT INTO attempt_questions (attempt_id, position, question_id, option_order, selected, is_correct)
-           VALUES ($1, $2, $3, $4, $5, $6)`,
-          [
-            a.id, q.position, q.questionId, JSON.stringify(q.optionOrder), JSON.stringify(q.selected),
-            q.isCorrect === null ? null : q.isCorrect ? 1 : 0,
-          ],
-        );
-      }
     },
 
     async saveAnswer(attemptId: string, position: number, selected: string[]): Promise<void> {
@@ -128,7 +132,7 @@ export function createAttemptsRepo(db: SqlExecutor) {
 
     async findInProgress(): Promise<{ attempt: AttemptRow; questions: AttemptQuestionRow[] } | null> {
       const rows = await db.select<AttemptDb>(
-        "SELECT * FROM attempts WHERE status = 'in_progress' ORDER BY started_at DESC LIMIT 1",
+        "SELECT * FROM attempts WHERE status = 'in_progress' ORDER BY started_at DESC, id DESC LIMIT 1",
       );
       if (!rows[0]) return null;
       return { attempt: toAttempt(rows[0]), questions: await questionsOf(rows[0].id) };

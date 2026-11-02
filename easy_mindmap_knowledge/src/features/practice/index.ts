@@ -3,3 +3,8 @@ export { buildPool, planAttempt, practiceCount } from './logic/pick-questions';
 export type { PlannedQuestion } from './logic/pick-questions';
 export { makeRng, shuffle } from './logic/shuffle';
 export { gradeQuestion, passes } from './logic/grading';
+export { PracticeSession } from './session.svelte';
+export type { SubmitResult, SessionQuestion } from './session.svelte';
+export { DEFAULT_PRACTICE_OPTIONS, loadLastOptions, saveLastOptions } from './options';
+export type { PracticeOptions } from './options';
+export { NoQuestionsError, CorruptAttemptError, KnowledgeNotAllowedError } from './errors';

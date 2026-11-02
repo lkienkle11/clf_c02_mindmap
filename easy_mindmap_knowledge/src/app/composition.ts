@@ -30,6 +30,7 @@ export interface Services {
   };
   rebuildDeps: RebuildDeps;
   now(): number;
+  newId(): string;
 }
 
 /** Pure wiring shared by the real app and the tests. */
@@ -37,6 +38,7 @@ export function buildServices(parts: {
   executor: SqlExecutor;
   catalog: Catalog;
   now?: () => number;
+  newId?: () => string;
 }): Services {
   const { executor, catalog } = parts;
   const scheduler = new LeitnerScheduler();
@@ -53,6 +55,7 @@ export function buildServices(parts: {
     },
     rebuildDeps: { executor, scheduler, topicOf: (id) => questionTopics.get(id) ?? null },
     now: parts.now ?? (() => Date.now()),
+    newId: parts.newId ?? (() => crypto.randomUUID()),
   };
 }
 

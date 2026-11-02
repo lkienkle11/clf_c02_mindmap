@@ -64,6 +64,28 @@ describe('lessonProgress', () => {
 });
 
 describe('attempts', () => {
+  it('create inserts questions first: a failure midway leaves no in_progress attempt', async () => {
+    let calls = 0;
+    const flaky: SqlExecutor = {
+      select: (sql, params) => db.select(sql, params),
+      execute: async (sql, params) => {
+        calls += 1;
+        if (calls === 2) throw new Error('killed midway');
+        return db.execute(sql, params);
+      },
+    };
+    const repo = createAttemptsRepo(flaky);
+    await expect(repo.create(attempt(), questions())).rejects.toThrow('killed midway');
+    expect(await createAttemptsRepo(db).findInProgress()).toBeNull();
+  });
+
+  it('findInProgress breaks started_at ties by id DESC', async () => {
+    const repo = createAttemptsRepo(db);
+    await repo.create(attempt({ id: 'a1' }), questions('a1'));
+    await repo.create(attempt({ id: 'a2' }), questions('a2'));
+    expect((await repo.findInProgress())!.attempt.id).toBe('a2');
+  });
+
   it('create then findInProgress restores everything exactly', async () => {
     const repo = createAttemptsRepo(db);
     await repo.create(attempt(), questions());
