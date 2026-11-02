@@ -10,8 +10,25 @@ const LINK = /\]\((\S+?)\)/g;
 
 const catalog = loadBundledCatalog();
 const norm = (s: string) => s.trim().toLowerCase().replace(/\s+/g, ' ');
-const words = (s: string) => s.split(/\s+/).filter((w) => /\w/.test(w)).length;
 const links = (s: string) => [...s.matchAll(LINK)].map((m) => m[1]);
+const SOURCE_HOSTS = ['docs.aws.amazon.com', 'aws.amazon.com'];
+const KEY_POINTS = { en: /^## Key points\s*$/m, vi: /^## Ý chính\s*$/m };
+
+/**
+ * Prose words of a lesson body, counted the same way for every lesson: the Sources section is
+ * dropped, link targets are dropped (link text kept), table rule lines are dropped, and only
+ * tokens with a letter or digit count (so pipes, `-` bullets and `##` do not).
+ */
+function proseWords(body: string): number {
+  const withoutSources = body.replace(/^## (Sources|Nguồn)\s*$[\s\S]*$/m, '');
+  return withoutSources
+    .replace(/\]\([^)]*\)/g, ']')
+    .split('\n')
+    .filter((line) => !/^\s*\|?[\s|:-]+\|?\s*$/.test(line))
+    .join('\n')
+    .split(/\s+/)
+    .filter((w) => /[\p{L}\p{N}]/u.test(w)).length;
+}
 
 /** The text after the last `## ` heading, if that heading is a Sources heading. */
 function sourcesSection(body: string): string | null {
@@ -66,11 +83,15 @@ describe('loadBundledCatalog (real content folder)', () => {
         const urls = links(src!);
         expect(urls.length).toBeGreaterThanOrEqual(1);
         expect(urls.length).toBeLessThanOrEqual(3);
-        for (const url of urls) expect(isAllowedExternalUrl(url), url).toBe(true);
+        for (const url of urls) {
+          expect(isAllowedExternalUrl(url), url).toBe(true);
+          expect(SOURCE_HOSTS, url).toContain(new URL(url).hostname);
+        }
+        expect(l.body[lang], `${lang} Key points heading`).toMatch(KEY_POINTS[lang]);
       }
-      const n = words(l.body.en);
-      expect(n).toBeGreaterThanOrEqual(200);
-      expect(n).toBeLessThanOrEqual(550);
+      const n = proseWords(l.body.en);
+      expect(n, 'EN prose words').toBeGreaterThanOrEqual(250);
+      expect(n, 'EN prose words').toBeLessThanOrEqual(450);
     });
   });
 
@@ -97,6 +118,15 @@ describe('loadBundledCatalog (real content folder)', () => {
         expect(q.text.includes('(Choose two.)'), q.id).toBe(q.multi);
         for (const o of q.options) expect(o.text, q.id).not.toMatch(FORBIDDEN_OPTION);
       }
+    });
+
+    it('spreads correct answer positions (no answer-position bias)', () => {
+      const single = authored.filter((q) => !q.multi);
+      const counts = new Map<string, number>();
+      for (const q of single) counts.set(q.correct[0], (counts.get(q.correct[0]) ?? 0) + 1);
+      for (const [key, n] of counts) expect(n / single.length, `share of key ${key}`).toBeLessThanOrEqual(0.4);
+      const pairs = new Set(authored.filter((q) => q.multi).map((q) => [...q.correct].sort().join('+')));
+      expect(pairs.size, 'distinct choose-two pairs').toBeGreaterThan(1);
     });
   });
 

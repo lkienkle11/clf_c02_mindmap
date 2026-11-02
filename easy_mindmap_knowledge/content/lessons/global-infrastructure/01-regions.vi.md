@@ -10,8 +10,8 @@ required: true
 Những điều làm Region quan trọng trong đề thi:
 
 - Mỗi Region gồm **nhiều Availability Zone tách biệt, độc lập về mặt vật lý**. AWS xây các Region công khai với **ít nhất ba** Availability Zone.
-- Các Region **cô lập và độc lập** với nhau, nên sự cố ở một Region không ảnh hưởng đến hoạt động bình thường của Region khác.
-- **Dữ liệu của bạn ở lại trong Region bạn chọn.** Tài nguyên tạo ở một Region không xuất hiện ở Region khác, trừ khi bạn chủ động sao chép hoặc nhân bản (replicate) chúng.
+- Các Region **được thiết kế để cô lập** với nhau, nên sự cố thường chỉ giới hạn trong một Region.
+- **Với các dịch vụ theo Region, dữ liệu của bạn ở lại trong Region bạn chọn.** Tài nguyên tạo ở một Region không xuất hiện ở Region khác, trừ khi bạn chủ động sao chép hoặc nhân bản (replicate) chúng. Các dịch vụ toàn cầu như IAM và CloudFront không gắn với một Region duy nhất.
 - Phần lớn dịch vụ là **dịch vụ theo Region** (bạn chọn Region khi tạo tài nguyên). Một số ít dịch vụ như AWS Identity and Access Management (IAM), Amazon Route 53 và Amazon CloudFront là **dịch vụ toàn cầu**.
 
 ## Cách chọn Region
@@ -36,7 +36,7 @@ Tuân thủ thường được ưu tiên: nếu luật yêu cầu "giữ dữ li
 ## Ý chính
 
 - Region = một khu vực địa lý có nhiều Availability Zone tách biệt (ít nhất ba ở các Region công khai).
-- Các Region cô lập với nhau; dữ liệu không rời Region trừ khi bạn di chuyển nó.
+- Các Region được thiết kế để cô lập; dữ liệu trong các dịch vụ theo Region không rời Region trừ khi bạn di chuyển nó.
 - Chọn Region theo tuân thủ, độ trễ, chi phí và mức sẵn có của dịch vụ.
 - Dùng nhiều Region giúp khôi phục thảm họa, giảm độ trễ toàn cầu và đáp ứng chủ quyền dữ liệu.
 

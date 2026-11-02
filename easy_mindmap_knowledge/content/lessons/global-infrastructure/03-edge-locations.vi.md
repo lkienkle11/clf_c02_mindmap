@@ -5,7 +5,7 @@ required: true
 ---
 ## Edge location là gì
 
-**Edge location** (còn gọi là point of presence, điểm hiện diện) là một địa điểm trong mạng AWS được đặt **gần người dùng cuối**, ở nhiều địa điểm trải khắp thế giới. Edge location **không phải** là Availability Zone. Chúng phục vụ nội dung và tiếp nhận lưu lượng gần người dùng, rồi chuyển lưu lượng đi trên mạng toàn cầu của AWS.
+**Edge location** (còn gọi là point of presence, điểm hiện diện) là một địa điểm trong mạng AWS, được đặt **gần người dùng cuối** và trải khắp thế giới. Edge location **không phải** là Availability Zone. Chúng phục vụ nội dung và tiếp nhận lưu lượng gần người dùng, rồi chuyển lưu lượng đi trên mạng toàn cầu của AWS.
 
 Ý tưởng đằng sau: khoảng cách giữa người dùng và máy chủ AWS đầu tiên họ chạm tới càng ngắn thì **độ trễ (latency)** càng thấp.
 

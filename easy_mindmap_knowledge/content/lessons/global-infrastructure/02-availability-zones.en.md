@@ -11,7 +11,7 @@ An **Availability Zone (AZ)** is **one or more discrete data centers** inside a 
 How AWS keeps AZs independent:
 
 - **Physically apart**: AZs in a Region are a meaningful distance from each other (many kilometers), yet within about 100 km (60 miles), to avoid shared disasters such as fire, flood or a power-grid problem.
-- **No shared single points of failure**: power, cooling and generators are not shared between AZs.
+- **No shared single points of failure**: generators and cooling equipment are not shared between AZs, and AZs are designed to be fed from different power substations.
 - **Close enough to work together**: AZs are linked by high-bandwidth, low-latency, redundant private fiber, fast enough for synchronous replication between them.
 
 ## Why multiple AZs matter

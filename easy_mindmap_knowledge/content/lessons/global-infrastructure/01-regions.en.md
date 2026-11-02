@@ -11,8 +11,8 @@ An **AWS Region** is a geographic area of the world where AWS clusters its data 
 What makes a Region important for the exam:
 
 - Each Region is made of **multiple, isolated, physically separate Availability Zones**. AWS builds public Regions with **at least three** Availability Zones.
-- Regions are **isolated and independent** from each other, so a failure in one Region does not affect normal operations in another.
-- **Your data stays in the Region you choose.** Resources you create in one Region do not appear in another Region unless you explicitly copy or replicate them.
+- Regions are **designed to be isolated** from each other, so a failure is normally contained to one Region.
+- **For regional services, your data stays in the Region you choose.** Resources you create in one Region do not appear in another Region unless you explicitly copy or replicate them. Global services such as IAM and CloudFront are not tied to a single Region.
 - Most services are **regional** (you pick a Region when you create the resource). A few, such as AWS Identity and Access Management (IAM), Amazon Route 53 and Amazon CloudFront, are **global**.
 
 ## How to choose a Region
@@ -37,7 +37,7 @@ Compliance usually wins: if the law says "keep data in this country", you cannot
 ## Key points
 
 - A Region = a geographic area with multiple isolated Availability Zones (at least three in public Regions).
-- Regions are isolated from each other; data does not leave a Region unless you move it.
+- Regions are designed to be isolated; data in regional services does not leave a Region unless you move it.
 - Choose a Region by compliance, latency, cost and service availability.
 - Multiple Regions help with disaster recovery, global latency and data sovereignty.
 

@@ -10,23 +10,23 @@
       },
       {
         "key": "B",
-        "text": "Hybrid deployment"
-      },
-      {
-        "key": "C",
         "text": "On-premises deployment"
       },
       {
+        "key": "C",
+        "text": "Hybrid deployment"
+      },
+      {
         "key": "D",
-        "text": "Edge-only deployment"
+        "text": "Cloud deployment across multiple AWS Regions"
       }
     ],
     "correct": [
-      "B"
+      "C"
     ],
     "multi": false,
     "orderDependent": false,
-    "explanation": "A hybrid deployment connects cloud resources with infrastructure that stays outside the cloud, such as an on-premises data center. It is not a pure cloud deployment, because the payroll system still runs in the company's own data center.",
+    "explanation": "A hybrid deployment connects cloud resources with infrastructure that stays outside the cloud, such as an on-premises data center. It is not a cloud deployment, even one spread across several Regions, because the payroll system still runs in the company's own data center.",
     "source": "authored"
   },
   {
@@ -40,19 +40,19 @@
       },
       {
         "key": "B",
-        "text": "Platform as a Service (PaaS)"
-      },
-      {
-        "key": "C",
         "text": "Software as a Service (SaaS)"
       },
       {
-        "key": "D",
+        "key": "C",
         "text": "On-premises virtualization"
+      },
+      {
+        "key": "D",
+        "text": "Platform as a Service (PaaS)"
       }
     ],
     "correct": [
-      "B"
+      "D"
     ],
     "multi": false,
     "orderDependent": false,
@@ -66,15 +66,15 @@
     "options": [
       {
         "key": "A",
-        "text": "Software as a Service (SaaS)"
+        "text": "Infrastructure as a Service (IaaS)"
       },
       {
         "key": "B",
-        "text": "Platform as a Service (PaaS)"
+        "text": "Software as a Service (SaaS)"
       },
       {
         "key": "C",
-        "text": "Infrastructure as a Service (IaaS)"
+        "text": "Platform as a Service (PaaS)"
       },
       {
         "key": "D",
@@ -82,7 +82,7 @@
       }
     ],
     "correct": [
-      "C"
+      "A"
     ],
     "multi": false,
     "orderDependent": false,
@@ -96,19 +96,19 @@
     "options": [
       {
         "key": "A",
-        "text": "Electricity and cooling for the server room"
-      },
-      {
-        "key": "B",
-        "text": "Salaries of the staff who install and maintain the servers"
-      },
-      {
-        "key": "C",
         "text": "AWS Support plan fees"
       },
       {
-        "key": "D",
+        "key": "B",
+        "text": "Electricity and cooling for the server room"
+      },
+      {
+        "key": "C",
         "text": "Data transfer out from Amazon CloudFront"
+      },
+      {
+        "key": "D",
+        "text": "Salaries of the staff who install and maintain the servers"
       },
       {
         "key": "E",
@@ -116,8 +116,8 @@
       }
     ],
     "correct": [
-      "A",
-      "B"
+      "B",
+      "D"
     ],
     "multi": true,
     "orderDependent": false,
@@ -135,11 +135,11 @@
       },
       {
         "key": "B",
-        "text": "Reliability"
+        "text": "Sustainability"
       },
       {
         "key": "C",
-        "text": "Sustainability"
+        "text": "Reliability"
       },
       {
         "key": "D",
@@ -147,7 +147,7 @@
       }
     ],
     "correct": [
-      "C"
+      "B"
     ],
     "multi": false,
     "orderDependent": false,
@@ -165,19 +165,19 @@
       },
       {
         "key": "B",
-        "text": "Security"
-      },
-      {
-        "key": "C",
         "text": "Reliability"
       },
       {
-        "key": "D",
+        "key": "C",
         "text": "Performance Efficiency"
+      },
+      {
+        "key": "D",
+        "text": "Security"
       }
     ],
     "correct": [
-      "B"
+      "D"
     ],
     "multi": false,
     "orderDependent": false,
@@ -195,15 +195,15 @@
       },
       {
         "key": "B",
-        "text": "Automatically replace instances that fail health checks"
-      },
-      {
-        "key": "C",
         "text": "Run production on one large server to keep the design simple"
       },
       {
-        "key": "D",
+        "key": "C",
         "text": "Turn off health checks to reduce monitoring costs"
+      },
+      {
+        "key": "D",
+        "text": "Automatically replace instances that fail health checks"
       },
       {
         "key": "E",
@@ -212,7 +212,7 @@
     ],
     "correct": [
       "A",
-      "B"
+      "D"
     ],
     "multi": true,
     "orderDependent": false,
@@ -226,15 +226,15 @@
     "options": [
       {
         "key": "A",
-        "text": "Loosely couple the components by placing a message queue between them"
-      },
-      {
-        "key": "B",
         "text": "Move the web tier to a single, larger server"
       },
       {
-        "key": "C",
+        "key": "B",
         "text": "Run the payment component and web tier on the same server"
+      },
+      {
+        "key": "C",
+        "text": "Loosely couple the components by placing a message queue between them"
       },
       {
         "key": "D",
@@ -242,7 +242,7 @@
       }
     ],
     "correct": [
-      "A"
+      "C"
     ],
     "multi": false,
     "orderDependent": false,
@@ -256,11 +256,11 @@
     "options": [
       {
         "key": "A",
-        "text": "Stop spending money running and maintaining data centers"
+        "text": "Go global in minutes"
       },
       {
         "key": "B",
-        "text": "Go global in minutes"
+        "text": "Stop spending money running and maintaining data centers"
       },
       {
         "key": "C",
@@ -272,7 +272,7 @@
       }
     ],
     "correct": [
-      "A"
+      "B"
     ],
     "multi": false,
     "orderDependent": false,
@@ -286,28 +286,28 @@
     "options": [
       {
         "key": "A",
-        "text": "Stop the instances outside office hours"
-      },
-      {
-        "key": "B",
-        "text": "Right-size the instances to smaller instance types"
-      },
-      {
-        "key": "C",
         "text": "Launch additional instances to spread the load"
       },
       {
-        "key": "D",
+        "key": "B",
         "text": "Move the instances to a Region with more Availability Zones"
       },
       {
-        "key": "E",
+        "key": "C",
+        "text": "Stop the instances outside office hours"
+      },
+      {
+        "key": "D",
         "text": "Buy larger instances so that utilization stays low"
+      },
+      {
+        "key": "E",
+        "text": "Right-size the instances to smaller instance types"
       }
     ],
     "correct": [
-      "A",
-      "B"
+      "C",
+      "E"
     ],
     "multi": true,
     "orderDependent": false,

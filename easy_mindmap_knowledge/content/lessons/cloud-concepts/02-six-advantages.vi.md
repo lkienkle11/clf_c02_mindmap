@@ -13,7 +13,7 @@ Nhiều câu hỏi trong đề thi mô tả tình huống của một công ty r
 Bạn không phải bỏ nhiều tiền mua máy chủ và trung tâm dữ liệu trước khi biết sẽ dùng chúng thế nào. Bạn chỉ trả khi dùng tài nguyên, và chỉ trả theo lượng đã dùng.
 Từ khóa: *chi phí trả trước*, *dùng bao nhiêu trả bấy nhiêu*, *chi phí biến đổi*.
 
-**2. Benefit from massive economies of scale (hưởng lợi từ quy mô kinh tế lớn)**
+**2. Benefit from massive economies of scale (hưởng lợi từ lợi thế kinh tế theo quy mô lớn)**
 Nhà cung cấp gộp nhu cầu sử dụng của rất nhiều khách hàng. Quy mô đó giúp họ vận hành hiệu quả hơn và chuyển phần tiết kiệm thành giá pay-as-you-go thấp hơn mức bạn tự đạt được.
 Từ khóa: *tổng mức sử dụng của mọi khách hàng*, *giá thấp hơn nhờ quy mô*.
 

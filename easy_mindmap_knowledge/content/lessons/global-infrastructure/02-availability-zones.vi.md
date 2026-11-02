@@ -10,7 +10,7 @@ required: true
 Cách AWS giữ cho các AZ độc lập:
 
 - **Cách xa nhau về mặt vật lý**: các AZ trong một Region cách nhau một khoảng đáng kể (nhiều kilômét) nhưng vẫn trong phạm vi khoảng 100 km (60 dặm), để tránh cùng chịu một thảm họa như cháy, lũ hay sự cố lưới điện.
-- **Không chung điểm lỗi đơn lẻ**: nguồn điện, hệ thống làm mát và máy phát điện không dùng chung giữa các AZ.
+- **Không chung điểm lỗi đơn lẻ**: máy phát điện và thiết bị làm mát không dùng chung giữa các AZ, và các AZ được thiết kế để nhận điện từ những trạm biến áp khác nhau.
 - **Đủ gần để phối hợp**: các AZ được nối với nhau bằng cáp quang riêng có dự phòng, băng thông cao và độ trễ thấp, đủ nhanh để nhân bản đồng bộ (synchronous replication) giữa chúng.
 
 ## Vì sao cần nhiều AZ
