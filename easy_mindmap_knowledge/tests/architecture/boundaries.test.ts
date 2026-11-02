@@ -32,6 +32,43 @@ function resolveSpec(file: string, spec: string): string | null {
   return null;
 }
 
+function logicViolations(code: string): string[] {
+  return importsFromCode(code)
+    .filter(
+      ({ spec, typeOnly }) =>
+        /^(svelte|@tauri-apps)/.test(spec) ||
+        (/(^|\/)persistence(\/|$)/.test(spec) && !(typeOnly && /persistence\/records(\.ts)?$/.test(spec))),
+    )
+    .map((i) => i.spec);
+}
+
+describe('logicViolations fixtures', () => {
+  it('flags a bare persistence barrel', () => {
+    expect(logicViolations(`import { x } from '../../persistence';`)).toEqual(['../../persistence']);
+  });
+  it('flags the aliased persistence barrel', () => {
+    expect(logicViolations(`import { x } from '@/persistence';`)).toEqual(['@/persistence']);
+  });
+  it('flags persistence subpaths', () => {
+    expect(logicViolations(`import { x } from '../../persistence/repositories/x';`)).toHaveLength(1);
+  });
+  it('allows import type from persistence/records', () => {
+    expect(logicViolations(`import type { T } from '../../persistence/records';`)).toEqual([]);
+    expect(logicViolations(`import type { T } from '@/persistence/records.ts';`)).toEqual([]);
+  });
+  it('flags a value import from persistence/records', () => {
+    expect(logicViolations(`import { T } from '../../persistence/records';`)).toHaveLength(1);
+  });
+  it('catches multi-line imports and export-from', () => {
+    expect(logicViolations(`import {\n  a,\n  b,\n} from '../../persistence/x';`)).toHaveLength(1);
+    expect(logicViolations(`export { a } from '@/persistence';`)).toHaveLength(1);
+    expect(logicViolations(`export * from '../persistence/records';`)).toHaveLength(1);
+  });
+  it('does not flag names that merely contain persistence', () => {
+    expect(logicViolations(`import { a } from './persistence-helpers';`)).toEqual([]);
+  });
+});
+
 describe('architecture boundaries', () => {
   it('logic folders import no svelte, tauri or persistence', () => {
     expect(existsSync(features), 'src/features must exist').toBe(true);
@@ -40,11 +77,8 @@ describe('architecture boundaries', () => {
     );
     const violations: string[] = [];
     for (const f of logicFiles) {
-      for (const { spec, typeOnly } of importsOf(f)) {
-        const bad =
-          /^(svelte|@tauri-apps)/.test(spec) ||
-          (/persistence\//.test(spec) && !(typeOnly && /persistence\/records$/.test(spec)));
-        if (bad) violations.push(`${relative(root, f)} -> ${spec}`);
+      for (const spec of logicViolations(readFileSync(f, 'utf8'))) {
+        violations.push(`${relative(root, f)} -> ${spec}`);
       }
     }
     expect(violations).toEqual([]);
