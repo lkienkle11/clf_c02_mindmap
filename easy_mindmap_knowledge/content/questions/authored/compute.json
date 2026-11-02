@@ -1,0 +1,317 @@
+[
+  {
+    "id": "auth-compute-01",
+    "topicId": "compute",
+    "text": "Which Amazon EC2 instance family is designed for workloads that process large data sets held in memory, such as an in-memory database?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Compute optimized"
+      },
+      {
+        "key": "B",
+        "text": "Storage optimized"
+      },
+      {
+        "key": "C",
+        "text": "Memory optimized"
+      },
+      {
+        "key": "D",
+        "text": "Accelerated computing"
+      }
+    ],
+    "correct": [
+      "C"
+    ],
+    "multi": false,
+    "orderDependent": false,
+    "explanation": "Memory optimized instances are built for workloads that keep large data sets in memory. Compute optimized instances favor fast processors, and storage optimized instances favor fast access to large data sets on local storage, not memory.",
+    "source": "authored"
+  },
+  {
+    "id": "auth-compute-02",
+    "topicId": "compute",
+    "text": "A company runs a data-processing job on Amazon EC2 every night. The job saves its progress regularly and can resume if an instance is taken away. The company wants the lowest possible compute cost. Which EC2 purchasing option should the company use?",
+    "options": [
+      {
+        "key": "A",
+        "text": "On-Demand Instances"
+      },
+      {
+        "key": "B",
+        "text": "Spot Instances"
+      },
+      {
+        "key": "C",
+        "text": "Dedicated Hosts"
+      },
+      {
+        "key": "D",
+        "text": "Dedicated Instances"
+      }
+    ],
+    "correct": [
+      "B"
+    ],
+    "multi": false,
+    "orderDependent": false,
+    "explanation": "Spot Instances use spare EC2 capacity at a steep discount and suit work that can be interrupted and resumed. On-Demand Instances cost more, and Dedicated Hosts or Dedicated Instances add cost for single-tenant hardware that this job does not need.",
+    "source": "authored"
+  },
+  {
+    "id": "auth-compute-03",
+    "topicId": "compute",
+    "text": "A company will run an always-on application on Amazon EC2 for the next three years. The application must not be interrupted. Which purchasing options will lower the cost compared with On-Demand pricing? (Choose two.)",
+    "options": [
+      {
+        "key": "A",
+        "text": "Compute Savings Plans"
+      },
+      {
+        "key": "B",
+        "text": "Spot Instances"
+      },
+      {
+        "key": "C",
+        "text": "Dedicated Hosts"
+      },
+      {
+        "key": "D",
+        "text": "Reserved Instances"
+      },
+      {
+        "key": "E",
+        "text": "On-Demand Capacity Reservations"
+      }
+    ],
+    "correct": [
+      "A",
+      "D"
+    ],
+    "multi": true,
+    "orderDependent": false,
+    "explanation": "Savings Plans and Reserved Instances give lower prices in exchange for a 1-year or 3-year commitment, which suits steady usage. Spot Instances can be reclaimed by AWS, and Capacity Reservations guarantee capacity but give no discount by themselves.",
+    "source": "authored"
+  },
+  {
+    "id": "auth-compute-04",
+    "topicId": "compute",
+    "text": "A developer stops an Amazon EC2 instance that uses an Amazon EBS root volume and leaves it stopped over the weekend. What does the company continue to pay for while the instance is stopped?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Instance usage at the On-Demand rate"
+      },
+      {
+        "key": "B",
+        "text": "Data transfer for the stopped instance"
+      },
+      {
+        "key": "C",
+        "text": "Nothing, because all charges stop"
+      },
+      {
+        "key": "D",
+        "text": "Storage for the attached EBS volumes"
+      }
+    ],
+    "correct": [
+      "D"
+    ],
+    "multi": false,
+    "orderDependent": false,
+    "explanation": "A stopped instance is not billed for instance usage or data transfer, but its EBS volumes still exist and are billed for storage. Stopping the instance therefore does not reduce the bill to zero.",
+    "source": "authored"
+  },
+  {
+    "id": "auth-compute-05",
+    "topicId": "compute",
+    "text": "Which statement describes an Amazon Machine Image (AMI)?",
+    "options": [
+      {
+        "key": "A",
+        "text": "A template that contains the operating system and software used to launch an EC2 instance"
+      },
+      {
+        "key": "B",
+        "text": "A block storage volume that is attached to a running EC2 instance"
+      },
+      {
+        "key": "C",
+        "text": "A physical server that is dedicated to a single customer"
+      },
+      {
+        "key": "D",
+        "text": "A container image that is stored in Amazon ECR"
+      }
+    ],
+    "correct": [
+      "A"
+    ],
+    "multi": false,
+    "orderDependent": false,
+    "explanation": "An AMI provides the software needed to set up and boot an EC2 instance, and you must choose one at launch. A block storage volume is Amazon EBS, and a container image in Amazon ECR is used by container services, not to boot EC2 instances.",
+    "source": "authored"
+  },
+  {
+    "id": "auth-compute-06",
+    "topicId": "compute",
+    "text": "An application runs on one Amazon EC2 instance. The company wants the application to keep working if the instance or its Availability Zone fails, and to add capacity automatically during busy periods. Which combination of AWS services and features should the company use? (Choose two.)",
+    "options": [
+      {
+        "key": "A",
+        "text": "A larger instance type in the same Availability Zone"
+      },
+      {
+        "key": "B",
+        "text": "Elastic Load Balancing"
+      },
+      {
+        "key": "C",
+        "text": "Spot Instances"
+      },
+      {
+        "key": "D",
+        "text": "Amazon Elastic Container Registry (Amazon ECR)"
+      },
+      {
+        "key": "E",
+        "text": "An Amazon EC2 Auto Scaling group that spans multiple Availability Zones"
+      }
+    ],
+    "correct": [
+      "B",
+      "E"
+    ],
+    "multi": true,
+    "orderDependent": false,
+    "explanation": "An Auto Scaling group across several Availability Zones replaces failed instances and adds capacity with demand, and a load balancer sends traffic only to healthy instances in those zones. A larger instance in one zone is still a single point of failure.",
+    "source": "authored"
+  },
+  {
+    "id": "auth-compute-07",
+    "topicId": "compute",
+    "text": "A team wants to run its containerized application on AWS without provisioning, patching, or scaling any Amazon EC2 instances. Which AWS service should the team use to run the containers?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Amazon Elastic Container Registry (Amazon ECR)"
+      },
+      {
+        "key": "B",
+        "text": "Amazon EC2 Auto Scaling"
+      },
+      {
+        "key": "C",
+        "text": "AWS Fargate"
+      },
+      {
+        "key": "D",
+        "text": "Amazon Lightsail"
+      }
+    ],
+    "correct": [
+      "C"
+    ],
+    "multi": false,
+    "orderDependent": false,
+    "explanation": "AWS Fargate is a serverless compute engine for containers that works with Amazon ECS and Amazon EKS, so the team does not manage servers. Amazon ECR only stores container images; it does not run them.",
+    "source": "authored"
+  },
+  {
+    "id": "auth-compute-08",
+    "topicId": "compute",
+    "text": "A photo-sharing application must create a thumbnail each time a user uploads an image to Amazon S3. Each thumbnail takes a few seconds to create, and uploads arrive at irregular times. Which compute option meets this need with the LEAST operational overhead and no cost while idle?",
+    "options": [
+      {
+        "key": "A",
+        "text": "An On-Demand EC2 instance that runs all the time"
+      },
+      {
+        "key": "B",
+        "text": "AWS Lambda"
+      },
+      {
+        "key": "C",
+        "text": "An Amazon EKS cluster"
+      },
+      {
+        "key": "D",
+        "text": "An EC2 Dedicated Host"
+      }
+    ],
+    "correct": [
+      "B"
+    ],
+    "multi": false,
+    "orderDependent": false,
+    "explanation": "AWS Lambda runs code in response to events such as an S3 upload, scales automatically, and charges nothing when no code runs. An always-on EC2 instance or an EKS cluster needs management and costs money even when there are no uploads.",
+    "source": "authored"
+  },
+  {
+    "id": "auth-compute-09",
+    "topicId": "compute",
+    "text": "Which statement correctly describes the difference between Amazon EC2 Auto Scaling and Elastic Load Balancing (ELB)?",
+    "options": [
+      {
+        "key": "A",
+        "text": "ELB adds and removes instances, and Auto Scaling distributes requests across them"
+      },
+      {
+        "key": "B",
+        "text": "Auto Scaling caches content at edge locations, and ELB stores instance images"
+      },
+      {
+        "key": "C",
+        "text": "Auto Scaling and ELB both resize a single instance to a larger instance type"
+      },
+      {
+        "key": "D",
+        "text": "Auto Scaling adjusts the number of instances, and ELB distributes incoming traffic across healthy targets"
+      }
+    ],
+    "correct": [
+      "D"
+    ],
+    "multi": false,
+    "orderDependent": false,
+    "explanation": "Auto Scaling keeps the right number of instances running and replaces unhealthy ones, while ELB spreads incoming requests across healthy targets. The first option swaps the two roles, which is the most common mistake.",
+    "source": "authored"
+  },
+  {
+    "id": "auth-compute-10",
+    "topicId": "compute",
+    "text": "A developer uploads web application code to AWS Elastic Beanstalk. Which tasks does Elastic Beanstalk handle automatically? (Choose two.)",
+    "options": [
+      {
+        "key": "A",
+        "text": "Writing the application's business logic"
+      },
+      {
+        "key": "B",
+        "text": "Provisioning the Amazon EC2 instances that run the application"
+      },
+      {
+        "key": "C",
+        "text": "Configuring load balancing and automatic scaling"
+      },
+      {
+        "key": "D",
+        "text": "Purchasing Reserved Instances for the account"
+      },
+      {
+        "key": "E",
+        "text": "Designing the application's database schema"
+      }
+    ],
+    "correct": [
+      "B",
+      "C"
+    ],
+    "multi": true,
+    "orderDependent": false,
+    "explanation": "Elastic Beanstalk provisions the EC2 capacity, configures load balancing and scaling, and sets up health monitoring for the uploaded code. The developer still writes the code and designs the data model, and Beanstalk does not buy pricing commitments.",
+    "source": "authored"
+  }
+]
