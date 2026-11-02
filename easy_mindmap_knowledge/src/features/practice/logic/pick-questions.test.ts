@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { makeQuestion } from '@/testing/fixtures';
 import type { Catalog, Question } from '@/content/types';
 import { buildPool, planAttempt, practiceCount } from './pick-questions';
-import { makeRng } from './shuffle';
+import { makeRng } from '@/random/seeded-random';
 
 const qs = (n: number, over: Partial<Question> = {}) =>
   Array.from({ length: n }, (_, i) =>

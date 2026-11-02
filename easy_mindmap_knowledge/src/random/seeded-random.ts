@@ -1,3 +1,5 @@
+// Pure and import-free: shared by practice, review and the app shell without coupling them.
+
 /** mulberry32 seeded PRNG returning floats in [0, 1). */
 export function makeRng(seed: number): () => number {
   let a = seed >>> 0;

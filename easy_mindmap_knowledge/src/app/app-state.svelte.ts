@@ -1,6 +1,6 @@
 import { completedTopicIds, topicStatuses } from '@/features/mindmap';
 import type { TopicStatus } from '@/features/mindmap';
-import { makeRng } from '@/features/practice';
+import { makeRng } from '@/random/seeded-random';
 import {
   buildReviewPlan,
   localDateString,

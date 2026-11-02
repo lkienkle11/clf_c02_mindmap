@@ -1,10 +1,9 @@
 import type { Services } from '@/app/composition';
 import type { AttemptQuestionRow, AttemptRow, ClockState } from '@/persistence';
-import { rebuildStatsFor } from '@/features/review';
 import { advanceFreeze, isExpired, remainingAt, resolveOnResume, startClock } from './logic/attempt-clock';
 import { gradeQuestion, passes } from './logic/grading';
 import { buildPool, planAttempt, practiceCount } from './logic/pick-questions';
-import { makeRng, shuffle } from './logic/shuffle';
+import { makeRng, shuffle } from '@/random/seeded-random';
 import { CorruptAttemptError, KnowledgeNotAllowedError, NoQuestionsError } from './errors';
 import { saveLastOptions } from './options';
 import type { PracticeOptions } from './options';
@@ -305,7 +304,7 @@ export class PracticeSession {
     // Both follow-ups always run so UI state refreshes even if the stats rebuild failed; first error wins.
     let failure: { error: unknown } | null = null;
     try {
-      await rebuildStatsFor(this.services.rebuildDeps, items.map((i) => i.questionId));
+      await this.services.rebuildStats(items.map((i) => i.questionId));
     } catch (error) {
       failure = { error };
     }
@@ -356,7 +355,7 @@ export class PracticeSession {
       }
       if (kept) {
         // The attempt was submitted for a moment: drop its contribution to the stats cache.
-        await rebuildStatsFor(this.services.rebuildDeps, kept.items.map((i) => i.questionId));
+        await this.services.rebuildStats(kept.items.map((i) => i.questionId));
         await this.onSubmitted();
       }
     })();

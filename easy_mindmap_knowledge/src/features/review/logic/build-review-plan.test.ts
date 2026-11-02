@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import type { QuestionStat } from '@/persistence/records';
-import { makeRng } from '@/features/practice';
+import { makeRng } from '@/random/seeded-random';
 import { buildReviewPlan } from './build-review-plan';
 
 const DAY = 86_400_000;

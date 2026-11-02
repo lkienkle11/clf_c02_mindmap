@@ -1,5 +1,5 @@
 import type { QuestionStat } from '@/persistence/records';
-import { shuffle } from '@/features/practice';
+import { shuffle } from '@/random/seeded-random';
 import { reviewSummaries } from './review-summary';
 
 export type ReviewMode = { kind: 'full' } | { kind: 'quick' } | { kind: 'custom'; topicIds: string[] };

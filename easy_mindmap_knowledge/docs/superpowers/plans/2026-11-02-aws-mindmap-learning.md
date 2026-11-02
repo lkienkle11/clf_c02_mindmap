@@ -63,7 +63,8 @@ easy_mindmap_knowledge/
 │   └── build.ts                          # ghi content/questions/imported.json
 ├── src-tauri/
 │   ├── Cargo.toml, tauri.conf.json, capabilities/default.json (sql:default, sql:allow-execute)
-│   ├── migrations/0001_init.sql          # NGUỒN DUY NHẤT của schema, dùng cả cho test
+│   ├── migrations/0001_init.sql          # NGUỒN DUY NHẤT của schema, dùng cả cho test; KHÔNG sửa sau khi phát hành
+│   ├── migrations/0002_attempt_question_index.sql  # migration mới = file NNNN_*.sql mới, đăng ký trong lib.rs
 │   └── src/{main.rs, lib.rs}             # lib.rs đăng ký plugin SQL + add_migrations(include_str!)
 ├── src/
 │   ├── main.ts                           # mount App
@@ -71,6 +72,7 @@ easy_mindmap_knowledge/
 │   │   ├── composition.ts                # tạo executor, repositories, catalog, scheduler
 │   │   ├── app-state.svelte.ts           # view hiện tại, tiến trình đã nạp, hành động cấp app
 │   │   └── App.svelte                    # shell: điều hướng giữa các feature
+│   ├── random/seeded-random.ts           # makeRng (mulberry32) + shuffle: thuần, không import gì; dùng chung cho practice, review, app
 │   ├── content/                          # kiểu nội dung + nạp/validate catalog
 │   │   ├── types.ts                      # Topic, Lesson, Question, Catalog
 │   │   ├── load-catalog.ts               # loadCatalog(raw): Catalog (validate)
@@ -83,7 +85,7 @@ easy_mindmap_knowledge/
 │   ├── features/
 │   │   ├── mindmap/    logic/{topic-status,tree-layout,water-path}.ts · ui/{TreeCanvas,TopicBranch,LeafNode,TrunkWater}.svelte · index.ts
 │   │   ├── lesson/     ui/{LessonPanel.svelte,markdown.ts} · index.ts
-│   │   ├── practice/   logic/{pick-questions,shuffle,order-dependent,grading,attempt-clock}.ts
+│   │   ├── practice/   logic/{pick-questions,order-dependent,grading,attempt-clock}.ts
 │   │   │               session.svelte.ts · ui/{PracticeSetup,PracticeSession,PracticeResult,ResumePrompt}.svelte · index.ts
 │   │   ├── review/     logic/{scheduler,review-summary,build-review-plan,prompt-gate}.ts · stats-rebuild.ts (dịch vụ, không phải logic thuần)
 │   │   │               ui/{DailyReviewModal,ReviewSession,ReviewButton}.svelte · index.ts
@@ -102,7 +104,7 @@ easy_mindmap_knowledge/
 
 **Quy tắc đặt file mới:** hành vi của một màn/feature vào `features/<tên>/`; phần không cần Svelte vào `logic/` của feature đó; chạm SQL chỉ vào `persistence/`; thành phần dùng ở ≥ 2 feature và không mang nghiệp vụ vào `ui/`.
 
-**Hướng import được phép:** `features/*/ui` → `features/*/logic` cùng feature, `ui/`, `i18n/`, `content/`, `app` store qua props/context; `features/*/logic` → `content/types`, `import type` từ `persistence/records` và logic cùng feature (cấm Svelte, `@tauri-apps/*`, mọi import khác từ `persistence/`); `persistence/` → `content/types`; `app/` (composition root) → mọi thứ; feature khác chỉ qua `index.ts`; `testing/` chỉ test import. `boundaries.test.ts` quét import và fail khi vi phạm.
+**Hướng import được phép:** `features/*/ui` → `features/*/logic` cùng feature, `ui/`, `i18n/`, `content/`, `app` store qua props/context; `features/*/logic` → CHỈ (danh sách trắng) đường dẫn tương đối trong chính thư mục `logic/` của feature đó, `@/content/types`, `@/random/*` và `import type` từ `@/persistence/records` (mọi thứ khác bị cấm, kể cả package, Svelte, `@tauri-apps/*`, `index.ts` của feature khác); `random/` không import gì; giữa các `index.ts` của feature không được có vòng import lúc chạy (`practice` không bao giờ import `review`; review gọi practice, còn practice nhờ `Services.rebuildStats` để dựng lại thống kê); `persistence/` → `content/types`; `app/` (composition root) → mọi thứ; feature khác chỉ qua `index.ts`; `testing/` chỉ test import. `boundaries.test.ts` quét import và fail khi vi phạm.
 
 **Cố ý không làm:** không router thư viện, không Svelte Flow, không store toàn cục `stores/`, không ports/adapters (chỉ interface `SqlExecutor` và `ReviewScheduler`, mỗi cái có ≥ 2 cài đặt hoặc lý do thay thế thật).
 

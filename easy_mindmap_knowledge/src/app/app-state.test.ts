@@ -5,7 +5,7 @@ import { makeRawCatalog, makeQuestion } from '@/testing/fixtures';
 import { createNodeSqliteExecutor } from '@/testing/node-sqlite-executor';
 import type { AttemptRow, QuestionStat } from '@/persistence';
 import { buildReviewPlan, localDateString } from '@/features/review';
-import { makeRng } from '@/features/practice';
+import { makeRng } from '@/random/seeded-random';
 import { buildServices } from './composition';
 import type { Services } from './composition';
 import { AppState, SETTING_BUTTON_HIDDEN_DATE, SETTING_PROMPT_DATE } from './app-state.svelte';

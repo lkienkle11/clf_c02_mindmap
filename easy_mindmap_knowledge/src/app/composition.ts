@@ -15,7 +15,7 @@ import type {
   SettingsRepo,
   SqlExecutor,
 } from '@/persistence';
-import { LeitnerScheduler } from '@/features/review';
+import { LeitnerScheduler, rebuildStatsFor } from '@/features/review';
 import type { RebuildDeps, ReviewScheduler } from '@/features/review';
 
 export interface Services {
@@ -29,6 +29,11 @@ export interface Services {
     settings: SettingsRepo;
   };
   rebuildDeps: RebuildDeps;
+  /**
+   * Re-derives question_stats for these questions from history. Injected so practice can trigger it
+   * without importing the review feature (review depends on practice, never the other way round).
+   */
+  rebuildStats(questionIds: string[]): Promise<void>;
   now(): number;
   newId(): string;
 }
@@ -39,10 +44,13 @@ export function buildServices(parts: {
   catalog: Catalog;
   now?: () => number;
   newId?: () => string;
+  /** Test override; defaults to rebuildStatsFor over this executor and catalog. */
+  rebuildStats?: (questionIds: string[]) => Promise<void>;
 }): Services {
   const { executor, catalog } = parts;
   const scheduler = new LeitnerScheduler();
   const questionTopics = new Map(catalog.questions.map((q) => [q.id, q.topicId]));
+  const rebuildDeps: RebuildDeps = { executor, scheduler, topicOf: (id) => questionTopics.get(id) ?? null };
   return {
     catalog,
     executor,
@@ -53,7 +61,8 @@ export function buildServices(parts: {
       questionStats: createQuestionStatsRepo(executor),
       settings: createSettingsRepo(executor),
     },
-    rebuildDeps: { executor, scheduler, topicOf: (id) => questionTopics.get(id) ?? null },
+    rebuildDeps,
+    rebuildStats: parts.rebuildStats ?? ((ids) => rebuildStatsFor(rebuildDeps, ids)),
     now: parts.now ?? (() => Date.now()),
     newId: parts.newId ?? (() => crypto.randomUUID()),
   };

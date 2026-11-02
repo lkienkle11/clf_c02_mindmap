@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { makeRng, shuffle } from './shuffle';
+import { makeRng, shuffle } from './seeded-random';
 
 describe('makeRng', () => {
   it('is deterministic and in [0,1)', () => {
@@ -10,6 +10,16 @@ describe('makeRng', () => {
       expect(v).toBeGreaterThanOrEqual(0);
       expect(v).toBeLessThan(1);
     }
+  });
+});
+
+describe('makeRng reference values', () => {
+  it('matches the published mulberry32 sequence for seed 42', () => {
+    const r = makeRng(42);
+    expect([r(), r(), r()]).toEqual([0.6011037519201636, 0.44829055899754167, 0.8524657934904099]);
+  });
+  it('uses the seed as an unsigned 32-bit integer', () => {
+    expect(makeRng(2 ** 32 + 42)()).toBe(makeRng(42)());
   });
 });
 

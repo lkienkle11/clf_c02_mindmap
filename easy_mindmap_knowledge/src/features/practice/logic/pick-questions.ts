@@ -1,5 +1,5 @@
 import type { Catalog, Question } from '@/content/types';
-import { shuffle } from './shuffle';
+import { shuffle } from '@/random/seeded-random';
 
 export const CAPSTONE_TOPIC_ID = 'capstone';
 

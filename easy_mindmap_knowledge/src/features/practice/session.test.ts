@@ -374,6 +374,35 @@ describe('exit retry (final review I4)', () => {
   });
 });
 
+describe('stats rebuild goes through Services (no practice -> review import)', () => {
+  it('submit hands the attempt question ids to services.rebuildStats', async () => {
+    const calls: string[][] = [];
+    services = { ...services, rebuildStats: async (ids) => { calls.push(ids); } };
+    const s = await start();
+    await answer(s, 10);
+    await s.submit('manual');
+    expect(calls).toEqual([s.questions.map((q) => q.questionId)]);
+    expect(await services.repos.questionStats.listAll()).toEqual([]); // only the injected function ran
+  });
+
+  it('exit after a committed submit hands the ids to services.rebuildStats again', async () => {
+    const calls: string[][] = [];
+    services = { ...services, rebuildStats: async (ids) => { calls.push(ids); } };
+    const s = await start('compute', { limitMs: 1000 });
+    await answer(s, 10);
+    let release!: () => void;
+    gate = new Promise<void>((r) => { release = r; });
+    const hit = new Promise<void>((r) => { gateHit = r; });
+    const ticking = s.tick(5000);
+    await hit;
+    const exiting = s.exit();
+    release();
+    await Promise.all([ticking, exiting]);
+    expect(calls).toHaveLength(2);
+    expect(calls[1]).toEqual(s.questions.map((q) => q.questionId));
+  });
+});
+
 describe('time source', () => {
   it('never reads Date.now inside the session', async () => {
     const spy = vi.spyOn(Date, 'now');
