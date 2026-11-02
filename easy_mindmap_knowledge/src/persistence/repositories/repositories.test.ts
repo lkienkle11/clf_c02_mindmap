@@ -170,6 +170,21 @@ describe('attempts', () => {
     expect(await repo.questionsOf('a2')).toHaveLength(2);
   });
 
+  it('discard deletes the attempt row first: a failure on the question rows leaves no visible attempt', async () => {
+    const repo = createAttemptsRepo({
+      select: (sql, params) => db.select(sql, params),
+      execute: async (sql, params) => {
+        if (sql.includes('DELETE FROM attempt_questions')) throw new Error('disk');
+        return db.execute(sql, params);
+      },
+    });
+    await repo.create(attempt(), questions());
+    await expect(repo.discard('a1')).rejects.toThrow('disk');
+    expect(await repo.findInProgress()).toBeNull();
+    await createAttemptsRepo(db).discard('a1'); // retry is idempotent and removes the orphans
+    expect(await db.select('SELECT * FROM attempt_questions WHERE attempt_id = $1', ['a1'])).toEqual([]);
+  });
+
   it('listSubmitted excludes in_progress attempts', async () => {
     const repo = createAttemptsRepo(db);
     await repo.create(attempt({ id: 'a1' }), questions('a1'));

@@ -336,6 +336,44 @@ describe('exit', () => {
   });
 });
 
+describe('exit retry (final review I4)', () => {
+  it('a rejected discard can be retried and then succeeds', async () => {
+    const s = await start();
+    await answer(s, 2);
+    failSql = 'DELETE FROM attempts';
+    await expect(s.exit()).rejects.toThrow('injected');
+    expect(await services.repos.attempts.findInProgress()).not.toBeNull();
+    failSql = null;
+    await s.exit();
+    expect(await services.repos.attempts.findInProgress()).toBeNull();
+    expect(await db.select('SELECT * FROM attempt_questions')).toEqual([]);
+  });
+
+  it('after a failed exit the attempt stays usable: select saves and submit is accepted', async () => {
+    const s = await start();
+    failSql = 'DELETE FROM attempts';
+    await expect(s.exit()).rejects.toThrow('injected');
+    failSql = null;
+    await answer(s, 10);
+    expect((await services.repos.attempts.questionsOf(s.attemptId))[0].selected).toEqual(['A']);
+    const r = await s.submit('manual');
+    expect(r.passed).toBe(true);
+    expect(await services.repos.attempts.listSubmitted()).toHaveLength(1);
+  });
+
+  it('a failed submit, then a failed exit, still lets the user submit', async () => {
+    const s = await start();
+    await answer(s, 10);
+    failSql = 'UPDATE attempts SET status';
+    await expect(s.submit('manual')).rejects.toThrow('injected');
+    failSql = 'DELETE FROM attempts';
+    await expect(s.exit()).rejects.toThrow('injected');
+    failSql = null;
+    expect(s.submitReason).toBeNull();
+    await expect(s.submit('manual')).resolves.toMatchObject({ passed: true });
+  });
+});
+
 describe('time source', () => {
   it('never reads Date.now inside the session', async () => {
     const spy = vi.spyOn(Date, 'now');

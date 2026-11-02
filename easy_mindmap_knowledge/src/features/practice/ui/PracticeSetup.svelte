@@ -82,6 +82,10 @@
 </script>
 
 <form class="mx-auto flex max-w-2xl flex-col gap-6 p-6" onsubmit={start}>
+  <!-- The header nav is hidden on the practice route, so the setup stage needs its own way back. -->
+  <div>
+    <Button variant="ghost" onclick={() => appState.open({ view: 'tree' })}><span aria-hidden="true">←</span> {i18n.t('practice.setup.back')}</Button>
+  </div>
   <header>
     <h1 class="text-2xl font-semibold">{i18n.t('nav.practice')}: {topic.title[i18n.locale]}</h1>
     <p class="text-muted-foreground">{i18n.t('practice.questionCount', { count })}</p>

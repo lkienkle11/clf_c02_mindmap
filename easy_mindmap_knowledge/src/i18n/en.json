@@ -66,6 +66,7 @@
   "practice.setup.clockLegend": "If the app has a problem",
   "practice.setup.clockFreeze": "The clock stands still",
   "practice.setup.clockRun": "The clock keeps running",
+  "practice.setup.back": "Back to the map",
   "practice.setup.start": "Start",
   "practice.setup.noQuestions": "This topic has no questions yet, so there is nothing to practise.",
   "practice.setup.startFailed": "Could not start the attempt. Please try again.",

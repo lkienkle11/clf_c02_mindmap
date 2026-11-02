@@ -145,6 +145,35 @@ describe('PracticeSessionView', () => {
     expect(env.discarded).toEqual([env.session.attemptId]);
   });
 
+  it('a failed Exit shows an inline alert, keeps the attempt usable, and Exit can be retried', async () => {
+    const env = await mount({}, { failDiscard: 1 });
+    env.appState.open({ view: 'practice', topicId: 'compute' });
+    await userEvent.click(screen.getByRole('button', { name: 'Exit' }));
+    await userEvent.click(within(await screen.findByRole('dialog')).getByRole('button', { name: 'Exit and discard' }));
+    expect(await screen.findByRole('alert')).toHaveTextContent('Could not leave the attempt. Please try again.');
+    expect(env.appState.route).toEqual({ view: 'practice', topicId: 'compute' });
+    expect(env.discarded).toEqual([]);
+    // Still usable: an answer can be chosen and saved.
+    await userEvent.click(within(screen.getByRole('group')).getAllByRole(env.session.questions[0].multi ? 'checkbox' : 'radio')[0]);
+    await waitFor(() => expect(env.saved).toHaveLength(1));
+    // Retry works.
+    await userEvent.click(screen.getByRole('button', { name: 'Exit' }));
+    await userEvent.click(within(await screen.findByRole('dialog')).getByRole('button', { name: 'Exit and discard' }));
+    await waitFor(() => expect(env.appState.route).toEqual({ view: 'tree' }));
+    expect(env.discarded).toEqual([env.session.attemptId]);
+  });
+
+  it('after a failed Exit the attempt can still be submitted', async () => {
+    const env = await mount({}, { failDiscard: 1 });
+    await userEvent.click(screen.getByRole('button', { name: 'Exit' }));
+    await userEvent.click(within(await screen.findByRole('dialog')).getByRole('button', { name: 'Exit and discard' }));
+    await screen.findByRole('alert');
+    await userEvent.click(screen.getByRole('button', { name: 'Submit' }));
+    await userEvent.click(within(await screen.findByRole('dialog')).getByRole('button', { name: 'Submit' }));
+    await waitFor(() => expect(env.session.submitted).toBe(true));
+    expect(env.submittedIds).toEqual([env.session.attemptId]);
+  });
+
   it('shows no countdown without a limit', async () => {
     await mount();
     expect(screen.queryByRole('timer')).not.toBeInTheDocument();

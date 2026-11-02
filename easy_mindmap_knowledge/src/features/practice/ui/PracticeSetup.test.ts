@@ -110,4 +110,22 @@ describe('PracticeSetup', () => {
     expect(await screen.findByRole('alert')).toHaveTextContent('Could not start');
     expect(onstarted).not.toHaveBeenCalled();
   });
+
+  it('Back to the map routes to the tree without touching saved options', async () => {
+    const seed = JSON.stringify({ allowReview: true, limitMs: 90_000, clockMode: 'run' });
+    const env = await mount('compute', seed);
+    env.appState.open({ view: 'practice', topicId: 'compute' });
+    await userEvent.click(screen.getByRole('radio', { name: 'No time limit' }));
+    await userEvent.click(screen.getByRole('button', { name: 'Back to the map' }));
+    expect(env.appState.route).toEqual({ view: 'tree' });
+    expect(env.store.get('practice_last_options')).toBe(seed);
+    expect(env.created).toEqual([]);
+    expect(env.onstarted).not.toHaveBeenCalled();
+  });
+
+  it('Back to the map speaks Vietnamese', async () => {
+    const env = await makePracticeEnv();
+    renderWithI18n(PracticeSetup, { services: env.services, appState: env.appState, topicId: 'compute', onstarted: vi.fn() }, 'vi');
+    expect(screen.getByRole('button', { name: 'Về sơ đồ' })).toBeInTheDocument();
+  });
 });

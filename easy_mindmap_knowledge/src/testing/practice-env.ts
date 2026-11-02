@@ -36,6 +36,8 @@ export interface PracticeEnvOptions {
   failCreate?: boolean;
   /** settings.set rejects for this key. */
   failSettingKey?: string;
+  /** attempts.discard rejects this many times before working. */
+  failDiscard?: number;
 }
 
 export async function makePracticeEnv(o: PracticeEnvOptions = {}) {
@@ -51,7 +53,7 @@ export async function makePracticeEnv(o: PracticeEnvOptions = {}) {
   const saved: { position: number; selected: string[] }[] = [];
   const submittedIds: string[] = [];
   const created: string[] = [];
-  const state = { inProgress: o.inProgress ?? null, failSaveAnswer: o.failSaveAnswer ?? false };
+  const state = { inProgress: o.inProgress ?? null, failSaveAnswer: o.failSaveAnswer ?? false, failDiscard: o.failDiscard ?? 0 };
   const services: Services = {
     ...base,
     repos: {
@@ -74,7 +76,14 @@ export async function makePracticeEnv(o: PracticeEnvOptions = {}) {
         },
         findInProgress: async () => state.inProgress,
         markSubmitted: async (id) => { submittedIds.push(id); state.inProgress = null; },
-        discard: async (id) => { discarded.push(id); state.inProgress = null; },
+        discard: async (id) => {
+          if (state.failDiscard > 0) {
+            state.failDiscard -= 1;
+            throw new Error('disk busy');
+          }
+          discarded.push(id);
+          state.inProgress = null;
+        },
         saveAnswer: async (_id, position, selected) => {
           if (state.failSaveAnswer) throw new Error('disk full');
           saved.push({ position, selected });

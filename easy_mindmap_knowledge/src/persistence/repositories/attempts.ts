@@ -139,9 +139,13 @@ export function createAttemptsRepo(db: SqlExecutor) {
       return { attempt: toAttempt(rows[0]), questions: await questionsOf(rows[0].id) };
     },
 
+    /**
+     * Attempt row FIRST: a failure before it changes nothing (the attempt stays whole and usable), a
+     * failure after it leaves only invisible orphan question rows, which a retry removes.
+     */
     async discard(attemptId: string): Promise<void> {
-      await db.execute('DELETE FROM attempt_questions WHERE attempt_id = $1', [attemptId]);
       await db.execute('DELETE FROM attempts WHERE id = $1', [attemptId]);
+      await db.execute('DELETE FROM attempt_questions WHERE attempt_id = $1', [attemptId]);
     },
 
     async listSubmitted(): Promise<AttemptRow[]> {

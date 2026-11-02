@@ -323,6 +323,9 @@ export class PracticeSession {
    * leave, so the attempt is then discarded anyway) and do NOT expose its result: the attempt no
    * longer exists, so `result` is cleared and stats are rebuilt without it. After a completed
    * submit, exit() is a no-op: the submitted attempt is history and must be kept.
+   *
+   * A rejected discard deleted nothing, so the session is restored (still answerable and
+   * submittable, or still showing a result that is committed) and exit() may be called again.
    */
   exit(): Promise<void> {
     if (this.#exitPromise) return this.#exitPromise;
@@ -332,13 +335,28 @@ export class PracticeSession {
     this.#exitPromise = (async () => {
       const pending = this.#inflight;
       if (pending) await pending.catch(() => {});
-      const ids = this.#result ? this.#questions.map((q) => q.questionId) : [];
+      const kept = this.#result;
       this.#result = null;
       this.#submitted = false;
-      await this.services.repos.attempts.discard(this.attemptId);
-      if (ids.length > 0) {
+      try {
+        await this.services.repos.attempts.discard(this.attemptId);
+      } catch (e) {
+        this.#exited = false;
+        this.#exitPromise = null;
+        if (kept) {
+          // The submit committed before the discard failed: it is history now, show it.
+          this.#result = kept;
+          this.#submitted = true;
+        } else {
+          // A submit that failed while we waited left the session closed; reopen it for a retry.
+          this.#closed = false;
+          this.#submitReason = null;
+        }
+        throw e;
+      }
+      if (kept) {
         // The attempt was submitted for a moment: drop its contribution to the stats cache.
-        await rebuildStatsFor(this.services.rebuildDeps, ids);
+        await rebuildStatsFor(this.services.rebuildDeps, kept.items.map((i) => i.questionId));
         await this.onSubmitted();
       }
     })();
