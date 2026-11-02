@@ -12,12 +12,14 @@
     appState: AppState;
     /** Receives the restored session (already submitted when its time ran out while the app was closed). */
     onresumed: (session: PracticeSession) => void;
+    /** Attempt id of the session currently on screen; its in-progress row is not "unfinished". */
+    activeAttemptId?: string | null;
   }
 
-  let { services, appState, onresumed }: Props = $props();
+  let { services, appState, onresumed, activeAttemptId = null }: Props = $props();
 
   const i18n = getI18n();
-  const found = $derived(appState.resumeAttempt);
+  const found = $derived(appState.resumeAttempt?.attempt.id === activeAttemptId ? null : appState.resumeAttempt);
   const open = $derived(found !== null && appState.view !== 'practice');
   let busy = $state(false);
   let notice = $state<string | null>(null);
@@ -38,6 +40,8 @@
         await session.submit('timeout').catch(() => {});
         if (!session.submitted) throw new Error('submit failed');
       }
+      // The row is now owned by a live session, so it must not be offered again.
+      appState.resumeAttempt = null;
       onresumed(session);
     } catch (e) {
       if (e instanceof CorruptAttemptError) {

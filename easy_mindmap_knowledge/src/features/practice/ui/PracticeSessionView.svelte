@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { tick } from 'svelte';
   import type { AppState } from '@/app/app-state.svelte';
   import type { Services } from '@/app/composition';
   import { getI18n } from '@/i18n/i18n.svelte';
@@ -15,11 +16,9 @@
     services: Services;
     appState: AppState;
     session: PracticeSession;
-    /** Called just before a user-initiated submit, so the screen can tell it from a timeout. */
-    onmanual: () => void;
   }
 
-  let { services, appState, session, onmanual }: Props = $props();
+  let { services, appState, session }: Props = $props();
 
   const i18n = getI18n();
   const questionsById = $derived(new Map(services.catalog.questions.map((q) => [q.id, q])));
@@ -34,13 +33,22 @@
   let exitOpen = $state(false);
   let busy = $state(false);
   let alert = $state<string | null>(null);
+  let announcement = $state('');
+  let panel = $state<HTMLElement>();
+
+  /** Navigate, tell screen readers which question this is, and move focus to its legend. */
+  async function go(index: number): Promise<void> {
+    session.goTo(index);
+    announcement = i18n.t('practice.questionAnnounce', { current: session.index + 1, total });
+    await tick();
+    panel?.querySelector<HTMLElement>('legend')?.focus();
+  }
 
   async function submit(): Promise<void> {
     if (busy) return;
     busy = true;
     submitOpen = false;
     alert = null;
-    onmanual();
     try {
       await session.submit('manual');
     } catch {
@@ -58,8 +66,9 @@
     try {
       await session.exit();
       exitOpen = false;
+      // Refresh first: otherwise the stale in-progress row would flash the resume prompt on the tree.
+      await appState.refresh().catch(() => {});
       appState.open({ view: 'tree' });
-      appState.refresh().catch(() => {});
     } catch {
       exitOpen = false;
       alert = i18n.t('practice.exitFailed');
@@ -80,18 +89,22 @@
     <p role="alert" class="rounded-lg border border-danger p-3 text-danger">{alert}</p>
   {/if}
 
-  {#if current && question}
-    {#key current.position}
-      <QuestionPanel {session} item={current} {question} onfailed={() => (alert = i18n.t('practice.selectFailed'))} />
-    {/key}
-  {/if}
+  <p class="sr-only" role="status" aria-live="polite" data-testid="question-announcement">{announcement}</p>
 
-  <div class="flex flex-wrap justify-between gap-3">
-    <Button variant="secondary" disabled={session.index === 0} onclick={() => session.goTo(session.index - 1)}>{i18n.t('practice.previous')}</Button>
-    <Button variant="secondary" disabled={session.index >= total - 1} onclick={() => session.goTo(session.index + 1)}>{i18n.t('practice.next')}</Button>
+  <div bind:this={panel}>
+    {#if current && question}
+      {#key current.position}
+        <QuestionPanel {session} item={current} {question} onfailed={() => (alert = i18n.t('practice.selectFailed'))} />
+      {/key}
+    {/if}
   </div>
 
-  <QuestionNav questions={session.questions} index={session.index} ongo={(i) => session.goTo(i)} />
+  <div class="flex flex-wrap justify-between gap-3">
+    <Button variant="secondary" disabled={session.index === 0} onclick={() => go(session.index - 1)}>{i18n.t('practice.previous')}</Button>
+    <Button variant="secondary" disabled={session.index >= total - 1} onclick={() => go(session.index + 1)}>{i18n.t('practice.next')}</Button>
+  </div>
+
+  <QuestionNav questions={session.questions} index={session.index} ongo={go} />
 
   <div class="flex flex-wrap items-start gap-3 border-t border-border-subtle pt-4">
     <div class="flex flex-col gap-1">

@@ -20,7 +20,7 @@
 
   // One interval; each tick reports the REAL time since the previous tick (timers can fire late).
   $effect(() => {
-    if (!timed) return;
+    if (!timed || session.submitted) return;
     let last = services.now();
     let inFlight = false;
     const id = setInterval(() => {

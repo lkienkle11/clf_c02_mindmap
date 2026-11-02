@@ -17,15 +17,14 @@
   let { services, appState, topicId, initialSession = null }: Props = $props();
 
   // `chosen` overrides the prop once this screen starts or resets a session itself.
-  let chosen = $state.raw<{ session: PracticeSession | null; manual: boolean } | null>(null);
+  let chosen = $state.raw<{ session: PracticeSession | null } | null>(null);
   const session = $derived(chosen ? chosen.session : initialSession);
-  // Without a manual submit, a submitted session ended by the clock (or by auto-submit on resume).
-  const timedOut = $derived(session?.submitted === true && !chosen?.manual);
+  const timedOut = $derived(session?.submitReason === 'timeout');
   const canRetry = $derived(services.catalog.topics.some((t) => t.id === topicId));
 </script>
 
 {#if !session}
-  <PracticeSetup {services} {appState} {topicId} onstarted={(s) => (chosen = { session: s, manual: false })} />
+  <PracticeSetup {services} {appState} {topicId} onstarted={(s) => (chosen = { session: s })} />
 {:else if session.submitted && session.result}
   <PracticeResult
     {services}
@@ -33,10 +32,10 @@
     {timedOut}
     {canRetry}
     onback={() => appState.open({ view: 'tree' })}
-    onretry={() => (chosen = { session: null, manual: false })}
+    onretry={() => (chosen = { session: null })}
   />
 {:else}
   {#key session.attemptId}
-    <PracticeSessionView {services} {appState} {session} onmanual={() => (chosen = { session, manual: true })} />
+    <PracticeSessionView {services} {appState} {session} />
   {/key}
 {/if}

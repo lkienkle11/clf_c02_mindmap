@@ -27,6 +27,12 @@ export interface SessionQuestion {
 
 type Reason = 'manual' | 'timeout';
 const CLOCK_SAVE_EVERY_MS = 5000;
+/**
+ * Most elapsed time one tick may charge in FREEZE mode. Ticks come once a second, so a longer gap means
+ * the app was suspended or asleep; that counts as an app problem and the clock stands still (spec 4.3).
+ * Run mode derives time from the deadline and needs no cap.
+ */
+export const FREEZE_MAX_TICK_MS = 3000;
 
 const view = (q: SessionQuestion): SessionQuestion =>
   Object.freeze({ ...q, optionOrder: Object.freeze([...q.optionOrder]) as string[], selected: Object.freeze([...q.selected]) as string[] });
@@ -49,6 +55,7 @@ export class PracticeSession {
   #submitted = $state(false);
   #result = $state.raw<SubmitResult | null>(null);
   #knowledgeOpen = $state(false);
+  #submitReason = $state<Reason | null>(null);
 
   #clock: ClockState;
   #sinceSave = 0;
@@ -90,6 +97,8 @@ export class PracticeSession {
   get submitted(): boolean { return this.#submitted; }
   get result(): SubmitResult | null { return this.#result; }
   get knowledgeOpen(): boolean { return this.#knowledgeOpen; }
+  /** Why the attempt is (being) submitted; set by the first submit request, cleared if that submit fails. */
+  get submitReason(): Reason | null { return this.#submitReason; }
 
   static async start(
     services: Services,
@@ -167,8 +176,10 @@ export class PracticeSession {
   async tick(elapsedMs: number): Promise<void> {
     if (this.#closed || this.#exited || this.#clock.limitMs === null) return;
     const now = this.services.now();
-    if (this.#clock.mode === 'freeze') {
-      this.#clock = advanceFreeze(this.#clock, elapsedMs);
+    const frozen = this.#clock.mode === 'freeze';
+    const charged = frozen ? Math.min(Math.max(0, elapsedMs), FREEZE_MAX_TICK_MS) : elapsedMs;
+    if (frozen) {
+      this.#clock = advanceFreeze(this.#clock, charged);
     } else {
       this.#clock = { ...this.#clock, remainingMs: remainingAt(this.#clock, now) };
     }
@@ -177,7 +188,7 @@ export class PracticeSession {
       await this.submit('timeout');
       return;
     }
-    this.#sinceSave += Math.max(0, elapsedMs);
+    this.#sinceSave += Math.max(0, charged);
     if (this.#sinceSave >= CLOCK_SAVE_EVERY_MS) await this.flushClock();
   }
 
@@ -203,6 +214,7 @@ export class PracticeSession {
     if (this.#exited) return Promise.reject(new Error('Session was exited'));
     if (this.#closed) return Promise.reject(new Error('Session is closed'));
     this.#closed = true;
+    this.#submitReason = reason;
     const run = this.#doSubmit(reason).finally(() => {
       this.#inflight = null;
     });
@@ -242,7 +254,10 @@ export class PracticeSession {
       });
     } catch (e) {
       // Nothing was committed as submitted; allow a retry, but never resurrect an exited session.
-      if (!this.#exited) this.#closed = false;
+      if (!this.#exited) {
+        this.#closed = false;
+        this.#submitReason = null;
+      }
       throw e;
     }
     // From here the attempt IS submitted in the DB. Expose the result before any follow-up

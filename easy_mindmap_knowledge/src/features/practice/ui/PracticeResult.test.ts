@@ -8,7 +8,7 @@ import PracticeResult from './PracticeResult.svelte';
 
 const items: SubmitResult['items'] = [
   { questionId: 'q1', selected: ['A'], correct: ['A'], isCorrect: true, explanation: 'Because alpha.' },
-  { questionId: 'q2', selected: ['A', 'C'], correct: ['A', 'B'], isCorrect: false },
+  { questionId: 'q2', selected: ['C', 'A'], correct: ['B', 'A'], isCorrect: false },
   { questionId: 'q3', selected: [], correct: ['C'], isCorrect: false },
 ];
 
@@ -23,7 +23,8 @@ async function mount(result: SubmitResult, timedOut = false) {
 describe('PracticeResult', () => {
   it('shows the score, the pass line and the threshold, and moves focus to the heading', async () => {
     await mount({ scorePct: 90, correct: 9, total: 10, passed: true, items });
-    const heading = screen.getByRole('heading', { level: 2, name: 'Result' });
+    expect(screen.getAllByRole('heading', { level: 1 })).toHaveLength(1);
+    const heading = screen.getByRole('heading', { level: 1, name: 'Result' });
     expect(heading).toHaveFocus();
     expect(screen.getByText('90%')).toBeInTheDocument();
     expect(screen.getByText('9 of 10 correct')).toBeInTheDocument();
@@ -47,8 +48,9 @@ describe('PracticeResult', () => {
     expect(first.getByText('Because alpha.')).toBeInTheDocument();
     const second = within(rows[1]);
     expect(second.getByText(/✗/)).toHaveTextContent('Incorrect');
-    expect(second.getByText('Alpha, Charlie')).toBeInTheDocument();
-    expect(second.getByText('Alpha, Bravo')).toBeInTheDocument();
+    const lists = second.getAllByRole('list');
+    expect(within(lists[0]).getAllByRole('listitem').map((li) => li.textContent)).toEqual(['Alpha', 'Charlie']);
+    expect(within(lists[1]).getAllByRole('listitem').map((li) => li.textContent)).toEqual(['Alpha', 'Bravo']);
     expect(within(rows[2]).getByText('No answer')).toBeInTheDocument();
     expect(within(rows[2]).getByText('Charlie')).toBeInTheDocument();
   });

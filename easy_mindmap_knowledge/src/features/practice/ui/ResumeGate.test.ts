@@ -74,4 +74,11 @@ describe('ResumeGate', () => {
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
     expect(env.onresumed).not.toHaveBeenCalled();
   });
+
+  it('labels the discard action "Bỏ lượt này" in Vietnamese', async () => {
+    const env = await makePracticeEnv({ inProgress: { attempt: attempt(), questions: rows() } });
+    await env.appState.refresh();
+    renderWithI18n(ResumeGate, { services: env.services, appState: env.appState, onresumed: vi.fn() }, 'vi');
+    expect(await screen.findByRole('button', { name: 'Bỏ lượt này' })).toBeInTheDocument();
+  });
 });

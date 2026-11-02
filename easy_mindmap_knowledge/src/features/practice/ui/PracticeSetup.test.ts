@@ -50,6 +50,7 @@ describe('PracticeSetup', () => {
     const start = screen.getByRole('button', { name: 'Start' });
     expect(start).toBeDisabled();
     const error = screen.getByText(/between 1 second and 3 hours/);
+    expect(error).toHaveAttribute('role', 'alert');
     expect(minutes).toHaveAttribute('aria-invalid', 'true');
     expect(minutes.getAttribute('aria-describedby')).toContain(error.id);
     expect(start.getAttribute('aria-describedby')).toContain(error.id);

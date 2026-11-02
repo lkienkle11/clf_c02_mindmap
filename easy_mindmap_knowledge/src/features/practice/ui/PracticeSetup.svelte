@@ -108,7 +108,7 @@
         </label>
       </div>
       {#if timeInvalid}
-        <p id={errorId} class="pl-10 text-danger">{i18n.t('practice.setup.timeError')}</p>
+        <p id={errorId} role="alert" class="pl-10 text-danger">{i18n.t('practice.setup.timeError')}</p>
       {/if}
     {/if}
     <label class={radio}><input class="size-5" type="radio" name="time" value="none" bind:group={timeMode} />{i18n.t('practice.setup.timeNone')}</label>

@@ -116,5 +116,6 @@
   "practice.resume.continue": "Continue",
   "practice.resume.discard": "Discard",
   "practice.resume.corrupt": "The unfinished attempt could not be restored and was discarded.",
-  "practice.resume.failed": "Could not resume the attempt. Please try again."
+  "practice.resume.failed": "Could not resume the attempt. Please try again.",
+  "practice.questionAnnounce": "Question {current} of {total}"
 }

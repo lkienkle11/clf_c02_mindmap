@@ -36,8 +36,8 @@
   const row = 'flex min-h-11 cursor-pointer items-start gap-3 rounded-lg border border-border-subtle bg-surface p-3 hover:bg-muted has-[:checked]:border-primary has-[:checked]:bg-muted';
 </script>
 
-<fieldset class="flex flex-col gap-3" role={item.multi ? undefined : 'radiogroup'} aria-describedby={item.multi ? hintId : undefined}>
-  <legend class="mb-3 text-lg font-medium">{question.text}</legend>
+<fieldset class="flex flex-col gap-3" aria-describedby={item.multi ? hintId : undefined}>
+  <legend tabindex="-1" class="mb-3 text-lg font-medium focus:outline-none focus-visible:outline-2 focus-visible:outline-ring">{question.text}</legend>
   {#if item.multi}
     <p id={hintId} class="font-medium text-muted-foreground">{i18n.t('practice.chooseMany', { count: question.correct.length })}</p>
   {/if}

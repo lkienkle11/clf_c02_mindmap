@@ -33,17 +33,7 @@ describe('App shell', () => {
   });
 
   it('offers to resume an unfinished attempt on top of the tree and continues into the session', async () => {
-    const attempt = {
-      id: 'old', kind: 'practice' as const, topicId: 'compute', status: 'in_progress' as const, startedAt: 0, submittedAt: null,
-      submitReason: null, reviewAllowed: false, clock: { mode: 'freeze' as const, limitMs: null, remainingMs: null, deadlineAt: null },
-      heartbeatAt: null, scorePct: null, passed: null,
-    };
-    const questions = ['q1', 'q2', 'q3'].map((questionId, position) => ({
-      attemptId: 'old', position, questionId, optionOrder: ['A', 'B', 'C', 'D'], selected: [], isCorrect: null,
-    }));
-    const env = await makePracticeEnv({ inProgress: { attempt, questions } });
-    await env.appState.refresh();
-    render(App, { services: env.services, appState: env.appState, i18n: createI18n('en') });
+    const { env } = await mountWithUnfinished();
     const dlg = await screen.findByRole('dialog', { name: 'Unfinished attempt' });
     expect(screen.getByRole('heading', { name: 'Mindmap' })).toBeInTheDocument();
     await userEvent.click(within(dlg).getByRole('button', { name: 'Continue' }));
@@ -51,4 +41,68 @@ describe('App shell', () => {
     expect(await screen.findByRole('navigation', { name: 'Questions' })).toBeInTheDocument();
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
   });
+
+  it('resume then Exit leaves no prompt for the discarded attempt', async () => {
+    const { env } = await mountWithUnfinished();
+    await userEvent.click(await screen.findByRole('button', { name: 'Continue' }));
+    const watch = watchForPrompt();
+    await userEvent.click(await screen.findByRole('button', { name: 'Exit' }));
+    await userEvent.click(within(await screen.findByRole('dialog', { name: 'Exit this attempt?' })).getByRole('button', { name: 'Exit and discard' }));
+    await waitFor(() => expect(env.appState.route).toEqual({ view: 'tree' }));
+    await new Promise((r) => setTimeout(r, 20));
+    expect(watch.seen()).toBe(false);
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+    expect(env.appState.resumeAttempt).toBeNull();
+  });
+
+  it('Discard never brings the prompt back', async () => {
+    const { env } = await mountWithUnfinished();
+    const watch = watchForPrompt(true);
+    await userEvent.click(await screen.findByRole('button', { name: 'Discard' }));
+    await waitFor(() => expect(env.discarded).toEqual(['old']));
+    await new Promise((r) => setTimeout(r, 20));
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+    watch.stop();
+  });
+
+  it('resume, submit, result, back to the tree shows no prompt', async () => {
+    const { env } = await mountWithUnfinished();
+    await userEvent.click(await screen.findByRole('button', { name: 'Continue' }));
+    const watch = watchForPrompt();
+    await userEvent.click(await screen.findByRole('button', { name: 'Submit' }));
+    await userEvent.click(within(await screen.findByRole('dialog', { name: 'Submit your answers?' })).getByRole('button', { name: 'Submit' }));
+    await userEvent.click(await screen.findByRole('button', { name: 'Back to the map' }));
+    await waitFor(() => expect(env.appState.route).toEqual({ view: 'tree' }));
+    await new Promise((r) => setTimeout(r, 20));
+    expect(watch.seen()).toBe(false);
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+  });
 });
+
+async function mountWithUnfinished() {
+  const attempt = {
+    id: 'old', kind: 'practice' as const, topicId: 'compute', status: 'in_progress' as const, startedAt: 0, submittedAt: null,
+    submitReason: null, reviewAllowed: false, clock: { mode: 'freeze' as const, limitMs: null, remainingMs: null, deadlineAt: null },
+    heartbeatAt: null, scorePct: null, passed: null,
+  };
+  const questions = ['q1', 'q2', 'q3'].map((questionId, position) => ({
+    attemptId: 'old', position, questionId, optionOrder: ['A', 'B', 'C', 'D'], selected: [], isCorrect: null,
+  }));
+  const env = await makePracticeEnv({ inProgress: { attempt, questions } });
+  await env.appState.refresh();
+  render(App, { services: env.services, appState: env.appState, i18n: createI18n('en') });
+  return { env };
+}
+
+/** Records whether the resume prompt ever (re)appears; `allowCurrent` ignores one already on screen. */
+function watchForPrompt(allowCurrent = false) {
+  let seen = false;
+  const check = () => {
+    const open = [...document.querySelectorAll('[role="dialog"]')].some((d) => d.textContent?.includes('unfinished attempt'));
+    if (open && !allowCurrent) seen = true;
+    if (!open) allowCurrent = false;
+  };
+  const observer = new MutationObserver(check);
+  observer.observe(document.body, { childList: true, subtree: true });
+  return { seen: () => seen, stop: () => observer.disconnect() };
+}

@@ -7,7 +7,7 @@ import { makeQuestion, makeRawCatalog } from '@/testing/fixtures';
 import { createNodeSqliteExecutor } from '@/testing/node-sqlite-executor';
 import type { SqlExecutor } from '@/persistence';
 import {
-  CorruptAttemptError, DEFAULT_PRACTICE_OPTIONS, KnowledgeNotAllowedError, NoQuestionsError, PracticeSession,
+  CorruptAttemptError, DEFAULT_PRACTICE_OPTIONS, FREEZE_MAX_TICK_MS, KnowledgeNotAllowedError, NoQuestionsError, PracticeSession,
   loadLastOptions, saveLastOptions,
 } from './index';
 import type { PracticeOptions } from './index';
@@ -431,5 +431,63 @@ describe('fix round 1', () => {
     expect(s.result).toMatchObject({ correct: 8 });
     expect(await s.submit('manual')).toBe(s.result);
     expect(onSubmitted).toHaveBeenCalledTimes(1);
+  });
+});
+
+describe('fix round 1: frozen clock gaps and submit reason', () => {
+  it('freeze: a 2.5 s gap is charged in full, a 2 h gap is capped at FREEZE_MAX_TICK_MS', async () => {
+    expect(FREEZE_MAX_TICK_MS).toBe(3000);
+    const s = await start('compute', { limitMs: 600000 });
+    await s.tick(2500);
+    expect(s.remainingMs).toBe(597500);
+    await s.tick(2 * 60 * 60 * 1000);
+    expect(s.remainingMs).toBe(597500 - 3000);
+    expect(s.submitted).toBe(false);
+  });
+  it('freeze: the save throttle accumulates the capped amount too', async () => {
+    const s = await start('compute', { limitMs: 600000 });
+    const spy = vi.spyOn(services.repos.attempts, 'saveClock');
+    await s.tick(7_200_000);
+    expect(spy).not.toHaveBeenCalled(); // 3000 < 5000, an uncapped gap would have flushed
+    await s.tick(7_200_000);
+    expect(spy).toHaveBeenCalledTimes(1);
+  });
+  it('run mode is unaffected by the cap', async () => {
+    const s = await start('compute', { limitMs: 60000, clockMode: 'run' });
+    await s.tick(7_200_000);
+    expect(s.remainingMs).toBe(60000);
+    clock = NOW + 10000;
+    await s.tick(7_200_000);
+    expect(s.remainingMs).toBe(50000);
+  });
+  it('submitReason is null until a submit is requested and records the first request', async () => {
+    const s = await start('compute', { limitMs: 60000 });
+    expect(s.submitReason).toBeNull();
+    await s.submit('manual');
+    expect(s.submitReason).toBe('manual');
+    await s.submit('timeout');
+    expect(s.submitReason).toBe('manual');
+  });
+  it('a timeout in flight keeps the reason when a manual submit follows', async () => {
+    const s = await start('compute', { limitMs: 60000 });
+    let release!: () => void;
+    gate = new Promise<void>((r) => { release = r; });
+    const hit = new Promise<void>((r) => { gateHit = r; });
+    const first = s.submit('timeout');
+    await hit;
+    const second = s.submit('manual');
+    expect(s.submitReason).toBe('timeout');
+    release();
+    await Promise.all([first, second]);
+    expect(s.submitReason).toBe('timeout');
+  });
+  it('a failed manual submit does not stick: a later timeout is reported as a timeout', async () => {
+    const s = await start('compute', { limitMs: 60000 });
+    failSql = "SET status = 'submitted'";
+    await expect(s.submit('manual')).rejects.toThrow('injected');
+    expect(s.submitReason).toBeNull();
+    failSql = null;
+    await s.submit('timeout');
+    expect(s.submitReason).toBe('timeout');
   });
 });

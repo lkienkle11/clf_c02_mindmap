@@ -44,5 +44,5 @@
       <h1 class="text-2xl font-semibold">{i18n.t(`nav.${appState.view}`)}</h1>
     </div>
   {/if}
-  <ResumeGate {services} {appState} {onresumed} />
+  <ResumeGate {services} {appState} {onresumed} activeAttemptId={resumed?.attemptId ?? null} />
 </main>

@@ -12,9 +12,8 @@ type Env = Awaited<ReturnType<typeof makePracticeEnv>>;
 async function mount(options: Partial<PracticeOptions> = {}, envOpts: Parameters<typeof makePracticeEnv>[0] = {}) {
   const env = await makePracticeEnv(envOpts);
   const session = await PracticeSession.start(env.services, 'compute', { ...DEFAULT_PRACTICE_OPTIONS, ...options }, () => env.appState.refresh());
-  const onmanual = vi.fn();
-  renderWithI18n(PracticeSessionView, { services: env.services, appState: env.appState, session, onmanual });
-  return { ...env, session, onmanual };
+  const { unmount } = renderWithI18n(PracticeSessionView, { services: env.services, appState: env.appState, session });
+  return { ...env, session, unmount };
 }
 
 const labelsOf = (group: HTMLElement, role: 'radio' | 'checkbox') => within(group).getAllByRole(role).map((el) => el.closest('label')?.textContent?.trim());
@@ -26,7 +25,8 @@ describe('PracticeSessionView', () => {
   it('renders the question text and options in the session optionOrder', async () => {
     const env = await mount();
     const q = env.session.questions[0];
-    const group = screen.getByRole(q.multi ? 'group' : 'radiogroup');
+    const group = screen.getByRole('group', { name: env.services.catalog.questions.find((x) => x.id === q.questionId)!.text });
+    expect(group).not.toHaveAttribute('role');
     expect(labelsOf(group, q.multi ? 'checkbox' : 'radio')).toEqual(q.optionOrder.map((k) => textOf(env, q.questionId, k)));
     expect(screen.getByText('1/3')).toBeInTheDocument();
   });
@@ -127,7 +127,7 @@ describe('PracticeSessionView', () => {
     await userEvent.click(screen.getByRole('button', { name: 'Submit' }));
     await userEvent.click(within(await screen.findByRole('dialog')).getByRole('button', { name: 'Submit' }));
     await waitFor(() => expect(env.session.submitted).toBe(true));
-    expect(env.onmanual).toHaveBeenCalled();
+    expect(env.session.submitReason).toBe('manual');
   });
 
   it('Exit asks for confirmation; cancel keeps the attempt, confirm discards and goes to the tree', async () => {
@@ -177,6 +177,73 @@ describe('PracticeSessionView', () => {
     await vi.advanceTimersByTimeAsync(3000);
     expect(env.session.submitted).toBe(true);
     expect(env.session.result).not.toBeNull();
-    expect(env.onmanual).not.toHaveBeenCalled();
+    expect(env.session.submitReason).toBe('timeout');
+  });
+
+  it('charges a 2 h gap as at most three seconds in freeze mode', async () => {
+    vi.useFakeTimers({ toFake: ['setInterval', 'clearInterval', 'Date'] });
+    vi.setSystemTime(1_000_000);
+    await mount({ limitMs: 600_000 }, { now: () => Date.now() });
+    vi.setSystemTime(Date.now() + 2 * 60 * 60 * 1000);
+    await vi.advanceTimersByTimeAsync(1000);
+    expect(screen.getByRole('timer')).toHaveTextContent('09:57');
+  });
+
+  it('stops the interval after submit and on unmount', async () => {
+    vi.useFakeTimers({ toFake: ['setInterval', 'clearInterval', 'Date'] });
+    vi.setSystemTime(1_000_000);
+    const env = await mount({ limitMs: 600_000 }, { now: () => Date.now() });
+    const spy = vi.spyOn(env.session, 'tick');
+    await vi.advanceTimersByTimeAsync(2000);
+    expect(spy).toHaveBeenCalledTimes(2);
+    await env.session.submit('manual');
+    spy.mockClear();
+    await vi.advanceTimersByTimeAsync(3000);
+    expect(spy).not.toHaveBeenCalled();
+
+    const second = await mount({ limitMs: 600_000 }, { now: () => Date.now() });
+    const spy2 = vi.spyOn(second.session, 'tick');
+    second.unmount();
+    await vi.advanceTimersByTimeAsync(3000);
+    expect(spy2).not.toHaveBeenCalled();
+  });
+
+  it('announces the question and moves focus to its legend after navigating', async () => {
+    const env = await mount();
+    const status = screen.getByTestId('question-announcement');
+    expect(status).toHaveTextContent('');
+    await userEvent.click(screen.getByRole('button', { name: 'Next question' }));
+    expect(status).toHaveAttribute('aria-live', 'polite');
+    expect(status).toHaveTextContent('Question 2 of 3');
+    const text = (pos: number) => env.services.catalog.questions.find((q) => q.id === env.session.questions[pos].questionId)!.text;
+    await waitFor(() => expect(document.activeElement?.tagName).toBe('LEGEND'));
+    expect(document.activeElement).toHaveTextContent(text(1));
+    await userEvent.click(within(screen.getByRole('navigation', { name: 'Questions' })).getByRole('button', { name: /^Question 3/ }));
+    expect(status).toHaveTextContent('Question 3 of 3');
+  });
+
+  it('completes a whole attempt with the keyboard only', async () => {
+    const env = await mount();
+    const tabTo = async (match: (el: Element) => boolean) => {
+      for (let i = 0; i < 40 && !match(document.activeElement!); i++) await userEvent.tab();
+      expect(match(document.activeElement!)).toBe(true);
+    };
+    const button = (name: string) => (el: Element) => el.tagName === 'BUTTON' && el.textContent?.trim() === name;
+    for (let n = 0; n < 3; n++) {
+      await tabTo((el) => el.tagName === 'INPUT');
+      await userEvent.keyboard(' ');
+      expect(env.session.questions[n].selected).toHaveLength(1);
+      if (n < 2) {
+        await tabTo(button('Next question'));
+        await userEvent.keyboard('{Enter}');
+      }
+    }
+    await tabTo(button('Submit'));
+    await userEvent.keyboard('{Enter}');
+    const dlg = await screen.findByRole('dialog', { name: 'Submit your answers?' });
+    await tabTo((el) => dlg.contains(el) && button('Submit')(el));
+    await userEvent.keyboard('{Enter}');
+    await waitFor(() => expect(env.session.submitted).toBe(true));
+    expect(env.session.submitReason).toBe('manual');
   });
 });

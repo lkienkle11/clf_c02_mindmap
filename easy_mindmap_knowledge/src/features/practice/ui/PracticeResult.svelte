@@ -19,8 +19,15 @@
   const i18n = getI18n();
   const questions = $derived(new Map(services.catalog.questions.map((q) => [q.id, q])));
 
-  const answerText = (questionId: string, keys: string[]): string =>
-    keys.map((k) => questions.get(questionId)?.options.find((o) => o.key === k)?.text ?? k).join(', ');
+  /** Answer texts in the question's own option order (not click order). */
+  function answerTexts(questionId: string, keys: string[]): string[] {
+    const options = questions.get(questionId)?.options ?? [];
+    const rank = (k: string): number => {
+      const at = options.findIndex((o) => o.key === k);
+      return at === -1 ? options.length : at;
+    };
+    return [...keys].sort((a, b) => rank(a) - rank(b)).map((k) => options.find((o) => o.key === k)?.text ?? k);
+  }
 
   // Screen readers land on the result when it appears.
   const focusOnMount = (node: HTMLElement) => node.focus();
@@ -28,7 +35,7 @@
 
 <div class="mx-auto flex max-w-3xl flex-col gap-6 p-6">
   <header class="flex flex-col items-start gap-2">
-    <h2 tabindex="-1" class="text-2xl font-semibold focus:outline-none" {@attach focusOnMount}>{i18n.t('practice.result.title')}</h2>
+    <h1 tabindex="-1" class="text-2xl font-semibold focus:outline-none" {@attach focusOnMount}>{i18n.t('practice.result.title')}</h1>
     {#if timedOut}
       <p role="status" class="rounded-lg bg-muted p-3 font-medium">{i18n.t('practice.timeUp')}</p>
     {/if}
@@ -41,7 +48,7 @@
   </header>
 
   <section aria-labelledby="breakdown-title">
-    <h3 id="breakdown-title" class="mb-3 text-xl font-semibold">{i18n.t('practice.result.breakdown')}</h3>
+    <h2 id="breakdown-title" class="mb-3 text-xl font-semibold">{i18n.t('practice.result.breakdown')}</h2>
     <ol class="flex flex-col gap-4">
       {#each result.items as item, i (item.questionId)}
         {@const q = questions.get(item.questionId)}
@@ -54,11 +61,17 @@
           <dl class="grid gap-1">
             <div>
               <dt class="text-sm text-muted-foreground">{i18n.t('practice.result.yourAnswer')}</dt>
-              <dd>{item.selected.length === 0 ? i18n.t('practice.result.noAnswer') : answerText(item.questionId, item.selected)}</dd>
+              <dd>
+                {#if item.selected.length === 0}
+                  {i18n.t('practice.result.noAnswer')}
+                {:else}
+                  <ul>{#each answerTexts(item.questionId, item.selected) as text (text)}<li>{text}</li>{/each}</ul>
+                {/if}
+              </dd>
             </div>
             <div>
               <dt class="text-sm text-muted-foreground">{i18n.t('practice.result.correctAnswer')}</dt>
-              <dd>{answerText(item.questionId, item.correct)}</dd>
+              <dd><ul>{#each answerTexts(item.questionId, item.correct) as text (text)}<li>{text}</li>{/each}</ul></dd>
             </div>
             {#if item.explanation}
               <div>

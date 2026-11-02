@@ -114,7 +114,8 @@
   "practice.resume.title": "Lượt làm bài dở dang",
   "practice.resume.question": "Bạn có bài đang làm dở. Tiếp tục không?",
   "practice.resume.continue": "Tiếp tục",
-  "practice.resume.discard": "Bỏ",
+  "practice.resume.discard": "Bỏ lượt này",
   "practice.resume.corrupt": "Không thể khôi phục lượt làm dở nên đã bỏ lượt đó.",
-  "practice.resume.failed": "Không thể tiếp tục lượt làm bài. Vui lòng thử lại."
+  "practice.resume.failed": "Không thể tiếp tục lượt làm bài. Vui lòng thử lại.",
+  "practice.questionAnnounce": "Câu {current}/{total}"
 }
