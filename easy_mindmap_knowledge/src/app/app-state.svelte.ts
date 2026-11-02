@@ -11,14 +11,21 @@ import type { AttemptQuestionRow, AttemptRow } from '@/persistence';
 import type { Locale } from '@/i18n/i18n.svelte';
 import type { Services } from './composition';
 
-export type View = 'tree' | 'lesson' | 'practice' | 'review' | 'history' | 'settings';
+export type Route =
+  | { view: 'tree' }
+  | { view: 'lesson'; topicId: string; lessonId: string }
+  | { view: 'practice'; topicId: string }
+  | { view: 'review' }
+  | { view: 'history' }
+  | { view: 'settings' };
+
+export type View = Route['view'];
 
 export const SETTING_LOCALE = 'locale';
 export const SETTING_PROMPT_DATE = 'review_prompt_last_shown_date';
 
 export class AppState {
-  view = $state<View>('tree');
-  viewParams = $state<Record<string, unknown>>({});
+  route = $state.raw<Route>({ view: 'tree' });
   statuses = $state.raw<Map<string, TopicStatus>>(new Map());
   completed = $state.raw<Set<string>>(new Set());
   readIds = $state.raw<Set<string>>(new Set());
@@ -28,20 +35,26 @@ export class AppState {
   submittedAttempts = $state.raw<AttemptRow[]>([]);
 
   private readonly services: Services;
+  private refreshSeq = 0;
 
   constructor(services: Services) {
     this.services = services;
   }
 
+  get view(): View {
+    return this.route.view;
+  }
+
   /** Reconciles derived stats first, then loads everything. Returns the saved locale, if any. */
   async load(): Promise<Locale | null> {
     await reconcileStats(this.services.rebuildDeps);
-    await this.refresh();
-    const saved = await this.services.repos.settings.get(SETTING_LOCALE);
+    const [saved] = await Promise.all([this.services.repos.settings.get(SETTING_LOCALE), this.refresh()]);
     return saved === 'en' || saved === 'vi' ? saved : null;
   }
 
+  /** Only the most recent call applies its result; older, slower calls are dropped silently. */
   async refresh(): Promise<void> {
+    const seq = ++this.refreshSeq;
     const { repos, catalog } = this.services;
     const now = this.services.now();
     const [readIds, submitted, resume, stats, lastShown] = await Promise.all([
@@ -51,6 +64,7 @@ export class AppState {
       repos.questionStats.listAll(),
       repos.settings.get(SETTING_PROMPT_DATE),
     ]);
+    if (seq !== this.refreshSeq) return;
     const completed = completedTopicIds(submitted);
     const summaries = reviewSummaries(stats, completed, now);
     this.readIds = readIds;
@@ -66,8 +80,7 @@ export class AppState {
     });
   }
 
-  open(view: View, params: Record<string, unknown> = {}): void {
-    this.viewParams = params;
-    this.view = view;
+  open(route: Route): void {
+    this.route = route;
   }
 }

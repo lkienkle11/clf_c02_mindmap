@@ -97,10 +97,42 @@ describe('AppState', () => {
     expect(await state.load()).toBe('en');
   });
 
-  it('open() changes the view and params', () => {
-    state.open('history');
+  it('open() sets a typed route and derives view', () => {
+    expect(state.route).toEqual({ view: 'tree' });
+    state.open({ view: 'history' });
     expect(state.view).toBe('history');
-    state.open('lesson', { topicId: 'compute' });
-    expect(state.viewParams).toEqual({ topicId: 'compute' });
+    state.open({ view: 'lesson', topicId: 'compute', lessonId: 'compute-ec2' });
+    expect(state.view).toBe('lesson');
+    expect(state.route).toEqual({ view: 'lesson', topicId: 'compute', lessonId: 'compute-ec2' });
+    // @ts-expect-error a lesson route requires topicId and lessonId
+    state.open({ view: 'lesson' });
+  });
+
+  it('overlapping refreshes: only the most recent call applies its result', async () => {
+    let release!: () => void;
+    const gate = new Promise<void>((r) => (release = r));
+    const real = services.repos.attempts.listSubmitted.bind(services.repos.attempts);
+    let calls = 0;
+    // First call reads an empty DB but is held back; the second sees the passed attempt.
+    services.repos.attempts.listSubmitted = async () => {
+      calls += 1;
+      if (calls === 1) {
+        const stale = await real();
+        await gate;
+        return stale;
+      }
+      return real();
+    };
+    const first = state.refresh();
+    await Promise.resolve();
+    await services.repos.attempts.create(attempt({}), [question('a1', 'q-cloud', true)]);
+    const second = state.refresh();
+    await second;
+    expect(state.statuses.get('cloud-concepts')).toBe('done');
+    release();
+    await first;
+    expect(calls).toBe(2);
+    expect(state.statuses.get('cloud-concepts')).toBe('done');
+    expect(state.submittedAttempts).toHaveLength(1);
   });
 });

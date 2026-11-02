@@ -19,7 +19,7 @@ describe('App shell', () => {
     render(App, { services, appState, i18n: createI18n('en') });
     expect(screen.getByRole('heading', { name: 'Mindmap' })).toBeInTheDocument();
     expect(screen.getByText('13 topics')).toBeInTheDocument();
-    appState.open('history');
+    appState.open({ view: 'history' });
     expect(await screen.findByRole('heading', { name: 'History' })).toBeInTheDocument();
   });
 });
