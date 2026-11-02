@@ -4,10 +4,11 @@ import { loadCatalog } from '@/content/load-catalog';
 import { makeRawCatalog, makeQuestion } from '@/testing/fixtures';
 import { createNodeSqliteExecutor } from '@/testing/node-sqlite-executor';
 import type { AttemptRow, QuestionStat } from '@/persistence';
-import { localDateString } from '@/features/review';
+import { buildReviewPlan, localDateString } from '@/features/review';
+import { makeRng } from '@/features/practice';
 import { buildServices } from './composition';
 import type { Services } from './composition';
-import { AppState } from './app-state.svelte';
+import { AppState, SETTING_BUTTON_HIDDEN_DATE, SETTING_PROMPT_DATE } from './app-state.svelte';
 
 const DAY = 86_400_000;
 const NOW = Date.UTC(2026, 5, 15, 12, 0, 0);
@@ -54,22 +55,28 @@ describe('AppState', () => {
     await services.repos.questionStats.upsert(dueStat());
   }
 
-  it('refresh after passed practice and due stat advances the tree and shows the prompt', async () => {
+  /** load() rebuilds stats from history, so the attempt itself must be old enough for its questions to be due. */
+  async function passTopic1Long() {
+    await services.repos.attempts.create(
+      attempt({ startedAt: NOW - 10 * DAY, submittedAt: NOW - 10 * DAY + 1000 }), [question('a1', 'q-cloud', true)]);
+  }
+
+  it('refresh after passed practice and due stat advances the tree', async () => {
     await state.load();
     await passTopic1();
     await state.refresh();
+    expect(state.dailyPromptVisible).toBe(false); // refresh never shows the prompt
     expect(state.statuses.get('cloud-concepts')).toBe('done');
     expect(state.statuses.get('global-infrastructure')).toBe('current');
     expect(state.completed.has('cloud-concepts')).toBe(true);
     expect(state.summaries.length).toBeGreaterThan(0);
-    expect(state.dailyPromptVisible).toBe(true);
     expect(state.submittedAttempts).toHaveLength(1);
   });
 
   it('hides the prompt when it was already shown today', async () => {
-    await passTopic1();
+    await passTopic1Long();
     await services.repos.settings.set('review_prompt_last_shown_date', localDateString(NOW));
-    await state.refresh();
+    await state.load();
     expect(state.summaries.length).toBeGreaterThan(0);
     expect(state.dailyPromptVisible).toBe(false);
   });
@@ -134,5 +141,81 @@ describe('AppState', () => {
     expect(calls).toBe(2);
     expect(state.statuses.get('cloud-concepts')).toBe('done');
     expect(state.submittedAttempts).toHaveLength(1);
+  });
+
+  describe('daily prompt and review button', () => {
+    let today = NOW;
+    beforeEach(() => {
+      today = NOW;
+      services.now = () => today;
+    });
+
+    it('load() with due summaries shows the prompt once and persists today', async () => {
+      await passTopic1Long();
+      await state.load();
+      expect(state.dailyPromptVisible).toBe(true);
+      expect(await services.repos.settings.get(SETTING_PROMPT_DATE)).toBe(localDateString(NOW));
+      await state.load();
+      expect(state.dailyPromptVisible).toBe(true); // load never flips it back
+      const fresh = new AppState(services);
+      await fresh.load();
+      expect(fresh.dailyPromptVisible).toBe(false);
+    });
+
+    it('refresh() never flips the prompt either way; dismissDailyPrompt closes it', async () => {
+      await passTopic1Long();
+      await state.load();
+      await state.refresh();
+      expect(state.dailyPromptVisible).toBe(true);
+      state.dismissDailyPrompt();
+      expect(state.dailyPromptVisible).toBe(false);
+      await state.refresh();
+      expect(state.dailyPromptVisible).toBe(false);
+    });
+
+    it('next day shows the prompt again', async () => {
+      await passTopic1Long();
+      await state.load();
+      today = NOW + 2 * DAY;
+      const fresh = new AppState(services);
+      await fresh.load();
+      expect(fresh.dailyPromptVisible).toBe(true);
+    });
+
+    it('no summaries: never shows the prompt and writes nothing', async () => {
+      await state.load();
+      expect(state.dailyPromptVisible).toBe(false);
+      expect(await services.repos.settings.get(SETTING_PROMPT_DATE)).toBeNull();
+      expect(state.reviewButtonVisible).toBe(false);
+    });
+
+    it('hideReviewButtonToday hides the button until the next day', async () => {
+      await passTopic1Long();
+      await state.load();
+      expect(state.reviewButtonVisible).toBe(true);
+      await state.hideReviewButtonToday();
+      expect(await services.repos.settings.get(SETTING_BUTTON_HIDDEN_DATE)).toBe(localDateString(NOW));
+      expect(state.reviewButtonHidden).toBe(true);
+      expect(state.reviewButtonVisible).toBe(false);
+      await state.refresh();
+      expect(state.reviewButtonVisible).toBe(false);
+      today = NOW + DAY;
+      await state.refresh();
+      expect(state.reviewButtonHidden).toBe(false);
+      expect(state.reviewButtonVisible).toBe(true);
+    });
+
+    it('planReview matches buildReviewPlan over the loaded stats', async () => {
+      await passTopic1Long();
+      await state.load();
+      expect(state.stats).toHaveLength(1);
+      const plan = state.planReview({ kind: 'full' });
+      const expected = buildReviewPlan({
+        stats: state.stats, completed: state.completed, mode: { kind: 'full' }, now: NOW,
+        rng: makeRng(NOW % 0x100000000),
+      });
+      expect(plan).toEqual(expected);
+      expect(plan.total).toBeGreaterThan(0);
+    });
   });
 });

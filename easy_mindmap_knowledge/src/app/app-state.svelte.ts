@@ -1,13 +1,15 @@
 import { completedTopicIds, topicStatuses } from '@/features/mindmap';
 import type { TopicStatus } from '@/features/mindmap';
+import { makeRng } from '@/features/practice';
 import {
+  buildReviewPlan,
   localDateString,
   reconcileStats,
   reviewSummaries,
   shouldShowDailyPrompt,
 } from '@/features/review';
-import type { TopicReviewSummary } from '@/features/review';
-import type { AttemptQuestionRow, AttemptRow } from '@/persistence';
+import type { ReviewMode, ReviewPlan, TopicReviewSummary } from '@/features/review';
+import type { AttemptQuestionRow, AttemptRow, QuestionStat } from '@/persistence';
 import type { Locale } from '@/i18n/i18n.svelte';
 import type { Services } from './composition';
 
@@ -23,6 +25,7 @@ export type View = Route['view'];
 
 export const SETTING_LOCALE = 'locale';
 export const SETTING_PROMPT_DATE = 'review_prompt_last_shown_date';
+export const SETTING_BUTTON_HIDDEN_DATE = 'review_button_hidden_date';
 
 export class AppState {
   route = $state.raw<Route>({ view: 'tree' });
@@ -30,7 +33,10 @@ export class AppState {
   completed = $state.raw<Set<string>>(new Set());
   readIds = $state.raw<Set<string>>(new Set());
   summaries = $state.raw<TopicReviewSummary[]>([]);
+  /** Decided once in load(); only dismissDailyPrompt() (the user's choice) clears it. */
   dailyPromptVisible = $state(false);
+  stats = $state.raw<QuestionStat[]>([]);
+  reviewButtonHidden = $state(false);
   resumeAttempt = $state.raw<{ attempt: AttemptRow; questions: AttemptQuestionRow[] } | null>(null);
   submittedAttempts = $state.raw<AttemptRow[]>([]);
 
@@ -45,10 +51,15 @@ export class AppState {
     return this.route.view;
   }
 
+  get reviewButtonVisible(): boolean {
+    return this.summaries.length > 0 && !this.reviewButtonHidden;
+  }
+
   /** Reconciles derived stats first, then loads everything. Returns the saved locale, if any. */
   async load(): Promise<Locale | null> {
     await reconcileStats(this.services.rebuildDeps);
     const [saved] = await Promise.all([this.services.repos.settings.get(SETTING_LOCALE), this.refresh()]);
+    await this.#decideDailyPrompt();
     return saved === 'en' || saved === 'vi' ? saved : null;
   }
 
@@ -57,12 +68,12 @@ export class AppState {
     const seq = ++this.refreshSeq;
     const { repos, catalog } = this.services;
     const now = this.services.now();
-    const [readIds, submitted, resume, stats, lastShown] = await Promise.all([
+    const [readIds, submitted, resume, stats, hiddenDate] = await Promise.all([
       repos.lessonProgress.readIds(),
       repos.attempts.listSubmitted(),
       repos.attempts.findInProgress(),
       repos.questionStats.listAll(),
-      repos.settings.get(SETTING_PROMPT_DATE),
+      repos.settings.get(SETTING_BUTTON_HIDDEN_DATE),
     ]);
     if (seq !== this.refreshSeq) return;
     const completed = completedTopicIds(submitted);
@@ -73,10 +84,36 @@ export class AppState {
     this.completed = completed;
     this.statuses = topicStatuses(catalog.topics, completed);
     this.summaries = summaries;
-    this.dailyPromptVisible = shouldShowDailyPrompt({
-      summaries,
-      lastShownDate: lastShown,
-      today: localDateString(now),
+    this.stats = stats;
+    this.reviewButtonHidden = hiddenDate === localDateString(now);
+  }
+
+  /**
+   * Shown at most once per calendar day: the date is saved the moment the modal opens, so even
+   * killing the app with it open will not bring it back the same day (spec 5.1).
+   */
+  async #decideDailyPrompt(): Promise<void> {
+    const today = localDateString(this.services.now());
+    const lastShown = await this.services.repos.settings.get(SETTING_PROMPT_DATE);
+    if (!shouldShowDailyPrompt({ summaries: this.summaries, lastShownDate: lastShown, today })) return;
+    this.dailyPromptVisible = true;
+    await this.services.repos.settings.set(SETTING_PROMPT_DATE, today);
+  }
+
+  dismissDailyPrompt(): void {
+    this.dailyPromptVisible = false;
+  }
+
+  async hideReviewButtonToday(): Promise<void> {
+    const today = localDateString(this.services.now());
+    await this.services.repos.settings.set(SETTING_BUTTON_HIDDEN_DATE, today);
+    this.reviewButtonHidden = true;
+  }
+
+  planReview(mode: ReviewMode): ReviewPlan {
+    const now = this.services.now();
+    return buildReviewPlan({
+      stats: this.stats, completed: this.completed, mode, now, rng: makeRng(now % 0x100000000),
     });
   }
 

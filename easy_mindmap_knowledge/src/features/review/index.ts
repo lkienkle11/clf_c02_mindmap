@@ -8,3 +8,4 @@ export type { TopicReviewSummary, Urgency } from './logic/review-summary';
 export { buildReviewPlan } from './logic/build-review-plan';
 export type { ReviewMode, ReviewPlan } from './logic/build-review-plan';
 export { shouldShowDailyPrompt, localDateString } from './logic/prompt-gate';
+export { ReviewRun } from './review-run.svelte';

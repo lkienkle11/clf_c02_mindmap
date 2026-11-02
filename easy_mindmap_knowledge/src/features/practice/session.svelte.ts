@@ -4,7 +4,7 @@ import { rebuildStatsFor } from '@/features/review';
 import { advanceFreeze, isExpired, remainingAt, resolveOnResume, startClock } from './logic/attempt-clock';
 import { gradeQuestion, passes } from './logic/grading';
 import { buildPool, planAttempt, practiceCount } from './logic/pick-questions';
-import { makeRng } from './logic/shuffle';
+import { makeRng, shuffle } from './logic/shuffle';
 import { CorruptAttemptError, KnowledgeNotAllowedError, NoQuestionsError } from './errors';
 import { saveLastOptions } from './options';
 import type { PracticeOptions } from './options';
@@ -122,6 +122,40 @@ export class PracticeSession {
       selected: [], isCorrect: null,
     }));
     await saveLastOptions(services.repos.settings, options);
+    await services.repos.attempts.create(attempt, rows);
+    return new PracticeSession(services, onSubmitted, attempt, rows, clock);
+  }
+
+  /**
+   * Starts a review batch: questions in the GIVEN order (the plan already shuffled them), options
+   * shuffled once and stored, no time limit, no topic. Leaves `practice_last_options` alone.
+   */
+  static async startReview(
+    services: Services,
+    questionIds: string[],
+    onSubmitted: () => Promise<void>,
+  ): Promise<PracticeSession> {
+    if (questionIds.length === 0) throw new NoQuestionsError('review');
+    const byId = new Map(services.catalog.questions.map((q) => [q.id, q]));
+    const now = services.now();
+    const rng = makeRng(now % 0x100000000);
+    const rows: AttemptQuestionRow[] = [];
+    const id = services.newId();
+    questionIds.forEach((questionId, position) => {
+      const q = byId.get(questionId);
+      if (!q) throw new Error(`Unknown question id "${questionId}" in review batch`);
+      const keys = q.options.map((o) => o.key);
+      rows.push({
+        attemptId: id, position, questionId, optionOrder: q.orderDependent ? keys : shuffle(keys, rng),
+        selected: [], isCorrect: null,
+      });
+    });
+    const clock = startClock(null, 'freeze', now);
+    const attempt: AttemptRow = {
+      id, kind: 'review', topicId: null, status: 'in_progress', startedAt: now,
+      submittedAt: null, submitReason: null, reviewAllowed: true, clock,
+      heartbeatAt: now, scorePct: null, passed: null,
+    };
     await services.repos.attempts.create(attempt, rows);
     return new PracticeSession(services, onSubmitted, attempt, rows, clock);
   }
