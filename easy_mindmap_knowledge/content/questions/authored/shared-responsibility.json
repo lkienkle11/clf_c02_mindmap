@@ -1,0 +1,317 @@
+[
+  {
+    "id": "auth-shared-responsibility-01",
+    "topicId": "shared-responsibility",
+    "text": "A company runs its web application on Amazon EC2 instances. A critical vulnerability is announced in the Linux distribution installed on the instances. Who is responsible for patching the operating system on these instances?",
+    "options": [
+      {
+        "key": "A",
+        "text": "AWS, because EC2 is an AWS service"
+      },
+      {
+        "key": "B",
+        "text": "The customer"
+      },
+      {
+        "key": "C",
+        "text": "AWS Support, which patches instances automatically"
+      },
+      {
+        "key": "D",
+        "text": "The vendor of the physical server hardware"
+      }
+    ],
+    "correct": [
+      "B"
+    ],
+    "multi": false,
+    "orderDependent": false,
+    "explanation": "On Amazon EC2 the guest operating system belongs to the customer, so the customer must patch it (tools such as Systems Manager Patch Manager can help). AWS patches only the infrastructure it controls, such as the host operating system and the hypervisor.",
+    "source": "authored"
+  },
+  {
+    "id": "auth-shared-responsibility-02",
+    "topicId": "shared-responsibility",
+    "text": "A company uses Amazon RDS for PostgreSQL. It wants required database engine and operating system patches to be applied only during its quiet hours. What should the company do?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Connect to the database host with SSH and install the patches manually"
+      },
+      {
+        "key": "B",
+        "text": "Open a support case before each patch is released"
+      },
+      {
+        "key": "C",
+        "text": "Nothing, because AWS never patches RDS instances"
+      },
+      {
+        "key": "D",
+        "text": "Set the preferred weekly maintenance window of the DB instance"
+      }
+    ],
+    "correct": [
+      "D"
+    ],
+    "multi": false,
+    "orderDependent": false,
+    "explanation": "AWS patches the operating system and engine of RDS instances, and the customer controls the timing by choosing the weekly maintenance window. Customers do not install patches on the RDS host themselves.",
+    "source": "authored"
+  },
+  {
+    "id": "auth-shared-responsibility-03",
+    "topicId": "shared-responsibility",
+    "text": "A company builds an application with AWS Lambda functions that use managed runtimes. Which responsibilities remain with the company? (Choose two.)",
+    "options": [
+      {
+        "key": "A",
+        "text": "Patching the operating system of the servers that run the functions"
+      },
+      {
+        "key": "B",
+        "text": "Securing the function code and the third-party libraries packaged with it"
+      },
+      {
+        "key": "C",
+        "text": "Physically securing the data centers that host Lambda"
+      },
+      {
+        "key": "D",
+        "text": "Defining the IAM permissions that the functions are granted"
+      },
+      {
+        "key": "E",
+        "text": "Patching the virtualization layer used by Lambda"
+      }
+    ],
+    "correct": [
+      "B",
+      "D"
+    ],
+    "multi": true,
+    "orderDependent": false,
+    "explanation": "With Lambda the customer owns the function code, the libraries it packages, and the IAM permissions the function uses. AWS operates and patches the servers, operating system, runtime and virtualization layer, and secures the data centers.",
+    "source": "authored"
+  },
+  {
+    "id": "auth-shared-responsibility-04",
+    "topicId": "shared-responsibility",
+    "text": "A company's compliance officer needs a copy of the AWS SOC 2 report to give to an external auditor. Where can the officer download it?",
+    "options": [
+      {
+        "key": "A",
+        "text": "AWS Config"
+      },
+      {
+        "key": "B",
+        "text": "AWS CloudTrail"
+      },
+      {
+        "key": "C",
+        "text": "AWS Artifact"
+      },
+      {
+        "key": "D",
+        "text": "Amazon Inspector"
+      }
+    ],
+    "correct": [
+      "C"
+    ],
+    "multi": false,
+    "orderDependent": false,
+    "explanation": "AWS Artifact provides on-demand, no-cost downloads of AWS security and compliance reports such as SOC, PCI and ISO documents. AWS Config records the configuration of your own resources; it does not hold AWS audit reports.",
+    "source": "authored"
+  },
+  {
+    "id": "auth-shared-responsibility-05",
+    "topicId": "shared-responsibility",
+    "text": "A company runs workloads on Amazon EC2. Its auditor asks which controls the company fully inherits from AWS without implementing anything itself. Which control fits this description?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Physical and environmental controls of the data centers"
+      },
+      {
+        "key": "B",
+        "text": "Patch management of the guest operating systems"
+      },
+      {
+        "key": "C",
+        "text": "Security awareness training for the company's employees"
+      },
+      {
+        "key": "D",
+        "text": "Configuration of the instances' security groups"
+      }
+    ],
+    "correct": [
+      "A"
+    ],
+    "multi": false,
+    "orderDependent": false,
+    "explanation": "Physical and environmental controls are inherited controls: AWS provides them entirely. Patch management and training are shared controls in which the customer must cover its own layer, and security group configuration is the customer's job.",
+    "source": "authored"
+  },
+  {
+    "id": "auth-shared-responsibility-06",
+    "topicId": "shared-responsibility",
+    "text": "A European company must keep its customer data stored within the European Union to meet a data residency regulation. How can the company meet this requirement on AWS?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Serve the data through Amazon CloudFront edge locations in Europe only"
+      },
+      {
+        "key": "B",
+        "text": "Store the data in AWS Regions located in the European Union"
+      },
+      {
+        "key": "C",
+        "text": "Download a data residency certificate from AWS Artifact"
+      },
+      {
+        "key": "D",
+        "text": "Ask AWS Support to monitor where the data is replicated"
+      }
+    ],
+    "correct": [
+      "B"
+    ],
+    "multi": false,
+    "orderDependent": false,
+    "explanation": "Customers choose the AWS Regions where their content is stored, and AWS does not move or replicate content outside those Regions without the customer's agreement. CloudFront edge locations cache content for delivery and do not decide where the data is stored.",
+    "source": "authored"
+  },
+  {
+    "id": "auth-shared-responsibility-07",
+    "topicId": "shared-responsibility",
+    "text": "Which tasks are the responsibility of AWS when a company stores data in Amazon S3? (Choose two.)",
+    "options": [
+      {
+        "key": "A",
+        "text": "Maintaining the physical storage devices that hold the objects"
+      },
+      {
+        "key": "B",
+        "text": "Writing bucket policies that block public access"
+      },
+      {
+        "key": "C",
+        "text": "Deciding which objects contain sensitive data"
+      },
+      {
+        "key": "D",
+        "text": "Patching the operating systems of the servers that run Amazon S3"
+      },
+      {
+        "key": "E",
+        "text": "Granting IAM users permission to read the bucket"
+      }
+    ],
+    "correct": [
+      "A",
+      "D"
+    ],
+    "multi": true,
+    "orderDependent": false,
+    "explanation": "For an abstracted service like S3, AWS runs and secures the infrastructure, including the storage devices and the operating systems of the S3 servers. Bucket policies, data classification and IAM permissions are always the customer's responsibility.",
+    "source": "authored"
+  },
+  {
+    "id": "auth-shared-responsibility-08",
+    "topicId": "shared-responsibility",
+    "text": "A team argues that its payment application is automatically compliant with PCI DSS because AWS has a PCI DSS attestation. Which statement is correct?",
+    "options": [
+      {
+        "key": "A",
+        "text": "The team is right, because compliance of the AWS infrastructure covers all workloads"
+      },
+      {
+        "key": "B",
+        "text": "The team is right only if the application runs in more than one Region"
+      },
+      {
+        "key": "C",
+        "text": "The AWS attestation covers the infrastructure, and the company remains responsible for the compliance of its own application"
+      },
+      {
+        "key": "D",
+        "text": "PCI DSS does not apply to applications that run in the cloud"
+      }
+    ],
+    "correct": [
+      "C"
+    ],
+    "multi": false,
+    "orderDependent": false,
+    "explanation": "AWS compliance programs cover the AWS infrastructure and in-scope services, but customers remain responsible for complying with the laws and standards that apply to their own workloads. Running in more Regions does not change who is responsible for application compliance.",
+    "source": "authored"
+  },
+  {
+    "id": "auth-shared-responsibility-09",
+    "topicId": "shared-responsibility",
+    "text": "Patch management is a shared control in the AWS shared responsibility model. What is the AWS part of this control?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Patching the guest operating systems of customer EC2 instances"
+      },
+      {
+        "key": "B",
+        "text": "Patching the applications that customers install on their instances"
+      },
+      {
+        "key": "C",
+        "text": "Training customer employees to apply patches safely"
+      },
+      {
+        "key": "D",
+        "text": "Patching and fixing flaws in the AWS infrastructure"
+      }
+    ],
+    "correct": [
+      "D"
+    ],
+    "multi": false,
+    "orderDependent": false,
+    "explanation": "In patch management, AWS patches and fixes flaws in its own infrastructure, while customers patch their guest operating systems and applications. Patching customer guest operating systems is the customer's part of the same shared control.",
+    "source": "authored"
+  },
+  {
+    "id": "auth-shared-responsibility-10",
+    "topicId": "shared-responsibility",
+    "text": "Which responsibilities remain with the customer no matter which AWS services it uses? (Choose two.)",
+    "options": [
+      {
+        "key": "A",
+        "text": "Physical security of the data centers"
+      },
+      {
+        "key": "B",
+        "text": "Patching the host operating system and hypervisor"
+      },
+      {
+        "key": "C",
+        "text": "Classifying its data and deciding how sensitive it is"
+      },
+      {
+        "key": "D",
+        "text": "Maintaining the network hardware inside AWS facilities"
+      },
+      {
+        "key": "E",
+        "text": "Managing who can access its resources through IAM"
+      }
+    ],
+    "correct": [
+      "C",
+      "E"
+    ],
+    "multi": true,
+    "orderDependent": false,
+    "explanation": "Data classification and access management through IAM always stay with the customer, even for fully managed services. Physical security, network hardware and the host operating system and hypervisor are always AWS's responsibility.",
+    "source": "authored"
+  }
+]
