@@ -1,0 +1,8 @@
+@import 'tailwindcss';
+
+@theme {
+  --color-leaf-done: #16a34a;
+  --color-leaf-next: #2563eb;
+  --color-leaf-next-hover: #1d4ed8;
+  --color-leaf-locked: #c0c0c0;
+}
