@@ -8,7 +8,7 @@ import ResumeGate from './ResumeGate.svelte';
 
 const attempt = (over: Partial<AttemptRow> = {}): AttemptRow => ({
   id: 'old', kind: 'practice', topicId: 'compute', status: 'in_progress', startedAt: 0, submittedAt: null,
-  submitReason: null, reviewAllowed: false, clock: { mode: 'freeze', limitMs: null, remainingMs: null, deadlineAt: null },
+  submitReason: null, reviewAllowed: false, clock: { mode: 'freeze', limitMs: null, remainingMs: null, deadlineAt: null, onHidden: 'freeze' },
   heartbeatAt: null, scorePct: null, passed: null, ...over,
 });
 const rows = (ids = ['q1', 'q2', 'q3']): AttemptQuestionRow[] =>
@@ -51,7 +51,7 @@ describe('ResumeGate', () => {
   });
 
   it('Continue submits immediately when the time already ran out', async () => {
-    const expired = attempt({ clock: { mode: 'freeze', limitMs: 60_000, remainingMs: 0, deadlineAt: null } });
+    const expired = attempt({ clock: { mode: 'freeze', limitMs: 60_000, remainingMs: 0, deadlineAt: null, onHidden: 'freeze' } });
     const env = await mount({ attempt: expired, questions: rows() });
     await userEvent.click(await screen.findByRole('button', { name: 'Continue' }));
     await waitFor(() => expect(env.onresumed).toHaveBeenCalledTimes(1));

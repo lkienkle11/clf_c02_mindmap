@@ -1,11 +1,12 @@
-import type { ClockState } from '@/persistence/records';
+import type { ClockState, HiddenPolicy } from '@/persistence/records';
 
 export type { ClockState };
 
-export function startClock(limitMs: number | null, mode: 'freeze' | 'run', now: number): ClockState {
-  if (limitMs === null) return { mode, limitMs: null, remainingMs: null, deadlineAt: null };
+export function startClock(limitMs: number | null, mode: 'freeze' | 'run', now: number, onHidden: HiddenPolicy): ClockState {
+  if (limitMs === null) return { mode, onHidden, limitMs: null, remainingMs: null, deadlineAt: null };
   return {
     mode,
+    onHidden,
     limitMs,
     remainingMs: limitMs,
     deadlineAt: mode === 'run' ? now + limitMs : null,
@@ -39,4 +40,16 @@ export function resolveOnResume(
   if (state.mode === 'freeze') return { state, autoSubmit: state.remainingMs === 0 };
   const remaining = remainingAt(state, now);
   return { state: { ...state, remainingMs: remaining }, autoSubmit: remaining !== null && remaining <= 0 };
+}
+
+export function settleHidden(state: ClockState, hiddenMs: number): ClockState {
+  if (state.limitMs === null) return state;
+  const hidden = Math.max(0, hiddenMs);
+  if (state.mode === 'run' && state.onHidden === 'freeze' && state.deadlineAt !== null) {
+    return { ...state, deadlineAt: state.deadlineAt + hidden };
+  }
+  if (state.mode === 'freeze' && state.onHidden === 'run' && state.remainingMs !== null) {
+    return { ...state, remainingMs: Math.max(0, state.remainingMs - hidden) };
+  }
+  return state;
 }

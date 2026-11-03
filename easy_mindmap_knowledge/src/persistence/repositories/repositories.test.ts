@@ -22,7 +22,7 @@ const attempt = (over: Partial<AttemptRow> = {}): AttemptRow => ({
   submittedAt: null,
   submitReason: null,
   reviewAllowed: true,
-  clock: { mode: 'freeze', limitMs: 600000, remainingMs: 590000, deadlineAt: null },
+  clock: { mode: 'freeze', limitMs: 600000, remainingMs: 590000, deadlineAt: null, onHidden: 'freeze' },
   heartbeatAt: 1500,
   scorePct: null,
   passed: null,
@@ -64,6 +64,28 @@ describe('lessonProgress', () => {
 });
 
 describe('attempts', () => {
+  it('stores and reads back clock.onHidden', async () => {
+    const repo = createAttemptsRepo(db);
+    const a = attempt();
+    await repo.create({ ...a, clock: { ...a.clock, onHidden: 'run' } }, questions());
+    expect((await repo.findInProgress())?.attempt.clock.onHidden).toBe('run');
+  });
+
+  it('saveClock persists a changed onHidden', async () => {
+    const repo = createAttemptsRepo(db);
+    await repo.create(attempt(), questions());
+    await repo.saveClock('a1', { ...attempt().clock, onHidden: 'run' }, 2000);
+    expect((await repo.findInProgress())?.attempt.clock.onHidden).toBe('run');
+  });
+
+  it("a row inserted without the column reads back 'freeze'", async () => {
+    await db.execute(
+      `INSERT INTO attempts (id, kind, status, started_at, review_allowed, clock_mode)
+       VALUES ('raw', 'practice', 'in_progress', 1, 1, 'freeze')`,
+    );
+    expect((await createAttemptsRepo(db).findInProgress())?.attempt.clock.onHidden).toBe('freeze');
+  });
+
   it('create inserts questions first: a failure midway leaves no in_progress attempt', async () => {
     let calls = 0;
     const flaky: SqlExecutor = {
@@ -101,7 +123,7 @@ describe('attempts', () => {
       kind: 'review',
       topicId: null,
       reviewAllowed: false,
-      clock: { mode: 'run', limitMs: null, remainingMs: null, deadlineAt: null },
+      clock: { mode: 'run', limitMs: null, remainingMs: null, deadlineAt: null, onHidden: 'freeze' },
       heartbeatAt: null,
     });
     await repo.create(a, questions());
@@ -125,7 +147,7 @@ describe('attempts', () => {
   it('saveClock persists clock and heartbeat', async () => {
     const repo = createAttemptsRepo(db);
     await repo.create(attempt(), questions());
-    const clock = { mode: 'run' as const, limitMs: 1000, remainingMs: null, deadlineAt: 99999 };
+    const clock = { mode: 'run' as const, limitMs: 1000, remainingMs: null, deadlineAt: 99999, onHidden: 'freeze' as const };
     await repo.saveClock('a1', clock, 2222);
     const a = (await repo.findInProgress())!.attempt;
     expect(a.clock).toEqual(clock);

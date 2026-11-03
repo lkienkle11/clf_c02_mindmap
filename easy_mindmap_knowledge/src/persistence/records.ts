@@ -1,5 +1,9 @@
+/** What the practice clock does while the page is hidden. */
+export type HiddenPolicy = 'freeze' | 'run';
+
 export interface ClockState {
   mode: 'freeze' | 'run';
+  onHidden: HiddenPolicy;
   limitMs: number | null;
   remainingMs: number | null;
   deadlineAt: number | null;

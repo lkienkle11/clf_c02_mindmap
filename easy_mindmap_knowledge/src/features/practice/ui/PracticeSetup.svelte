@@ -26,6 +26,7 @@
   let review = $state<'allow' | 'deny'>('deny');
   let timeMode = $state<'set' | 'none'>('none');
   let clock = $state<'freeze' | 'run'>('freeze');
+  let onHidden = $state<'freeze' | 'run'>('freeze');
   let minutes = $state<number | null>(10);
   let seconds = $state<number | null>(0);
   let loaded = $state(false);
@@ -41,6 +42,7 @@
         if (o) {
           review = o.allowReview ? 'allow' : 'deny';
           clock = o.clockMode;
+          onHidden = o.onHidden;
           if (o.limitMs !== null) {
             timeMode = 'set';
             const total = Math.round(o.limitMs / 1000);
@@ -66,7 +68,7 @@
       const session = await PracticeSession.start(
         services,
         topicId,
-        { allowReview: review === 'allow', limitMs, clockMode: clock },
+        { allowReview: review === 'allow', limitMs, clockMode: clock, onHidden },
         () => appState.refresh(),
       );
       onstarted(session);
@@ -123,6 +125,13 @@
       <legend class="mb-1 text-lg font-medium">{i18n.t('practice.setup.clockLegend')}</legend>
       <label class={radio}><input class="size-5" type="radio" name="clock" value="freeze" bind:group={clock} />{i18n.t('practice.setup.clockFreeze')}</label>
       <label class={radio}><input class="size-5" type="radio" name="clock" value="run" bind:group={clock} />{i18n.t('practice.setup.clockRun')}</label>
+    </fieldset>
+
+    <fieldset class="flex flex-col gap-1">
+      <legend class="mb-1 text-lg font-medium">{i18n.t('practice.setup.hiddenLegend')}</legend>
+      <p class="mb-1 text-muted-foreground">{i18n.t('practice.setup.hiddenHint')}</p>
+      <label class={radio}><input class="size-5" type="radio" name="hidden" value="freeze" bind:group={onHidden} />{i18n.t('practice.setup.hiddenFreeze')}</label>
+      <label class={radio}><input class="size-5" type="radio" name="hidden" value="run" bind:group={onHidden} />{i18n.t('practice.setup.hiddenRun')}</label>
     </fieldset>
   {/if}
 

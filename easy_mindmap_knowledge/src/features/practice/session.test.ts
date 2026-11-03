@@ -93,10 +93,10 @@ describe('start', () => {
     expect(await services.repos.attempts.findInProgress()).toBeNull();
   });
   it('marks multi questions and saves last options', async () => {
-    const s = await start('networking', { allowReview: true, limitMs: 60000, clockMode: 'run' });
+    const s = await start('networking', { allowReview: true, limitMs: 60000, clockMode: 'run', onHidden: 'freeze' });
     expect(s.questions.every((q) => q.multi)).toBe(true);
     expect(s.allowReview).toBe(true);
-    expect(await loadLastOptions(services.repos.settings)).toEqual({ allowReview: true, limitMs: 60000, clockMode: 'run' });
+    expect(await loadLastOptions(services.repos.settings)).toEqual({ allowReview: true, limitMs: 60000, clockMode: 'run', onHidden: 'freeze' });
   });
 });
 
@@ -104,11 +104,11 @@ describe('options persistence', () => {
   it('defaults, round trip, invalid json and wrong shape', async () => {
     const st = services.repos.settings;
     expect(await loadLastOptions(st)).toEqual(DEFAULT_PRACTICE_OPTIONS);
-    await saveLastOptions(st, { allowReview: true, limitMs: 1000, clockMode: 'run' });
-    expect(await loadLastOptions(st)).toEqual({ allowReview: true, limitMs: 1000, clockMode: 'run' });
+    await saveLastOptions(st, { allowReview: true, limitMs: 1000, clockMode: 'run', onHidden: 'freeze' });
+    expect(await loadLastOptions(st)).toEqual({ allowReview: true, limitMs: 1000, clockMode: 'run', onHidden: 'freeze' });
     await st.set('practice_last_options', '{nope');
     expect(await loadLastOptions(st)).toEqual(DEFAULT_PRACTICE_OPTIONS);
-    await st.set('practice_last_options', JSON.stringify({ allowReview: 'x', limitMs: 1, clockMode: 'freeze' }));
+    await st.set('practice_last_options', JSON.stringify({ allowReview: 'x', limitMs: 1, clockMode: 'freeze', onHidden: 'freeze' }));
     expect(await loadLastOptions(st)).toEqual(DEFAULT_PRACTICE_OPTIONS);
     await st.set('practice_last_options', 'null');
     expect(await loadLastOptions(st)).toEqual(DEFAULT_PRACTICE_OPTIONS);
@@ -145,7 +145,7 @@ describe('resume', () => {
     await expect(PracticeSession.resume(services, found, onSubmitted)).resolves.toBeDefined();
   });
   it('run clock past deadline => autoSubmit, timeout grades only answered', async () => {
-    const s = await start('compute', { limitMs: 60000, clockMode: 'run' });
+    const s = await start('compute', { limitMs: 60000, clockMode: 'run', onHidden: 'freeze' });
     await s.select(0, ['A']);
     clock = NOW + 120000;
     const found = (await services.repos.attempts.findInProgress())!;
@@ -270,7 +270,7 @@ describe('clock', () => {
     expect(s.remainingMs).toBe(0);
   });
   it('run: derives remaining from services.now()', async () => {
-    const s = await start('compute', { limitMs: 60000, clockMode: 'run' });
+    const s = await start('compute', { limitMs: 60000, clockMode: 'run', onHidden: 'freeze' });
     clock = NOW + 20000;
     await s.tick(100);
     expect(s.remainingMs).toBe(40000);
@@ -458,10 +458,71 @@ describe('stats rebuild goes through Services (no practice -> review import)', (
   });
 });
 
+describe('settleHidden', () => {
+  it('run + freeze: remaining unchanged after settleHidden(5000) while the deadline moved', async () => {
+    const s = await start('compute', { limitMs: 60000, clockMode: 'run', onHidden: 'freeze' });
+    clock = NOW + 20000;
+    await s.tick(100);
+    expect(s.remainingMs).toBe(40000);
+    clock = NOW + 25000;
+    await s.settleHidden(5000);
+    expect(s.remainingMs).toBe(40000);
+    const found = (await services.repos.attempts.findInProgress())!;
+    expect(found.attempt.clock.deadlineAt).toBe(NOW + 65000);
+  });
+  it('freeze + run: remainingMs drops by hiddenMs', async () => {
+    const s = await start('compute', { limitMs: 60000, clockMode: 'freeze', onHidden: 'run' });
+    await s.settleHidden(5000);
+    expect(s.remainingMs).toBe(55000);
+  });
+  it('freeze + freeze: remainingMs unchanged', async () => {
+    const s = await start('compute', { limitMs: 60000, clockMode: 'freeze', onHidden: 'freeze' });
+    await s.settleHidden(5000);
+    expect(s.remainingMs).toBe(60000);
+  });
+  it('hidden longer than remaining with onHidden run => exactly one timeout submit', async () => {
+    const s = await start('compute', { limitMs: 3000, clockMode: 'freeze', onHidden: 'run' });
+    await s.settleHidden(10000);
+    expect(s.submitted).toBe(true);
+    expect(s.remainingMs).toBe(0);
+    await s.settleHidden(10000);
+    expect(onSubmitted).toHaveBeenCalledTimes(1);
+    const list = await services.repos.attempts.listSubmitted();
+    expect(list).toHaveLength(1);
+    expect(list[0].submitReason).toBe('timeout');
+  });
+  it('untimed session: no-op and does not throw', async () => {
+    const s = await start();
+    const spy = vi.spyOn(services.repos.attempts, 'saveClock');
+    await expect(s.settleHidden(5000)).resolves.toBeUndefined();
+    expect(s.remainingMs).toBeNull();
+    expect(spy).not.toHaveBeenCalled();
+  });
+  it('closed/exited session: no-op', async () => {
+    const a = await start('compute', { limitMs: 60000, clockMode: 'freeze', onHidden: 'run' });
+    await a.submit('manual');
+    const spy = vi.spyOn(services.repos.attempts, 'saveClock');
+    await a.settleHidden(5000);
+    expect(spy).not.toHaveBeenCalled();
+    const b = await start('compute', { limitMs: 60000, clockMode: 'freeze', onHidden: 'run' });
+    await b.exit();
+    await b.settleHidden(5000);
+    expect(spy).not.toHaveBeenCalled();
+    expect(b.remainingMs).toBe(60000);
+  });
+  it('saves the clock', async () => {
+    const s = await start('compute', { limitMs: 60000, clockMode: 'freeze', onHidden: 'run' });
+    const spy = vi.spyOn(services.repos.attempts, 'saveClock');
+    await s.settleHidden(5000);
+    expect(spy).toHaveBeenCalledTimes(1);
+    expect(spy).toHaveBeenLastCalledWith(s.attemptId, expect.objectContaining({ remainingMs: 55000 }), NOW);
+  });
+});
+
 describe('time source', () => {
   it('never reads Date.now inside the session', async () => {
     const spy = vi.spyOn(Date, 'now');
-    const s = await start('compute', { limitMs: 60000, clockMode: 'run' });
+    const s = await start('compute', { limitMs: 60000, clockMode: 'run', onHidden: 'freeze' });
     await s.select(0, ['A']);
     await s.tick(6000);
     await s.submit('manual');
@@ -575,7 +636,7 @@ describe('fix round 1: frozen clock gaps and submit reason', () => {
     expect(spy).toHaveBeenCalledTimes(1);
   });
   it('run mode is unaffected by the cap', async () => {
-    const s = await start('compute', { limitMs: 60000, clockMode: 'run' });
+    const s = await start('compute', { limitMs: 60000, clockMode: 'run', onHidden: 'freeze' });
     await s.tick(7_200_000);
     expect(s.remainingMs).toBe(60000);
     clock = NOW + 10000;

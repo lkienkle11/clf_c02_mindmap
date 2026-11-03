@@ -18,22 +18,44 @@
   const timed = $derived(remainingMs !== null);
   let announcement = $state('');
   let previousSeconds: number | null = null;
+  // Non-reactive: the interval's previous-tick mark (lifted so the visibility handler can reset it) and the hidden mark.
+  let last = 0;
+  let hiddenAt: number | null = null;
+
+  function reportError() {
+    // Time is up => the failing step was the automatic submit, not the clock save.
+    onerror(session.remainingMs !== null && session.remainingMs <= 0 ? 'submit' : 'clock');
+  }
+
+  // Hidden time is settled by the session according to the tab-switch policy; the interval skips ticks meanwhile.
+  function onvisibilitychange() {
+    if (!timed || session.submitted) return;
+    if (document.visibilityState === 'hidden') {
+      hiddenAt ??= services.now();
+      return;
+    }
+    if (hiddenAt === null) return;
+    const now = services.now();
+    const hiddenMs = Math.max(0, now - hiddenAt);
+    hiddenAt = null;
+    last = now;
+    session.settleHidden(hiddenMs).catch(reportError);
+  }
 
   // One interval; each tick reports the REAL time since the previous tick (timers can fire late).
   $effect(() => {
     if (!timed || session.submitted) return;
-    let last = services.now();
+    last = services.now();
     let inFlight = false;
     const id = setInterval(() => {
-      if (inFlight) return;
+      if (inFlight || document.visibilityState === 'hidden') return;
       const now = services.now();
       const elapsed = now - last;
       last = now;
       inFlight = true;
       session
         .tick(elapsed)
-        // Time is up => the failing step was the automatic submit, not the clock save.
-        .catch(() => onerror(session.remainingMs !== null && session.remainingMs <= 0 ? 'submit' : 'clock'))
+        .catch(reportError)
         .finally(() => { inFlight = false; });
     }, 1000);
     return () => clearInterval(id);
@@ -52,6 +74,8 @@
     previousSeconds = seconds;
   });
 </script>
+
+<svelte:document {onvisibilitychange} />
 
 {#if remainingMs !== null}
   <p class="text-lg font-semibold tabular-nums">
