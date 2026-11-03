@@ -1,0 +1,317 @@
+[
+  {
+    "id": "auth-migration-caf-01",
+    "topicId": "migration-caf",
+    "text": "Which perspective of the AWS Cloud Adoption Framework (AWS CAF) focuses on culture, organizational structure, leadership, and workforce skills?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Business"
+      },
+      {
+        "key": "B",
+        "text": "Governance"
+      },
+      {
+        "key": "C",
+        "text": "People"
+      },
+      {
+        "key": "D",
+        "text": "Operations"
+      }
+    ],
+    "correct": [
+      "C"
+    ],
+    "multi": false,
+    "orderDependent": false,
+    "explanation": "The People perspective covers culture, organization design, leadership and cloud skills. The Governance perspective covers program management, risk and cloud financial management rather than workforce and culture.",
+    "source": "authored"
+  },
+  {
+    "id": "auth-migration-caf-02",
+    "topicId": "migration-caf",
+    "text": "A company must leave its data center before the lease ends in three months. It wants to move its application servers to Amazon EC2 instances as quickly as possible, without changing the applications. Which migration strategy should it use?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Refactor"
+      },
+      {
+        "key": "B",
+        "text": "Rehost"
+      },
+      {
+        "key": "C",
+        "text": "Repurchase"
+      },
+      {
+        "key": "D",
+        "text": "Retain"
+      }
+    ],
+    "correct": [
+      "B"
+    ],
+    "multi": false,
+    "orderDependent": false,
+    "explanation": "Rehost (lift and shift) moves applications to AWS without changes and is one of the fastest strategies. Refactor redesigns the application with cloud-native features, which takes much longer.",
+    "source": "authored"
+  },
+  {
+    "id": "auth-migration-caf-03",
+    "topicId": "migration-caf",
+    "text": "A company moves its self-managed MySQL database from an on-premises server to Amazon RDS for MySQL. The application code stays the same except for the database connection settings. Which migration strategy is this?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Replatform"
+      },
+      {
+        "key": "B",
+        "text": "Rehost"
+      },
+      {
+        "key": "C",
+        "text": "Refactor"
+      },
+      {
+        "key": "D",
+        "text": "Retire"
+      }
+    ],
+    "correct": [
+      "A"
+    ],
+    "multi": false,
+    "orderDependent": false,
+    "explanation": "Moving to a managed service with small changes and no change to the core architecture is replatform (lift and reshape). Rehost would move the database server as-is, for example onto an EC2 instance.",
+    "source": "authored"
+  },
+  {
+    "id": "auth-migration-caf-04",
+    "topicId": "migration-caf",
+    "text": "A company decides to stop running its own customer relationship management (CRM) servers and to subscribe to a software as a service (SaaS) CRM product instead. Which migration strategy does this describe?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Rehost"
+      },
+      {
+        "key": "B",
+        "text": "Relocate"
+      },
+      {
+        "key": "C",
+        "text": "Retain"
+      },
+      {
+        "key": "D",
+        "text": "Repurchase"
+      }
+    ],
+    "correct": [
+      "D"
+    ],
+    "multi": false,
+    "orderDependent": false,
+    "explanation": "Repurchase (drop and shop) replaces an application with a different product, commonly SaaS. Rehost and relocate move the existing application, and retain keeps it where it is.",
+    "source": "authored"
+  },
+  {
+    "id": "auth-migration-caf-05",
+    "topicId": "migration-caf",
+    "text": "Which of the following are perspectives of the AWS Cloud Adoption Framework (AWS CAF)? (Choose two.)",
+    "options": [
+      {
+        "key": "A",
+        "text": "Governance"
+      },
+      {
+        "key": "B",
+        "text": "Sustainability"
+      },
+      {
+        "key": "C",
+        "text": "Reliability"
+      },
+      {
+        "key": "D",
+        "text": "Platform"
+      },
+      {
+        "key": "E",
+        "text": "Cost Optimization"
+      }
+    ],
+    "correct": [
+      "A",
+      "D"
+    ],
+    "multi": true,
+    "orderDependent": false,
+    "explanation": "The six AWS CAF perspectives are Business, People, Governance, Platform, Security and Operations. Sustainability, Reliability and Cost Optimization are pillars of the AWS Well-Architected Framework, not CAF perspectives.",
+    "source": "authored"
+  },
+  {
+    "id": "auth-migration-caf-06",
+    "topicId": "migration-caf",
+    "text": "During a large migration, a company sets up a secure multi-account landing zone, trains its teams, and migrates a small first set of applications to gain experience. Which migration phase is the company in?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Assess"
+      },
+      {
+        "key": "B",
+        "text": "Mobilize"
+      },
+      {
+        "key": "C",
+        "text": "Migrate and modernize"
+      },
+      {
+        "key": "D",
+        "text": "Operate"
+      }
+    ],
+    "correct": [
+      "B"
+    ],
+    "multi": false,
+    "orderDependent": false,
+    "explanation": "In the mobilize phase, organizations build the foundation, including the landing zone, and migrate a small set of applications. The assess phase comes earlier and produces the readiness assessment and business case.",
+    "source": "authored"
+  },
+  {
+    "id": "auth-migration-caf-07",
+    "topicId": "migration-caf",
+    "text": "A company needs to lift and shift several hundred Windows and Linux servers to AWS. The servers must keep running during replication, and the cutover downtime must be only minutes. Which AWS service should the company use?",
+    "options": [
+      {
+        "key": "A",
+        "text": "AWS DataSync with scheduled tasks"
+      },
+      {
+        "key": "B",
+        "text": "AWS Database Migration Service (AWS DMS)"
+      },
+      {
+        "key": "C",
+        "text": "AWS Transfer Family SFTP servers"
+      },
+      {
+        "key": "D",
+        "text": "AWS Transform MGN (Application Migration Service)"
+      }
+    ],
+    "correct": [
+      "D"
+    ],
+    "multi": false,
+    "orderDependent": false,
+    "explanation": "AWS Transform MGN, formerly AWS Application Migration Service, continuously replicates whole source servers and allows a cutover with minimal downtime. DataSync copies files and objects, and DMS migrates databases, not entire servers.",
+    "source": "authored"
+  },
+  {
+    "id": "auth-migration-caf-08",
+    "topicId": "migration-caf",
+    "text": "Which statements about the AWS migration strategies (the 7 Rs) are correct? (Choose two.)",
+    "options": [
+      {
+        "key": "A",
+        "text": "Repurchase means moving the same software unchanged to Amazon EC2"
+      },
+      {
+        "key": "B",
+        "text": "Retain means keeping an application in the source environment for now"
+      },
+      {
+        "key": "C",
+        "text": "Relocate requires the application code to be rewritten"
+      },
+      {
+        "key": "D",
+        "text": "Refactor is the most complex and costly migration strategy"
+      },
+      {
+        "key": "E",
+        "text": "Retire means moving an application to a managed AWS service"
+      }
+    ],
+    "correct": [
+      "B",
+      "D"
+    ],
+    "multi": true,
+    "orderDependent": false,
+    "explanation": "Retain keeps an application where it is, possibly to migrate later, and refactor is the most complex and costly strategy because it redesigns the application. Moving software unchanged is rehost, relocate needs no rewriting, and moving to a managed service is replatform.",
+    "source": "authored"
+  },
+  {
+    "id": "auth-migration-caf-09",
+    "topicId": "migration-caf",
+    "text": "A company wants to collect utilization data from its on-premises servers with an agentless collector and receive a data-driven business case that compares current costs with projected AWS costs. Which AWS service should the company use?",
+    "options": [
+      {
+        "key": "A",
+        "text": "AWS Budgets"
+      },
+      {
+        "key": "B",
+        "text": "AWS Cost Explorer"
+      },
+      {
+        "key": "C",
+        "text": "Migration Evaluator"
+      },
+      {
+        "key": "D",
+        "text": "AWS Well-Architected Tool"
+      }
+    ],
+    "correct": [
+      "C"
+    ],
+    "multi": false,
+    "orderDependent": false,
+    "explanation": "Migration Evaluator collects on-premises inventory and utilization data and produces a business case for migrating to AWS. Cost Explorer and Budgets work only with costs already incurred in AWS.",
+    "source": "authored"
+  },
+  {
+    "id": "auth-migration-caf-10",
+    "topicId": "migration-caf",
+    "text": "Which activities belong to the assess phase of an AWS migration? (Choose two.)",
+    "options": [
+      {
+        "key": "A",
+        "text": "Completing a Migration Readiness Assessment"
+      },
+      {
+        "key": "B",
+        "text": "Migrating applications at scale with a migration factory"
+      },
+      {
+        "key": "C",
+        "text": "Producing a high-level total cost of ownership (TCO) analysis"
+      },
+      {
+        "key": "D",
+        "text": "Building and securing the AWS landing zone"
+      },
+      {
+        "key": "E",
+        "text": "Modernizing applications after they run on AWS"
+      }
+    ],
+    "correct": [
+      "A",
+      "C"
+    ],
+    "multi": true,
+    "orderDependent": false,
+    "explanation": "The assess phase includes a Migration Readiness Assessment based on the CAF perspectives and a first TCO and business case. Building the landing zone belongs to mobilize, and migrating at scale and modernizing belong to the migrate and modernize phase.",
+    "source": "authored"
+  }
+]
