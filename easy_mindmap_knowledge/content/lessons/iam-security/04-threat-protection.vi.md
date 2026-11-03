@@ -14,7 +14,7 @@ required: true
 - **Amazon GuardDuty** là dịch vụ **phát hiện mối đe dọa**. Sau khi bật, nó phân tích **management event của CloudTrail, VPC flow log và DNS log** mà bạn không phải tự thiết lập các log đó, và dùng nguồn tình báo mối đe dọa (threat intelligence) cùng học máy để phát hiện thông tin đăng nhập bị lộ, đào tiền mã hóa trái phép hoặc liên lạc với địa chỉ IP độc hại.
 - **Amazon Inspector** là dịch vụ **quản lý lỗ hổng**. Nó tự động phát hiện và liên tục quét **EC2 instance, container image trong Amazon ECR và Lambda function** để tìm lỗ hổng phần mềm (CVE) và việc bị phơi ra mạng ngoài ý muốn.
 - **Amazon Macie** dùng học máy và so khớp mẫu để **phát hiện dữ liệu nhạy cảm**, như thông tin cá nhân hoặc tài chính, **trong Amazon S3**, và đánh dấu các bucket công khai hoặc được chia sẻ.
-- **AWS Security Hub** gom các tín hiệu này lại và sắp xếp mức ưu tiên. Khả năng **Security Hub CSPM** của nó (chính là Security Hub ban đầu) chạy kiểm tra tự động theo các tiêu chuẩn như AWS Foundational Security Best Practices và CIS, và thu thập finding từ GuardDuty, Inspector và Macie.
+- **AWS Security Hub** gom các tín hiệu này lại và sắp xếp mức ưu tiên. Dịch vụ ban đầu, nay có tên **AWS Security Hub CSPM**, chạy kiểm tra tự động theo các tiêu chuẩn như AWS Foundational Security Best Practices và CIS; Security Hub kết hợp kết quả của nó với finding từ GuardDuty, Inspector và Macie.
 - **Amazon Detective** giúp bạn **điều tra nguyên nhân gốc** của một finding bằng các đồ thị dựng từ dữ liệu log.
 - **AWS Firewall Manager** áp dụng rule WAF, bảo vệ Shield Advanced và rule security group **một cách tập trung cho mọi tài khoản** trong AWS Organizations.
 
@@ -41,7 +41,7 @@ Kiểm toán ai đã thực hiện một lời gọi API là **AWS CloudTrail** 
 
 - Shield = DDoS; WAF = rule web ở tầng 7.
 - GuardDuty = phát hiện mối đe dọa; Inspector = lỗ hổng; Macie = dữ liệu nhạy cảm trong S3.
-- Security Hub = tập trung finding và kiểm tra tư thế bảo mật; Detective = điều tra.
+- Security Hub = tập trung finding và kiểm tra tình trạng bảo mật (security posture); Detective = điều tra.
 
 ## Nguồn
 

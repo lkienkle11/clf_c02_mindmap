@@ -217,27 +217,27 @@
   {
     "id": "auth-pricing-billing-08",
     "topicId": "pricing-billing",
-    "text": "Which are benefits of consolidated billing in AWS Organizations? (Choose two.)",
+    "text": "A company's production account bought Reserved Instances. A development account in the same AWS Organizations organization runs matching instances. Which are benefits of consolidated billing for this company? (Choose two.)",
     "options": [
       {
         "key": "A",
-        "text": "One bill for all accounts in the organization"
+        "text": "The company receives one bill for both accounts"
       },
       {
         "key": "B",
-        "text": "Each member account gets its own AWS Support plan at no cost"
+        "text": "Each account gets its own AWS Support plan at no cost"
       },
       {
         "key": "C",
-        "text": "Reserved Instance and Savings Plans discounts can be shared across accounts"
+        "text": "Reserved Instance discounts can cover the matching development usage"
       },
       {
         "key": "D",
-        "text": "Member accounts are never charged for data transfer"
+        "text": "Data transfer between the two accounts becomes free"
       },
       {
         "key": "E",
-        "text": "All member accounts automatically receive AWS Free Tier credits again"
+        "text": "The development account receives new AWS Free Tier credits"
       }
     ],
     "correct": [
@@ -246,7 +246,7 @@
     ],
     "multi": true,
     "orderDependent": false,
-    "explanation": "Consolidated billing produces one bill paid by the management account and lets Reserved Instance and Savings Plans discounts apply across accounts, in addition to combining usage for volume tiers. It does not add free support plans, remove data transfer charges, or renew Free Tier credits.",
+    "explanation": "Consolidated billing gives one bill paid by the management account, and Reserved Instance discounts can apply to matching usage in other accounts of the organization unless sharing is turned off. It does not add free support plans, remove data transfer charges, or renew Free Tier credits.",
     "source": "authored"
   },
   {
@@ -282,7 +282,7 @@
   {
     "id": "auth-pricing-billing-10",
     "topicId": "pricing-billing",
-    "text": "A company wants to lower the cost of Amazon EC2 instances that run at low CPU utilization most of the time. It also wants to be alerted automatically when daily spending suddenly rises far above its normal pattern. Which AWS services meet these needs? (Choose two.)",
+    "text": "A company wants to lower the cost of Amazon EC2 instances that run at low CPU utilization most of the time. It also wants to be alerted automatically when daily spending rises far above its normal pattern, without having to set or maintain spending thresholds. Which AWS services meet these needs? (Choose two.)",
     "options": [
       {
         "key": "A",
@@ -298,7 +298,7 @@
       },
       {
         "key": "D",
-        "text": "AWS Artifact"
+        "text": "AWS Budgets"
       },
       {
         "key": "E",
@@ -311,7 +311,7 @@
     ],
     "multi": true,
     "orderDependent": false,
-    "explanation": "Compute Optimizer uses utilization metrics to recommend smaller, right-sized instances, and Cost Anomaly Detection uses machine learning to alert on unusual spend. Pricing Calculator and Migration Evaluator estimate future or migration costs, not the cost of running resources.",
+    "explanation": "Compute Optimizer uses utilization metrics to recommend smaller, right-sized instances, and Cost Anomaly Detection uses machine learning to learn normal spending and alert on unusual spend. AWS Budgets alerts only on thresholds that you set and maintain, and Pricing Calculator and Migration Evaluator estimate future or migration costs.",
     "source": "authored"
   }
 ]

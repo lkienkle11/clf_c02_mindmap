@@ -11,7 +11,7 @@ AWS đã thay đổi Free Tier cho **các tài khoản tạo từ ngày 15 thán
 
 Khi đăng ký, khách hàng mới chọn một **gói tài khoản (account plan)** và nhận **AWS Free Tier credit** để trả cho mức sử dụng đủ điều kiện. Họ có thể nhận thêm credit bằng cách hoàn thành các hoạt động.
 
-- **Gói tài khoản miễn phí (Free account plan)**: để thử nghiệm và xây dựng bản thử nghiệm khái niệm (proof of concept) **không tốn phí**. Gói kéo dài tối đa **sáu tháng hoặc đến khi dùng hết credit**, tùy điều kiện nào đến trước. Một số dịch vụ có thể nhanh chóng tiêu hết credit không có trong gói này. Bạn **không bị tính phí** trừ khi nâng cấp lên gói trả phí. Khi gói miễn phí kết thúc, AWS tạm ngừng tài khoản và giữ dữ liệu trong một thời gian giới hạn; bạn nâng cấp để tiếp tục dùng.
+- **Gói tài khoản miễn phí (Free account plan)**: để thử nghiệm và xây dựng bản thử nghiệm khái niệm (proof of concept) **không tốn phí**. Gói kéo dài tối đa **sáu tháng hoặc đến khi dùng hết credit**, tùy điều kiện nào đến trước. Một số dịch vụ có thể nhanh chóng tiêu hết credit không có trong gói này. Bạn **không bị tính phí** trừ khi nâng cấp lên gói trả phí. Khi gói miễn phí kết thúc, AWS tạm ngừng tài khoản và giữ dữ liệu trong 90 ngày; bạn nâng cấp để tiếp tục dùng.
 - **Gói tài khoản trả phí (Paid account plan)**: cho công việc production với **quyền dùng mọi dịch vụ**. Credit vẫn được trừ trước; sau đó, mức sử dụng được tính theo giá **pay-as-you-go** tiêu chuẩn.
 
 ## Các loại ưu đãi

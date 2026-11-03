@@ -12,7 +12,7 @@ AWS changed its Free Tier for **accounts created on or after July 15, 2025**. Ol
 
 When a new customer signs up, they choose an **account plan** and receive **AWS Free Tier credits** that pay for eligible usage. They can earn extra credits by completing activities.
 
-- **Free account plan**: for experimenting and building proofs of concept **at no cost**. It lasts up to **six months or until the credits are used up**, whichever comes first. Some services that would quickly use up the credits are not available on this plan. You are **not charged** unless you upgrade to the paid plan. When the free plan ends, AWS suspends the account and keeps the data for a limited time; you upgrade to keep using it.
+- **Free account plan**: for experimenting and building proofs of concept **at no cost**. It lasts up to **six months or until the credits are used up**, whichever comes first. Some services that would quickly use up the credits are not available on this plan. You are **not charged** unless you upgrade to the paid plan. When the free plan ends, AWS suspends the account and keeps the data for 90 days; you upgrade to keep using it.
 - **Paid account plan**: for production work with **access to all services**. Credits still apply first; after that, usage is billed at standard **pay-as-you-go** prices.
 
 ## Types of offers

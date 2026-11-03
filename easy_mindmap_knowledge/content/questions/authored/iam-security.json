@@ -48,7 +48,7 @@
       },
       {
         "key": "D",
-        "text": "Make the bucket public so that no credentials are needed"
+        "text": "Use an S3 gateway VPC endpoint"
       }
     ],
     "correct": [
@@ -56,33 +56,33 @@
     ],
     "multi": false,
     "orderDependent": false,
-    "explanation": "An IAM role attached to the instance delivers temporary credentials that rotate automatically, so no long-term secrets are stored on the instance. Access keys in a file are long-term credentials that keep working if they leak.",
+    "explanation": "An IAM role attached to the instance delivers temporary credentials that rotate automatically, so no long-term secrets are stored on the instance. Access keys in a file are long-term credentials that keep working if they leak, and an S3 gateway VPC endpoint only provides a private network path; it does not give the application any permissions.",
     "source": "authored"
   },
   {
     "id": "auth-iam-security-03",
     "topicId": "iam-security",
-    "text": "Which actions follow AWS best practices for the AWS account root user? (Choose two.)",
+    "text": "A company has a standalone AWS account that is not part of AWS Organizations. Which tasks require signing in with the AWS account root user credentials? (Choose two.)",
     "options": [
       {
         "key": "A",
-        "text": "Enable multi-factor authentication (MFA) for the root user"
+        "text": "Close the AWS account"
       },
       {
         "key": "B",
-        "text": "Use the root user for daily administrative tasks"
+        "text": "Create an IAM user group for developers"
       },
       {
         "key": "C",
-        "text": "Share the root user password with the operations team"
+        "text": "View the monthly bill in the Billing console"
       },
       {
         "key": "D",
-        "text": "Avoid creating access keys for the root user"
+        "text": "Edit an Amazon S3 bucket policy that denies all principals"
       },
       {
         "key": "E",
-        "text": "Create root user access keys for use with the AWS CLI"
+        "text": "Launch an Amazon EC2 instance in a new Region"
       }
     ],
     "correct": [
@@ -91,7 +91,7 @@
     ],
     "multi": true,
     "orderDependent": false,
-    "explanation": "AWS recommends protecting the root user with MFA and not creating root access keys, and using the root user only for the few tasks that require it. Daily work, shared passwords and root access keys all increase the risk of a full account compromise.",
+    "explanation": "Closing a standalone account and fixing an S3 bucket policy that denies every principal are tasks that require the root user. IAM identities with the right permissions can create groups and launch instances, and they can view bills once the root user has activated IAM access to the Billing console.",
     "source": "authored"
   },
   {

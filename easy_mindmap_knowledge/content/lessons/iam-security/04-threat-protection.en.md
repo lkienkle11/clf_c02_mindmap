@@ -15,11 +15,11 @@ videoQuery: AWS Shield WAF GuardDuty Inspector Macie Security Hub differences ex
 - **Amazon GuardDuty** is **threat detection**. Once enabled, it analyzes **CloudTrail management events, VPC flow logs and DNS logs** without you setting up those logs, and uses threat intelligence and machine learning to spot compromised credentials, cryptomining or contact with malicious IP addresses.
 - **Amazon Inspector** is **vulnerability management**. It automatically discovers and continually scans **EC2 instances, container images in Amazon ECR and Lambda functions** for software vulnerabilities (CVEs) and unintended network exposure.
 - **Amazon Macie** uses machine learning and pattern matching to **discover sensitive data**, such as personal or financial information, **in Amazon S3**, and flags buckets that are public or shared.
-- **AWS Security Hub** brings these signals together and prioritizes them. Its **Security Hub CSPM** capability (the original Security Hub) runs automated checks against standards such as AWS Foundational Security Best Practices and CIS and collects findings from GuardDuty, Inspector and Macie.
+- **AWS Security Hub** brings these signals together and prioritizes them. The original service, now called **AWS Security Hub CSPM**, runs automated checks against standards such as AWS Foundational Security Best Practices and CIS; Security Hub combines its results with findings from GuardDuty, Inspector and Macie.
 - **Amazon Detective** helps you **investigate the root cause** of a finding using graphs built from log data.
 - **AWS Firewall Manager** applies WAF rules, Shield Advanced protection and security group rules **centrally across all accounts** in AWS Organizations.
 
-Auditing who made an API call is **AWS CloudTrail** (see the deploying and operating topic).
+Auditing who made an API call is **AWS CloudTrail** (see deploying and operating).
 
 ## Exam keyword map
 
