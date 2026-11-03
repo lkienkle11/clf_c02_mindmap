@@ -157,27 +157,27 @@
   {
     "id": "auth-compute-06",
     "topicId": "compute",
-    "text": "An application runs on one Amazon EC2 instance. The company wants the application to keep working if the instance or its Availability Zone fails, and to add capacity automatically during busy periods. Which combination of AWS services and features should the company use? (Choose two.)",
+    "text": "A company creates an Amazon EC2 Auto Scaling group with a minimum of 2 instances, a desired capacity of 4, and a maximum of 8. Which statements about this group are correct? (Choose two.)",
     "options": [
       {
         "key": "A",
-        "text": "A larger instance type in the same Availability Zone"
+        "text": "The group can scale in to zero instances during quiet periods"
       },
       {
         "key": "B",
-        "text": "Elastic Load Balancing"
+        "text": "An instance that fails its health check is replaced to keep 4 running"
       },
       {
         "key": "C",
-        "text": "Spot Instances"
+        "text": "The group distributes incoming user requests across its instances"
       },
       {
         "key": "D",
-        "text": "Amazon Elastic Container Registry (Amazon ECR)"
+        "text": "AWS charges an extra hourly fee for the Auto Scaling group itself"
       },
       {
         "key": "E",
-        "text": "An Amazon EC2 Auto Scaling group that spans multiple Availability Zones"
+        "text": "Scaling policies can add instances up to 8 but never more than 8"
       }
     ],
     "correct": [
@@ -186,7 +186,7 @@
     ],
     "multi": true,
     "orderDependent": false,
-    "explanation": "An Auto Scaling group across several Availability Zones replaces failed instances and adds capacity with demand, and a load balancer sends traffic only to healthy instances in those zones. A larger instance in one zone is still a single point of failure.",
+    "explanation": "Auto Scaling keeps the group between its minimum and maximum, and replaces unhealthy instances to maintain the desired capacity, so it never drops below 2 or grows past 8. Spreading requests across instances is the job of Elastic Load Balancing, and Auto Scaling itself has no extra charge beyond the resources it launches.",
     "source": "authored"
   },
   {

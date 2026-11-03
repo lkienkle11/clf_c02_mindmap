@@ -31,7 +31,6 @@ const ANSWER_SOME = 0.1;
  * looser thresholds. Each entry was reviewed and reported; remove it once the questions are rewritten.
  */
 const REVIEWED_PAIRS = new Map<string, string>([
-  ['auth-compute-06|auth-global-infrastructure-08', 'same multi-AZ plus load balancer idea; reported for rewrite in a later round'],
   ['auth-storage-04|auth-storage-10', 'both answer Amazon EBS, but one is a scenario and the other a recall list'],
 ]);
 
