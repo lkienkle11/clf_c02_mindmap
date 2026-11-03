@@ -97,7 +97,7 @@
   {
     "id": "auth-support-ai-other-04",
     "topicId": "support-ai-other",
-    "text": "A company notices that an IP address owned by AWS is repeatedly scanning its corporate network and sending spam to its employees. The company does not have an AWS account. Where should it report this activity?",
+    "text": "A company notices that an IP address owned by AWS is repeatedly scanning its corporate network and sending spam to its employees. Where should the company report this activity?",
     "options": [
       {
         "key": "A",
@@ -121,7 +121,7 @@
     ],
     "multi": false,
     "orderDependent": false,
-    "explanation": "The AWS Trust and Safety team handles reports of abuse that comes from AWS resources, and the reporter does not need an AWS account. Trusted Advisor and the AWS Health Dashboard only report on your own account and on AWS service events.",
+    "explanation": "The AWS Trust and Safety team handles reports of abuse that comes from AWS resources, and anyone can submit a report. Trusted Advisor and the AWS Health Dashboard only report on your own account and on AWS service events.",
     "source": "authored"
   },
   {
@@ -299,11 +299,11 @@
       },
       {
         "key": "C",
-        "text": "AWS Elastic Beanstalk"
+        "text": "Amazon Elastic Container Service"
       },
       {
         "key": "D",
-        "text": "AWS Amplify Hosting"
+        "text": "Amazon Lightsail virtual servers"
       }
     ],
     "correct": [
@@ -311,7 +311,7 @@
     ],
     "multi": false,
     "orderDependent": false,
-    "explanation": "Amazon WorkSpaces Applications, formerly Amazon AppStream 2.0, streams individual desktop applications to users, including in a web browser. Amazon WorkSpaces provides a whole virtual desktop, which the contractors do not need.",
+    "explanation": "Amazon WorkSpaces Applications, formerly Amazon AppStream 2.0, streams individual desktop applications to users, including in a web browser. Amazon WorkSpaces provides a whole virtual desktop, which the contractors do not need, and ECS and Lightsail run containers and servers rather than streaming an application to a browser.",
     "source": "authored"
   }
 ]

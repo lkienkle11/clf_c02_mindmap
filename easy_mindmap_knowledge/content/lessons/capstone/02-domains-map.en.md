@@ -15,7 +15,7 @@ The exam guide splits the **scored** content into four domains. The weight tells
 | 3. Cloud Technology and Services | 34% | Global Infrastructure; Compute; Storage; Networking; Databases; Deploying and Operating; Support, AI and Other Services |
 | 4. Billing, Pricing, and Support | 12% | Pricing and Billing; Support, AI and Other Services |
 
-Domains 2 and 3 together are almost two thirds of the scored exam, so spend most of your revision time there.
+Domains 2 and 3 together are almost two thirds of the scored exam.
 
 ## Domain 1: Cloud Concepts
 
@@ -35,7 +35,7 @@ Three task statements: **pricing models** (On-Demand, Reserved Instances, Spot, 
 
 ## How to use this map
 
-- Look up your weakest domain in the History screen's "Topics needing attention" list, then reread the matching topics.
+- Find your weakest topics in the History screen's "Topics needing attention" list, then use the table to see which domain they belong to.
 - Questions often **cross domains**: a storage question can turn on cost, and a database question on shared responsibility. The Capstone questions practice that mix.
 - The exam guide lists in-scope services by category; any service named there can appear, even with only one line in the lessons.
 

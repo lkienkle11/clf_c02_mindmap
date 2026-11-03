@@ -24,13 +24,13 @@ In a **decoupled** (loosely coupled) design, parts of an application talk throug
 
 ## End-user computing
 
-- **Amazon WorkSpaces**: managed **virtual desktops** reachable from almost any device.
-- **Amazon WorkSpaces Applications**, formerly **Amazon AppStream 2.0** (the exam guide's name): **streams single desktop applications**, including to a web browser.
-- **Amazon WorkSpaces Secure Browser**: closed to new customers since October 29, 2026.
+- **Amazon WorkSpaces**: managed **virtual desktops**.
+- **Amazon WorkSpaces Applications**, formerly **Amazon AppStream 2.0** (the exam guide's name): **streams individual desktop applications**, including to a web browser.
+- **Amazon WorkSpaces Secure Browser**: secure, browser-based access to internal websites and SaaS apps; closed to new customers since October 29, 2026, existing customers keep using it.
 
 ## Business, IoT and frontend services
 
-- **Amazon Connect**: cloud **contact center** for calls and chats.
+- **Amazon Connect**: cloud **contact center**.
 - **Amazon SES**: send **marketing, notification and transactional email**.
 - **AWS IoT Core**: connect **IoT devices** and route their messages to AWS services.
 - **AWS Amplify**: build, deploy and host **web and mobile apps**.
@@ -51,7 +51,7 @@ In a **decoupled** (loosely coupled) design, parts of an application talk throug
 
 - SQS consumers **pull**; SNS **pushes**.
 - SES sends email; SNS notifies many endpoint types.
-- WorkSpaces gives a **whole desktop**; WorkSpaces Applications streams **single applications**.
+- WorkSpaces gives a **whole desktop**; WorkSpaces Applications streams **individual applications**.
 
 ## Key points
 

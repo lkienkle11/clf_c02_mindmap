@@ -14,7 +14,7 @@ Exam guide chia phần nội dung **tính điểm** thành bốn domain. Tỷ tr
 | 3. Cloud Technology and Services | 34% | Hạ tầng toàn cầu; Điện toán; Lưu trữ; Mạng; Cơ sở dữ liệu; Triển khai và vận hành; Hỗ trợ, AI và dịch vụ khác |
 | 4. Billing, Pricing, and Support | 12% | Giá và thanh toán; Hỗ trợ, AI và dịch vụ khác |
 
-Domain 2 và 3 cộng lại gần hai phần ba đề thi tính điểm, nên hãy dành phần lớn thời gian ôn tập cho chúng.
+Domain 2 và 3 cộng lại gần hai phần ba đề thi tính điểm.
 
 ## Domain 1: Cloud Concepts
 
@@ -34,7 +34,7 @@ Ba task statement: **mô hình giá** (On-Demand, Reserved Instances, Spot, Savi
 
 ## Cách dùng bản đồ này
 
-- Tìm domain yếu nhất của bạn trong danh sách "Chủ đề cần chú ý" ở màn hình Lịch sử, rồi đọc lại các chủ đề tương ứng.
+- Tìm các chủ đề yếu nhất của bạn trong danh sách "Chủ đề cần chú ý" ở màn hình Lịch sử, rồi dùng bảng trên để xem chúng thuộc domain nào.
 - Câu hỏi thường **trải qua nhiều domain**: một câu về lưu trữ có thể xoay quanh chi phí, một câu về cơ sở dữ liệu có thể xoay quanh trách nhiệm chia sẻ. Các câu hỏi Capstone luyện đúng kiểu kết hợp đó.
 - Exam guide liệt kê dịch vụ trong phạm vi thi theo nhóm; bất kỳ dịch vụ nào có tên ở đó đều có thể xuất hiện, kể cả khi bài học chỉ nhắc một dòng.
 

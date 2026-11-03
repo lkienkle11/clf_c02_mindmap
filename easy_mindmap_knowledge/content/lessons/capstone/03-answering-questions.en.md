@@ -44,7 +44,7 @@ Beware of options that are true but do not answer the question.
 
 - **History**: scores per attempt against the 80% line, topics needing attention and most-missed questions. Open any attempt to see its questions again.
 - **Needs review badge**: a completed topic gets a "Needs review" badge when some of its questions are due. Questions you miss come back the next day; ones you keep answering correctly come back after longer gaps.
-- **Daily review prompt**: at most once a day, when questions are due, the app offers a review. Choose **Full** (all due topics), **Quick** (about 15 questions from the topics you forgot most) or **Custom** (topics you tick). Reviews run in **batches of 15** and put questions you missed first.
+- **Daily review prompt**: at most once a day, when questions are due, the app offers a review. Choose **Full** (all due topics), **Quick** (about 15 questions from the topics you forgot most) or **Custom** (topics you tick). Reviews run in **batches of 15** and favour questions you missed.
 - The **Review** button on the main screen offers the same choice whenever questions are due.
 
 ## Key points

@@ -2,23 +2,23 @@
   {
     "id": "auth-capstone-01",
     "topicId": "capstone",
-    "text": "A company moves its self-managed MySQL database from an Amazon EC2 instance to Amazon RDS for MySQL. Which task does the company no longer have to perform after the move?",
+    "text": "A company runs a five-minute nightly reporting job on an Amazon EC2 instance. It rewrites the job as an AWS Lambda function that uses a managed runtime. Which task does the company no longer have to do?",
     "options": [
       {
         "key": "A",
-        "text": "Managing database user accounts and their permissions"
+        "text": "Writing and testing the code of the report job"
       },
       {
         "key": "B",
-        "text": "Patching the database engine and its operating system"
+        "text": "Patching the operating system that the job runs on"
       },
       {
         "key": "C",
-        "text": "Controlling which networks can reach the database"
+        "text": "Granting the job IAM permissions to read its data"
       },
       {
         "key": "D",
-        "text": "Deciding which data is stored and how it is classified"
+        "text": "Protecting the report files that the job saves to S3"
       }
     ],
     "correct": [
@@ -26,7 +26,7 @@
     ],
     "multi": false,
     "orderDependent": false,
-    "explanation": "On Amazon RDS, AWS installs and patches the operating system and the database engine, in a maintenance window the customer chooses. Database users, network access rules and the data itself remain the customer's responsibility, just as they were on EC2.",
+    "explanation": "With Lambda there are no servers for the customer to manage, so AWS patches the operating system and, for managed runtimes, applies runtime updates. The function code, its IAM permissions and the data it writes remain the customer's responsibility.",
     "source": "authored"
   },
   {
@@ -62,27 +62,27 @@
   {
     "id": "auth-capstone-03",
     "topicId": "capstone",
-    "text": "A company runs a web application on Amazon EC2 instances in one Availability Zone. The application must keep serving users if that Availability Zone fails. Which actions should the company take? (Choose two.)",
+    "text": "A company runs its application in a primary AWS Region with a standby copy in a second Region. Its Amazon RDS database must fail over automatically if its Availability Zone fails, and users must be sent to the second Region if the primary Region stops passing health checks. Which features meet these requirements? (Choose two.)",
     "options": [
       {
         "key": "A",
-        "text": "Run instances in at least two Availability Zones"
+        "text": "An Amazon RDS Multi-AZ deployment"
       },
       {
         "key": "B",
-        "text": "Move the instances to a larger instance type"
+        "text": "An RDS read replica in the same Availability Zone"
       },
       {
         "key": "C",
-        "text": "Serve the application from two edge locations"
+        "text": "Amazon Route 53 geolocation routing"
       },
       {
         "key": "D",
-        "text": "Place an Application Load Balancer in front of them"
+        "text": "Amazon Route 53 failover routing with health checks"
       },
       {
         "key": "E",
-        "text": "Buy Reserved Instances for the current instances"
+        "text": "Amazon ElastiCache in front of the database"
       }
     ],
     "correct": [
@@ -91,29 +91,29 @@
     ],
     "multi": true,
     "orderDependent": false,
-    "explanation": "Instances in two or more Availability Zones remove the single point of failure, and a load balancer sends traffic only to healthy instances in the zones that still work. A larger instance or a Reserved Instance changes size or price, not availability, and edge locations cache content but do not run the EC2 application.",
+    "explanation": "A Multi-AZ deployment keeps a standby in another Availability Zone and fails over to it automatically, and Route 53 failover routing sends users to the standby Region when health checks show the primary is down. A read replica serves reads and must be promoted by hand, and geolocation routing chooses by user location, not by health.",
     "source": "authored"
   },
   {
     "id": "auth-capstone-04",
     "topicId": "capstone",
-    "text": "A company is migrating to AWS. It must copy a 50 TB on-premises NFS file share to Amazon S3 over its existing AWS Direct Connect connection and keep copying changed files until the final cutover. Which AWS service should it use?",
+    "text": "A company runs a web application in an Amazon EC2 Auto Scaling group. When average CPU utilization stays above 70%, it wants more instances to be added automatically and the operations team to get an email. What should the company set up?",
     "options": [
       {
         "key": "A",
-        "text": "AWS DataSync"
+        "text": "A CloudWatch alarm that triggers scaling and an SNS topic"
       },
       {
         "key": "B",
-        "text": "AWS Database Migration Service (AWS DMS)"
+        "text": "An AWS CloudTrail trail that sends API logs to Amazon S3"
       },
       {
         "key": "C",
-        "text": "AWS Transform MGN"
+        "text": "AWS Trusted Advisor performance checks with weekly emails"
       },
       {
         "key": "D",
-        "text": "AWS Backup"
+        "text": "An AWS Config rule that checks the instance type in use"
       }
     ],
     "correct": [
@@ -121,7 +121,7 @@
     ],
     "multi": false,
     "orderDependent": false,
-    "explanation": "AWS DataSync copies files and objects online, over the internet or Direct Connect, from on-premises storage such as NFS shares into Amazon S3, and can run again to copy changes. AWS DMS moves databases and AWS Transform MGN replicates whole servers, not file shares into S3.",
+    "explanation": "An Amazon CloudWatch alarm watches the CPU metric and, when it changes state, can run an EC2 Auto Scaling action and notify an Amazon SNS topic that emails the team. CloudTrail records API calls and Config checks configurations; neither reacts to CPU load.",
     "source": "authored"
   },
   {
@@ -227,23 +227,23 @@
   {
     "id": "auth-capstone-08",
     "topicId": "capstone",
-    "text": "A company will run a steady workload around the clock for the next 3 years. It runs on Amazon EC2 today, but the company plans to move parts of it to AWS Fargate and AWS Lambda during that time. Which pricing option gives the largest savings while covering all three services?",
+    "text": "A company wants to stop paying for Oracle licenses by moving its on-premises Oracle database to Amazon Aurora PostgreSQL. The database must stay online for users while the data is copied. Which approach should the company use?",
     "options": [
       {
         "key": "A",
-        "text": "Standard Reserved Instances"
+        "text": "Rehost the database server on EC2 with AWS Transform MGN"
       },
       {
         "key": "B",
-        "text": "Spot Instances"
+        "text": "Copy the database files to Amazon S3 with AWS DataSync"
       },
       {
         "key": "C",
-        "text": "EC2 Instance Savings Plans"
+        "text": "Back up the database nightly with AWS Backup and restore it"
       },
       {
         "key": "D",
-        "text": "Compute Savings Plans"
+        "text": "Convert the schema with DMS Schema Conversion, then use DMS"
       }
     ],
     "correct": [
@@ -251,29 +251,29 @@
     ],
     "multi": false,
     "orderDependent": false,
-    "explanation": "Compute Savings Plans apply a commitment across EC2 instance families and Regions and also to AWS Fargate and AWS Lambda. Standard Reserved Instances and EC2 Instance Savings Plans cover only EC2, and Spot Instances can be interrupted, which does not suit a steady workload.",
+    "explanation": "A heterogeneous move needs the schema converted first (DMS Schema Conversion or AWS SCT), and AWS DMS then copies the data while the source keeps running. Rehosting with AWS Transform MGN would keep running Oracle on EC2, so the license cost would remain.",
     "source": "authored"
   },
   {
     "id": "auth-capstone-09",
     "topicId": "capstone",
-    "text": "A company's web servers run in a public subnet and must accept HTTPS from everyone except one IP address range that keeps attacking them. What should the company add to block that range?",
+    "text": "Application servers in a private subnet must download operating system updates from the internet, but the internet must not be able to start connections to them. Only members of the network team may change the VPC route tables. Which setup meets these requirements?",
     "options": [
       {
         "key": "A",
-        "text": "A deny rule for the range in the instances' security group"
+        "text": "Add an internet gateway route and give all developers AdministratorAccess"
       },
       {
         "key": "B",
-        "text": "A route table entry that drops traffic from the range"
+        "text": "Give the servers public IP addresses and let every IAM user edit routes"
       },
       {
         "key": "C",
-        "text": "A deny rule for the range in the subnet's network ACL"
+        "text": "Use a NAT gateway and allow route changes only for the network team group"
       },
       {
         "key": "D",
-        "text": "An IAM policy that denies requests from the range"
+        "text": "Use a NAT gateway and share the root user password with the network team"
       }
     ],
     "correct": [
@@ -281,29 +281,29 @@
     ],
     "multi": false,
     "orderDependent": false,
-    "explanation": "Network ACLs support both allow and deny rules at the subnet level, so they can block one IP range while other traffic is allowed. Security groups support only allow rules, route tables direct traffic rather than filter it, and IAM policies control API permissions, not network traffic.",
+    "explanation": "A NAT gateway lets private instances start outbound connections while the internet cannot reach them, and an IAM policy attached to the network team's group grants route table changes only to those who need them (least privilege). Sharing root credentials or granting everyone broad access breaks IAM best practices, and an internet gateway route or public IP addresses expose the servers.",
     "source": "authored"
   },
   {
     "id": "auth-capstone-10",
     "topicId": "capstone",
-    "text": "A bank must keep customer data inside its home country. It plans to store the data in Amazon S3. What should the bank do to meet this requirement?",
+    "text": "An auditor asks a company for AWS's SOC 2 report and for proof that the company itself controls the encryption keys of its Amazon S3 data, including the ability to disable them. What should the company do?",
     "options": [
       {
         "key": "A",
-        "text": "Download the AWS ISO reports from AWS Artifact"
+        "text": "Request the report from AWS Support and use SSE-S3 keys"
       },
       {
         "key": "B",
-        "text": "Create the buckets in an AWS Region in that country"
+        "text": "Get the report from AWS Artifact and use KMS customer managed keys"
       },
       {
         "key": "C",
-        "text": "Serve the data through CloudFront edge locations"
+        "text": "Get the report from AWS Artifact and use SSE-S3 encryption keys"
       },
       {
         "key": "D",
-        "text": "Encrypt the buckets with AWS KMS customer managed keys"
+        "text": "Generate the report with AWS Config and use AWS managed keys"
       }
     ],
     "correct": [
@@ -311,7 +311,7 @@
     ],
     "multi": false,
     "orderDependent": false,
-    "explanation": "Customers choose the Region where their data is stored, and AWS does not move content out of that Region without the customer's agreement, so choosing a Region in the country meets the residency rule. AWS Artifact reports and KMS encryption do not control where data is stored, and CloudFront caches copies in edge locations that can be in other countries.",
+    "explanation": "AWS Artifact provides AWS's SOC reports on demand, and AWS KMS customer managed keys let the company set the key policy, rotation and disabling. SSE-S3 keys and AWS managed keys are managed by AWS, so the company cannot disable them, and AWS Config does not produce SOC reports.",
     "source": "authored"
   }
 ]
