@@ -3,6 +3,7 @@
   import type { AppState } from '@/app/app-state.svelte';
   import type { Services } from '@/app/composition';
   import { getI18n } from '@/i18n/i18n.svelte';
+  import { AttemptMissingError } from '@/persistence';
   import Button from '@/ui/Button.svelte';
   import Modal from '@/ui/Modal.svelte';
   import type { PracticeSession } from '../session.svelte';
@@ -58,9 +59,11 @@
     alert = null;
     try {
       await session.submit('manual');
-    } catch {
+    } catch (e) {
       // A follow-up failure after a committed submit still shows the result; only report a real failure.
-      if (!session.submitted) alert = i18n.t('practice.submitFailed');
+      if (!session.submitted) {
+        alert = i18n.t(e instanceof AttemptMissingError ? 'practice.attemptMissing' : 'practice.submitFailed');
+      }
     } finally {
       busy = false;
     }
@@ -76,9 +79,9 @@
       // Refresh first: otherwise the stale in-progress row would flash the resume prompt on the tree.
       await appState.refresh().catch(() => {});
       appState.open({ view: 'tree' });
-    } catch {
+    } catch (e) {
       exitOpen = false;
-      alert = i18n.t('practice.exitFailed');
+      alert = i18n.t(e instanceof AttemptMissingError ? 'practice.exitPartial' : 'practice.exitFailed');
     } finally {
       busy = false;
     }

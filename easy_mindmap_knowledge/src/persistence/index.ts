@@ -2,7 +2,7 @@ export type { SqlExecutor } from './sql-executor';
 export { createTauriExecutor } from './tauri-executor';
 export { createLessonProgressRepo } from './repositories/lesson-progress';
 export type { LessonProgressRepo } from './repositories/lesson-progress';
-export { createAttemptsRepo } from './repositories/attempts';
+export { createAttemptsRepo, AttemptMissingError } from './repositories/attempts';
 export type { AttemptsRepo, SubmitInput } from './repositories/attempts';
 export { createQuestionStatsRepo } from './repositories/question-stats';
 export type { QuestionStatsRepo } from './repositories/question-stats';

@@ -74,6 +74,7 @@ export async function makePracticeEnv(o: PracticeEnvOptions = {}) {
           if (o.failCreate) throw new Error('disk full');
           created.push(a.id);
         },
+        exists: async (id) => !discarded.includes(id),
         findInProgress: async () => state.inProgress,
         markSubmitted: async (id) => { submittedIds.push(id); state.inProgress = null; },
         discard: async (id) => {

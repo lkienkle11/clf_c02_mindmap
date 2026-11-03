@@ -87,6 +87,8 @@
   "practice.exitBody": "Lượt này sẽ bị bỏ. Câu trả lời và điểm số sẽ không được lưu.",
   "practice.exitConfirm": "Thoát và bỏ lượt",
   "practice.exitFailed": "Không thể thoát khỏi lượt làm bài. Vui lòng thử lại.",
+  "practice.attemptMissing": "Lượt làm bài này không còn tồn tại nên không thể nộp. Hãy thoát màn hình này và bắt đầu lại.",
+  "practice.exitPartial": "Lượt làm bài chỉ bị xóa một phần và không thể trả lời nữa. Nhấn Thoát lần nữa để hoàn tất.",
   "practice.selectFailed": "Không thể lưu câu trả lời. Vui lòng thử lại.",
   "practice.tickFailed": "Không thể lưu đồng hồ. Câu trả lời của bạn vẫn còn trên màn hình.",
   "practice.timeoutSubmitFailed": "Đã hết giờ nhưng chưa lưu được bài làm. Ứng dụng sẽ thử lại ngay; bạn cũng có thể bấm Nộp bài.",

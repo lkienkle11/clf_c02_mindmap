@@ -1,4 +1,5 @@
 import type { Services } from '@/app/composition';
+import { AttemptMissingError } from '@/persistence';
 import type { AttemptQuestionRow, AttemptRow, ClockState } from '@/persistence';
 import { advanceFreeze, isExpired, remainingAt, resolveOnResume, startClock } from './logic/attempt-clock';
 import { gradeQuestion, passes } from './logic/grading';
@@ -323,8 +324,10 @@ export class PracticeSession {
    * longer exists, so `result` is cleared and stats are rebuilt without it. After a completed
    * submit, exit() is a no-op: the submitted attempt is history and must be kept.
    *
-   * A rejected discard deleted nothing, so the session is restored (still answerable and
-   * submittable, or still showing a result that is committed) and exit() may be called again.
+   * After a rejected discard the attempt row is re-checked. If it still exists nothing meaningful was
+   * deleted, so the session is restored (answerable and submittable, or still showing a committed
+   * result) and exit() may be called again. If the row is gone (half-failed discard) the session stays
+   * exited, exit() rejects with AttemptMissingError, and a retry removes the leftover question rows.
    */
   exit(): Promise<void> {
     if (this.#exitPromise) return this.#exitPromise;
@@ -340,8 +343,11 @@ export class PracticeSession {
       try {
         await this.services.repos.attempts.discard(this.attemptId);
       } catch (e) {
-        this.#exited = false;
         this.#exitPromise = null;
+        // If the check itself fails, assume the row survived (restore, as before).
+        const stillThere = await this.services.repos.attempts.exists(this.attemptId).catch(() => true);
+        if (!stillThere) throw new AttemptMissingError(this.attemptId); // stays exited: not answerable
+        this.#exited = false;
         if (kept) {
           // The submit committed before the discard failed: it is history now, show it.
           this.#result = kept;

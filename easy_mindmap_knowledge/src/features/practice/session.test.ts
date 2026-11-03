@@ -5,6 +5,7 @@ import { buildServices } from '@/app/composition';
 import type { Services } from '@/app/composition';
 import { makeQuestion, makeRawCatalog } from '@/testing/fixtures';
 import { createNodeSqliteExecutor } from '@/testing/node-sqlite-executor';
+import { AttemptMissingError } from '@/persistence';
 import type { SqlExecutor } from '@/persistence';
 import {
   CorruptAttemptError, DEFAULT_PRACTICE_OPTIONS, FREEZE_MAX_TICK_MS, KnowledgeNotAllowedError, NoQuestionsError, PracticeSession,
@@ -371,6 +372,60 @@ describe('exit retry (final review I4)', () => {
     failSql = null;
     expect(s.submitReason).toBeNull();
     await expect(s.submit('manual')).resolves.toMatchObject({ passed: true });
+  });
+});
+
+describe('missing attempt (R18)', () => {
+  it('markSubmitted on a deleted attempt rejects with AttemptMissingError and writes no history', async () => {
+    const s = await start();
+    await services.repos.attempts.discard(s.attemptId);
+    await expect(
+      services.repos.attempts.markSubmitted(s.attemptId, { scorePct: 100, passed: true, reason: 'manual', at: 1, grades: [] }),
+    ).rejects.toBeInstanceOf(AttemptMissingError);
+    expect(await services.repos.attempts.listSubmitted()).toEqual([]);
+  });
+
+  it('submit after a half-failed discard rejects, reports no result, and stays retryable', async () => {
+    const s = await start();
+    await answer(s, 10);
+    failSql = 'DELETE FROM attempt_questions';
+    await expect(s.exit()).rejects.toThrow();
+    failSql = null;
+    await expect(s.submit('manual')).rejects.toThrow('exited');
+    expect(s.result).toBeNull();
+    expect(s.submitted).toBe(false);
+    expect(s.submitReason).toBeNull();
+    expect(await services.repos.attempts.listSubmitted()).toEqual([]);
+  });
+
+  it('submit when the attempt row vanished rejects with AttemptMissingError and stays retryable', async () => {
+    const s = await start();
+    await answer(s, 10);
+    await services.repos.attempts.discard(s.attemptId);
+    await expect(s.submit('manual')).rejects.toBeInstanceOf(AttemptMissingError);
+    expect(s.result).toBeNull();
+    expect(s.submitted).toBe(false);
+    expect(s.submitReason).toBeNull();
+    expect(await services.repos.attempts.listSubmitted()).toEqual([]);
+  });
+
+  it('exit half-failure closes the session; a full failure leaves it answerable and retryable', async () => {
+    const half = await start();
+    failSql = 'DELETE FROM attempt_questions';
+    await expect(half.exit()).rejects.toBeInstanceOf(AttemptMissingError);
+    failSql = null;
+    await half.select(0, ['A']);
+    expect(half.questions[0].selected).toEqual([]);
+    await expect(half.submit('manual')).rejects.toThrow('exited');
+    await half.exit(); // retry cleans up the orphan question rows
+    expect(await db.select('SELECT * FROM attempt_questions')).toEqual([]);
+
+    const full = await start('storage');
+    failSql = 'DELETE FROM attempts';
+    await expect(full.exit()).rejects.toThrow('injected');
+    failSql = null;
+    await full.select(0, ['A']);
+    expect(full.questions[0].selected).toEqual(['A']);
   });
 });
 

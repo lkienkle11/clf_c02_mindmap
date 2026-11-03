@@ -54,6 +54,14 @@ const toQuestion = (r: QuestionDb): AttemptQuestionRow => ({
   isCorrect: bool(r.is_correct),
 });
 
+/** The attempt row is gone, so nothing can be submitted or kept; callers must not report a result. */
+export class AttemptMissingError extends Error {
+  constructor(attemptId: string) {
+    super(`Attempt "${attemptId}" no longer exists`);
+    this.name = 'AttemptMissingError';
+  }
+}
+
 export interface SubmitInput {
   scorePct: number;
   passed: boolean;
@@ -149,6 +157,14 @@ export function createAttemptsRepo(db: SqlExecutor) {
            score_pct = $3, passed = $4 WHERE id = $5`,
         [s.at, s.reason, s.scorePct, s.passed ? 1 : 0, attemptId],
       );
+      // UPDATEs on a vanished row affect nothing and do not throw; verify instead of reporting a phantom submit.
+      const rows = await db.select<{ status: string }>('SELECT status FROM attempts WHERE id = $1', [attemptId]);
+      if (rows[0]?.status !== 'submitted') throw new AttemptMissingError(attemptId);
+    },
+
+    async exists(attemptId: string): Promise<boolean> {
+      const rows = await db.select<{ id: string }>('SELECT id FROM attempts WHERE id = $1', [attemptId]);
+      return rows.length > 0;
     },
 
     async findInProgress(): Promise<{ attempt: AttemptRow; questions: AttemptQuestionRow[] } | null> {
