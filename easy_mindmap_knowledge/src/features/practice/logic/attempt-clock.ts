@@ -41,3 +41,15 @@ export function resolveOnResume(
   const remaining = remainingAt(state, now);
   return { state: { ...state, remainingMs: remaining }, autoSubmit: remaining !== null && remaining <= 0 };
 }
+
+export function settleHidden(state: ClockState, hiddenMs: number): ClockState {
+  if (state.limitMs === null) return state;
+  const hidden = Math.max(0, hiddenMs);
+  if (state.mode === 'run' && state.onHidden === 'freeze' && state.deadlineAt !== null) {
+    return { ...state, deadlineAt: state.deadlineAt + hidden };
+  }
+  if (state.mode === 'freeze' && state.onHidden === 'run' && state.remainingMs !== null) {
+    return { ...state, remainingMs: Math.max(0, state.remainingMs - hidden) };
+  }
+  return state;
+}

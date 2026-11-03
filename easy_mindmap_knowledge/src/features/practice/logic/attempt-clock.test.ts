@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { advanceFreeze, isExpired, remainingAt, resolveOnResume, startClock } from './attempt-clock';
+import { advanceFreeze, isExpired, remainingAt, resolveOnResume, settleHidden, startClock } from './attempt-clock';
 
 describe('attempt clock', () => {
   it('startClock carries onHidden', () => {
@@ -72,5 +72,37 @@ describe('attempt clock', () => {
   it('no limit resume never auto-submits', () => {
     const r = resolveOnResume(startClock(null, 'run', 0, 'freeze'), 1e12, 0);
     expect(r.autoSubmit).toBe(false);
+  });
+});
+
+describe('settleHidden', () => {
+  const runFreeze = { ...startClock(600_000, 'run', 400_000, 'freeze') };
+  it('run + freeze: deadlineAt moves later by hiddenMs', () => {
+    expect(settleHidden(runFreeze, 5000).deadlineAt).toBe(1_005_000);
+  });
+  it('run + run: unchanged', () => {
+    const s = startClock(600_000, 'run', 0, 'run');
+    expect(settleHidden(s, 5000)).toEqual(s);
+  });
+  it('freeze + run: remainingMs drops by hiddenMs with no 3s cap', () => {
+    const s = startClock(100_000, 'freeze', 0, 'run');
+    expect(settleHidden(s, 40_000).remainingMs).toBe(60_000);
+  });
+  it('freeze + run clamps at 0', () => {
+    const s = startClock(100_000, 'freeze', 0, 'run');
+    expect(settleHidden(s, 200_000).remainingMs).toBe(0);
+  });
+  it('freeze + freeze: unchanged', () => {
+    const s = startClock(100_000, 'freeze', 0, 'freeze');
+    expect(settleHidden(s, 40_000)).toEqual(s);
+  });
+  it('negative hiddenMs is treated as 0', () => {
+    expect(settleHidden(runFreeze, -5000)).toEqual(runFreeze);
+    const s = startClock(100_000, 'freeze', 0, 'run');
+    expect(settleHidden(s, -5000)).toEqual(s);
+  });
+  it('untimed (limitMs null) is returned as is', () => {
+    const s = startClock(null, 'run', 0, 'freeze');
+    expect(settleHidden(s, 5000)).toBe(s);
   });
 });
