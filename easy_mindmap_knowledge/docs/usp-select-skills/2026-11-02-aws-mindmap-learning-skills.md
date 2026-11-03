@@ -56,3 +56,9 @@
 - structure-codebase
 - design-system
 - refactoring
+
+## STEP 4 (đợt nội dung chủ đề 3–13, theo yêu cầu "soạn thêm từ 3 tới 13" của người dùng):
+- superpowers:subagent-driven-development
+- superpowers:test-driven-development
+- web-research
+- business-analyst
