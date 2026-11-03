@@ -1,0 +1,317 @@
+[
+  {
+    "id": "auth-support-ai-other-01",
+    "topicId": "support-ai-other",
+    "text": "A startup has only Basic Support. Its developers need to open technical cases and reach AWS Cloud Support Engineers by phone at any time of day. Which AWS Support plan meets this need at the LOWEST cost?",
+    "options": [
+      {
+        "key": "A",
+        "text": "AWS Enterprise Support"
+      },
+      {
+        "key": "B",
+        "text": "AWS Unified Operations"
+      },
+      {
+        "key": "C",
+        "text": "AWS Business Support+"
+      },
+      {
+        "key": "D",
+        "text": "Basic Support with AWS re:Post"
+      }
+    ],
+    "correct": [
+      "C"
+    ],
+    "multi": false,
+    "orderDependent": false,
+    "explanation": "Business Support+ is the lowest-cost current plan with 24/7 phone, web and chat access to Cloud Support Engineers. Enterprise Support and Unified Operations also include this access but cost more, and Basic Support does not include technical cases with engineers.",
+    "source": "authored"
+  },
+  {
+    "id": "auth-support-ai-other-02",
+    "topicId": "support-ai-other",
+    "text": "Which benefit is included in Basic Support for every AWS account at no extra cost?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Help with billing questions and service quota increases"
+      },
+      {
+        "key": "B",
+        "text": "Technical support cases answered by Cloud Support Engineers"
+      },
+      {
+        "key": "C",
+        "text": "A designated Technical Account Manager for the account"
+      },
+      {
+        "key": "D",
+        "text": "The full set of AWS Trusted Advisor best practice checks"
+      }
+    ],
+    "correct": [
+      "A"
+    ],
+    "multi": false,
+    "orderDependent": false,
+    "explanation": "Basic Support covers customer service for account and billing questions and service quota increases, plus documentation, re:Post and core Trusted Advisor checks. Technical cases and the full set of checks need Business Support+ or higher, and a designated TAM needs Enterprise Support or higher.",
+    "source": "authored"
+  },
+  {
+    "id": "auth-support-ai-other-03",
+    "topicId": "support-ai-other",
+    "text": "A company uses only Basic Support. Which AWS Trusted Advisor features can the company use? (Choose two.)",
+    "options": [
+      {
+        "key": "A",
+        "text": "All checks in the cost optimization category"
+      },
+      {
+        "key": "B",
+        "text": "All checks in the service limits category"
+      },
+      {
+        "key": "C",
+        "text": "Trusted Advisor Priority recommendations from an account team"
+      },
+      {
+        "key": "D",
+        "text": "The check for MFA on the root user"
+      },
+      {
+        "key": "E",
+        "text": "Programmatic access to checks through the Trusted Advisor API"
+      }
+    ],
+    "correct": [
+      "B",
+      "D"
+    ],
+    "multi": true,
+    "orderDependent": false,
+    "explanation": "With Basic Support, Trusted Advisor shows all service limits checks and a small set of security and fault tolerance checks, including MFA on the root user. Cost optimization checks and the Trusted Advisor API need Business Support+ or higher, and Trusted Advisor Priority comes with Enterprise Support or higher.",
+    "source": "authored"
+  },
+  {
+    "id": "auth-support-ai-other-04",
+    "topicId": "support-ai-other",
+    "text": "A company notices that an IP address owned by AWS is repeatedly scanning its corporate network and sending spam to its employees. The company does not have an AWS account. Where should it report this activity?",
+    "options": [
+      {
+        "key": "A",
+        "text": "The AWS Professional Services team"
+      },
+      {
+        "key": "B",
+        "text": "The AWS Trusted Advisor console"
+      },
+      {
+        "key": "C",
+        "text": "The AWS Health Dashboard"
+      },
+      {
+        "key": "D",
+        "text": "The AWS Trust and Safety team"
+      }
+    ],
+    "correct": [
+      "D"
+    ],
+    "multi": false,
+    "orderDependent": false,
+    "explanation": "The AWS Trust and Safety team handles reports of abuse that comes from AWS resources, and the reporter does not need an AWS account. Trusted Advisor and the AWS Health Dashboard only report on your own account and on AWS service events.",
+    "source": "authored"
+  },
+  {
+    "id": "auth-support-ai-other-05",
+    "topicId": "support-ai-other",
+    "text": "A manufacturer is installing thousands of sensors in its factories. The sensors must connect securely to AWS and send temperature readings that are routed to other AWS services for processing. Which AWS service should the manufacturer use?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Amazon Connect"
+      },
+      {
+        "key": "B",
+        "text": "AWS IoT Core"
+      },
+      {
+        "key": "C",
+        "text": "AWS Amplify"
+      },
+      {
+        "key": "D",
+        "text": "Amazon WorkSpaces"
+      }
+    ],
+    "correct": [
+      "B"
+    ],
+    "multi": false,
+    "orderDependent": false,
+    "explanation": "AWS IoT Core connects and manages IoT devices and routes their messages to other AWS services. Amazon Connect is a cloud contact center and AWS Amplify builds web and mobile apps, so neither manages devices.",
+    "source": "authored"
+  },
+  {
+    "id": "auth-support-ai-other-06",
+    "topicId": "support-ai-other",
+    "text": "A customer service department records every phone call. It wants to turn the recordings into text and then find out whether each customer sounded positive or negative. Which AWS services should it use together? (Choose two.)",
+    "options": [
+      {
+        "key": "A",
+        "text": "Amazon Transcribe"
+      },
+      {
+        "key": "B",
+        "text": "Amazon Polly"
+      },
+      {
+        "key": "C",
+        "text": "Amazon Comprehend"
+      },
+      {
+        "key": "D",
+        "text": "Amazon Rekognition"
+      },
+      {
+        "key": "E",
+        "text": "Amazon Translate"
+      }
+    ],
+    "correct": [
+      "A",
+      "C"
+    ],
+    "multi": true,
+    "orderDependent": false,
+    "explanation": "Amazon Transcribe converts speech to text, and Amazon Comprehend detects sentiment in that text. Amazon Polly does the opposite of Transcribe by turning text into speech, and Rekognition analyzes images and video.",
+    "source": "authored"
+  },
+  {
+    "id": "auth-support-ai-other-07",
+    "topicId": "support-ai-other",
+    "text": "A company wants to add a feature that summarizes long internal reports by using a foundation model. It does not want to train its own model or manage any model infrastructure. Which AWS service should it use?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Amazon SageMaker AI"
+      },
+      {
+        "key": "B",
+        "text": "Amazon Textract"
+      },
+      {
+        "key": "C",
+        "text": "Amazon Bedrock"
+      },
+      {
+        "key": "D",
+        "text": "Amazon Lex"
+      }
+    ],
+    "correct": [
+      "C"
+    ],
+    "multi": false,
+    "orderDependent": false,
+    "explanation": "Amazon Bedrock is a fully managed service that gives API access to foundation models for generative AI applications. SageMaker AI is aimed at building, training and deploying your own ML models, which the company wants to avoid.",
+    "source": "authored"
+  },
+  {
+    "id": "auth-support-ai-other-08",
+    "topicId": "support-ai-other",
+    "text": "An insurance company receives thousands of scanned claim forms each day. It needs to pull the values from each form field and the rows of each table into its claims database. Which AWS service should it use?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Amazon Comprehend"
+      },
+      {
+        "key": "B",
+        "text": "Amazon Transcribe"
+      },
+      {
+        "key": "C",
+        "text": "Amazon Rekognition"
+      },
+      {
+        "key": "D",
+        "text": "Amazon Textract"
+      }
+    ],
+    "correct": [
+      "D"
+    ],
+    "multi": false,
+    "orderDependent": false,
+    "explanation": "Amazon Textract extracts text, form fields and tables from scanned documents. Amazon Comprehend analyzes the meaning of text you already have, and Rekognition is built for analyzing objects and faces in images and video rather than document structure.",
+    "source": "authored"
+  },
+  {
+    "id": "auth-support-ai-other-09",
+    "topicId": "support-ai-other",
+    "text": "An online store wants its web tier to keep accepting orders even when the order-processing tier is slow, and it wants each new order to notify the warehouse system and the billing system at the same time. Which AWS services meet these needs? (Choose two.)",
+    "options": [
+      {
+        "key": "A",
+        "text": "AWS Glue"
+      },
+      {
+        "key": "B",
+        "text": "Amazon Athena"
+      },
+      {
+        "key": "C",
+        "text": "Amazon SQS"
+      },
+      {
+        "key": "D",
+        "text": "Amazon SES"
+      },
+      {
+        "key": "E",
+        "text": "Amazon SNS"
+      }
+    ],
+    "correct": [
+      "C",
+      "E"
+    ],
+    "multi": true,
+    "orderDependent": false,
+    "explanation": "An Amazon SQS queue buffers orders until the processing tier is ready, and an Amazon SNS topic pushes one message to many subscribers at once. Amazon SES only sends email, and Glue and Athena are analytics services.",
+    "source": "authored"
+  },
+  {
+    "id": "auth-support-ai-other-10",
+    "topicId": "support-ai-other",
+    "text": "Remote contractors need to use one Windows design application from their own laptops through a web browser. They do not need a full virtual desktop. Which AWS service is the BEST fit?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Amazon WorkSpaces"
+      },
+      {
+        "key": "B",
+        "text": "Amazon WorkSpaces Applications"
+      },
+      {
+        "key": "C",
+        "text": "AWS Elastic Beanstalk"
+      },
+      {
+        "key": "D",
+        "text": "AWS Amplify Hosting"
+      }
+    ],
+    "correct": [
+      "B"
+    ],
+    "multi": false,
+    "orderDependent": false,
+    "explanation": "Amazon WorkSpaces Applications, formerly Amazon AppStream 2.0, streams individual desktop applications to users, including in a web browser. Amazon WorkSpaces provides a whole virtual desktop, which the contractors do not need.",
+    "source": "authored"
+  }
+]
