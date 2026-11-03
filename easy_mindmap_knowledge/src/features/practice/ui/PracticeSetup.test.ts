@@ -94,6 +94,32 @@ describe('PracticeSetup', () => {
     expect(screen.getByRole('radio', { name: 'The clock keeps running' })).toBeChecked();
   });
 
+  it('shows the hidden-policy pair only when a time is set, defaulting to freeze', async () => {
+    await mount();
+    const legend = 'When you switch tabs or minimize';
+    expect(screen.queryByRole('group', { name: legend })).not.toBeInTheDocument();
+    await userEvent.click(screen.getByRole('radio', { name: 'Set a time' }));
+    expect(screen.getByRole('group', { name: legend })).toBeInTheDocument();
+    expect(screen.getByText(/Only applies while the window is hidden/)).toBeInTheDocument();
+    expect(screen.getByRole('radio', { name: 'Freeze the time' })).toBeChecked();
+    await userEvent.click(screen.getByRole('radio', { name: 'No time limit' }));
+    expect(screen.queryByRole('group', { name: legend })).not.toBeInTheDocument();
+  });
+
+  it('choosing "keep running" starts the session with onHidden run and persists it', async () => {
+    const { services, onstarted } = await mount();
+    await userEvent.click(screen.getByRole('radio', { name: 'Set a time' }));
+    await userEvent.click(screen.getByRole('radio', { name: 'Let the time keep running' }));
+    await userEvent.click(screen.getByRole('button', { name: 'Start' }));
+    await waitFor(() => expect(onstarted).toHaveBeenCalledTimes(1));
+    expect((await loadLastOptions(services.repos.settings))?.onHidden).toBe('run');
+  });
+
+  it('restores the previously saved onHidden', async () => {
+    await mount('compute', JSON.stringify({ allowReview: false, limitMs: 90_000, clockMode: 'freeze', onHidden: 'run' }));
+    expect(screen.getByRole('radio', { name: 'Let the time keep running' })).toBeChecked();
+  });
+
   it('shows a clear message and does not navigate when the topic has no questions', async () => {
     const { onstarted } = await mount('storage');
     await userEvent.click(screen.getByRole('button', { name: 'Start' }));
