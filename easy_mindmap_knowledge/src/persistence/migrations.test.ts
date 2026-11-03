@@ -39,10 +39,10 @@ describe('migrations', () => {
     expect(plan.map((p) => p.detail).join(' ')).toContain('idx_attempt_questions_question');
   });
 
-  it('applying all migrations twice is harmless (IF NOT EXISTS)', () => {
+  it('re-applying the IF NOT EXISTS migrations is harmless (ALTER TABLE ones run once, tracked by the plugin)', () => {
     const db = new DatabaseSync(':memory:');
     for (const f of files) db.exec(sql(f));
-    for (const f of files) db.exec(sql(f));
+    for (const f of files.filter((n) => !/ALTER TABLE/i.test(sql(n)))) db.exec(sql(f));
     expect(indexes(db)).toContain('idx_attempt_questions_question');
   });
 

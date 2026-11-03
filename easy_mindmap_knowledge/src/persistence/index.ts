@@ -8,4 +8,4 @@ export { createQuestionStatsRepo } from './repositories/question-stats';
 export type { QuestionStatsRepo } from './repositories/question-stats';
 export { createSettingsRepo } from './repositories/settings';
 export type { SettingsRepo } from './repositories/settings';
-export type { AttemptRow, AttemptQuestionRow, QuestionStat, ClockState } from './records';
+export type { AttemptRow, AttemptQuestionRow, QuestionStat, ClockState, HiddenPolicy } from './records';

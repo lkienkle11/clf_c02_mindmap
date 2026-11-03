@@ -22,6 +22,12 @@ pub fn run() {
               sql: include_str!("../migrations/0002_attempt_question_index.sql"),
               kind: MigrationKind::Up,
             },
+            Migration {
+              version: 3,
+              description: "attempt_clock_on_hidden",
+              sql: include_str!("../migrations/0003_attempt_clock_on_hidden.sql"),
+              kind: MigrationKind::Up,
+            },
           ],
         )
         .build(),

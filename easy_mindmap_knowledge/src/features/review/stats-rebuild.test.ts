@@ -23,7 +23,7 @@ async function submit(
   await repo.create(
     {
       id, kind, topicId: 't', status: 'in_progress', startedAt: at - 10, submittedAt: null, submitReason: null,
-      reviewAllowed: true, clock: { mode: 'freeze', limitMs: null, remainingMs: null, deadlineAt: null },
+      reviewAllowed: true, clock: { mode: 'freeze', limitMs: null, remainingMs: null, deadlineAt: null, onHidden: 'freeze' },
       heartbeatAt: null, scorePct: null, passed: null,
     },
     qs,
@@ -64,7 +64,7 @@ describe('rebuildStatsFor', () => {
       {
         id: 'ip', kind: 'practice', topicId: 't', status: 'in_progress', startedAt: 5, submittedAt: null,
         submitReason: null, reviewAllowed: true,
-        clock: { mode: 'freeze', limitMs: null, remainingMs: null, deadlineAt: null },
+        clock: { mode: 'freeze', limitMs: null, remainingMs: null, deadlineAt: null, onHidden: 'freeze' },
         heartbeatAt: null, scorePct: null, passed: null,
       },
       [{ attemptId: 'ip', position: 0, questionId: 'q1', optionOrder: ['A'], selected: ['A'], isCorrect: null }],

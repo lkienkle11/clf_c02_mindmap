@@ -1,11 +1,12 @@
-import type { ClockState } from '@/persistence/records';
+import type { ClockState, HiddenPolicy } from '@/persistence/records';
 
 export type { ClockState };
 
-export function startClock(limitMs: number | null, mode: 'freeze' | 'run', now: number): ClockState {
-  if (limitMs === null) return { mode, limitMs: null, remainingMs: null, deadlineAt: null };
+export function startClock(limitMs: number | null, mode: 'freeze' | 'run', now: number, onHidden: HiddenPolicy): ClockState {
+  if (limitMs === null) return { mode, onHidden, limitMs: null, remainingMs: null, deadlineAt: null };
   return {
     mode,
+    onHidden,
     limitMs,
     remainingMs: limitMs,
     deadlineAt: mode === 'run' ? now + limitMs : null,

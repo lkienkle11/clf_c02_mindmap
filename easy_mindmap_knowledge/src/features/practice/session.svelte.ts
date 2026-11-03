@@ -111,7 +111,7 @@ export class PracticeSession {
     const now = services.now();
     // Shuffles happen exactly once, here; resume replays the stored order.
     const plan = planAttempt(pool, practiceCount(topicId), makeRng(now % 0x100000000));
-    const clock = startClock(options.limitMs, options.clockMode, now);
+    const clock = startClock(options.limitMs, options.clockMode, now, options.onHidden);
     const attempt: AttemptRow = {
       id: services.newId(), kind: 'practice', topicId, status: 'in_progress', startedAt: now,
       submittedAt: null, submitReason: null, reviewAllowed: options.allowReview, clock,
@@ -152,7 +152,7 @@ export class PracticeSession {
         selected: [], isCorrect: null,
       });
     });
-    const clock = startClock(null, 'freeze', now);
+    const clock = startClock(null, 'freeze', now, 'freeze');
     const attempt: AttemptRow = {
       id, kind: 'review', topicId: null, status: 'in_progress', startedAt: now,
       submittedAt: null, submitReason: null, reviewAllowed: true, clock,

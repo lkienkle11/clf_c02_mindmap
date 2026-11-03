@@ -29,7 +29,7 @@ beforeEach(async () => {
 const attempt = (over: Partial<AttemptRow>): AttemptRow => ({
   id: 'a1', kind: 'practice', topicId: 'cloud-concepts', status: 'submitted', startedAt: NOW - DAY,
   submittedAt: NOW - DAY + 1000, submitReason: 'manual', reviewAllowed: true,
-  clock: { mode: 'freeze', limitMs: null, remainingMs: null, deadlineAt: null },
+  clock: { mode: 'freeze', limitMs: null, remainingMs: null, deadlineAt: null, onHidden: 'freeze' },
   heartbeatAt: null, scorePct: 90, passed: true, ...over,
 });
 const question = (attemptId: string, questionId: string, isCorrect: boolean | null) => ({

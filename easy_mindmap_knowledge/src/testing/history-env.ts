@@ -5,7 +5,7 @@ import { makePracticeEnv } from './practice-env';
 export const makeAttempt = (id: string, over: Partial<AttemptRow> = {}): AttemptRow => ({
   id, kind: 'practice', topicId: 'compute', status: 'submitted', startedAt: 0, submittedAt: 1,
   submitReason: 'manual', reviewAllowed: false,
-  clock: { mode: 'freeze', limitMs: null, remainingMs: null, deadlineAt: null },
+  clock: { mode: 'freeze', limitMs: null, remainingMs: null, deadlineAt: null, onHidden: 'freeze' },
   heartbeatAt: null, scorePct: 50, passed: false, ...over,
 });
 

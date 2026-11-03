@@ -41,7 +41,7 @@ describe('App shell', () => {
       inProgress: {
         attempt: {
           id: 'bad', kind: 'practice', topicId: 'compute', status: 'in_progress', startedAt: 0, submittedAt: null,
-          submitReason: null, reviewAllowed: false, clock: { mode: 'freeze', limitMs: null, remainingMs: null, deadlineAt: null },
+          submitReason: null, reviewAllowed: false, clock: { mode: 'freeze', limitMs: null, remainingMs: null, deadlineAt: null, onHidden: 'freeze' },
           heartbeatAt: null, scorePct: null, passed: null,
         },
         questions: [],
@@ -111,7 +111,7 @@ describe('App shell', () => {
 async function mountWithUnfinished() {
   const attempt = {
     id: 'old', kind: 'practice' as const, topicId: 'compute', status: 'in_progress' as const, startedAt: 0, submittedAt: null,
-    submitReason: null, reviewAllowed: false, clock: { mode: 'freeze' as const, limitMs: null, remainingMs: null, deadlineAt: null },
+    submitReason: null, reviewAllowed: false, clock: { mode: 'freeze' as const, limitMs: null, remainingMs: null, deadlineAt: null, onHidden: 'freeze' as const },
     heartbeatAt: null, scorePct: null, passed: null,
   };
   const questions = ['q1', 'q2', 'q3'].map((questionId, position) => ({

@@ -12,6 +12,7 @@ interface AttemptDb {
   review_allowed: number;
   time_limit_ms: number | null;
   clock_mode: ClockState['mode'];
+  clock_on_hidden: ClockState['onHidden'];
   remaining_ms: number | null;
   deadline_at: number | null;
   heartbeat_at: number | null;
@@ -39,7 +40,7 @@ const toAttempt = (r: AttemptDb): AttemptRow => ({
   submittedAt: r.submitted_at,
   submitReason: r.submit_reason,
   reviewAllowed: r.review_allowed === 1,
-  clock: { mode: r.clock_mode, limitMs: r.time_limit_ms, remainingMs: r.remaining_ms, deadlineAt: r.deadline_at },
+  clock: { mode: r.clock_mode, onHidden: r.clock_on_hidden, limitMs: r.time_limit_ms, remainingMs: r.remaining_ms, deadlineAt: r.deadline_at },
   heartbeatAt: r.heartbeat_at,
   scorePct: r.score_pct,
   passed: bool(r.passed),
@@ -121,12 +122,12 @@ export function createAttemptsRepo(db: SqlExecutor) {
       await db.execute(
         `INSERT INTO attempts
            (id, kind, topic_id, status, started_at, submitted_at, submit_reason, review_allowed,
-            time_limit_ms, clock_mode, remaining_ms, deadline_at, heartbeat_at, score_pct, passed)
-         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15)`,
+            time_limit_ms, clock_mode, remaining_ms, deadline_at, heartbeat_at, score_pct, passed, clock_on_hidden)
+         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16)`,
         [
           a.id, a.kind, a.topicId, a.status, a.startedAt, a.submittedAt, a.submitReason,
           a.reviewAllowed ? 1 : 0, a.clock.limitMs, a.clock.mode, a.clock.remainingMs, a.clock.deadlineAt,
-          a.heartbeatAt, a.scorePct, a.passed === null ? null : a.passed ? 1 : 0,
+          a.heartbeatAt, a.scorePct, a.passed === null ? null : a.passed ? 1 : 0, a.clock.onHidden,
         ],
       );
     },
@@ -140,8 +141,8 @@ export function createAttemptsRepo(db: SqlExecutor) {
     async saveClock(attemptId: string, clock: ClockState, heartbeatAt: number | null): Promise<void> {
       await db.execute(
         `UPDATE attempts SET clock_mode = $1, time_limit_ms = $2, remaining_ms = $3, deadline_at = $4,
-           heartbeat_at = $5 WHERE id = $6`,
-        [clock.mode, clock.limitMs, clock.remainingMs, clock.deadlineAt, heartbeatAt, attemptId],
+           heartbeat_at = $5, clock_on_hidden = $6 WHERE id = $7`,
+        [clock.mode, clock.limitMs, clock.remainingMs, clock.deadlineAt, heartbeatAt, clock.onHidden, attemptId],
       );
     },
 

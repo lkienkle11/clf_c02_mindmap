@@ -66,7 +66,7 @@
       const session = await PracticeSession.start(
         services,
         topicId,
-        { allowReview: review === 'allow', limitMs, clockMode: clock },
+        { allowReview: review === 'allow', limitMs, clockMode: clock, onHidden: 'freeze' },
         () => appState.refresh(),
       );
       onstarted(session);

@@ -112,7 +112,7 @@ describe('App daily review wiring', () => {
 describe('App resume of a review attempt', () => {
   const attempt: AttemptRow = {
     id: 'old-review', kind: 'review', topicId: null, status: 'in_progress', startedAt: 0, submittedAt: null,
-    submitReason: null, reviewAllowed: true, clock: { mode: 'freeze', limitMs: null, remainingMs: null, deadlineAt: null },
+    submitReason: null, reviewAllowed: true, clock: { mode: 'freeze', limitMs: null, remainingMs: null, deadlineAt: null, onHidden: 'freeze' },
     heartbeatAt: null, scorePct: null, passed: null,
   };
   const rows = (ids: string[]): AttemptQuestionRow[] =>
