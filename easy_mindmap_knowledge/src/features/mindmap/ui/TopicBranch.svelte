@@ -197,7 +197,7 @@
       side={leaf.side}
       label={practiceReason ? `🔒 ${practiceName}` : practiceName}
       ariaLabel={practiceReason ? `${practiceName}, ${practiceReason}` : practiceName}
-      tone={status === 'current' && stopId === 'practice' ? 'current' : 'todo'}
+      tone={status === 'done' ? 'done' : status === 'current' && stopId === 'practice' ? 'current' : 'todo'}
       disabled={practiceReason !== undefined}
       reason={practiceReason ?? lessonsNote ?? undefined}
       {canvasWidth}
