@@ -6,14 +6,12 @@ videoQuery: AWS Cloud Adoption Framework six perspectives explained Cloud Practi
 ---
 ## Why organizations move to AWS
 
-Moving workloads from a data center to AWS is a business decision, not only a technical one. The AWS Cloud Adoption Framework names four **business outcomes** that cloud transformation can deliver:
+The AWS Cloud Adoption Framework names four **business outcomes** that cloud transformation can deliver:
 
 - **Reduced business risk**, for example through better reliability, business continuity and security.
 - **Improved environmental, social and governance (ESG) performance**.
 - **Increased revenue**, from new products and faster releases.
 - **Increased operational efficiency**, by automating and optimizing how work gets done.
-
-These sit on top of the cloud advantages from the first topic, such as trading upfront expense for variable expense and going global in minutes.
 
 ## What the AWS CAF is
 
@@ -23,10 +21,10 @@ The **AWS CAF** is AWS guidance, based on experience with many customers, that h
 | --- | --- | --- |
 | Business | Cloud investments speed up digital transformation and business outcomes | CEO, CFO, COO, CIO, CTO |
 | People | Culture, organizational structure, leadership and workforce skills | CIO, COO, CTO, cloud director, cross-functional leaders |
-| Governance | Orchestrating cloud initiatives while maximizing benefits and minimizing risk | Chief transformation officer, CIO, CTO, CFO, chief data officer, chief risk officer |
+| Governance | Orchestrating cloud initiatives while maximizing benefits and minimizing risk | CIO, CTO, CFO, chief transformation, data and risk officers |
 | Platform | A scalable hybrid cloud platform, modernizing workloads, cloud-native solutions | CTO, technology leaders, architects, engineers |
 | Security | Confidentiality, integrity and availability of data and workloads | CISO, chief compliance officer, internal audit, security architects |
-| Operations | Delivering cloud services at the level the business needs | Infrastructure and operations leaders, site reliability engineers, IT service managers |
+| Operations | Delivering cloud services at the level the business needs | Operations leaders, site reliability engineers, IT service managers |
 
 Memory hook: **Business, People, Governance** are the business-facing perspectives; **Platform, Security, Operations** are the technical ones.
 
@@ -40,11 +38,23 @@ The CAF describes four iterative phases: **Envision** (how cloud will speed up b
 - "Program management, risk management and cloud financial management" is **Governance**.
 - "Designing the architecture and a compliant multi-account environment" is **Platform**; "keeping services running and monitored" is **Operations**.
 
+## Capabilities to recognize
+
+Each perspective contains several **foundational capabilities**. For the exam, recognizing a capability's perspective is enough. Examples:
+
+- **Business**: strategy management, portfolio management, product management, data monetization.
+- **People**: culture evolution, transformational leadership, cloud fluency, organization design.
+- **Governance**: program and project management, benefits management, risk management, cloud financial management.
+- **Platform**: platform architecture, platform engineering, data engineering, modern application development.
+- **Security**: identity and access management, threat detection, infrastructure protection, data protection, incident response.
+- **Operations**: observability, incident and problem management, change and release management, patch management.
+
 ## Key points
 
 - Four outcomes: reduced risk, better ESG, more revenue, higher efficiency.
 - Six perspectives: Business, People, Governance, Platform, Security, Operations.
 - Phases: Envision, Align, Launch, Scale.
+- Know capabilities at recognition level: match a capability name to its perspective.
 
 ## Sources
 

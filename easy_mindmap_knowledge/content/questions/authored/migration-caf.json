@@ -62,11 +62,11 @@
   {
     "id": "auth-migration-caf-03",
     "topicId": "migration-caf",
-    "text": "A company moves its self-managed MySQL database from an on-premises server to Amazon RDS for MySQL. The application code stays the same except for the database connection settings. Which migration strategy is this?",
+    "text": "A company runs hundreds of virtual machines on VMware vSphere in its data center. It wants to move them to a VMware environment running on AWS without buying hardware, rewriting applications, or changing how it operates them. Which migration strategy is this?",
     "options": [
       {
         "key": "A",
-        "text": "Replatform"
+        "text": "Relocate"
       },
       {
         "key": "B",
@@ -74,11 +74,11 @@
       },
       {
         "key": "C",
-        "text": "Refactor"
+        "text": "Replatform"
       },
       {
         "key": "D",
-        "text": "Retire"
+        "text": "Repurchase"
       }
     ],
     "correct": [
@@ -86,7 +86,7 @@
     ],
     "multi": false,
     "orderDependent": false,
-    "explanation": "Moving to a managed service with small changes and no change to the core architecture is replatform (lift and reshape). Rehost would move the database server as-is, for example onto an EC2 instance.",
+    "explanation": "Relocate moves servers from an on-premises platform to the cloud version of the same platform without new hardware or application changes. Rehost moves each application onto Amazon EC2 instances instead of keeping the same virtualization platform.",
     "source": "authored"
   },
   {
@@ -195,7 +195,7 @@
       },
       {
         "key": "B",
-        "text": "AWS Database Migration Service (AWS DMS)"
+        "text": "AWS Database Migration Service (AWS DMS) with ongoing replication"
       },
       {
         "key": "C",
@@ -276,7 +276,7 @@
     ],
     "multi": false,
     "orderDependent": false,
-    "explanation": "Migration Evaluator collects on-premises inventory and utilization data and produces a business case for migrating to AWS. Cost Explorer and Budgets work only with costs already incurred in AWS.",
+    "explanation": "Migration Evaluator collects on-premises inventory and utilization data and produces a business case for migrating to AWS. Cost Explorer and Budgets analyze and forecast spending in AWS accounts; they do not assess on-premises servers.",
     "source": "authored"
   },
   {

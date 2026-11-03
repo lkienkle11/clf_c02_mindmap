@@ -16,7 +16,7 @@ required: true
 ## Di chuyển cơ sở dữ liệu và dữ liệu (ôn lại)
 
 - **AWS Database Migration Service (AWS DMS)** di chuyển cơ sở dữ liệu với thời gian gián đoạn tối thiểu, còn **DMS Schema Conversion** hoặc **AWS Schema Conversion Tool (AWS SCT)** chuyển đổi schema cho các đợt di chuyển không đồng nhất (xem chủ đề cơ sở dữ liệu).
-- **AWS DataSync** sao chép các tập dữ liệu tệp và object lớn **qua mạng (online)** vào Amazon S3, Amazon EFS hoặc Amazon FSx (xem chủ đề lưu trữ).
+- **AWS DataSync** sao chép các tập dữ liệu tệp và object lớn **trực tuyến (online)** qua mạng vào Amazon S3, Amazon EFS hoặc Amazon FSx (xem chủ đề lưu trữ).
 - **AWS Transfer Family** cung cấp cho đối tác và khách hàng một endpoint **SFTP, FTPS, FTP hoặc AS2** được quản lý hoàn toàn, lưu tệp vào Amazon S3 hoặc Amazon EFS, nhờ đó quy trình truyền tệp hiện có được chuyển sang mà không phải đổi phần mềm phía client.
 - **AWS Snowball Edge** (truyền dữ liệu ngoại tuyến bằng thiết bị gửi qua đường vận chuyển) đã đóng với khách hàng mới; xem chủ đề lưu trữ để biết tình trạng của nó.
 

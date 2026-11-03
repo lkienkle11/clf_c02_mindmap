@@ -7,9 +7,9 @@ required: true
 
 Hướng dẫn của AWS chia một đợt di chuyển lớn thành ba giai đoạn lặp lại. Giai đoạn cuối thường được gọi là **migrate and modernize (di chuyển và hiện đại hóa)**.
 
-1. **Assess (đánh giá)**: hiểu hiện trạng và xây dựng lập luận. Một **Migration Readiness Assessment** dùng sáu góc nhìn của CAF để chỉ ra điểm mạnh, khoảng trống và kế hoạch hành động, còn một lần khảo sát đầu tiên cho ra **tổng chi phí sở hữu (TCO)** ở mức tổng quan và **business case**.
+1. **Assess (đánh giá)**: hiểu hiện trạng và xây dựng business case. Một **Migration Readiness Assessment** dùng sáu góc nhìn của CAF để chỉ ra điểm mạnh, khoảng trống và kế hoạch hành động, còn một lần khảo sát đầu tiên cho ra **tổng chi phí sở hữu (TCO)** ở mức tổng quan và **business case**.
 2. **Mobilize (huy động)**: xây nền móng. Các nhóm khảo sát chi tiết danh mục ứng dụng, chọn chiến lược (một trong 7 R) cho từng ứng dụng, dựng một **landing zone** an toàn và có thể mở rộng (môi trường AWS nhiều tài khoản làm nền tảng), xác định cách làm về bảo mật và vận hành, đào tạo con người, và di chuyển **một nhóm nhỏ ứng dụng đầu tiên** để lấy kinh nghiệm.
-3. **Migrate and modernize**: dùng các mẫu và công cụ đã được kiểm chứng ở giai đoạn mobilize để chuyển ứng dụng **ở quy mô lớn**, thường theo từng đợt (wave), rồi tối ưu hoặc hiện đại hóa chúng khi đã chạy trên AWS.
+3. **Migrate and modernize**: dùng các mẫu và công cụ đã được kiểm chứng ở giai đoạn mobilize để chuyển ứng dụng **ở quy mô lớn**, thường theo từng đợt (wave) qua một **migration factory** (dây chuyền di chuyển), rồi tối ưu hoặc hiện đại hóa chúng khi đã chạy trên AWS.
 
 ## Công cụ cho giai đoạn assess và mobilize
 
@@ -18,7 +18,7 @@ Hướng dẫn của AWS chia một đợt di chuyển lớn thành ba giai đo�
 - **AWS Application Discovery Service**: thu thập dữ liệu cấu hình, mức sử dụng và phụ thuộc mạng của máy chủ tại chỗ, bằng bộ thu thập không cần agent hoặc bằng agent. Dịch vụ này **đóng với khách hàng mới từ ngày 7 tháng 11 năm 2025**; khách hàng hiện có vẫn dùng tiếp được, và AWS hướng khách hàng mới sang AWS Transform.
 - **AWS Migration Hub**: một nơi để khảo sát máy chủ, nhóm chúng thành ứng dụng và **theo dõi trạng thái di chuyển** qua nhiều công cụ. Dịch vụ này cũng **không còn mở cho khách hàng mới từ ngày 7 tháng 11 năm 2025**, và AWS gợi ý dùng AWS Transform thay thế.
 
-Câu hỏi thi soạn trước cuối năm 2025 có thể vẫn lấy Application Discovery Service hoặc Migration Hub làm đáp án. Hãy nhận ra chức năng của chúng: **khảo sát** máy chủ (Discovery Service) và **theo dõi** quá trình di chuyển (Migration Hub).
+Câu hỏi thi soạn trước cuối năm 2025 có thể vẫn lấy Application Discovery Service hoặc Migration Hub làm đáp án.
 
 ## Bẫy thường gặp
 
@@ -26,6 +26,7 @@ Câu hỏi thi soạn trước cuối năm 2025 có thể vẫn lấy Applicatio
 - "Tìm các máy chủ tại chỗ và các phụ thuộc của chúng" là **khảo sát** (Application Discovery Service trong câu hỏi cũ, AWS Transform ngày nay).
 - "Một bảng điều khiển để theo dõi tiến độ di chuyển" là **Migration Hub** trong câu hỏi cũ.
 - Migration Readiness Assessment được xây dựng dựa trên các góc nhìn của **CAF**.
+- Đừng nhầm hai bộ giai đoạn: Envision, Align, Launch và Scale là hành trình chuyển đổi của CAF; assess, mobilize và migrate and modernize là các giai đoạn của một đợt di chuyển.
 
 ## Ý chính
 

@@ -5,14 +5,12 @@ required: true
 ---
 ## Vì sao các tổ chức chuyển lên AWS
 
-Chuyển workload từ trung tâm dữ liệu lên AWS là một quyết định kinh doanh, không chỉ là chuyện kỹ thuật. AWS Cloud Adoption Framework nêu bốn **kết quả kinh doanh (business outcome)** mà chuyển đổi lên đám mây có thể mang lại:
+AWS Cloud Adoption Framework nêu bốn **kết quả kinh doanh (business outcome)** mà chuyển đổi lên đám mây có thể mang lại:
 
 - **Giảm rủi ro kinh doanh**, ví dụ nhờ độ tin cậy, tính liên tục của hoạt động kinh doanh và bảo mật tốt hơn.
 - **Cải thiện hiệu quả về môi trường, xã hội và quản trị (ESG)**.
 - **Tăng doanh thu**, nhờ sản phẩm mới và phát hành nhanh hơn.
 - **Tăng hiệu quả vận hành**, bằng cách tự động hóa và tối ưu cách làm việc.
-
-Các kết quả này đặt trên nền những lợi thế của đám mây đã học ở chủ đề đầu tiên, như đổi chi phí trả trước lấy chi phí biến đổi và vươn ra toàn cầu trong vài phút.
 
 ## AWS CAF là gì
 
@@ -22,10 +20,10 @@ Các kết quả này đặt trên nền những lợi thế của đám mây đ
 | --- | --- | --- |
 | Business (Kinh doanh) | Khoản đầu tư vào đám mây giúp đẩy nhanh chuyển đổi số và kết quả kinh doanh | CEO, CFO, COO, CIO, CTO |
 | People (Con người) | Văn hóa, cơ cấu tổ chức, năng lực lãnh đạo và kỹ năng của đội ngũ | CIO, COO, CTO, giám đốc đám mây, lãnh đạo liên phòng ban |
-| Governance (Quản trị) | Điều phối các sáng kiến đám mây, tối đa hóa lợi ích và giảm thiểu rủi ro | Giám đốc chuyển đổi, CIO, CTO, CFO, giám đốc dữ liệu, giám đốc rủi ro |
+| Governance (Quản trị) | Điều phối các sáng kiến đám mây, tối đa hóa lợi ích và giảm thiểu rủi ro | CIO, CTO, CFO, giám đốc chuyển đổi, giám đốc dữ liệu và giám đốc rủi ro |
 | Platform (Nền tảng) | Nền tảng đám mây lai có khả năng mở rộng, hiện đại hóa workload, giải pháp cloud-native | CTO, lãnh đạo công nghệ, kiến trúc sư, kỹ sư |
 | Security (Bảo mật) | Tính bảo mật, toàn vẹn và sẵn sàng của dữ liệu và workload | CISO, giám đốc tuân thủ, kiểm toán nội bộ, kiến trúc sư bảo mật |
-| Operations (Vận hành) | Cung cấp dịch vụ đám mây ở mức mà doanh nghiệp cần | Lãnh đạo hạ tầng và vận hành, kỹ sư SRE, quản lý dịch vụ CNTT |
+| Operations (Vận hành) | Cung cấp dịch vụ đám mây ở mức mà doanh nghiệp cần | Lãnh đạo vận hành, kỹ sư SRE, quản lý dịch vụ CNTT |
 
 Mẹo nhớ: **Business, People, Governance** là các góc nhìn hướng về kinh doanh; **Platform, Security, Operations** là các góc nhìn kỹ thuật.
 
@@ -39,11 +37,23 @@ CAF mô tả bốn giai đoạn lặp lại: **Envision** (hình dung đám mây
 - "Quản lý chương trình, quản lý rủi ro và quản lý tài chính đám mây" là **Governance**.
 - "Thiết kế kiến trúc và một môi trường nhiều tài khoản tuân thủ quy định" là **Platform**; "giữ cho dịch vụ chạy ổn định và được giám sát" là **Operations**.
 
+## Các năng lực cần nhận ra
+
+Mỗi góc nhìn gồm nhiều **năng lực nền tảng (foundational capability)**. Với đề thi, chỉ cần nhận ra năng lực đó thuộc góc nhìn nào. Ví dụ:
+
+- **Business**: strategy management, portfolio management, product management, data monetization.
+- **People**: culture evolution, transformational leadership, cloud fluency, organization design.
+- **Governance**: program and project management, benefits management, risk management, cloud financial management.
+- **Platform**: platform architecture, platform engineering, data engineering, modern application development.
+- **Security**: identity and access management, threat detection, infrastructure protection, data protection, incident response.
+- **Operations**: observability, incident and problem management, change and release management, patch management.
+
 ## Ý chính
 
 - Bốn kết quả: giảm rủi ro, ESG tốt hơn, tăng doanh thu, tăng hiệu quả.
 - Sáu góc nhìn: Business, People, Governance, Platform, Security, Operations.
 - Các giai đoạn: Envision, Align, Launch, Scale.
+- Nắm các năng lực ở mức nhận biết: ghép tên năng lực với góc nhìn của nó.
 
 ## Nguồn
 
