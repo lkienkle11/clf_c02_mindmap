@@ -31,7 +31,7 @@ describe('Tauri capability', () => {
 });
 
 describe('CI workflow (.github/workflows/mindmap-build.yml)', () => {
-  const yml = readFileSync(join(root, '..', '.github', 'workflows', 'mindmap-build.yml'), 'utf8');
+  const yml = readFileSync(join(root, '..', '.github', 'workflows', 'mindmap-build.yml'), 'utf8').replace(/\r\n/g, '\n'); // Windows checkouts use CRLF
 
   it('keeps the honest NOT-VERIFIED header', () => {
     expect(yml.split('\n')[0]).toMatch(/NOT been run/);
