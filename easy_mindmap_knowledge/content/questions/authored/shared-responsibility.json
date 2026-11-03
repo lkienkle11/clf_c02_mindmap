@@ -97,7 +97,7 @@
   {
     "id": "auth-shared-responsibility-04",
     "topicId": "shared-responsibility",
-    "text": "A company's compliance officer needs a copy of the AWS SOC 2 report to give to an external auditor. Where can the officer download it?",
+    "text": "A healthcare start-up must accept a Business Associate Addendum (BAA) with AWS before it stores protected health information under HIPAA. Where can the company review and accept this agreement?",
     "options": [
       {
         "key": "A",
@@ -105,7 +105,7 @@
       },
       {
         "key": "B",
-        "text": "AWS CloudTrail"
+        "text": "AWS Trusted Advisor"
       },
       {
         "key": "C",
@@ -113,7 +113,7 @@
       },
       {
         "key": "D",
-        "text": "Amazon Inspector"
+        "text": "AWS Organizations service control policies"
       }
     ],
     "correct": [
@@ -121,7 +121,7 @@
     ],
     "multi": false,
     "orderDependent": false,
-    "explanation": "AWS Artifact provides on-demand, no-cost downloads of AWS security and compliance reports such as SOC, PCI and ISO documents. AWS Config records the configuration of your own resources; it does not hold AWS audit reports.",
+    "explanation": "AWS Artifact lets customers review, accept and track agreements with AWS, such as the HIPAA BAA, for one account or a whole organization. Service control policies in AWS Organizations limit permissions; they are not a place to accept agreements with AWS.",
     "source": "authored"
   },
   {

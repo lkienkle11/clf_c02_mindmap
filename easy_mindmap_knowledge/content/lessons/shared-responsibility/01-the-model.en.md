@@ -6,7 +6,7 @@ videoQuery: AWS shared responsibility model explained security of the cloud vs i
 ---
 ## One sentence to remember
 
-AWS describes security and compliance as a **shared responsibility**: **AWS is responsible for security *of* the cloud, and the customer is responsible for security *in* the cloud.** Almost every exam question on this topic is a test of where that line falls.
+AWS describes security and compliance as a **shared responsibility**: **AWS is responsible for security *of* the cloud, and the customer is responsible for security *in* the cloud.** Most exam questions test where that line falls.
 
 ## AWS: security of the cloud
 
@@ -28,7 +28,7 @@ The customer is responsible for **what they put in the cloud and how they config
 - **Identity and access management**: users, roles, permissions, passwords, MFA and access keys.
 - **Guest operating system and applications** on services like EC2: updates, security patches, installed software.
 - **Network and firewall configuration**: security groups, network ACLs, routing.
-- **Encryption choices**: whether to encrypt data at rest and in transit, and which keys to use.
+- **Encryption choices**: which keys to use, extra encryption options, and encryption in transit (some services, such as S3 and DynamoDB, encrypt data at rest by default).
 
 ## Responsibilities that never move to AWS
 

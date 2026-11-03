@@ -5,7 +5,7 @@ required: true
 ---
 ## Vì sao kiểm soát quan trọng
 
-Kiểm toán viên kiểm tra các **kiểm soát (control)**: những biện pháp bảo vệ hệ thống và dữ liệu. Khi một công ty chạy trên AWS, có kiểm soát đến hoàn toàn từ AWS, có kiểm soát được chia đôi, và có kiểm soát chỉ thuộc về công ty. Mô hình trách nhiệm chia sẻ gọi tên ba loại.
+Kiểm toán viên kiểm tra các **kiểm soát (control)**: những biện pháp bảo vệ hệ thống và dữ liệu. Khi một công ty chạy trên AWS, có kiểm soát đến hoàn toàn từ AWS, có kiểm soát được chia sẻ giữa hai bên, và có kiểm soát chỉ thuộc về công ty. Mô hình trách nhiệm chia sẻ gọi tên ba loại.
 
 ## Kiểm soát kế thừa (inherited controls)
 
@@ -29,7 +29,7 @@ Kiểm toán viên kiểm tra các **kiểm soát (control)**: những biện ph
 
 **Kiểm soát riêng của khách hàng** là **trách nhiệm duy nhất của khách hàng**, dựa trên ứng dụng họ triển khai trên AWS.
 
-- Ví dụ trong mô hình: **bảo mật theo vùng (zone security)**, như định tuyến hoặc phân vùng dữ liệu bên trong những môi trường bảo mật cụ thể.
+- Ví dụ trong mô hình: **bảo vệ dịch vụ và truyền thông hoặc bảo mật theo vùng (Service and Communications Protection or Zone Security)**, như định tuyến hoặc phân vùng dữ liệu bên trong những môi trường bảo mật cụ thể.
 
 ## Bẫy thường gặp
 

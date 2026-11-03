@@ -8,9 +8,9 @@ required: true
 Phần lớn câu hỏi thi về cơ sở dữ liệu bắt đầu từ một quyết định: dữ liệu có hình dạng gì, và sẽ được đọc ra sao?
 
 - **Cơ sở dữ liệu quan hệ (SQL)** lưu dữ liệu trong **các bảng có schema cố định** (hàng và cột). Các bảng liên kết với nhau bằng khóa, và bạn có thể **join** chúng trong các truy vấn phức tạp. Chúng hỗ trợ **giao dịch ACID**, nên một nhóm thay đổi hoặc cùng thành công, hoặc cùng thất bại. Phù hợp với: đơn hàng, thanh toán, tồn kho, hệ thống ERP và CRM.
-- **Cơ sở dữ liệu phi quan hệ (NoSQL)** được xây cho **một mô hình dữ liệu cụ thể**, như key-value, document, graph hoặc time series. Schema linh hoạt, và chúng được thiết kế để mở rộng theo chiều ngang tới lượng yêu cầu rất lớn. Phù hợp với: giỏ hàng, phiên người dùng, trạng thái game, danh mục sản phẩm, mạng quan hệ xã hội.
+- **Cơ sở dữ liệu phi quan hệ (NoSQL)** được xây cho **một mô hình dữ liệu cụ thể**, như key-value, document, graph hoặc time series. Schema linh hoạt, và chúng được thiết kế để mở rộng theo chiều ngang tới lượng yêu cầu rất lớn. Một số, như DynamoDB, cũng hỗ trợ giao dịch ACID, nhưng không hỗ trợ join. Phù hợp với: giỏ hàng, phiên người dùng, trạng thái game, danh mục sản phẩm, mạng quan hệ xã hội.
 
-AWS gọi ý tưởng này là **cơ sở dữ liệu chuyên dụng (purpose-built databases)**: chọn engine có mô hình dữ liệu khớp với công việc, và dùng nhiều cơ sở dữ liệu trong một ứng dụng khi điều đó có lợi.
+AWS gọi ý tưởng này là **cơ sở dữ liệu chuyên dụng (purpose-built databases)**: chọn engine có mô hình dữ liệu khớp với công việc.
 
 ## OLTP và OLAP
 
@@ -34,14 +34,14 @@ Hãy chọn EC2 khi bạn cần thứ mà dịch vụ được quản lý không
 
 ## Bẫy thường gặp
 
-- "Cần join và truy vấn phức tạp có giao dịch" chỉ tới dịch vụ **quan hệ** (RDS hoặc Aurora).
+- "Cần join và truy vấn SQL phức tạp giữa nhiều bảng" chỉ tới dịch vụ **quan hệ** (RDS hoặc Aurora).
 - "Quy mô cực lớn với tra cứu theo khóa đơn giản và độ trễ mili giây một chữ số" chỉ tới **DynamoDB**.
 - "Toàn quyền với hệ điều hành" hoặc "phần mềm cơ sở dữ liệu tùy biến" chỉ tới **cơ sở dữ liệu trên EC2**.
 - Ngay cả với cơ sở dữ liệu được quản lý, **bạn** vẫn thiết kế schema, tối ưu truy vấn và kiểm soát ai được truy cập dữ liệu.
 
 ## Ý chính
 
-- Quan hệ = bảng, schema cố định, join, giao dịch. NoSQL = linh hoạt, mô hình dữ liệu chuyên dụng.
+- Quan hệ = bảng, schema cố định, join, giao dịch. NoSQL = linh hoạt, mô hình dữ liệu chuyên dụng, không có join (một số, như DynamoDB, vẫn có giao dịch).
 - OLTP phục vụ ứng dụng; OLAP (Redshift) phục vụ phân tích.
 - Dịch vụ được quản lý đảm nhận vá hệ điều hành và cơ sở dữ liệu, sao lưu, tính sẵn sàng và co giãn.
 - Tự quản lý trên EC2 cho bạn quyền kiểm soát nhưng mọi việc vận hành cơ sở dữ liệu vẫn là của bạn.

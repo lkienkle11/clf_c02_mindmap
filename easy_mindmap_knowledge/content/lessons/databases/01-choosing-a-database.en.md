@@ -9,9 +9,9 @@ videoQuery: AWS databases overview relational vs NoSQL managed vs self-managed C
 Most exam questions about databases start with one decision: what shape is the data, and how will it be read?
 
 - **Relational (SQL) databases** store data in **tables with a fixed schema** (rows and columns). Tables are linked by keys, and you can **join** them in complex queries. They support **ACID transactions**, so a group of changes succeeds or fails as one. Good fit: orders, billing, inventory, ERP and CRM systems.
-- **Non-relational (NoSQL) databases** are built for a **specific data model**, such as key-value, document, graph or time series. The schema is flexible, and they are designed to scale out to very high request rates. Good fit: shopping carts, user sessions, game state, product catalogs, social graphs.
+- **Non-relational (NoSQL) databases** are built for a **specific data model**, such as key-value, document, graph or time series. The schema is flexible, and they are designed to scale out to very high request rates. Some, such as DynamoDB, also support ACID transactions, but not joins. Good fit: shopping carts, user sessions, game state, product catalogs, social graphs.
 
-AWS calls this idea **purpose-built databases**: pick the engine whose data model matches the job, and use more than one database in an application when that helps.
+AWS calls this idea **purpose-built databases**: pick the engine whose data model matches the job.
 
 ## OLTP and OLAP
 
@@ -35,14 +35,14 @@ Choose EC2 when you need something a managed service does not offer, such as an 
 
 ## Common traps
 
-- "Needs joins and complex queries with transactions" points to a **relational** service (RDS or Aurora).
+- "Needs joins and complex SQL queries across tables" points to a **relational** service (RDS or Aurora).
 - "Massive scale with simple key lookups and single-digit millisecond latency" points to **DynamoDB**.
 - "Full control of the operating system" or "custom database software" points to **a database on EC2**.
 - Even with a managed database, **you** still design the schema, tune queries and control who can access the data.
 
 ## Key points
 
-- Relational = tables, fixed schema, joins, transactions. NoSQL = flexible, purpose-built data models.
+- Relational = tables, fixed schema, joins, transactions. NoSQL = flexible, purpose-built data models, no joins (some, like DynamoDB, still offer transactions).
 - OLTP serves applications; OLAP (Redshift) serves analytics.
 - Managed services take over OS and database patching, backups, availability and scaling.
 - Self-managing on EC2 gives control but keeps all database operations with you.

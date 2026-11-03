@@ -14,7 +14,7 @@ required: true
 - **AWS CodeDeploy** (triển khai): tự động triển khai tới EC2, máy chủ tại chỗ, Lambda và ECS.
 - **AWS CodePipeline** (điều phối): mô hình hóa và tự động hóa toàn bộ luồng phát hành từ mã nguồn tới triển khai.
 
-- **CodeBuild** được quản lý hoàn toàn: không có máy chủ build nào để dựng, vá hay co giãn, và bạn trả tiền theo số phút build đã dùng.
+- **CodeBuild** được quản lý hoàn toàn: không có máy chủ build nào phải quản lý, và bạn trả tiền theo số phút build đã dùng.
 - **CodePipeline** nối các giai đoạn lại: lấy mã từ CodeCommit hoặc một nhà cung cấp Git khác, build bằng CodeBuild, triển khai bằng CodeDeploy, Elastic Beanstalk hoặc CloudFormation.
 - **CodeCommit** từng ngừng nhận khách hàng mới vào năm 2024, rồi được mở lại cho mọi khách hàng (general availability) vào tháng 11 năm 2025.
 
@@ -27,11 +27,11 @@ required: true
 | Chiến lược | Cách hoạt động | Đánh đổi |
 | --- | --- | --- |
 | All at once (tại chỗ) | Cập nhật mọi máy chủ cùng lúc | Nhanh nhất, nhưng có thể gián đoạn ngắn |
-| Rolling | Cập nhật từng đợt máy chủ một | Không gián đoạn hoàn toàn, nhưng giảm năng lực trong lúc cập nhật |
+| Rolling | Cập nhật từng đợt máy chủ một | Không gián đoạn toàn bộ hệ thống, nhưng giảm năng lực trong lúc cập nhật |
 | Blue/green | Chạy phiên bản mới (green) bên cạnh phiên bản cũ (blue), rồi chuyển lưu lượng | Rollback nhanh và an toàn bằng cách chuyển ngược lại; tốn thêm tài nguyên trong một thời gian |
 | Canary | Gửi một phần nhỏ lưu lượng tới phiên bản mới trước, rồi mới tới phần còn lại | Sự cố chỉ ảnh hưởng tới ít người dùng |
 
-CodeDeploy hỗ trợ triển khai tại chỗ (rolling) và blue/green; với Lambda và ECS, nó có thể chuyển lưu lượng theo kiểu **canary**, **linear** hoặc **all at once**. Elastic Beanstalk có các chính sách như all at once, rolling, immutable và **traffic splitting** (một cách triển khai canary).
+CodeDeploy hỗ trợ triển khai tại chỗ (từng đợt một hoặc tất cả cùng lúc, tùy deployment configuration) và blue/green; với Lambda và ECS, nó có thể chuyển lưu lượng theo kiểu **canary**, **linear** hoặc **all at once**. Elastic Beanstalk có các chính sách như all at once, rolling, immutable và **traffic splitting** (một cách triển khai canary).
 
 ## Bẫy thường gặp
 

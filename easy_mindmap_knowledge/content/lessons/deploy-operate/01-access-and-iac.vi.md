@@ -32,12 +32,13 @@ Dù bạn dùng công cụ nào, cuối cùng nó cũng gọi tới **API của 
 - CloudFormation tạo các tài nguyên đó thành một khối gọi là **stack**. Xóa stack thì các tài nguyên của nó cũng bị xóa.
 - Trước khi cập nhật stack, một **change set** cho bạn thấy những gì sẽ thay đổi, ví dụ một cơ sở dữ liệu có bị thay thế hay không.
 - Nếu tạo stack thất bại, CloudFormation **rollback** và xóa những gì nó đã tạo.
+- **Drift detection** cho biết khi tài nguyên bị thay đổi bên ngoài CloudFormation.
 - Template là văn bản: hãy lưu chúng trong hệ thống quản lý phiên bản và **tái sử dụng** để dựng các môi trường giống hệt nhau ở Region hoặc tài khoản khác.
 - CloudFormation không tính thêm phí với các loại tài nguyên AWS; bạn trả tiền cho tài nguyên mà nó tạo ra.
 
 ## AWS CDK
 
-**AWS Cloud Development Kit (AWS CDK)** cho phép bạn định nghĩa hạ tầng bằng các ngôn ngữ lập trình quen thuộc như TypeScript, Python, Java, C# và Go. Bạn ghép các khối có thể tái sử dụng gọi là **construct**, và CDK triển khai chúng **thông qua CloudFormation**. Hãy chọn CDK khi nhóm thích dùng vòng lặp, hàm và sự hỗ trợ của IDE hơn là tự viết YAML.
+**AWS Cloud Development Kit (AWS CDK)** cho phép bạn định nghĩa hạ tầng bằng các ngôn ngữ lập trình quen thuộc như TypeScript, Python, Java, C# và Go. Bạn ghép các khối có thể tái sử dụng gọi là **construct**, và CDK triển khai chúng **thông qua CloudFormation**.
 
 ## Bẫy thường gặp
 

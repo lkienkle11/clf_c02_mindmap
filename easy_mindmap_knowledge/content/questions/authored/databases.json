@@ -2,23 +2,23 @@
   {
     "id": "auth-databases-01",
     "topicId": "databases",
-    "text": "Which AWS service is a serverless key-value and document database that delivers single-digit millisecond performance at any scale?",
+    "text": "A gaming company stores player session data. Traffic is close to zero most of the day but spikes unpredictably during tournaments. The team wants a database with no servers to provision that charges per request. Which option meets these requirements?",
     "options": [
       {
         "key": "A",
-        "text": "Amazon RDS"
+        "text": "Amazon RDS for MySQL on a larger DB instance class"
       },
       {
         "key": "B",
-        "text": "Amazon DynamoDB"
+        "text": "Amazon DynamoDB in on-demand capacity mode"
       },
       {
         "key": "C",
-        "text": "Amazon Redshift"
+        "text": "Amazon DynamoDB in provisioned capacity mode with a fixed capacity"
       },
       {
         "key": "D",
-        "text": "Amazon Neptune"
+        "text": "An Amazon Redshift provisioned cluster"
       }
     ],
     "correct": [
@@ -26,7 +26,7 @@
     ],
     "multi": false,
     "orderDependent": false,
-    "explanation": "Amazon DynamoDB is a serverless NoSQL database for key-value and document data with single-digit millisecond performance. Amazon RDS is a relational database that runs on DB instances you size, not a serverless key-value store.",
+    "explanation": "DynamoDB is serverless, and on-demand mode bills per read and write request while scaling automatically with unpredictable traffic. Provisioned mode with fixed capacity charges for the capacity you set whether it is used or not and does not suit unpredictable spikes.",
     "source": "authored"
   },
   {

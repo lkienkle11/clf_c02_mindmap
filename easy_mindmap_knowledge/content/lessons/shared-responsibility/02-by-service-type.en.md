@@ -10,7 +10,7 @@ videoQuery: AWS shared responsibility model EC2 vs RDS vs Lambda who patches wha
 
 - **Infrastructure services** such as **Amazon EC2** (IaaS): you get a virtual server and configure almost everything above the virtualization layer.
 - **Managed services** such as **Amazon RDS**: AWS also runs the operating system and the database software.
-- **Abstracted services** such as **AWS Lambda, Amazon S3 and Amazon DynamoDB**: AWS runs the infrastructure, operating system and platform; you work with endpoints, code and data.
+- **Abstracted services** such as **AWS Lambda, Amazon S3 and Amazon DynamoDB**: AWS runs the infrastructure, operating system and platform.
 
 ## Who does what
 
@@ -21,7 +21,7 @@ videoQuery: AWS shared responsibility model EC2 vs RDS vs Lambda who patches wha
 | Database or runtime software patching | Customer (if installed) | AWS, in a maintenance window the customer chooses | AWS (Lambda managed runtimes) |
 | Application code and its libraries | Customer | Customer (schema, queries) | Customer (function code, dependencies) |
 | Network access rules | Customer (security groups, NACLs) | Customer (DB security group) | Customer (bucket policies, function permissions) |
-| Turning on encryption, choosing keys | Customer | Customer | Customer |
+| Encryption choices (keys, extra options, encryption in transit) | Customer | Customer | Customer (S3 and DynamoDB encrypt at rest by default) |
 | Data and IAM permissions | Customer | Customer | Customer |
 
 ## Amazon EC2 in detail

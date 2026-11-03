@@ -12,7 +12,7 @@ Redshift không thay thế cơ sở dữ liệu giao dịch của ứng dụng. 
 ## Các cơ sở dữ liệu chuyên dụng khác
 
 - **Amazon DocumentDB (with MongoDB compatibility)**: cơ sở dữ liệu **document** được quản lý cho dữ liệu dạng JSON. Các nhóm có thể tiếp tục dùng driver và công cụ của MongoDB. Cách dùng điển hình: danh mục nội dung và sản phẩm, hồ sơ người dùng.
-- **Amazon Neptune**: cơ sở dữ liệu **graph** được quản lý cho dữ liệu liên kết chặt chẽ. Nó trả lời các câu hỏi về quan hệ, như "bạn của bạn" trong mạng xã hội, đường dây gian lận, gợi ý sản phẩm và knowledge graph.
+- **Amazon Neptune**: cơ sở dữ liệu **graph** được quản lý cho dữ liệu liên kết chặt chẽ. Nó trả lời các câu hỏi về mối quan hệ, như "bạn của bạn" trong mạng xã hội, đường dây gian lận, gợi ý sản phẩm và knowledge graph.
 - **Amazon Timestream**: dữ liệu **chuỗi thời gian (time series)**, như số đo cảm biến IoT và chỉ số ứng dụng. Lưu ý rằng Timestream for LiveAnalytics đã ngừng nhận khách hàng mới từ tháng 6 năm 2025; AWS hướng người dùng mới tới **Timestream for InfluxDB**.
 - **Amazon Keyspaces (for Apache Cassandra)**: cơ sở dữ liệu **wide-column** được quản lý cho các workload Cassandra.
 
@@ -26,7 +26,7 @@ Redshift không thay thế cơ sở dữ liệu giao dịch của ứng dụng. 
 | Cache in-memory để tăng tốc đọc | Amazon ElastiCache |
 | Phân tích và báo cáo trên tập dữ liệu lớn | Amazon Redshift |
 | Document JSON tương thích MongoDB | Amazon DocumentDB |
-| Quan hệ và dữ liệu liên kết | Amazon Neptune |
+| Mối quan hệ giữa các đối tượng, dữ liệu liên kết chặt chẽ (graph) | Amazon Neptune |
 
 ## Chuyển cơ sở dữ liệu lên AWS
 

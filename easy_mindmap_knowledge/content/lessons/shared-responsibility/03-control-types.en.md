@@ -30,7 +30,7 @@ Auditors check **controls**: the safeguards that protect systems and data. When 
 
 **Customer-specific controls** are **solely the customer's responsibility**, based on the application they deploy on AWS.
 
-- Example from the model: **zone security**, such as routing or zoning data inside specific security environments.
+- Example from the model: **Service and Communications Protection or Zone Security**, such as routing or zoning data inside specific security environments.
 
 ## Common traps
 

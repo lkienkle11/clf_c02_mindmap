@@ -27,7 +27,7 @@ Redshift is not a replacement for an application's transactional database. If th
 | In-memory cache to speed up reads | Amazon ElastiCache |
 | Analytics and reporting over large data sets | Amazon Redshift |
 | MongoDB compatible JSON documents | Amazon DocumentDB |
-| Relationships and connected data | Amazon Neptune |
+| Relationships between entities, highly connected data (graph) | Amazon Neptune |
 
 ## Moving databases to AWS
 

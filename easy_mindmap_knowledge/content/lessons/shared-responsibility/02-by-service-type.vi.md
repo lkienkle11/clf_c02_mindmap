@@ -9,7 +9,7 @@ required: true
 
 - **Dịch vụ hạ tầng** như **Amazon EC2** (IaaS): bạn nhận một máy chủ ảo và tự cấu hình gần như mọi thứ phía trên lớp ảo hóa.
 - **Dịch vụ được quản lý** như **Amazon RDS**: AWS còn vận hành cả hệ điều hành và phần mềm cơ sở dữ liệu.
-- **Dịch vụ trừu tượng hóa (abstracted)** như **AWS Lambda, Amazon S3 và Amazon DynamoDB**: AWS vận hành hạ tầng, hệ điều hành và nền tảng; bạn làm việc với endpoint, mã và dữ liệu.
+- **Dịch vụ trừu tượng hóa (abstracted)** như **AWS Lambda, Amazon S3 và Amazon DynamoDB**: AWS vận hành hạ tầng, hệ điều hành và nền tảng.
 
 ## Ai làm gì
 
@@ -20,7 +20,7 @@ required: true
 | Vá phần mềm cơ sở dữ liệu hoặc runtime | Khách hàng (nếu tự cài) | AWS, trong maintenance window do khách hàng chọn | AWS (runtime được quản lý của Lambda) |
 | Mã ứng dụng và thư viện của nó | Khách hàng | Khách hàng (schema, truy vấn) | Khách hàng (mã function, thư viện phụ thuộc) |
 | Quy tắc truy cập mạng | Khách hàng (security group, NACL) | Khách hàng (security group của DB) | Khách hàng (bucket policy, quyền của function) |
-| Bật mã hóa, chọn khóa | Khách hàng | Khách hàng | Khách hàng |
+| Lựa chọn mã hóa (khóa, tùy chọn bổ sung, mã hóa khi truyền) | Khách hàng | Khách hàng | Khách hàng (S3 và DynamoDB mặc định mã hóa khi lưu trữ) |
 | Dữ liệu và quyền IAM | Khách hàng | Khách hàng | Khách hàng |
 
 ## Amazon EC2 chi tiết

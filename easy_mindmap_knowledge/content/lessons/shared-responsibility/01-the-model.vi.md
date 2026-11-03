@@ -5,7 +5,7 @@ required: true
 ---
 ## Một câu cần nhớ
 
-AWS mô tả bảo mật và tuân thủ là **trách nhiệm chia sẻ (shared responsibility)**: **AWS chịu trách nhiệm bảo mật *của* đám mây (security of the cloud), còn khách hàng chịu trách nhiệm bảo mật *trong* đám mây (security in the cloud).** Gần như mọi câu hỏi thi về chủ đề này đều kiểm tra xem ranh giới đó nằm ở đâu.
+AWS mô tả bảo mật và tuân thủ là **trách nhiệm chia sẻ (shared responsibility)**: **AWS chịu trách nhiệm bảo mật *của* đám mây (security of the cloud), còn khách hàng chịu trách nhiệm bảo mật *trong* đám mây (security in the cloud).** Phần lớn câu hỏi thi kiểm tra xem ranh giới đó nằm ở đâu.
 
 ## AWS: bảo mật của đám mây
 
@@ -27,7 +27,7 @@ Khách hàng chịu trách nhiệm về **những gì họ đưa lên đám mây
 - **Quản lý danh tính và quyền truy cập**: người dùng, role, quyền, mật khẩu, MFA và access key.
 - **Hệ điều hành khách (guest OS) và ứng dụng** trên các dịch vụ như EC2: cập nhật, bản vá bảo mật, phần mềm đã cài.
 - **Cấu hình mạng và tường lửa**: security group, network ACL, định tuyến.
-- **Lựa chọn mã hóa**: có mã hóa dữ liệu khi lưu trữ (at rest) và khi truyền (in transit) hay không, và dùng khóa nào.
+- **Lựa chọn mã hóa**: dùng khóa nào, các tùy chọn mã hóa bổ sung, và mã hóa khi truyền (in transit) (một số dịch vụ, như S3 và DynamoDB, mặc định mã hóa dữ liệu khi lưu trữ).
 
 ## Những trách nhiệm không bao giờ chuyển sang AWS
 

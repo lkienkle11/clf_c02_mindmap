@@ -33,12 +33,13 @@ The exam asks you to tell these apart:
 - CloudFormation creates those resources as one unit called a **stack**. Deleting the stack deletes its resources.
 - Before you update a stack, a **change set** shows what will change, for example whether a database would be replaced.
 - If stack creation fails, CloudFormation **rolls back** and removes what it created.
+- **Drift detection** shows when resources were changed outside CloudFormation.
 - Templates are text: keep them in version control and **reuse** them to build identical environments in other Regions or accounts.
 - There is no additional charge for CloudFormation with AWS resource types; you pay for the resources it creates.
 
 ## AWS CDK
 
-The **AWS Cloud Development Kit (AWS CDK)** lets you define infrastructure in familiar programming languages such as TypeScript, Python, Java, C# and Go. You compose reusable building blocks called **constructs**, and the CDK deploys them **through CloudFormation**. Choose CDK when a team prefers loops, functions and IDE support over writing YAML by hand.
+The **AWS Cloud Development Kit (AWS CDK)** lets you define infrastructure in familiar programming languages such as TypeScript, Python, Java, C# and Go. You compose reusable building blocks called **constructs**, and the CDK deploys them **through CloudFormation**.
 
 ## Common traps
 
