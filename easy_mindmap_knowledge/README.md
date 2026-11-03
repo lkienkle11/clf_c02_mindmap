@@ -2,7 +2,7 @@
 
 An offline desktop app (Tauri v2 + Svelte 5 + Tailwind 4) for learning and practising the AWS Certified Cloud Practitioner (CLF-C02) exam. Topics are shown as a mindmap tree; each topic has bilingual (EN/VI) lessons, practice attempts, spaced review, history and settings. Progress is stored locally in SQLite.
 
-Status: topics 1 (Cloud Concepts) and 2 (Global Infrastructure) have lessons and authored questions; topics 3 to 13 are declared but their content comes in later batches.
+Status: all 13 topics have lessons and authored questions, plus 668 imported questions.
 
 ## Prerequisites
 
