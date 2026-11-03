@@ -11,5 +11,5 @@
   { "id": "pricing-billing", "order": 10, "tier": "advanced", "title": { "en": "Pricing and Billing", "vi": "Giá và thanh toán" }, "lessonIds": ["pricing-billing-fundamentals", "pricing-billing-free-tier", "pricing-billing-cost-tracking", "pricing-billing-estimating", "pricing-billing-further"] },
   { "id": "migration-caf", "order": 11, "tier": "advanced", "title": { "en": "Migration and CAF", "vi": "Di chuyển và CAF" }, "lessonIds": ["migration-caf-framework", "migration-caf-strategies", "migration-caf-phases", "migration-caf-services", "migration-caf-further"] },
   { "id": "support-ai-other", "order": 12, "tier": "advanced", "title": { "en": "Support, AI and Other Services", "vi": "Hỗ trợ, AI và dịch vụ khác" }, "lessonIds": ["support-ai-other-support-plans", "support-ai-other-getting-help", "support-ai-other-ai-ml", "support-ai-other-other-services", "support-ai-other-further"] },
-  { "id": "capstone", "order": 13, "tier": "capstone", "title": { "en": "Capstone", "vi": "Tổng kết" }, "lessonIds": [] }
+  { "id": "capstone", "order": 13, "tier": "capstone", "title": { "en": "Capstone", "vi": "Tổng kết" }, "lessonIds": ["capstone-exam-format", "capstone-domains", "capstone-answering", "capstone-final-review", "capstone-further"] }
 ]

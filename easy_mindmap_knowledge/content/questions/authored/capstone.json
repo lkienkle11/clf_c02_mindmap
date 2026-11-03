@@ -1,0 +1,317 @@
+[
+  {
+    "id": "auth-capstone-01",
+    "topicId": "capstone",
+    "text": "A company moves its self-managed MySQL database from an Amazon EC2 instance to Amazon RDS for MySQL. Which task does the company no longer have to perform after the move?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Managing database user accounts and their permissions"
+      },
+      {
+        "key": "B",
+        "text": "Patching the database engine and its operating system"
+      },
+      {
+        "key": "C",
+        "text": "Controlling which networks can reach the database"
+      },
+      {
+        "key": "D",
+        "text": "Deciding which data is stored and how it is classified"
+      }
+    ],
+    "correct": [
+      "B"
+    ],
+    "multi": false,
+    "orderDependent": false,
+    "explanation": "On Amazon RDS, AWS installs and patches the operating system and the database engine, in a maintenance window the customer chooses. Database users, network access rules and the data itself remain the customer's responsibility, just as they were on EC2.",
+    "source": "authored"
+  },
+  {
+    "id": "auth-capstone-02",
+    "topicId": "capstone",
+    "text": "A company stores application logs in Amazon S3. The logs are read often for 30 days and almost never afterward, but must be kept for 7 years. Retrieval of old logs can take hours. Which solution meets these needs with the LEAST cost and effort?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Keep the logs in S3 Standard and turn on S3 Versioning for them"
+      },
+      {
+        "key": "B",
+        "text": "Copy the logs each month to Amazon EBS Cold HDD volumes by hand"
+      },
+      {
+        "key": "C",
+        "text": "Move the logs each month to Amazon EFS with a manual script"
+      },
+      {
+        "key": "D",
+        "text": "Add an S3 Lifecycle rule that moves logs to S3 Glacier Deep Archive"
+      }
+    ],
+    "correct": [
+      "D"
+    ],
+    "multi": false,
+    "orderDependent": false,
+    "explanation": "An S3 Lifecycle rule moves objects automatically, and S3 Glacier Deep Archive is the lowest-cost class for long-term archives that can wait hours for retrieval. Keeping everything in S3 Standard costs more, and the EBS and EFS options add manual work and higher storage prices.",
+    "source": "authored"
+  },
+  {
+    "id": "auth-capstone-03",
+    "topicId": "capstone",
+    "text": "A company runs a web application on Amazon EC2 instances in one Availability Zone. The application must keep serving users if that Availability Zone fails. Which actions should the company take? (Choose two.)",
+    "options": [
+      {
+        "key": "A",
+        "text": "Run instances in at least two Availability Zones"
+      },
+      {
+        "key": "B",
+        "text": "Move the instances to a larger instance type"
+      },
+      {
+        "key": "C",
+        "text": "Serve the application from two edge locations"
+      },
+      {
+        "key": "D",
+        "text": "Place an Application Load Balancer in front of them"
+      },
+      {
+        "key": "E",
+        "text": "Buy Reserved Instances for the current instances"
+      }
+    ],
+    "correct": [
+      "A",
+      "D"
+    ],
+    "multi": true,
+    "orderDependent": false,
+    "explanation": "Instances in two or more Availability Zones remove the single point of failure, and a load balancer sends traffic only to healthy instances in the zones that still work. A larger instance or a Reserved Instance changes size or price, not availability, and edge locations cache content but do not run the EC2 application.",
+    "source": "authored"
+  },
+  {
+    "id": "auth-capstone-04",
+    "topicId": "capstone",
+    "text": "A company is migrating to AWS. It must copy a 50 TB on-premises NFS file share to Amazon S3 over its existing AWS Direct Connect connection and keep copying changed files until the final cutover. Which AWS service should it use?",
+    "options": [
+      {
+        "key": "A",
+        "text": "AWS DataSync"
+      },
+      {
+        "key": "B",
+        "text": "AWS Database Migration Service (AWS DMS)"
+      },
+      {
+        "key": "C",
+        "text": "AWS Transform MGN"
+      },
+      {
+        "key": "D",
+        "text": "AWS Backup"
+      }
+    ],
+    "correct": [
+      "A"
+    ],
+    "multi": false,
+    "orderDependent": false,
+    "explanation": "AWS DataSync copies files and objects online, over the internet or Direct Connect, from on-premises storage such as NFS shares into Amazon S3, and can run again to copy changes. AWS DMS moves databases and AWS Transform MGN replicates whole servers, not file shares into S3.",
+    "source": "authored"
+  },
+  {
+    "id": "auth-capstone-05",
+    "topicId": "capstone",
+    "text": "A company has 12 AWS accounts. Finance wants a single bill for all accounts, and the security team wants to stop every account from using AWS Regions outside Europe, even if an IAM policy in the account allows it. Which actions meet these requirements? (Choose two.)",
+    "options": [
+      {
+        "key": "A",
+        "text": "Create IAM user groups for each team in the management account"
+      },
+      {
+        "key": "B",
+        "text": "Use consolidated billing in AWS Organizations"
+      },
+      {
+        "key": "C",
+        "text": "Turn on AWS Cost Explorer forecasts in each account"
+      },
+      {
+        "key": "D",
+        "text": "Buy AWS Business Support+ for every account"
+      },
+      {
+        "key": "E",
+        "text": "Attach a service control policy that denies other Regions"
+      }
+    ],
+    "correct": [
+      "B",
+      "E"
+    ],
+    "multi": true,
+    "orderDependent": false,
+    "explanation": "AWS Organizations consolidated billing gives one bill for all member accounts, and a service control policy (SCP) sets the maximum permissions for accounts, so it can block other Regions even when IAM allows them. IAM groups only apply inside one account, and Cost Explorer analyzes spending without restricting anything.",
+    "source": "authored"
+  },
+  {
+    "id": "auth-capstone-06",
+    "topicId": "capstone",
+    "text": "A security audit finds that some Amazon EC2 instances may run software with known vulnerabilities. The company wants to scan the instances continuously and then install operating system patches across hundreds of instances. Which AWS services should it use? (Choose two.)",
+    "options": [
+      {
+        "key": "A",
+        "text": "Amazon Inspector"
+      },
+      {
+        "key": "B",
+        "text": "Amazon Macie"
+      },
+      {
+        "key": "C",
+        "text": "AWS Systems Manager Patch Manager"
+      },
+      {
+        "key": "D",
+        "text": "AWS Systems Manager Session Manager"
+      },
+      {
+        "key": "E",
+        "text": "Amazon GuardDuty"
+      }
+    ],
+    "correct": [
+      "A",
+      "C"
+    ],
+    "multi": true,
+    "orderDependent": false,
+    "explanation": "Amazon Inspector continuously scans EC2 instances for known software vulnerabilities, and Systems Manager Patch Manager installs patches at scale; patching the guest OS is the customer's job under the shared responsibility model. Session Manager opens shell sessions but does not patch, GuardDuty detects threats from activity logs rather than scanning software, and Macie finds sensitive data in S3.",
+    "source": "authored"
+  },
+  {
+    "id": "auth-capstone-07",
+    "topicId": "capstone",
+    "text": "A company builds an internal assistant with Amazon Bedrock that answers questions from the company's documents. Under the AWS shared responsibility model, which task belongs to the company?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Maintaining the servers that run the foundation models"
+      },
+      {
+        "key": "B",
+        "text": "Patching the virtualization layer of the Bedrock hosts"
+      },
+      {
+        "key": "C",
+        "text": "Controlling who can access the documents and the assistant"
+      },
+      {
+        "key": "D",
+        "text": "Protecting the physical data centers where Bedrock runs"
+      }
+    ],
+    "correct": [
+      "C"
+    ],
+    "multi": false,
+    "orderDependent": false,
+    "explanation": "With a managed service such as Amazon Bedrock, AWS protects the infrastructure, including servers, virtualization and data centers. The customer remains responsible for its data and for access control, for example with IAM permissions.",
+    "source": "authored"
+  },
+  {
+    "id": "auth-capstone-08",
+    "topicId": "capstone",
+    "text": "A company will run a steady workload around the clock for the next 3 years. It runs on Amazon EC2 today, but the company plans to move parts of it to AWS Fargate and AWS Lambda during that time. Which pricing option gives the largest savings while covering all three services?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Standard Reserved Instances"
+      },
+      {
+        "key": "B",
+        "text": "Spot Instances"
+      },
+      {
+        "key": "C",
+        "text": "EC2 Instance Savings Plans"
+      },
+      {
+        "key": "D",
+        "text": "Compute Savings Plans"
+      }
+    ],
+    "correct": [
+      "D"
+    ],
+    "multi": false,
+    "orderDependent": false,
+    "explanation": "Compute Savings Plans apply a commitment across EC2 instance families and Regions and also to AWS Fargate and AWS Lambda. Standard Reserved Instances and EC2 Instance Savings Plans cover only EC2, and Spot Instances can be interrupted, which does not suit a steady workload.",
+    "source": "authored"
+  },
+  {
+    "id": "auth-capstone-09",
+    "topicId": "capstone",
+    "text": "A company's web servers run in a public subnet and must accept HTTPS from everyone except one IP address range that keeps attacking them. What should the company add to block that range?",
+    "options": [
+      {
+        "key": "A",
+        "text": "A deny rule for the range in the instances' security group"
+      },
+      {
+        "key": "B",
+        "text": "A route table entry that drops traffic from the range"
+      },
+      {
+        "key": "C",
+        "text": "A deny rule for the range in the subnet's network ACL"
+      },
+      {
+        "key": "D",
+        "text": "An IAM policy that denies requests from the range"
+      }
+    ],
+    "correct": [
+      "C"
+    ],
+    "multi": false,
+    "orderDependent": false,
+    "explanation": "Network ACLs support both allow and deny rules at the subnet level, so they can block one IP range while other traffic is allowed. Security groups support only allow rules, route tables direct traffic rather than filter it, and IAM policies control API permissions, not network traffic.",
+    "source": "authored"
+  },
+  {
+    "id": "auth-capstone-10",
+    "topicId": "capstone",
+    "text": "A bank must keep customer data inside its home country. It plans to store the data in Amazon S3. What should the bank do to meet this requirement?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Download the AWS ISO reports from AWS Artifact"
+      },
+      {
+        "key": "B",
+        "text": "Create the buckets in an AWS Region in that country"
+      },
+      {
+        "key": "C",
+        "text": "Serve the data through CloudFront edge locations"
+      },
+      {
+        "key": "D",
+        "text": "Encrypt the buckets with AWS KMS customer managed keys"
+      }
+    ],
+    "correct": [
+      "B"
+    ],
+    "multi": false,
+    "orderDependent": false,
+    "explanation": "Customers choose the Region where their data is stored, and AWS does not move content out of that Region without the customer's agreement, so choosing a Region in the country meets the residency rule. AWS Artifact reports and KMS encryption do not control where data is stored, and CloudFront caches copies in edge locations that can be in other countries.",
+    "source": "authored"
+  }
+]
