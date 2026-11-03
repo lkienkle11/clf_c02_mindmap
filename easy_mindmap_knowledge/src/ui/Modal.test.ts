@@ -95,4 +95,19 @@ describe('Modal', () => {
     expect(upper).toHaveBeenCalledTimes(1);
     expect(lower).not.toHaveBeenCalled();
   });
+  it('locks page scroll while open and restores on close', async () => {
+    const { rerender } = render(Modal, { open: true, title: 'Hi', onclose: () => {}, children: body });
+    await waitFor(() => expect(document.documentElement.style.overflow).toBe('hidden'));
+    await rerender({ open: false, title: 'Hi', onclose: () => {}, children: body });
+    await waitFor(() => expect(document.documentElement.style.overflow).toBe(''));
+  });
+  it('two open modals keep the lock until both close', async () => {
+    const a = render(Modal, { open: true, title: 'A', onclose: () => {}, children: body });
+    const b = render(Modal, { open: true, title: 'B', onclose: () => {}, children: body });
+    await waitFor(() => expect(document.documentElement.style.overflow).toBe('hidden'));
+    await b.rerender({ open: false, title: 'B', onclose: () => {}, children: body });
+    expect(document.documentElement.style.overflow).toBe('hidden');
+    await a.rerender({ open: false, title: 'A', onclose: () => {}, children: body });
+    await waitFor(() => expect(document.documentElement.style.overflow).toBe(''));
+  });
 });

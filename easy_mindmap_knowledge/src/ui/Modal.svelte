@@ -6,6 +6,7 @@
 <script lang="ts">
   import type { Snippet } from 'svelte';
   import { tick } from 'svelte';
+  import { lockScroll } from './scroll-lock';
 
   interface Props {
     open: boolean;
@@ -31,12 +32,14 @@
   $effect(() => {
     if (!open) return;
     openStack.push(self);
+    const unlock = lockScroll();
     opener = document.activeElement instanceof HTMLElement ? document.activeElement : null;
     tick().then(() => {
       const first = dialog?.querySelector<HTMLElement>(FOCUSABLE);
       (first ?? dialog)?.focus();
     });
     return () => {
+      unlock();
       const at = openStack.indexOf(self);
       if (at >= 0) openStack.splice(at, 1);
       opener?.focus();
@@ -94,7 +97,7 @@
       class="flex max-h-full w-full max-w-lg flex-col overflow-hidden rounded-xl bg-surface p-6 text-surface-foreground shadow-xl focus:outline-none"
     >
       <h2 id={titleId} class="mb-4 shrink-0 text-xl font-semibold">{title}</h2>
-      <div class="min-h-0 flex-1 overflow-auto">
+      <div class="min-h-0 flex-1 overflow-auto overscroll-contain">
         {@render children?.()}
       </div>
       {#if footer}
