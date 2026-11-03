@@ -1,7 +1,7 @@
 import type { Services } from '@/app/composition';
 import { AttemptMissingError } from '@/persistence';
 import type { AttemptQuestionRow, AttemptRow, ClockState } from '@/persistence';
-import { advanceFreeze, isExpired, remainingAt, resolveOnResume, startClock } from './logic/attempt-clock';
+import { advanceFreeze, isExpired, remainingAt, resolveOnResume, settleHidden as settleClockHidden, startClock } from './logic/attempt-clock';
 import { gradeQuestion, passes } from './logic/grading';
 import { buildPool, planAttempt, practiceCount } from './logic/pick-questions';
 import { makeRng, shuffle } from '@/random/seeded-random';
@@ -226,6 +226,19 @@ export class PracticeSession {
     }
     this.#sinceSave += Math.max(0, charged);
     if (this.#sinceSave >= CLOCK_SAVE_EVERY_MS) await this.flushClock();
+  }
+
+  /** Apply the tab-switch policy for `hiddenMs` the page spent hidden, then persist or time out. */
+  async settleHidden(hiddenMs: number): Promise<void> {
+    if (this.#closed || this.#exited || this.#clock.limitMs === null) return;
+    const now = this.services.now();
+    this.#clock = settleClockHidden(this.#clock, hiddenMs);
+    this.#remainingMs = remainingAt(this.#clock, now);
+    if (isExpired(this.#clock, now)) {
+      await this.submit('timeout');
+      return;
+    }
+    await this.flushClock();
   }
 
   async flushClock(): Promise<void> {
