@@ -33,7 +33,7 @@
   }
 </script>
 
-<Modal {open} title={i18n.t('practice.reviewKnowledge')} {onclose}>
+<Modal {open} title={i18n.t('practice.reviewKnowledge')} {onclose} closeOnBackdrop>
   {#if showClockNotice}
     <p class="mb-4 rounded-lg bg-muted p-3 text-sm">
       {i18n.t('practice.reviewNotice')}{#if timeLeft} <strong class="tabular-nums">{timeLeft}</strong>{/if}
@@ -48,5 +48,7 @@
   {:else}
     <p>{i18n.t('practice.reviewEmpty')}</p>
   {/each}
-  <Button onclick={onclose}>{i18n.t('practice.reviewClose')}</Button>
+  {#snippet footer()}
+    <Button onclick={onclose}>{i18n.t('practice.reviewClose')}</Button>
+  {/snippet}
 </Modal>

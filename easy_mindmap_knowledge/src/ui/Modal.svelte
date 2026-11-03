@@ -13,9 +13,11 @@
     onclose: () => void;
     closeOnBackdrop?: boolean;
     children?: Snippet;
+    /** Pinned below the scrolling content, so long modals keep their actions in view. */
+    footer?: Snippet;
   }
 
-  let { open, title, onclose, closeOnBackdrop = false, children }: Props = $props();
+  let { open, title, onclose, closeOnBackdrop = false, children, footer }: Props = $props();
 
   const uid = $props.id();
   const titleId = `modal-title-${uid}`;
@@ -89,10 +91,15 @@
       aria-modal="true"
       aria-labelledby={titleId}
       tabindex="-1"
-      class="max-h-full w-full max-w-lg overflow-auto rounded-xl bg-surface p-6 text-surface-foreground shadow-xl focus:outline-none"
+      class="flex max-h-full w-full max-w-lg flex-col overflow-hidden rounded-xl bg-surface p-6 text-surface-foreground shadow-xl focus:outline-none"
     >
-      <h2 id={titleId} class="mb-4 text-xl font-semibold">{title}</h2>
-      {@render children?.()}
+      <h2 id={titleId} class="mb-4 shrink-0 text-xl font-semibold">{title}</h2>
+      <div class="min-h-0 flex-1 overflow-auto">
+        {@render children?.()}
+      </div>
+      {#if footer}
+        <div class="mt-4 shrink-0">{@render footer()}</div>
+      {/if}
     </div>
   </div>
 {/if}
