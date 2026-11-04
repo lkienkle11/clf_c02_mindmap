@@ -63,7 +63,7 @@
   }
  },
  "q_d11ce823a152": {
-  "explanation": "The correct options are D and E: AWS provides high availability through its Regions and Availability Zones, and economies of scale that lower costs. AWS does not train staff on every service, manage all security, or give free TAM support.",
+  "explanation": "The correct options are high availability and economies of scale: AWS provides high availability through its Regions and Availability Zones, and economies of scale that lower costs. AWS does not train staff on every service, manage all security, or give free TAM support.",
   "optionNotes": {
    "A": "AWS offers training resources, but it does not train a company's staff on all services as an included benefit.",
    "B": "Under the shared responsibility model AWS secures the cloud itself, while the customer remains responsible for security in the cloud.",
@@ -91,7 +91,7 @@
   }
  },
  "q_61d4fac920f1": {
-  "explanation": "The correct options are A and C. Agility means resources can be implemented quickly and teams can experiment quickly, because trying an idea costs little and takes little time.",
+  "explanation": "The correct options are the speed at which resources are implemented and the ability to experiment quickly. Agility means resources can be implemented quickly and teams can experiment quickly, because trying an idea costs little and takes little time.",
   "optionNotes": {
    "A": "Agility includes how fast AWS resources can be implemented, in minutes rather than weeks.",
    "B": "How quickly AWS builds new Regions is AWS's own expansion, not the agility that customers experience.",
@@ -110,7 +110,7 @@
   }
  },
  "q_886db8064c1c": {
-  "explanation": "The correct options are A and D. The cloud lowers TCO by replacing upfront capital expenditures with pay-as-you-go costs and by passing on lower prices from AWS economies of scale.",
+  "explanation": "The correct options are pay-as-you-go costs and economies of scale. The cloud lowers TCO by replacing upfront capital expenditures with pay-as-you-go costs and by passing on lower prices from AWS economies of scale.",
   "optionNotes": {
    "A": "Pay-as-you-go replaces large upfront capital expense with variable cost, lowering TCO.",
    "B": "High availability improves resilience but does not eliminate downtime, and it is not the TCO argument.",
@@ -120,7 +120,7 @@
   }
  },
  "q_f250f30b729a": {
-  "explanation": "The correct options are B and E. Elasticity means resizing resources as demand shifts and being able to obtain resources easily whenever they are needed.",
+  "explanation": "The correct options are rightsizing resources as demand shifts and procuring resources easily when needed. Elasticity means resizing resources as demand shifts and being able to obtain resources easily whenever they are needed.",
   "optionNotes": {
    "A": "Restart time of an instance is a matter of instance operations, not elasticity.",
    "B": "Elasticity includes rightsizing, scaling resources up or down as demand changes.",
@@ -130,7 +130,7 @@
   }
  },
  "q_0adc2a367c54": {
-  "explanation": "The correct options are A and E: trading fixed expense for variable expense and benefiting from economies of scale are both about cost. Global deployment, speed and agility, and patching are benefits of other kinds.",
+  "explanation": "The correct options are trading fixed for variable expenses and economies of scale: trading fixed expense for variable expense and benefiting from economies of scale are both about cost. Global deployment, speed and agility, and patching are benefits of other kinds.",
   "optionNotes": {
    "A": "Replacing fixed upfront costs with variable costs is a cost-effectiveness benefit.",
    "B": "Deploying worldwide in minutes is global reach, not a cost benefit.",
@@ -149,7 +149,7 @@
   }
  },
  "q_333be20217e5": {
-  "explanation": "The correct options are A and C: consumption-based pricing and economies of scale are both economic benefits of the AWS Cloud.",
+  "explanation": "The correct options are consumption-based pricing and economies of scale: consumption-based pricing and economies of scale are both economic benefits of the AWS Cloud.",
   "optionNotes": {
    "A": "Consumption-based pricing means you pay only for what you use, an economic benefit.",
    "B": "Perpetual licenses are an on-premises, upfront-purchase model, not a cloud economic benefit.",
@@ -186,7 +186,7 @@
   }
  },
  "q_e8073c1da080": {
-  "explanation": "The correct options are B and D. In the AWS Cloud the retail company can try new projects quickly and scale up in minutes as the app becomes popular. A large upfront expense, full physical control, and picking specific data centers are not cloud benefits.",
+  "explanation": "The correct options are increased speed for new projects and flexibility to scale up in minutes. In the AWS Cloud the retail company can try new projects quickly and scale up in minutes as the app becomes popular. A large upfront expense, full physical control, and picking specific data centers are not cloud benefits.",
   "optionNotes": {
    "A": "The cloud avoids large upfront capital expense; it trades fixed expense for variable expense.",
    "B": "Resources can be provisioned quickly, so the team can try out new projects with less delay and cost.",
@@ -196,7 +196,7 @@
   }
  },
  "q_589e8709c56a": {
-  "explanation": "The correct options are C and D. For highly dynamic usage, elasticity lets capacity follow demand and pay-as-you-go pricing means the company pays only for the resources it uses.",
+  "explanation": "The correct options are elasticity and pay-as-you-go. For highly dynamic usage, elasticity lets capacity follow demand and pay-as-you-go pricing means the company pays only for the resources it uses.",
   "optionNotes": {
    "A": "Reliability matters for the workload, but it does not make a dynamic workload cost-effective.",
    "B": "Security is important but is not the cost-effectiveness benefit for variable demand.",
@@ -215,7 +215,7 @@
   }
  },
  "q_1c8b69987517": {
-  "explanation": "The correct options are A and C. The reliability pillar includes automatically recovering from failure and stopping guessing capacity. Designing for a single AZ or granting everyone quota increases goes against reliability practice.",
+  "explanation": "The correct options are automatically recovering from failure and stopping guessing capacity. The reliability pillar includes automatically recovering from failure and stopping guessing capacity. Designing for a single AZ or granting everyone quota increases goes against reliability practice.",
   "optionNotes": {
    "A": "Automatically recovering from failure is a design principle of the reliability pillar.",
    "B": "Service quotas should be managed with care and not granted to everyone, so this contradicts the pillar.",
@@ -306,7 +306,7 @@
   }
  },
  "q_89f476d1b31b": {
-  "explanation": "The correct options are B and C: high economies of scale and launching globally in minutes are advantages of the AWS Cloud. The others are the opposite of what the cloud offers.",
+  "explanation": "The correct options are high economies of scale and launching globally in minutes: high economies of scale and launching globally in minutes are advantages of the AWS Cloud. The others are the opposite of what the cloud offers.",
   "optionNotes": {
    "A": "The cloud trades capital expense for variable expense, not variable for capital.",
    "B": "AWS aggregates usage across customers and reaches economies of scale that lower prices.",
@@ -325,7 +325,7 @@
   }
  },
  "q_25b6c4328b47": {
-  "explanation": "The correct options are B and D: the pay-as-you-go model, and no longer having to guess the capacity you will need. Security is a shared responsibility and physical control belongs to AWS.",
+  "explanation": "The correct options are the pay-as-you-go model and not guessing capacity: the pay-as-you-go model, and no longer having to guess the capacity you will need. Security is a shared responsibility and physical control belongs to AWS.",
   "optionNotes": {
    "A": "Security is a shared responsibility, so the customer cannot hand all of it to AWS.",
    "B": "Paying only for what you use is a core advantage of moving to AWS.",
@@ -335,7 +335,7 @@
   }
  },
  "q_d02c09293d45": {
-  "explanation": "The correct options are B and E: capacity can be adjusted on demand, and many of the costs of building and maintaining data centers go away.",
+  "explanation": "The correct options are on-demand capacity and avoiding data center costs: capacity can be adjusted on demand, and many of the costs of building and maintaining data centers go away.",
   "optionNotes": {
    "A": "AWS prices vary by Region, so they are not the same everywhere.",
    "B": "Adjusting capacity on demand means you pay only for the capacity you need.",
@@ -372,7 +372,7 @@
   }
  },
  "auth-cloud-concepts-04": {
-  "explanation": "The correct options are B and D. On-premises TCO includes more than hardware: power, cooling, space and the people who run the infrastructure all count. The other options are AWS charges, which belong on the cloud side of the comparison.",
+  "explanation": "The correct options are electricity and cooling, and staff salaries. On-premises TCO includes more than hardware: power, cooling, space and the people who run the infrastructure all count. The other options are AWS charges, which belong on the cloud side of the comparison.",
   "optionNotes": {
    "A": "AWS Support plan fees are a cloud cost and belong on the AWS side of the comparison.",
    "B": "Electricity and cooling are real on-premises running costs and belong in the TCO.",
@@ -400,7 +400,7 @@
   }
  },
  "auth-cloud-concepts-07": {
-  "explanation": "The correct options are A and D. Designing for failure means assuming components will fail, so you avoid single points of failure by spreading copies across Availability Zones and recover automatically. A single large server is a single point of failure, and recovery should be tested before an outage, not after.",
+  "explanation": "The correct options are running copies in multiple Availability Zones and automatically replacing failed instances. Designing for failure means assuming components will fail, so you avoid single points of failure by spreading copies across Availability Zones and recover automatically. A single large server is a single point of failure, and recovery should be tested before an outage, not after.",
   "optionNotes": {
    "A": "Running copies in multiple AZs removes a single point of failure.",
    "B": "One large server is a single point of failure, which goes against designing for failure.",
@@ -428,7 +428,7 @@
   }
  },
  "auth-cloud-concepts-10": {
-  "explanation": "The correct options are C and E. Paying only for what you use means stopping idle resources, and low utilization shows the instances are larger than needed, so they should be right-sized. Adding more or larger instances would increase cost without any benefit for this workload.",
+  "explanation": "The correct options are stopping the instances outside office hours and right-sizing them. Paying only for what you use means stopping idle resources, and low utilization shows the instances are larger than needed, so they should be right-sized. Adding more or larger instances would increase cost without any benefit for this workload.",
   "optionNotes": {
    "A": "More instances add cost, while the existing ones are already barely used.",
    "B": "A Region with more AZs does not reduce cost or fix low utilization.",

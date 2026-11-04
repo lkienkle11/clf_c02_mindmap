@@ -363,7 +363,7 @@
   }
  },
  "auth-databases-03": {
-  "explanation": "With Amazon RDS, AWS patches the operating system of the database host and takes automated backups with point-in-time restore (options A and D). Schema design, query tuning, and database access control remain the customer's job.",
+  "explanation": "With Amazon RDS, AWS patches the operating system of the database host and takes automated backups with point-in-time restore. Schema design, query tuning, and database access control remain the customer's job.",
   "optionNotes": {
    "A": "RDS is managed, so AWS patches the underlying operating system, unlike a self-managed database on EC2.",
    "B": "Designing the schema and indexes is application and data design work that stays with the customer.",
@@ -400,7 +400,7 @@
   }
  },
  "auth-databases-07": {
-  "explanation": "On-demand mode bills per request without capacity planning (B), and global tables replicate a table across multiple AWS Regions (E). DynamoDB has no maintenance windows, no SQL joins, and spans multiple Availability Zones.",
+  "explanation": "On-demand mode bills per request without capacity planning, and global tables replicate a table across multiple AWS Regions. DynamoDB has no maintenance windows, no SQL joins, and spans multiple Availability Zones.",
   "optionNotes": {
    "A": "DynamoDB is serverless, so there are no engine patching maintenance windows for customers to choose.",
    "B": "On-demand capacity mode charges per read and write request and scales without capacity planning.",
@@ -428,7 +428,7 @@
   }
  },
  "auth-databases-10": {
-  "explanation": "Aurora is a managed relational database compatible with MySQL and PostgreSQL (C), and its cluster volume keeps copies of the data across three Availability Zones (E).",
+  "explanation": "Aurora is a managed relational database compatible with MySQL and PostgreSQL, and its cluster volume keeps copies of the data across three Availability Zones.",
   "optionNotes": {
    "A": "Aurora is a relational database, not a schemaless NoSQL key-value store.",
    "B": "Aurora is a managed service run by AWS and does not require customer-managed EC2 instances.",

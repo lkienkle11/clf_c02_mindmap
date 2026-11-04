@@ -45,7 +45,7 @@
   }
  },
  "q_84e7ba16f896": {
-  "explanation": "Reserved Instances (B) and Savings Plans (D) both give discounts for committing to steady usage over one or three years, which is the cheapest way to run a steady, predictable, uninterruptible workload.",
+  "explanation": "Reserved Instances and Savings Plans both give discounts for committing to steady usage over one or three years, which is the cheapest way to run a steady, predictable, uninterruptible workload.",
   "optionNotes": {
    "A": "On-Demand has no commitment discount, so it costs more than commitment options for steady usage.",
    "B": "Reserved Instances discount steady, predictable usage in exchange for a one or three year commitment, and capacity is not interrupted.",
@@ -64,7 +64,7 @@
   }
  },
  "q_f7af7498b31e": {
-  "explanation": "Using multiple AWS accounts (E), one per department, separates workloads, and consolidated billing (B) gives a combined bill while still showing per-account charges for chargeback.",
+  "explanation": "Using multiple AWS accounts, one per department, separates workloads, and consolidated billing gives a combined bill while still showing per-account charges for chargeback.",
   "optionNotes": {
    "A": "Placement groups influence instance placement for performance or availability and have no role in cost allocation.",
    "B": "Consolidated billing combines accounts under one payer while showing each account's charges, which supports chargeback to departments.",
@@ -191,7 +191,7 @@
   }
  },
  "q_70242c55ea52": {
-  "explanation": "AWS Budgets (B) can notify when a cost threshold is reached, and Amazon CloudWatch (D) billing alarms can also alert when estimated charges exceed a threshold.",
+  "explanation": "AWS Budgets can notify when a cost threshold is reached, and Amazon CloudWatch billing alarms can also alert when estimated charges exceed a threshold.",
   "optionNotes": {
    "A": "SQS is a message queue and does not monitor cost thresholds.",
    "B": "Budgets sends notifications when actual or forecasted cost crosses a defined threshold.",
@@ -309,7 +309,7 @@
   }
  },
  "q_9a1d47463819": {
-  "explanation": "Reserved Instances (C) and Savings Plans (D) both give lower prices in exchange for a commitment to a one or three year term for continued use.",
+  "explanation": "Reserved Instances and Savings Plans both give lower prices in exchange for a commitment to a one or three year term for continued use.",
   "optionNotes": {
    "A": "Spot Instances require no commitment and can be interrupted, so they do not fit a committed production workload.",
    "B": "On-Demand has no commitment and no discount.",
@@ -463,7 +463,7 @@
   }
  },
  "q_c0b85a8eee89": {
-  "explanation": "Cost Explorer (B) offers EC2 rightsizing recommendations and AWS Compute Optimizer (D) analyzes utilization to recommend better instance types, both helping optimize existing EC2 resources.",
+  "explanation": "Cost Explorer offers EC2 rightsizing recommendations and AWS Compute Optimizer analyzes utilization to recommend better instance types, both helping optimize existing EC2 resources.",
   "optionNotes": {
    "A": "Elastic Beanstalk deploys and manages applications and is not an optimization analysis tool.",
    "B": "Cost Explorer provides rightsizing recommendations for EC2 instances.",
@@ -509,7 +509,7 @@
   }
  },
  "q_7dd80314daeb": {
-  "explanation": "AWS Pricing Calculator (A) estimates AWS costs for planned resources and Migration Evaluator (B) builds a total cost of ownership comparison from existing on-premises servers.",
+  "explanation": "AWS Pricing Calculator estimates AWS costs for planned resources and Migration Evaluator builds a total cost of ownership comparison from existing on-premises servers.",
   "optionNotes": {
    "A": "Pricing Calculator estimates AWS costs, which feeds into a TCO comparison.",
    "B": "Migration Evaluator analyzes on-premises server usage to build a business case and cost projection for AWS.",
@@ -573,7 +573,7 @@
   }
  },
  "q_87c976a54f88": {
-  "explanation": "For a fixed instance family and type running 24x7 for 12 months, Standard Reserved Instances (A) with All Upfront payment (E) give the lowest cost.",
+  "explanation": "For a fixed instance family and type running 24x7 for 12 months, Standard Reserved Instances with All Upfront payment give the lowest cost.",
   "optionNotes": {
    "A": "Standard Reserved Instances offer the highest reservation discount when the instance configuration will not change.",
    "B": "Convertible Reserved Instances add flexibility that is not needed and give a smaller discount.",
@@ -601,7 +601,7 @@
   }
  },
  "q_37189246f6ec": {
-  "explanation": "Consolidated billing combines usage across accounts to reach volume discounts (A) and gives one bill for multiple accounts (C).",
+  "explanation": "Consolidated billing combines usage across accounts to reach volume discounts and gives one bill for multiple accounts.",
   "optionNotes": {
    "A": "Combined usage across accounts can reach volume pricing tiers, lowering unit prices.",
    "B": "Consolidated billing has no additional fee.",
@@ -611,7 +611,7 @@
   }
  },
  "q_9edf1b9e67a4": {
-  "explanation": "Cost Explorer (A) provides EC2 rightsizing recommendations and Compute Optimizer (E) analyzes utilization to identify oversized or idle EC2 instances.",
+  "explanation": "Cost Explorer provides EC2 rightsizing recommendations and Compute Optimizer analyzes utilization to identify oversized or idle EC2 instances.",
   "optionNotes": {
    "A": "Cost Explorer includes rightsizing recommendations for EC2.",
    "B": "Billing Conductor customizes billing data for chargeback and does not identify rightsizing opportunities.",
@@ -639,7 +639,7 @@
   }
  },
  "auth-pricing-billing-02": {
-  "explanation": "The company pays for the data stored in S3 (B) and for data transferred out to the internet when customers download (D); transfer into AWS from the internet is free.",
+  "explanation": "The company pays for the data stored in S3 and for data transferred out to the internet when customers download; transfer into AWS from the internet is free.",
   "optionNotes": {
    "A": "IAM users have no charge.",
    "B": "S3 storage is billed per GB for the data kept.",
@@ -694,7 +694,7 @@
   }
  },
  "auth-pricing-billing-08": {
-  "explanation": "Consolidated billing gives one bill for both accounts (A), and Reserved Instance discounts can apply to matching usage in other accounts of the organization (C).",
+  "explanation": "Consolidated billing gives one bill for both accounts, and Reserved Instance discounts can apply to matching usage in other accounts of the organization.",
   "optionNotes": {
    "A": "The management account receives a single bill for all member accounts.",
    "B": "Support plans are not provided free per account through consolidated billing.",
@@ -713,7 +713,7 @@
   }
  },
  "auth-pricing-billing-10": {
-  "explanation": "Compute Optimizer (A) recommends smaller, right-sized instances from utilization data, and Cost Anomaly Detection (E) learns normal spending with machine learning and alerts on unusual spend without fixed thresholds.",
+  "explanation": "Compute Optimizer recommends smaller, right-sized instances from utilization data, and Cost Anomaly Detection learns normal spending with machine learning and alerts on unusual spend without fixed thresholds.",
   "optionNotes": {
    "A": "Compute Optimizer analyzes utilization and recommends right-sized EC2 instances to cut cost.",
    "B": "Pricing Calculator estimates future cost and does not analyze running instances.",

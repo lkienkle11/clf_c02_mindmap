@@ -27,7 +27,7 @@
   }
  },
  "q_04a9f4df9512": {
-  "explanation": "The exam expects Amazon EC2 (A) and Amazon SageMaker (C), which have long been covered by Savings Plans along with AWS Lambda and AWS Fargate. Newer Database Savings Plans also cover services such as RDS and DynamoDB, but Amazon Redshift uses reserved nodes.",
+  "explanation": "The exam expects Amazon EC2 and Amazon SageMaker, which have long been covered by Savings Plans along with AWS Lambda and AWS Fargate. Newer Database Savings Plans also cover services such as RDS and DynamoDB, but Amazon Redshift uses reserved nodes.",
   "optionNotes": {
    "A": "EC2 usage is covered by Compute and EC2 Instance Savings Plans.",
    "B": "Classic Savings Plans did not cover RDS, so the exam expects Reserved Instances here, although newer Database Savings Plans now also cover RDS.",
@@ -73,7 +73,7 @@
   }
  },
  "q_106388ff97ca": {
-  "explanation": "With Lambda, the company writes its business logic (C) and manages IAM permissions for access (E). AWS manages the infrastructure, operating system and language runtime.",
+  "explanation": "With Lambda, the company writes its business logic and manages IAM permissions for access. AWS manages the infrastructure, operating system and language runtime.",
   "optionNotes": {
    "A": "AWS manages the underlying infrastructure for Lambda, since it is serverless.",
    "B": "AWS manages and patches the operating system for Lambda functions.",
@@ -110,7 +110,7 @@
   }
  },
  "q_e45f8fca1628": {
-  "explanation": "Auto Scaling policies (D) automatically add capacity when demand rises, and pay-as-you-go pricing (B) means the company pays only for what it uses, which keeps seasonal growth cost-effective.",
+  "explanation": "Auto Scaling policies automatically add capacity when demand rises, and pay-as-you-go pricing means the company pays only for what it uses, which keeps seasonal growth cost-effective.",
   "optionNotes": {
    "A": "Deploying across Regions improves availability and reach but does not automatically handle a load increase cost-effectively.",
    "B": "Pay-as-you-go pricing means the company pays only for the capacity used during the peak.",
@@ -120,7 +120,7 @@
   }
  },
  "q_a2e938359cdc": {
-  "explanation": "Moving to AWS gives greater global reach and agility (B) and the ability to deploy globally in minutes (C). Security auditing, IT staff and resilience still need attention from the customer.",
+  "explanation": "Moving to AWS gives greater global reach and agility and the ability to deploy globally in minutes. Security auditing, IT staff and resilience still need attention from the customer.",
   "optionNotes": {
    "A": "Customers still need to audit and monitor the security of their own workloads.",
    "B": "AWS Regions around the world let a company reach more users and respond faster to change.",

@@ -1,6 +1,6 @@
 {
  "q_59c0c5331867": {
-  "explanation": "AWS Trusted Advisor inspects your account and recommends ways to cut cost, such as flagging idle or underutilized resources, and to improve security by checking for risky configurations. The correct options are C and D.",
+  "explanation": "AWS Trusted Advisor inspects your account and recommends ways to cut cost, such as flagging idle or underutilized resources, and to improve security by checking for risky configurations. The correct options are detecting underutilized resources and improving security by monitoring.",
   "optionNotes": {
    "A": "Container orchestration is the job of Amazon ECS or Amazon EKS, not Trusted Advisor, which only inspects and recommends.",
    "B": "Creating and rotating encryption keys is done with AWS KMS; Trusted Advisor does not manage keys.",
@@ -37,7 +37,7 @@
   }
  },
  "q_9d9b868845a8": {
-  "explanation": "AWS Glue discovers (crawls and catalogs) and transforms data, and Amazon QuickSight builds visualizations and dashboards from it. The correct options are A and D.",
+  "explanation": "AWS Glue discovers (crawls and catalogs) and transforms data, and Amazon QuickSight builds visualizations and dashboards from it. The correct options are AWS Glue and Amazon QuickSight.",
   "optionNotes": {
    "A": "AWS Glue is a serverless data integration service that discovers, catalogs, and transforms data.",
    "B": "Amazon EFS is shared file storage for Linux workloads; it does not discover, transform, or visualize data.",
@@ -47,7 +47,7 @@
   }
  },
  "q_435353b535f6": {
-  "explanation": "Amazon SQS decouples components with a message queue, and AWS Step Functions coordinates workflow steps without tight links between components, so both support a loosely coupled architecture. The correct options are B and E.",
+  "explanation": "Amazon SQS decouples components with a message queue, and AWS Step Functions coordinates workflow steps without tight links between components, so both support a loosely coupled architecture. The correct options are Amazon SQS and AWS Step Functions.",
   "optionNotes": {
    "A": "Amazon WorkSpaces provides virtual desktops; it is not an application integration service.",
    "B": "Amazon SQS lets components exchange messages through a queue so they do not depend on each other directly.",
@@ -120,7 +120,7 @@
   }
  },
  "q_b1581f589ff9": {
-  "explanation": "Trusted Advisor provides cost optimization recommendations and security checks. The correct options are B and D.",
+  "explanation": "Trusted Advisor provides cost optimization recommendations and security checks. The correct options are cost optimization recommendations and security checks.",
   "optionNotes": {
    "A": "Trusted Advisor gives recommendations; it does not provide access to Amazon SQS, which is a separate messaging service.",
    "B": "Cost optimization recommendations, such as finding idle or underused resources, are a core Trusted Advisor category.",
@@ -211,7 +211,7 @@
   }
  },
  "q_d7d3fb8966b0": {
-  "explanation": "A technical account manager (TAM) is included with Enterprise On-Ramp Support (a pool of TAMs) and Enterprise Support (a designated TAM). The correct options are D and E. AWS is discontinuing Enterprise On-Ramp on January 1, 2027 and moving its customers to Enterprise Support.",
+  "explanation": "A technical account manager (TAM) is included with Enterprise On-Ramp Support (a pool of TAMs) and Enterprise Support (a designated TAM). The correct options are Enterprise On-Ramp Support and Enterprise Support. AWS is discontinuing Enterprise On-Ramp on January 1, 2027 and moving its customers to Enterprise Support.",
   "optionNotes": {
    "A": "Basic Support has no TAM; it covers account and billing help plus documentation and forums.",
    "B": "Developer Support gives guidance from Cloud Support Associates but no TAM.",
@@ -428,7 +428,7 @@
   }
  },
  "q_46a9cfc0afd1": {
-  "explanation": "Amazon WorkSpaces provides managed Windows virtual desktops, and Amazon AppStream 2.0 (now Amazon WorkSpaces Applications) streams applications securely to users. The correct options are B and C.",
+  "explanation": "Amazon WorkSpaces provides managed Windows virtual desktops, and Amazon AppStream 2.0 (now Amazon WorkSpaces Applications) streams applications securely to users. The correct options are Amazon AppStream 2.0 and Amazon WorkSpaces.",
   "optionNotes": {
    "A": "Amazon Connect is a contact center, not a desktop or application delivery service.",
    "B": "AppStream 2.0 streams managed applications to remote users over a secure connection.",
@@ -546,7 +546,7 @@
   }
  },
  "auth-support-ai-other-03": {
-  "explanation": "With Basic Support, Trusted Advisor offers all service limits (quotas) checks and a limited set of core checks, including the root user MFA check. The correct options are B and D.",
+  "explanation": "With Basic Support, Trusted Advisor offers all service limits (quotas) checks and a limited set of core checks, including the root user MFA check. The correct options are the service limits checks and the root user MFA check.",
   "optionNotes": {
    "A": "Only a limited set of checks is available on Basic Support; the full cost optimization category needs a paid plan.",
    "B": "All checks in the service limits category are available on Basic Support.",
@@ -574,7 +574,7 @@
   }
  },
  "auth-support-ai-other-06": {
-  "explanation": "Amazon Transcribe turns the recorded calls into text, and Amazon Comprehend analyzes that text to detect sentiment. The correct options are A and C.",
+  "explanation": "Amazon Transcribe turns the recorded calls into text, and Amazon Comprehend analyzes that text to detect sentiment. The correct options are Amazon Transcribe and Amazon Comprehend.",
   "optionNotes": {
    "A": "Transcribe converts the recorded speech into text.",
    "B": "Amazon Polly converts text to speech, the opposite of what is needed.",
@@ -602,7 +602,7 @@
   }
  },
  "auth-support-ai-other-09": {
-  "explanation": "Amazon SQS queues orders so the web tier can keep accepting them while processing is slow, and Amazon SNS fans each order out to both the warehouse and billing systems at once. The correct options are C and E.",
+  "explanation": "Amazon SQS queues orders so the web tier can keep accepting them while processing is slow, and Amazon SNS fans each order out to both the warehouse and billing systems at once. The correct options are Amazon SQS and Amazon SNS.",
   "optionNotes": {
    "A": "AWS Glue is for ETL and does not buffer or distribute messages.",
    "B": "Amazon Athena runs SQL queries on S3 data, not message handling.",

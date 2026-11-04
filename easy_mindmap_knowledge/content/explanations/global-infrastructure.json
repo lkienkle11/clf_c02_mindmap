@@ -72,7 +72,7 @@
   }
  },
  "q_58ea2edfaca4": {
-  "explanation": "There are more edge locations than Regions, and there are more Availability Zones than Regions because each Region contains multiple AZs. So B and E are correct.",
+  "explanation": "There are more edge locations than Regions, and there are more Availability Zones than Regions because each Region contains multiple AZs. So more edge locations than Regions and more AZs than Regions are the correct statements.",
   "optionNotes": {
    "A": "Each Region has multiple Availability Zones, so there are fewer Regions than AZs, not more.",
    "B": "AWS has far more edge locations than Regions, so this is true.",

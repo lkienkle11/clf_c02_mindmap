@@ -477,7 +477,7 @@
   }
  },
  "auth-storage-03": {
-  "explanation": "S3 Versioning (A) lets the company restore deleted or overwritten objects, and S3 Block Public Access (C) prevents objects from being made public by mistake.",
+  "explanation": "S3 Versioning lets the company restore deleted or overwritten objects, and S3 Block Public Access prevents objects from being made public by mistake.",
   "optionNotes": {
    "A": "Versioning keeps earlier versions and uses delete markers so deleted or overwritten objects can be restored.",
    "B": "Transfer Acceleration speeds up transfers and does not protect objects.",
@@ -505,7 +505,7 @@
   }
  },
  "auth-storage-06": {
-  "explanation": "Snapshots are incremental (B) and can be used to create a new volume in any Availability Zone of the same Region (D).",
+  "explanation": "Snapshots are incremental and can be used to create a new volume in any Availability Zone of the same Region.",
   "optionNotes": {
    "A": "Snapshots are stored durably in Amazon S3, not on the instance store.",
    "B": "After the first full snapshot, only blocks that changed are saved.",
@@ -542,7 +542,7 @@
   }
  },
  "auth-storage-10": {
-  "explanation": "Amazon EBS (C) and EC2 instance store (E) both present block devices to an instance.",
+  "explanation": "Amazon EBS and EC2 instance store both present block devices to an instance.",
   "optionNotes": {
    "A": "S3 is object storage accessed through an API, not block storage.",
    "B": "EFS is file storage mounted over NFS, not block storage.",

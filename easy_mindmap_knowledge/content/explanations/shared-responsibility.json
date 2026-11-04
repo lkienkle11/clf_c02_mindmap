@@ -54,7 +54,7 @@
   }
  },
  "q_587ebd261839": {
-  "explanation": "The customer is responsible for configuring guest operating systems and applications (C) and for deciding on encryption options (D). AWS maintains infrastructure devices and hardware.",
+  "explanation": "The customer is responsible for configuring guest operating systems and applications and for deciding on encryption options. AWS maintains infrastructure devices and hardware.",
   "optionNotes": {
    "A": "AWS maintains the configuration of infrastructure devices as part of the global infrastructure.",
    "B": "Patching and updates within the hardware infrastructure are done by AWS.",
@@ -118,7 +118,7 @@
   }
  },
  "q_ad57a1b70c1a": {
-  "explanation": "For EC2 the customer patches the guest operating system (B) and encrypts its data at rest on the associated storage (C). AWS handles the hypervisor, hardware and physical security.",
+  "explanation": "For EC2 the customer patches the guest operating system and encrypts its data at rest on the associated storage. AWS handles the hypervisor, hardware and physical security.",
   "optionNotes": {
    "A": "AWS installs and patches the hypervisor that runs the instances.",
    "B": "The guest OS of an EC2 instance is owned by the customer, who must patch it.",
@@ -128,7 +128,7 @@
   }
  },
  "q_867955ccd39e": {
-  "explanation": "AWS is responsible for network infrastructure and virtualization (A) and for the physical security of hardware (D). Application data, guest operating systems, and credentials and policies belong to the customer.",
+  "explanation": "AWS is responsible for network infrastructure and virtualization and for the physical security of hardware. Application data, guest operating systems, and credentials and policies belong to the customer.",
   "optionNotes": {
    "A": "The network infrastructure and the virtualization layer are part of the infrastructure that AWS operates.",
    "B": "The customer is responsible for securing its own application data.",
@@ -138,7 +138,7 @@
   }
  },
  "q_a227eb0c738c": {
-  "explanation": "AWS secures physical access to its facilities (C) and performs infrastructure patching and maintenance (E). IAM, security groups and application patching are done by the customer.",
+  "explanation": "AWS secures physical access to its facilities and performs infrastructure patching and maintenance. IAM, security groups and application patching are done by the customer.",
   "optionNotes": {
    "A": "Configuring IAM users, roles and policies is the customer's job.",
    "B": "Security groups for EC2 instances are configured by the customer.",
@@ -148,7 +148,7 @@
   }
  },
  "q_27c19e01e8a3": {
-  "explanation": "Customers encrypt data and maintain its integrity (B) and maintain identity and access management controls (D). AWS secures the virtualization layer and Availability Zones, and patches the RDS operating system.",
+  "explanation": "Customers encrypt data and maintain its integrity and maintain identity and access management controls. AWS secures the virtualization layer and Availability Zones, and patches the RDS operating system.",
   "optionNotes": {
    "A": "The virtualization layer is part of the infrastructure that AWS secures.",
    "B": "Protecting data through encryption and integrity checks is security in the cloud, which the customer owns.",
@@ -194,7 +194,7 @@
   }
  },
  "auth-shared-responsibility-03": {
-  "explanation": "With Lambda the customer owns the function code (B), the libraries it packages, and the IAM permissions the function uses (D). AWS operates and patches the servers, operating system, runtime and virtualization layer, and secures the data centers.",
+  "explanation": "With Lambda the customer owns the function code, the libraries it packages, and the IAM permissions the function uses. AWS operates and patches the servers, operating system, runtime and virtualization layer, and secures the data centers.",
   "optionNotes": {
    "A": "AWS manages and patches the servers and operating system that run Lambda functions.",
    "B": "The code and the third-party libraries in the deployment package are written and chosen by the customer, who must keep them secure.",
@@ -231,7 +231,7 @@
   }
  },
  "auth-shared-responsibility-07": {
-  "explanation": "For an abstracted service like S3, AWS runs and secures the infrastructure, including the storage devices (A) and the operating systems of the S3 servers (D). Bucket policies, data classification and IAM permissions are always the customer's responsibility.",
+  "explanation": "For an abstracted service like S3, AWS runs and secures the infrastructure, including the storage devices and the operating systems of the S3 servers. Bucket policies, data classification and IAM permissions are always the customer's responsibility.",
   "optionNotes": {
    "A": "AWS maintains the physical storage devices that hold S3 objects.",
    "B": "Bucket policies and public access settings are configured by the customer.",
@@ -259,7 +259,7 @@
   }
  },
  "auth-shared-responsibility-10": {
-  "explanation": "Data classification (C) and access management through IAM (E) always stay with the customer, even for fully managed services. Physical security, network hardware and the host operating system and hypervisor are always AWS's responsibility.",
+  "explanation": "Data classification and access management through IAM always stay with the customer, even for fully managed services. Physical security, network hardware and the host operating system and hypervisor are always AWS's responsibility.",
   "optionNotes": {
    "A": "AWS is always responsible for physical security of its data centers.",
    "B": "The host operating system and the hypervisor are managed and patched by AWS.",
