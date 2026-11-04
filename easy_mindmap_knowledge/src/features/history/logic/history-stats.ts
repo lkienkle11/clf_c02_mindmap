@@ -1,4 +1,4 @@
-import type { AttemptRow } from '@/persistence/records';
+import type { AttemptQuestionRow, AttemptRow } from '@/persistence/records';
 
 export interface ScorePoint {
   attemptId: string;
@@ -67,4 +67,67 @@ export function mostMissed(
         (x.questionId < y.questionId ? -1 : x.questionId > y.questionId ? 1 : 0),
     )
     .slice(0, limit);
+}
+
+export interface MissedDetail {
+  questionId: string;
+  topicId: string | null;
+  misses: number;
+  seen: number;
+  latestWrong: { attemptId: string; at: number; selected: string[]; optionOrder: string[] };
+  distinctWrongAnswers: number;
+}
+
+export function missedDetails(
+  attempts: AttemptRow[],
+  rowsByAttempt: Map<string, AttemptQuestionRow[]>,
+  topicOf: (questionId: string) => string | null,
+): MissedDetail[] {
+  interface Acc {
+    misses: number;
+    seen: number;
+    latest: MissedDetail['latestWrong'] | null;
+    answers: Set<string>;
+  }
+  const acc = new Map<string, Acc>();
+  for (const a of attempts) {
+    if (a.status !== 'submitted') continue;
+    const at = a.submittedAt ?? 0;
+    for (const r of rowsByAttempt.get(a.id) ?? []) {
+      const cur = acc.get(r.questionId) ?? { misses: 0, seen: 0, latest: null, answers: new Set() };
+      cur.seen += 1;
+      if (r.isCorrect !== true) {
+        cur.misses += 1;
+        cur.answers.add([...r.selected].sort().join('\u0000'));
+        const l = cur.latest;
+        if (l === null || at > l.at || (at === l.at && a.id > l.attemptId)) {
+          cur.latest = {
+            attemptId: a.id,
+            at,
+            selected: [...r.selected],
+            optionOrder: [...r.optionOrder],
+          };
+        }
+      }
+      acc.set(r.questionId, cur);
+    }
+  }
+  const out: MissedDetail[] = [];
+  for (const [questionId, v] of acc) {
+    if (v.misses === 0 || v.latest === null) continue;
+    out.push({
+      questionId,
+      topicId: topicOf(questionId),
+      misses: v.misses,
+      seen: v.seen,
+      latestWrong: v.latest,
+      distinctWrongAnswers: v.answers.size,
+    });
+  }
+  return out.sort(
+    (x, y) =>
+      y.misses - x.misses ||
+      y.misses / y.seen - x.misses / x.seen ||
+      (x.questionId < y.questionId ? -1 : x.questionId > y.questionId ? 1 : 0),
+  );
 }

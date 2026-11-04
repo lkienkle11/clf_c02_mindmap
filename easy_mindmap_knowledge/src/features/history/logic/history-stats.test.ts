@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import type { AttemptRow } from '@/persistence/records';
-import { mostMissed, scoreSeries, weakTopics } from './history-stats';
+import type { AttemptQuestionRow, AttemptRow } from '@/persistence/records';
+import { missedDetails, mostMissed, scoreSeries, weakTopics } from './history-stats';
 
 function attempt(p: Partial<AttemptRow> & { id: string }): AttemptRow {
   return {
@@ -117,5 +117,92 @@ describe('mostMissed', () => {
       10,
     );
     expect(out.map((x) => x.questionId)).toEqual(['a', 'b', 'c']);
+  });
+});
+
+function qrow(p: Partial<AttemptQuestionRow> & { attemptId: string; questionId: string }): AttemptQuestionRow {
+  return { position: 0, optionOrder: ['A', 'B', 'C'], selected: ['A'], isCorrect: false, ...p };
+}
+
+describe('missedDetails', () => {
+  const topicOf = (q: string) => (q === 'q9' ? null : 't1');
+
+  it('matches mostMissed counts and order, only questions with a miss', () => {
+    const attempts = [attempt({ id: 'a1' }), attempt({ id: 'a2' })];
+    const rows = new Map([
+      ['a1', [
+        qrow({ attemptId: 'a1', questionId: 'q1' }),
+        qrow({ attemptId: 'a1', questionId: 'q2' }),
+        qrow({ attemptId: 'a1', questionId: 'q3', isCorrect: true }),
+      ]],
+      ['a2', [
+        qrow({ attemptId: 'a2', questionId: 'q1' }),
+        qrow({ attemptId: 'a2', questionId: 'q2', isCorrect: true }),
+        qrow({ attemptId: 'a2', questionId: 'q3', isCorrect: true }),
+      ]],
+    ]);
+    const out = missedDetails(attempts, rows, topicOf);
+    const flat = [...rows.values()].flat().map((r) => ({ questionId: r.questionId, isCorrect: r.isCorrect === true }));
+    expect(out.map(({ questionId, misses, seen }) => ({ questionId, misses, seen }))).toEqual(
+      mostMissed(flat, 10),
+    );
+    expect(out.map((d) => d.questionId)).toEqual(['q1', 'q2']);
+    expect(out[0].topicId).toBe('t1');
+  });
+
+  it('picks the latest wrong row by submittedAt, ties by larger attempt id', () => {
+    const attempts = [
+      attempt({ id: 'a1', submittedAt: 300 }),
+      attempt({ id: 'a2', submittedAt: 200 }),
+      attempt({ id: 'a3', submittedAt: 300 }),
+    ];
+    const rows = new Map([
+      ['a1', [qrow({ attemptId: 'a1', questionId: 'q1', selected: ['A'] })]],
+      ['a2', [qrow({ attemptId: 'a2', questionId: 'q1', selected: ['B'] })]],
+      ['a3', [qrow({ attemptId: 'a3', questionId: 'q1', selected: ['C'], optionOrder: ['C', 'A', 'B'] })]],
+    ]);
+    const [d] = missedDetails(attempts, rows, topicOf);
+    expect(d.latestWrong).toEqual({ attemptId: 'a3', at: 300, selected: ['C'], optionOrder: ['C', 'A', 'B'] });
+  });
+
+  it('counts distinct wrong answers ignoring order', () => {
+    const attempts = [attempt({ id: 'a1' }), attempt({ id: 'a2' }), attempt({ id: 'a3' })];
+    const rows = new Map([
+      ['a1', [qrow({ attemptId: 'a1', questionId: 'q1', selected: ['A', 'B'] })]],
+      ['a2', [qrow({ attemptId: 'a2', questionId: 'q1', selected: ['B', 'A'] })]],
+      ['a3', [qrow({ attemptId: 'a3', questionId: 'q1', selected: ['A'] })]],
+    ]);
+    expect(missedDetails(attempts, rows, topicOf)[0].distinctWrongAnswers).toBe(2);
+    const two = missedDetails(attempts.slice(0, 2), rows, topicOf);
+    expect(two[0].distinctWrongAnswers).toBe(1);
+  });
+
+  it('excludes questions answered only correctly', () => {
+    const rows = new Map([['a1', [qrow({ attemptId: 'a1', questionId: 'q1', isCorrect: true })]]]);
+    expect(missedDetails([attempt({ id: 'a1' })], rows, topicOf)).toEqual([]);
+  });
+
+  it('treats isCorrect null as a miss', () => {
+    const rows = new Map([['a1', [qrow({ attemptId: 'a1', questionId: 'q9', isCorrect: null, selected: [] })]]]);
+    const [d] = missedDetails([attempt({ id: 'a1' })], rows, topicOf);
+    expect(d.misses).toBe(1);
+    expect(d.topicId).toBeNull();
+  });
+
+  it('ignores in-progress attempts and rows of unknown attempts', () => {
+    const attempts = [attempt({ id: 'a1', status: 'in_progress', submittedAt: null })];
+    const rows = new Map([
+      ['a1', [qrow({ attemptId: 'a1', questionId: 'q1' })]],
+      ['zz', [qrow({ attemptId: 'zz', questionId: 'q1' })]],
+    ]);
+    expect(missedDetails(attempts, rows, topicOf)).toEqual([]);
+  });
+
+  it('does not mutate inputs', () => {
+    const attempts = [attempt({ id: 'a1' })];
+    const rows = new Map([['a1', [qrow({ attemptId: 'a1', questionId: 'q1', selected: ['B', 'A'] })]]]);
+    const snap = JSON.stringify([attempts, [...rows]]);
+    missedDetails(attempts, rows, topicOf);
+    expect(JSON.stringify([attempts, [...rows]])).toBe(snap);
   });
 });
