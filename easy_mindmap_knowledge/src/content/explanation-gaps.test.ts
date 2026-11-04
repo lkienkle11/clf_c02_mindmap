@@ -77,6 +77,36 @@ describe('findGaps', () => {
     expect(findGaps(questions).internalWording).toEqual([]);
   });
 
+  it.each([
+    'Amazon EBS (C) and EC2 instance store (E) both present block devices.',
+    'Compute Savings Plans (A, B) lower the price.',
+    'Both qualify (options A and D).',
+    'Option A is wrong because it is a queue.',
+    'The correct options are B and D.',
+    'A and C are correct.',
+    'So B and E are correct.',
+    'The best answer is answer C.',
+    'Choice D does not apply.',
+  ])('flags the option letter reference in "%s"', (explanation) => {
+    expect(findGaps([question('letters', { explanation })]).internalWording).toEqual(['letters']);
+    const note = question('note-letters', { optionNotes: { A: explanation, B: 'w', C: 'w', D: 'w' } });
+    expect(findGaps([note]).internalWording).toEqual(['note-letters']);
+  });
+
+  it.each([
+    'Vitamin A and B are not AWS services.',
+    'This is a Type A workload.',
+    'Plan B is to use a second Region.',
+    'The C language is not required.',
+    'Amazon S3 Glacier Deep Archive (S3 Glacier) is the cheapest tier.',
+    'Tier 1 support responds fastest.',
+    'Use Amazon S3 (Standard) for frequently accessed data.',
+    'A and B testing is a marketing term.',
+    'Pick the correct options for each workload.',
+  ])('does not flag ordinary text in "%s"', (explanation) => {
+    expect(findGaps([question('plain', { explanation })]).internalWording).toEqual([]);
+  });
+
   it('reports every offending question in one call', () => {
     const questions = [
       question('a', { explanation: '' }),

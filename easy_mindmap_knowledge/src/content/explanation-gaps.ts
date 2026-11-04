@@ -3,6 +3,22 @@ import type { Question } from './types';
 /** Internal authoring words that must never reach a learner-facing explanation or note. */
 const INTERNAL_WORDING = /\bkeyed\b|\banswer key\b/i;
 
+/**
+ * References to option letters. The learner never sees the letters because options are shuffled
+ * and shown by text, so a letter in an explanation or note points at nothing.
+ * Matches "(C)", "(A, B)", "option A", "answer C", "choice D", "are B and D", "A and C are correct".
+ */
+const LETTER = '[A-F]';
+const LETTER_LIST = `${LETTER}(?:\\s*(?:,|and|or|&)\\s*${LETTER})*`;
+const LETTER_REFERENCE = new RegExp(
+  [
+    `\\(\\s*${LETTER_LIST}\\s*\\)`,
+    `\\b(?:[Oo]ptions?|[Aa]nswers?|[Cc]hoices?)\\s+${LETTER}\\b`,
+    `\\b(?:are|is|be)\\s+${LETTER}(?:,\\s*${LETTER})*,?\\s+(?:and|or|&)\\s+${LETTER}\\b`,
+    `\\b${LETTER}\\s+(?:and|or|&)\\s+${LETTER}\\s+(?:are|is)\\s+(?:both\\s+)?(?:the\\s+)?(?:correct|right|wrong|incorrect)\\b`,
+  ].join('|'),
+);
+
 export interface ExplanationGaps {
   /** Ids of questions whose explanation is missing or blank. */
   missingExplanation: string[];
@@ -32,7 +48,7 @@ export function findGaps(questions: Question[]): ExplanationGaps {
     }
 
     const learnerText = [q.explanation ?? '', ...Object.values(notes)];
-    if (learnerText.some((t) => INTERNAL_WORDING.test(t))) gaps.internalWording.push(q.id);
+    if (learnerText.some((t) => INTERNAL_WORDING.test(t) || LETTER_REFERENCE.test(t))) gaps.internalWording.push(q.id);
   }
   return gaps;
 }
