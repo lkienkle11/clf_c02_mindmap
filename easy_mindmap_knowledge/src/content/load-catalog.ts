@@ -46,6 +46,12 @@ function checkQuestionShape(q: unknown, i: number): void {
   if (!Array.isArray(q.correct) || !q.correct.every(isStr)) throw new Error(`${what} correct must be an array of strings`);
   if (q.source !== 'imported' && q.source !== 'authored') throw new Error(`${what} has invalid source: ${String(q.source)}`);
   if (q.topicId !== null && !isStr(q.topicId)) throw new Error(`${what} topicId must be a string or null`);
+  if (q.optionNotes !== undefined) {
+    if (!isObj(q.optionNotes)) throw new Error(`${what} optionNotes must be an object`);
+    for (const [k, note] of Object.entries(q.optionNotes)) {
+      if (!isNonEmpty(note)) throw new Error(`${what} optionNotes key "${k}" must be a non-empty string`);
+    }
+  }
 }
 
 function asArray<T>(value: unknown, name: string): T[] {
@@ -119,6 +125,9 @@ function validateQuestion(q: Question): void {
   const keys = new Set(q.options.map((o) => o.key));
   for (const k of q.correct) {
     if (!keys.has(k)) throw new Error(`question ${q.id} has correct key "${k}" not in options`);
+  }
+  for (const k of Object.keys(q.optionNotes ?? {})) {
+    if (!keys.has(k)) throw new Error(`question ${q.id} has optionNotes key "${k}" not in options`);
   }
   if (q.multi !== q.correct.length > 1) {
     throw new Error(`question ${q.id} multi=${q.multi} does not match ${q.correct.length} correct key(s)`);

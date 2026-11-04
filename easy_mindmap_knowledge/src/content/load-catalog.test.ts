@@ -175,4 +175,21 @@ describe('loadCatalog: option text', () => {
     raw.questions[0] = makeQuestion({ id: 'q1', options: [{ key: 'A', text: 'EC2' }, { key: 'A', text: 'S3' }] });
     expect(() => loadCatalog(raw)).toThrow(/question q1.*duplicate option key.*"A"/);
   });
+
+  it('rejects an optionNotes key that is not an option', () => {
+    const raw = makeRawCatalog();
+    raw.questions.push(makeQuestion({ id: 'qn', optionNotes: { Z: 'z' } }));
+    expect(() => loadCatalog(raw)).toThrow(/optionNotes key "Z"/);
+  });
+  it('rejects an empty optionNotes note', () => {
+    const raw = makeRawCatalog();
+    raw.questions.push(makeQuestion({ id: 'qn', optionNotes: { A: '' } }));
+    expect(() => loadCatalog(raw)).toThrow(/optionNotes/);
+  });
+  it('keeps valid optionNotes on the question', () => {
+    const raw = makeRawCatalog();
+    raw.questions.push(makeQuestion({ id: 'qn', optionNotes: { A: 'right', B: 'wrong' } }));
+    const c = loadCatalog(raw);
+    expect(c.questions.find((q) => q.id === 'qn')?.optionNotes).toEqual({ A: 'right', B: 'wrong' });
+  });
 });
