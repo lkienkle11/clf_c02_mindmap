@@ -20,7 +20,7 @@ Bẫy thi: bucket bị công khai là lỗi cấu hình của khách hàng, khô
 
 ## Amazon EBS và snapshot
 
-Volume **Amazon EBS** là ổ đĩa khối của các instance EC2. AWS sở hữu phần cứng lưu trữ và cơ sở vật chất. Vì volume gắn vào instance của bạn nên nội dung trên đó là của bạn: hệ thống tệp, dữ liệu, quyết định mã hóa volume, quy trình sao lưu và việc ai được dùng hoặc chia sẻ snapshot. Việc vá hệ điều hành guest của EC2 cũng không làm thay đổi sự thật rằng nội dung ổ đĩa thuộc về bạn.
+Volume **Amazon EBS** là ổ đĩa khối của các instance EC2. AWS sở hữu phần cứng lưu trữ và cơ sở vật chất. Vì volume gắn vào instance của bạn nên nội dung trên đó là của bạn: hệ thống tệp, dữ liệu, quyết định mã hóa volume, quy trình sao lưu và việc ai được dùng hoặc chia sẻ snapshot. Dù AWS vận hành phần cứng lưu trữ, nội dung trên ổ đĩa luôn là trách nhiệm của bạn.
 
 ## Amazon RDS
 

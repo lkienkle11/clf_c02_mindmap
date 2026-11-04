@@ -53,6 +53,10 @@ The AWS documentation for EC2 lists these customer tasks directly: controlling n
 - "Prevent other customers from reading the memory of your instance" is part of the **virtualization layer**, which is AWS.
 - If the question says "host operating system" or "hypervisor", think AWS. If it says "guest operating system", think customer.
 
+## Trap: VPC and network questions
+
+The customer **configures** its VPC: address ranges, subnets, route tables, security groups and network ACLs. AWS protects the infrastructure that runs the VPC service and the network underneath it. So "maintain or operate the underlying network infrastructure or service" is **AWS**, while "configure what you build with it" is the **customer**. When a question lists *your data* among the answers, data protection and classification is the safest customer answer. And if it asks what the customer is **always** responsible for, choose the customer's **data**; networking and encryption keys are distractors, even though encryption choices are the customer's decision.
+
 ## Key points
 
 - IAM: AWS operates the service; the customer manages users, policies, MFA, access keys and the root user.
@@ -63,5 +67,5 @@ The AWS documentation for EC2 lists these customer tasks directly: controlling n
 ## Sources
 
 - [Shared responsibility model](https://aws.amazon.com/compliance/shared-responsibility-model/)
-- [Security in Amazon EC2](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-security.html)
+- [Managing security responsibilities for Amazon VPC](https://docs.aws.amazon.com/vpc/latest/userguide/security.html)
 - [What is IAM?](https://docs.aws.amazon.com/IAM/latest/UserGuide/introduction.html)

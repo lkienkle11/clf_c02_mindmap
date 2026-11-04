@@ -21,7 +21,7 @@ An exam trap: a bucket that is publicly readable is a customer configuration pro
 
 ## Amazon EBS and snapshots
 
-**Amazon EBS** volumes are the block disks of EC2 instances. AWS owns the storage hardware and facilities. Because a volume is attached to your instance, what is on it is yours: the file system, the data, your decision to encrypt the volume, your backup routine and who may use or share your snapshots. Whoever patches the guest operating system on EC2 does not change the fact that the disk content belongs to you.
+**Amazon EBS** volumes are the block disks of EC2 instances. AWS owns the storage hardware and facilities. Because a volume is attached to your instance, what is on it is yours: the file system, the data, your decision to encrypt the volume, your backup routine and who may use or share your snapshots. Even though AWS runs the storage hardware, the content of the disk is always your responsibility.
 
 ## Amazon RDS
 

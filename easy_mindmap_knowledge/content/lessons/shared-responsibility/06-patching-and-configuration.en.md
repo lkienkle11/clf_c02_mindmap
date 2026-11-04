@@ -52,7 +52,7 @@ AWS offers the tools; using them is the customer's job. The IAM and Security top
 
 ## Customer-specific controls
 
-These depend on your application, so AWS cannot supply them. Zone security is the AWS example: you decide how data is routed or divided between security environments, for example putting databases in private subnets and web servers in public ones.
+These depend on your application, so AWS cannot supply them. Zone security is the AWS example: you decide how data is routed or divided between security environments. For example, you might put databases in private subnets and web servers in public ones; this is only an illustration of a customer-specific control, not something AWS provides.
 
 ## Evidence and compliance
 

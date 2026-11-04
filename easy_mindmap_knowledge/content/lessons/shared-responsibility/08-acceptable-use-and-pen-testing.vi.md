@@ -34,7 +34,7 @@ Các hoạt động AWS liệt kê là **bị cấm**:
 
 Các sự kiện mô phỏng khác, như diễn tập red, blue hay purple team, phishing giả lập hoặc kiểm thử mã độc, cần gửi **biểu mẫu Simulated Events** qua AWS Support console ít nhất hai tuần trước ngày bắt đầu. Kiểm thử tải mạng theo chính sách riêng.
 
-Nếu bạn phát hiện vấn đề bảo mật trong một dịch vụ AWS khi kiểm thử, hãy liên hệ AWS Security (aws-security@amazon.com) ngay.
+Nếu bạn phát hiện vấn đề bảo mật trong một dịch vụ AWS khi kiểm thử, hãy liên hệ AWS Security (aws-security@amazon.com) ngay. Các lỗ hổng do chính công cụ hoặc dịch vụ của AWS gây ra phải được báo cho AWS Security trong vòng 24 giờ sau khi hoàn tất kiểm thử.
 
 ### Góc nhìn khi thi
 

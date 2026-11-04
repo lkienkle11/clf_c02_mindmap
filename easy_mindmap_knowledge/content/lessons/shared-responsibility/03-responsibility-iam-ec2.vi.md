@@ -52,6 +52,10 @@ Tài liệu EC2 của AWS liệt kê trực tiếp các việc của khách hàn
 - "Ngăn khách hàng khác đọc bộ nhớ instance của bạn" thuộc **lớp ảo hóa**, tức AWS.
 - Nếu câu hỏi nói "host operating system" hoặc "hypervisor", hãy nghĩ đến AWS. Nếu nói "guest operating system", hãy nghĩ đến khách hàng.
 
+## Bẫy: câu hỏi về VPC và mạng
+
+Khách hàng **cấu hình** VPC của mình: dải địa chỉ, subnet, route table, security group và network ACL. AWS bảo vệ hạ tầng chạy dịch vụ VPC và mạng bên dưới. Vì vậy "bảo trì hoặc vận hành hạ tầng mạng hay dịch vụ bên dưới" là **AWS**, còn "cấu hình những gì bạn xây trên đó" là **khách hàng**. Khi danh sách đáp án có *dữ liệu của bạn*, bảo vệ và phân loại dữ liệu là đáp án khách hàng an toàn nhất. Và nếu câu hỏi hỏi khách hàng **luôn luôn** chịu trách nhiệm về gì, hãy chọn **dữ liệu** của khách hàng; mạng và khóa mã hóa là đáp án gây nhiễu, dù các lựa chọn mã hóa là quyết định của khách hàng.
+
 ## Ý chính
 
 - IAM: AWS vận hành dịch vụ; khách hàng quản lý user, policy, MFA, access key và root user.
@@ -62,5 +66,5 @@ Tài liệu EC2 của AWS liệt kê trực tiếp các việc của khách hàn
 ## Nguồn
 
 - [Shared responsibility model](https://aws.amazon.com/compliance/shared-responsibility-model/)
-- [Security in Amazon EC2](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-security.html)
+- [Managing security responsibilities for Amazon VPC](https://docs.aws.amazon.com/vpc/latest/userguide/security.html)
 - [What is IAM?](https://docs.aws.amazon.com/IAM/latest/UserGuide/introduction.html)

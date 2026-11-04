@@ -51,7 +51,7 @@ AWS cung cấp công cụ; dùng chúng là việc của khách hàng. Chủ đ�
 
 ## Kiểm soát riêng của khách hàng
 
-Chúng phụ thuộc vào ứng dụng của bạn nên AWS không thể cung cấp. Zone security là ví dụ của AWS: bạn quyết định dữ liệu được định tuyến hay phân chia giữa các môi trường bảo mật ra sao, chẳng hạn đặt cơ sở dữ liệu trong private subnet và máy chủ web trong public subnet.
+Chúng phụ thuộc vào ứng dụng của bạn nên AWS không thể cung cấp. Zone security là ví dụ của AWS: bạn quyết định dữ liệu được định tuyến hay phân chia giữa các môi trường bảo mật ra sao. Ví dụ, bạn có thể đặt cơ sở dữ liệu trong private subnet và máy chủ web trong public subnet; đây chỉ là minh họa cho một kiểm soát riêng của khách hàng, không phải thứ AWS cung cấp.
 
 ## Bằng chứng và tuân thủ
 

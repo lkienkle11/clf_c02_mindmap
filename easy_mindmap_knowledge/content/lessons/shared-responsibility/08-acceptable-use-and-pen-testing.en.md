@@ -35,7 +35,7 @@ Activities AWS lists as **prohibited**:
 
 Other simulated events, such as red, blue or purple team exercises, simulated phishing or malware testing, require submitting a **Simulated Events form** through the AWS Support console at least two weeks before the start date. Network stress testing follows its own policy.
 
-If you find a security issue in an AWS service during testing, contact AWS Security (aws-security@amazon.com) immediately.
+If you find a security issue in an AWS service during testing, contact AWS Security (aws-security@amazon.com) immediately. Vulnerabilities caused directly by AWS tools or services must be reported to AWS Security within 24 hours of completing the testing.
 
 ### Exam angle
 
