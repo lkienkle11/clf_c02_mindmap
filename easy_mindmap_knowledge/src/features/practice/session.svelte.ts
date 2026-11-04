@@ -49,6 +49,8 @@ export class PracticeSession {
   readonly kind: AttemptRow['kind'];
   readonly topicId: string | null;
   readonly allowReview: boolean;
+  /** The checkpoint group of an exam attempt; null for every other kind. */
+  readonly groupIndex: number | null;
 
   // $state.raw + frozen items: components cannot mutate selections and bypass persistence.
   #questions = $state.raw<readonly SessionQuestion[]>([]);
@@ -79,6 +81,7 @@ export class PracticeSession {
     this.kind = attempt.kind;
     this.topicId = attempt.topicId;
     this.allowReview = attempt.reviewAllowed;
+    this.groupIndex = attempt.groupIndex;
     this.#clock = clock;
     this.#remainingMs = remainingAt(clock, services.now());
     const byId = new Map(services.catalog.questions.map((q) => [q.id, q]));

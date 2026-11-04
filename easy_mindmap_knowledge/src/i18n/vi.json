@@ -216,5 +216,21 @@
   "mindmap.menu.open": "Thao tác cho {topic}",
   "mindmap.menu.redo": "Làm lại bài thực hành",
   "mindmap.menu.lessons": "Xem lại bài học",
-  "mindmap.menu.history": "Lịch sử"
+  "mindmap.menu.history": "Lịch sử",
+  "exam.setup.checkpointTitle": "Bài kiểm tra mốc {n}",
+  "exam.setup.capstoneTitle": "Bài thi tổng kết (Capstone)",
+  "exam.setup.rulesLegend": "Quy tắc",
+  "exam.setup.ruleQuestions": "Tối đa {count} câu hỏi, lấy từ phần này của khóa học.",
+  "exam.setup.ruleTime": "Thời gian làm bài: {minutes} phút.",
+  "exam.setup.ruleNoReview": "Bạn không thể xem lại kiến thức trong lúc thi.",
+  "exam.setup.ruleAnswers": "Đáp án và lời giải chỉ hiện sau khi bạn nộp bài.",
+  "exam.setup.ruleOneSitting": "Làm một mạch. Nếu bạn rời đi, lượt thi sẽ bị bỏ.",
+  "exam.setup.extraTime": "Thêm thời gian (cộng thêm 30 phút)",
+  "exam.setup.lockedGroup": "Hãy hoàn thành tất cả chủ đề của nhóm này trước. Còn thiếu: {topics}.",
+  "exam.setup.lockedCapstone": "Hãy vượt qua bài kiểm tra mốc 4 và hoàn thành các chủ đề cuối để mở bài thi Capstone.",
+  "exam.setup.passed": "Bạn đã vượt qua bài kiểm tra mốc này. Bạn có thể làm lại.",
+  "exam.setup.start": "Bắt đầu thi",
+  "exam.setup.back": "Về sơ đồ",
+  "exam.setup.notAvailable": "Chưa đủ câu hỏi để tạo bài thi này.",
+  "exam.setup.startFailed": "Không thể bắt đầu bài thi. Vui lòng thử lại."
 }

@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { render, screen, waitFor, within } from '@testing-library/svelte';
 import userEvent from '@testing-library/user-event';
 import { makePracticeEnv } from '@/testing/practice-env';
+import { makeExamEnv } from '@/testing/exam-env';
 import { loadCatalog } from '@/content/load-catalog';
 import { makeRawCatalog } from '@/testing/fixtures';
 import type { SqlExecutor } from '@/persistence';
@@ -59,6 +60,38 @@ describe('App shell', () => {
     env.appState.open({ view: 'practice', topicId: 'compute' });
     render(App, { services: env.services, appState: env.appState, i18n: createI18n('en') });
     expect(await screen.findByRole('button', { name: 'Start' })).toBeInTheDocument();
+  });
+
+  it('routes the checkpoint view to the exam screen', async () => {
+    const env = await makeExamEnv(['cloud-concepts', 'global-infrastructure', 'compute']);
+    env.appState.open({ view: 'checkpoint', groupIndex: 1 });
+    render(App, { services: env.services, appState: env.appState, i18n: createI18n('en') });
+    expect(await screen.findByRole('heading', { name: 'Checkpoint 1' })).toBeInTheDocument();
+    expect(screen.queryByRole('navigation', { name: 'Main navigation' })).not.toBeInTheDocument();
+  });
+
+  it('renders the exam screen for the Capstone practice route', async () => {
+    const env = await makeExamEnv([]);
+    env.appState.open({ view: 'practice', topicId: 'capstone' });
+    render(App, { services: env.services, appState: env.appState, i18n: createI18n('en') });
+    expect(await screen.findByRole('heading', { name: 'Capstone exam' })).toBeInTheDocument();
+  });
+
+  it('a resumed in-progress checkpoint opens the checkpoint route', async () => {
+    const attempt = {
+      id: 'cp', kind: 'checkpoint' as const, topicId: null, status: 'in_progress' as const, startedAt: 0, submittedAt: null,
+      submitReason: null, reviewAllowed: false, clock: { mode: 'run' as const, limitMs: 5_400_000, remainingMs: null, deadlineAt: 5_400_000, onHidden: 'run' as const },
+      heartbeatAt: null, scorePct: null, passed: null, groupIndex: 1, plannedCount: 3,
+    };
+    const questions = ['e0', 'e1', 'e2'].map((questionId, position) => ({
+      attemptId: 'cp', position, questionId, optionOrder: ['A', 'B', 'C', 'D'], selected: [], isCorrect: null,
+    }));
+    const env = await makeExamEnv([], { inProgress: { attempt, questions }, now: () => 1000 });
+    await env.appState.refresh();
+    render(App, { services: env.services, appState: env.appState, i18n: createI18n('en') });
+    await userEvent.click(await screen.findByRole('button', { name: 'Continue' }));
+    await waitFor(() => expect(env.appState.route).toEqual({ view: 'checkpoint', groupIndex: 1 }));
+    expect(await screen.findByRole('navigation', { name: 'Questions' })).toBeInTheDocument();
   });
 
   it('offers to resume an unfinished attempt on top of the tree and continues into the session', async () => {

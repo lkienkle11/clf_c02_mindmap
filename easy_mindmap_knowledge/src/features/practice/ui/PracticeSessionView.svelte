@@ -17,9 +17,11 @@
     services: Services;
     appState: AppState;
     session: PracticeSession;
+    /** Exam mode has no knowledge review at all, so the button is not offered (not just disabled). */
+    hideKnowledge?: boolean;
   }
 
-  let { services, appState, session }: Props = $props();
+  let { services, appState, session, hideKnowledge = false }: Props = $props();
 
   const i18n = getI18n();
   const questionsById = $derived(new Map(services.catalog.questions.map((q) => [q.id, q])));
@@ -117,14 +119,16 @@
   <QuestionNav questions={session.questions} index={session.index} ongo={go} />
 
   <div class="flex flex-wrap items-start gap-3 border-t border-border-subtle pt-4">
-    <div class="flex flex-col gap-1">
-      <Button variant="secondary" disabled={!canReviewKnowledge} aria-describedby={canReviewKnowledge ? undefined : 'review-reason'} onclick={() => session.openKnowledge()}>
-        {i18n.t('practice.reviewKnowledge')}
-      </Button>
-      {#if !canReviewKnowledge}
-        <p id="review-reason" class="text-sm text-muted-foreground">{reviewReason}</p>
-      {/if}
-    </div>
+    {#if !hideKnowledge}
+      <div class="flex flex-col gap-1">
+        <Button variant="secondary" disabled={!canReviewKnowledge} aria-describedby={canReviewKnowledge ? undefined : 'review-reason'} onclick={() => session.openKnowledge()}>
+          {i18n.t('practice.reviewKnowledge')}
+        </Button>
+        {#if !canReviewKnowledge}
+          <p id="review-reason" class="text-sm text-muted-foreground">{reviewReason}</p>
+        {/if}
+      </div>
+    {/if}
     <Button disabled={busy} onclick={() => (submitOpen = true)}>{i18n.t('practice.submit')}</Button>
     <Button variant="ghost" class="ml-auto" disabled={busy} onclick={() => (exitOpen = true)}>{i18n.t('practice.exit')}</Button>
   </div>

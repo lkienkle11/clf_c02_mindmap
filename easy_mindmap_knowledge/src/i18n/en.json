@@ -216,5 +216,21 @@
   "mindmap.menu.open": "Actions for {topic}",
   "mindmap.menu.redo": "Redo practice",
   "mindmap.menu.lessons": "Review lessons",
-  "mindmap.menu.history": "History"
+  "mindmap.menu.history": "History",
+  "exam.setup.checkpointTitle": "Checkpoint {n}",
+  "exam.setup.capstoneTitle": "Capstone exam",
+  "exam.setup.rulesLegend": "Rules",
+  "exam.setup.ruleQuestions": "Up to {count} questions, drawn from this part of the course.",
+  "exam.setup.ruleTime": "Time limit: {minutes} minutes.",
+  "exam.setup.ruleNoReview": "You cannot review knowledge during the exam.",
+  "exam.setup.ruleAnswers": "Answers and explanations are shown only after you submit.",
+  "exam.setup.ruleOneSitting": "Take it in one sitting. If you leave, the attempt is abandoned.",
+  "exam.setup.extraTime": "Extra time (30 more minutes)",
+  "exam.setup.lockedGroup": "Complete all topics of this group first. Still missing: {topics}.",
+  "exam.setup.lockedCapstone": "Pass checkpoint 4 and finish the last topics to unlock the Capstone exam.",
+  "exam.setup.passed": "You have already passed this checkpoint. You can take it again.",
+  "exam.setup.start": "Start exam",
+  "exam.setup.back": "Back to the map",
+  "exam.setup.notAvailable": "There are not enough questions to build this exam yet.",
+  "exam.setup.startFailed": "Could not start the exam. Please try again."
 }

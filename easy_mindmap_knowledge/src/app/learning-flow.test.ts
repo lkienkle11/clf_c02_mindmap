@@ -136,11 +136,12 @@ describe('learning flow (ruling R17: topics without lessons can be practised)', 
     expect(practiceLeaf()).not.toHaveAttribute('aria-disabled', 'true');
     expect(screen.queryByText('No questions yet')).not.toBeInTheDocument();
     await user.click(practiceLeaf());
-    expect(await screen.findByText('10 questions')).toBeInTheDocument();
-    const start = screen.getByRole('button', { name: 'Start' });
+    // The Capstone is an exam now: the exam setup opens, and it draws from the pooled bank.
+    expect(await screen.findByRole('heading', { name: 'Capstone exam' })).toBeInTheDocument();
+    const start = screen.getByRole('button', { name: 'Start exam' });
     await waitFor(() => expect(start).toBeEnabled());
     await user.click(start);
-    expect(await screen.findByText('1/10')).toBeInTheDocument();
+    expect(await screen.findByText(/^1\/\d+$/)).toBeInTheDocument();
   }, 30_000);
 
   it('the last lesson of a topic offers Practice: locked until every required lesson is read, then it opens the topic practice', async () => {

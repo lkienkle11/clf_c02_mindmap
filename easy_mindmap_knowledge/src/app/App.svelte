@@ -3,6 +3,7 @@
   import type { I18n } from '@/i18n/i18n.svelte';
   import { LessonScreen } from '@/features/lesson';
   import { TreeScreen, practiceUnlocked } from '@/features/mindmap';
+  import { ExamScreen } from '@/features/exam';
   import { HistoryScreen } from '@/features/history';
   import { PracticeScreen, ResumeGate } from '@/features/practice';
   import type { PracticeSession } from '@/features/practice';
@@ -30,7 +31,7 @@
   // A session restored by the resume prompt; dropped as soon as the user leaves the practice screen.
   let resumed = $state.raw<PracticeSession | null>(null);
   $effect(() => {
-    if (appState.view !== 'practice') resumed = null;
+    if (appState.view !== 'practice' && appState.view !== 'checkpoint') resumed = null;
   });
 
   // The webview's <html lang> follows the chosen UI language (screen readers, hyphenation, fonts).
@@ -58,6 +59,10 @@
       return;
     }
     resumed = session;
+    if (session.kind === 'checkpoint' && session.groupIndex !== null) {
+      appState.open({ view: 'checkpoint', groupIndex: session.groupIndex });
+      return;
+    }
     appState.open({ view: 'practice', topicId: session.topicId ?? '' });
   }
 </script>
@@ -73,6 +78,12 @@
       {openExternal}
       canPractice={(topicId) => practiceUnlocked(services.catalog.lessonsOf(topicId), appState.readIds)}
     />
+  {:else if appState.route.view === 'checkpoint'}
+    {#key appState.route.groupIndex}
+      <ExamScreen {services} {appState} groupIndex={appState.route.groupIndex} initialSession={resumed} />
+    {/key}
+  {:else if appState.route.view === 'practice' && appState.route.topicId === 'capstone'}
+    <ExamScreen {services} {appState} groupIndex={null} initialSession={resumed} />
   {:else if appState.route.view === 'practice'}
     {#key appState.route.topicId}
       <PracticeScreen {services} {appState} topicId={appState.route.topicId} initialSession={resumed} />

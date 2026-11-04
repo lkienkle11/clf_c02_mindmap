@@ -19,3 +19,4 @@ export { ExamNotAvailableError } from './errors';
 export { DEFAULT_EXAM_OPTIONS, loadExamOptions, saveExamOptions } from './options';
 export type { ExamOptions } from './options';
 export { startCapstoneExam, startCheckpoint } from './start-exam';
+export { default as ExamScreen } from './ui/ExamScreen.svelte';
