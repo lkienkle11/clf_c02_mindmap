@@ -15,3 +15,7 @@ export { drawBucket, drawCapstone, drawCheckpoint, historyOf } from './logic/dra
 export type { AnswerHistory } from './logic/draw-exam';
 export { checkpointState, isGateOpen, passedCheckpointGroups } from './logic/gates';
 export type { CheckpointState } from './logic/gates';
+export { ExamNotAvailableError } from './errors';
+export { DEFAULT_EXAM_OPTIONS, loadExamOptions, saveExamOptions } from './options';
+export type { ExamOptions } from './options';
+export { startCapstoneExam, startCheckpoint } from './start-exam';

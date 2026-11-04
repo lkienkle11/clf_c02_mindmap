@@ -1,5 +1,5 @@
 export const feature = 'practice' as const;
-export { buildPool, planAttempt, practiceCount } from './logic/pick-questions';
+export { buildPool, planAttempt, planQuestions, practiceCount } from './logic/pick-questions';
 export type { PlannedQuestion } from './logic/pick-questions';
 export { MIN_PRACTICE_QUESTIONS, quickCounts, validateQuestionCount } from './logic/question-count';
 export type { QuestionCountReason, QuestionCountResult } from './logic/question-count';
