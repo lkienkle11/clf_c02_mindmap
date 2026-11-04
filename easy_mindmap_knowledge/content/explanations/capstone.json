@@ -1,0 +1,95 @@
+{
+ "auth-capstone-01": {
+  "explanation": "With a managed Lambda runtime there is no server for the company to run, so AWS patches the operating system and applies runtime updates. The company still writes its code, grants permissions and protects its data.",
+  "optionNotes": {
+   "A": "The function code is still written and tested by the company, because Lambda only runs code the customer provides.",
+   "B": "With Lambda on a managed runtime AWS maintains the operating system and runtime, so the company no longer patches an OS.",
+   "C": "The function still needs an IAM execution role, and defining those permissions remains the customer's job.",
+   "D": "Securing and encrypting the files the job stores in S3 stays the customer's responsibility for its own data."
+  }
+ },
+ "auth-capstone-02": {
+  "explanation": "An S3 Lifecycle rule moves objects automatically, and S3 Glacier Deep Archive is the lowest-cost storage class for long-term archives where retrieval can take hours. This gives the lowest cost with no manual work.",
+  "optionNotes": {
+   "A": "S3 Standard is the most expensive class for rarely read data, and Versioning keeps extra copies rather than lowering cost.",
+   "B": "EBS Cold HDD volumes are block storage attached to instances, cost more than archive storage, and moving logs by hand adds effort.",
+   "C": "EFS is a shared file system priced well above archive classes, and a manual script adds operational effort.",
+   "D": "A Lifecycle rule automates the transition, and Glacier Deep Archive gives the lowest cost for 7-year retention with hours-long retrieval."
+  }
+ },
+ "auth-capstone-03": {
+  "explanation": "A Multi-AZ RDS deployment (A) keeps a standby in another Availability Zone and fails over automatically. Route 53 failover routing with health checks (D) sends users to the second Region when the primary stops passing health checks.",
+  "optionNotes": {
+   "A": "Multi-AZ keeps a synchronous standby in a different Availability Zone and fails over to it automatically.",
+   "B": "A read replica serves read traffic, is not an automatic failover standby, and placing it in the same Availability Zone would not protect against an AZ failure.",
+   "C": "Geolocation routing picks a destination by the user's location and does not react to health check failures.",
+   "D": "Failover routing with health checks redirects traffic to the standby Region when the primary is unhealthy.",
+   "E": "ElastiCache caches data to speed up reads; it does not provide database failover or Region-level routing."
+  }
+ },
+ "auth-capstone-04": {
+  "explanation": "A CloudWatch alarm on average CPU utilization can trigger an Auto Scaling policy to add instances and publish to an SNS topic that emails the operations team.",
+  "optionNotes": {
+   "A": "CloudWatch alarms watch the CPU metric, can invoke Auto Scaling actions, and can notify an SNS topic that sends email.",
+   "B": "CloudTrail records API activity for auditing; it does not monitor CPU load or add instances.",
+   "C": "Trusted Advisor gives periodic best-practice checks and cannot trigger scaling when CPU crosses a threshold.",
+   "D": "AWS Config evaluates resource configurations against rules and does not react to CPU utilization."
+  }
+ },
+ "auth-capstone-05": {
+  "explanation": "Consolidated billing in AWS Organizations (B) gives one bill for all 12 accounts. A service control policy (E) that denies other Regions sets a limit on every account that an IAM policy cannot override.",
+  "optionNotes": {
+   "A": "IAM groups manage permissions for users in one account; they do not combine billing or restrict Regions across accounts.",
+   "B": "Consolidated billing in AWS Organizations combines the charges of all member accounts into a single bill.",
+   "C": "Cost Explorer forecasts help predict spend per account but do not create a single bill or limit Regions.",
+   "D": "A support plan provides technical support and does not consolidate billing or restrict Regions.",
+   "E": "An SCP sets the maximum permissions for accounts in the organization, so denying other Regions overrides any IAM policy that allows them."
+  }
+ },
+ "auth-capstone-06": {
+  "explanation": "Amazon Inspector (A) continuously scans EC2 instances for known software vulnerabilities, and Systems Manager Patch Manager (C) installs operating system patches across many instances. Patching the guest OS is the customer's job.",
+  "optionNotes": {
+   "A": "Inspector continuously scans EC2 instances for software vulnerabilities and unintended exposure.",
+   "B": "Macie discovers sensitive data in Amazon S3; it does not scan instances for vulnerabilities.",
+   "C": "Patch Manager automates installing OS patches across large fleets of instances.",
+   "D": "Session Manager provides shell access to instances without opening ports; it neither scans nor patches.",
+   "E": "GuardDuty detects suspicious activity from logs and network data rather than scanning software for vulnerabilities."
+  }
+ },
+ "auth-capstone-07": {
+  "explanation": "Bedrock is a managed service, so AWS protects the infrastructure, including servers, virtualization and data centers. The company is responsible for its data and for controlling who can access the documents and the assistant.",
+  "optionNotes": {
+   "A": "AWS operates and maintains the servers that host the foundation models in a managed service.",
+   "B": "The virtualization layer of the hosts is part of the infrastructure that AWS secures.",
+   "C": "Managing access to its own data and applications, for example with IAM, is the customer's responsibility.",
+   "D": "Physical data center security is always AWS's responsibility."
+  }
+ },
+ "auth-capstone-08": {
+  "explanation": "Moving from Oracle to Aurora PostgreSQL is a heterogeneous migration, so the schema must be converted first (DMS Schema Conversion). AWS DMS then copies the data while the source database stays online.",
+  "optionNotes": {
+   "A": "Rehosting with AWS Transform MGN (formerly Application Migration Service) keeps Oracle running on EC2, so the license cost remains and the engine does not change.",
+   "B": "DataSync copies files to storage and cannot convert an Oracle database to PostgreSQL or keep it online as a live database.",
+   "C": "Nightly backups restore only to the same engine and do not keep the data in sync while users stay online.",
+   "D": "Schema Conversion translates the Oracle schema for PostgreSQL, and DMS replicates the data while the source remains available."
+  }
+ },
+ "auth-capstone-09": {
+  "explanation": "A NAT gateway lets instances in a private subnet start outbound connections without allowing inbound connections from the internet. An IAM policy on the network team's group follows least privilege for route table changes.",
+  "optionNotes": {
+   "A": "An internet gateway route would make the subnet public, and AdministratorAccess for all developers breaks least privilege.",
+   "B": "Public IP addresses expose the servers to inbound connections, and letting every IAM user edit routes is far too broad.",
+   "C": "A NAT gateway allows outbound-only internet access, and limiting route changes to the network team's group applies least privilege.",
+   "D": "The NAT gateway fits, but sharing the root user password is a serious security practice violation."
+  }
+ },
+ "auth-capstone-10": {
+  "explanation": "AWS Artifact provides AWS compliance reports such as SOC reports on demand. KMS customer managed keys let the company control the key policy, rotation and disabling of keys, which SSE-S3 and AWS managed keys do not.",
+  "optionNotes": {
+   "A": "Compliance reports come from AWS Artifact, and SSE-S3 keys are managed by AWS so the company cannot disable them.",
+   "B": "Artifact supplies the SOC report, and customer managed KMS keys give the company full control, including disabling them.",
+   "C": "Artifact is the right source for the report, but SSE-S3 keys are fully managed by AWS and cannot be controlled by the company.",
+   "D": "AWS Config assesses resource configurations and does not generate AWS's SOC reports, and AWS managed keys are not controlled by the customer."
+  }
+ }
+}
