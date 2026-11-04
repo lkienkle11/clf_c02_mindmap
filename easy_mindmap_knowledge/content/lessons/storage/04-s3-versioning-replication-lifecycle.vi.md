@@ -44,6 +44,8 @@ Mẹo thi: "tự động sao chép dữ liệu sang bucket ở Region khác" là
 - **Expire** (xóa) đối tượng sau thời gian lưu giữ.
 - Trong bucket có versioning, bạn còn tác động được lên **phiên bản không còn hiện hành (noncurrent)**, ví dụ cho các phiên bản cũ hết hạn sau 90 ngày để kiểm soát chi phí.
 
+Để biết mình đang lưu những gì, **S3 Inventory** tạo báo cáo theo lịch (hằng ngày hoặc hằng tuần) liệt kê các đối tượng và metadata của chúng, nên bạn không cần gọi các API list.
+
 Nhắc lại: lifecycle rule hợp với mẫu truy cập **đã biết, dự đoán được**. Với mẫu **chưa biết hoặc thay đổi**, **S3 Intelligent-Tiering** tự chuyển đối tượng giữa các tầng cho bạn.
 
 ## Object Lock và Glacier Vault Lock

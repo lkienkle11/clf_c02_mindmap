@@ -45,6 +45,8 @@ An **S3 Lifecycle configuration** applies actions on a schedule:
 - **Expire** (delete) objects after a retention period.
 - In a versioned bucket you can also act on **noncurrent versions**, for example expire old versions after 90 days to control cost.
 
+To see what you have stored, **S3 Inventory** produces a scheduled (daily or weekly) report listing your objects and their metadata, so you do not have to call the list APIs.
+
 Reminder: lifecycle rules suit **known, predictable** access patterns. For **unknown or changing** patterns, **S3 Intelligent-Tiering** moves objects between tiers for you automatically.
 
 ## Object Lock and Glacier Vault Lock
