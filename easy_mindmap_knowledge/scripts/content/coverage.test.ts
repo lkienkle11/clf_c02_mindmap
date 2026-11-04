@@ -49,6 +49,17 @@ describe('lessonProse', () => {
     expect(mentions(lessonProse(body), 'network firewall')).toBe(false);
     expect(mentions(lessonProse(body), 'the guide')).toBe(true);
   });
+
+  it('drops the Sources section so a service named only there does not count as covered', () => {
+    const body = 'Use the Transit Gateway here.\n\n## Sources\n\n- [AWS Client VPN guide](https://docs.aws.amazon.com/vpn/)\n';
+    expect(mentions(lessonProse(body), 'Transit Gateway')).toBe(true);
+    expect(mentions(lessonProse(body), 'AWS Client VPN')).toBe(false);
+  });
+
+  it('drops the Vietnamese Nguồn section too', () => {
+    const body = 'Nội dung chính.\n\n## Nguồn\n\n- [AWS Client VPN](https://docs.aws.amazon.com/vpn/)\n';
+    expect(mentions(lessonProse(body), 'AWS Client VPN')).toBe(false);
+  });
 });
 
 describe('extractServiceNames', () => {

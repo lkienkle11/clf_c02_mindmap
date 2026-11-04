@@ -35,9 +35,15 @@ export function serviceMentioned(text: string, service: Pick<ServiceEntry, 'name
   return [service.name, ...service.aliases].some((term) => mentions(text, term));
 }
 
-/** Lesson body prose for matching: link targets (URLs) are dropped and the link text is kept. */
+// The trailing Sources (EN) or Nguồn (VI) section, same rule as proseWords in bundled-content.test.ts.
+const SOURCES_SECTION = /^## (?:Sources|Nguồn)\s*$[\s\S]*$/m;
+
+/**
+ * Lesson body prose for matching: the trailing Sources section is dropped (a service named only in a
+ * reading list does not count as taught), and link targets (URLs) are dropped with the link text kept.
+ */
 export function lessonProse(body: string): string {
-  return body.replace(/\]\([^)]*\)/g, ']');
+  return body.replace(SOURCES_SECTION, '').replace(/\]\([^)]*\)/g, ']');
 }
 
 /** Lesson file text without its front matter block. */
