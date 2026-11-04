@@ -36,7 +36,7 @@
     { "name": "AWS Fault Injection Simulator", "aliases": ["AWS FIS", "Fault Injection Simulator", "AWS Fault Injection Service", "Fault Injection Service"], "topicId": "deploy-operate", "active": true },
     { "name": "Amazon MQ", "aliases": ["AWS MQ", "Amazon MQ for Apache ActiveMQ"], "topicId": "deploy-operate", "active": true },
     { "name": "AWS AppSync", "aliases": ["Amazon AppSync"], "topicId": "deploy-operate", "active": true },
-    { "name": "AWS Artifact", "aliases": [], "topicId": "shared-responsibility", "active": false },
+    { "name": "AWS Artifact", "aliases": [], "topicId": "shared-responsibility", "active": true },
     { "name": "AWS STS", "aliases": ["AWS Security Token Service", "Security Token Service"], "topicId": "iam-security", "active": false },
     { "name": "AWS Directory Service", "aliases": ["AWS Managed Microsoft AD", "Directory Service"], "topicId": "iam-security", "active": false },
     { "name": "AWS Certificate Manager", "aliases": ["AWS ACM", "AWS Certificate Manager (ACM)"], "topicId": "iam-security", "active": false },
