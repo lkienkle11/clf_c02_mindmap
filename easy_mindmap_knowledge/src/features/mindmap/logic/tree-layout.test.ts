@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { makeTopic } from '@/testing/fixtures';
-import { layoutTree } from './tree-layout';
+import { CHECKPOINT_GAP, layoutTree } from './tree-layout';
 
 const topics = (lessonCounts: number[]) =>
   lessonCounts.map((n, i) =>
@@ -102,5 +102,51 @@ describe('layoutTree', () => {
   it('is deterministic', () => {
     const ts = topics([2, 2]);
     expect(layoutTree(ts, { expandedTopicId: ts[0].id })).toEqual(layoutTree(ts, { expandedTopicId: ts[0].id }));
+  });
+
+  describe('checkpoints', () => {
+    const thirteen = () => topics(Array(13).fill(1));
+    const cps = (ts: ReturnType<typeof thirteen>) =>
+      [3, 6, 9, 12].map((n, k) => ({ index: k + 1, afterTopicId: ts[n - 1].id }));
+
+    it('defaults to none and keeps the geometry', () => {
+      const ts = thirteen();
+      const plain = layoutTree(ts, { expandedTopicId: null });
+      expect(plain.checkpoints).toEqual([]);
+      expect(layoutTree(ts, { expandedTopicId: null, checkpoints: [] })).toEqual(plain);
+    });
+
+    it('places 4 checkpoints on the trunk, each strictly between its branch and the next', () => {
+      const ts = thirteen();
+      const l = layoutTree(ts, { expandedTopicId: null, checkpoints: cps(ts) });
+      expect(l.checkpoints.map((c) => c.groupIndex)).toEqual([1, 2, 3, 4]);
+      [3, 6, 9, 12].forEach((n, k) => {
+        const c = l.checkpoints[k];
+        expect(c.afterTopicId).toBe(ts[n - 1].id);
+        expect(c.y).toBeGreaterThan(l.branches[n - 1].y);
+        expect(c.y).toBeLessThan(l.branches[n].y);
+      });
+    });
+
+    it('shifts later branches by CHECKPOINT_GAP per preceding checkpoint and leaves earlier ones alone', () => {
+      const ts = thirteen();
+      const plain = layoutTree(ts, { expandedTopicId: null });
+      const l = layoutTree(ts, { expandedTopicId: null, checkpoints: cps(ts) });
+      expect(CHECKPOINT_GAP).toBe(70);
+      l.branches.forEach((b, i) => {
+        expect(b.y - plain.branches[i].y).toBe(CHECKPOINT_GAP * Math.floor(i / 3));
+      });
+      expect(l.height).toBe(plain.height + 4 * CHECKPOINT_GAP);
+    });
+
+    it('keeps the checkpoint clear of the tier mark of the next topic', () => {
+      const ts = thirteen();
+      const l = layoutTree(ts, { expandedTopicId: null, checkpoints: cps(ts) });
+      for (const m of l.tierMarks) {
+        for (const c of l.checkpoints) {
+          if (Math.abs(c.y - m.y) < 100) expect(Math.abs(c.y - m.y)).toBeGreaterThanOrEqual(22 + 16);
+        }
+      }
+    });
   });
 });

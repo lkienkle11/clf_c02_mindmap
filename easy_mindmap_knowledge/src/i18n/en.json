@@ -238,5 +238,11 @@
   "exam.result.groupUnlocked": "Next group unlocked",
   "exam.breakdown.title": "Results by topic",
   "exam.breakdown.topic": "Topic",
-  "exam.breakdown.score": "Score"
+  "exam.breakdown.score": "Score",
+  "mindmap.lockedByCheckpoint": "Pass checkpoint {group} to unlock",
+  "mindmap.checkpoint.label": "Checkpoint {group}",
+  "mindmap.checkpoint.state.locked": "Locked",
+  "mindmap.checkpoint.state.available": "Ready",
+  "mindmap.checkpoint.state.passed": "Passed",
+  "mindmap.checkpoint.lockedReason": "Finish all topics in group {group} first"
 }

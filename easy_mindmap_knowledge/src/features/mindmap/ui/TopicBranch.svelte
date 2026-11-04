@@ -19,6 +19,8 @@
     readIds: Set<string>;
     /** Due-for-review summary; the badge only shows on a done topic. */
     review: TopicReviewSummary | null;
+    /** Group number of the unpassed checkpoint that locks this topic, else null. */
+    lockedByCheckpoint: number | null;
     hasQuestions: boolean;
     expanded: boolean;
     canvasWidth: number;
@@ -30,7 +32,7 @@
     onopenhistory: (topicId: string) => void;
   }
 
-  let { branch, topic, status, prevTitle, lessons, readIds, review, hasQuestions, expanded, canvasWidth, trunkX, ontoggle, onopenlesson, onopenpractice, onexpand, onopenhistory }: Props = $props();
+  let { branch, topic, status, prevTitle, lessons, readIds, review, lockedByCheckpoint, hasQuestions, expanded, canvasWidth, trunkX, ontoggle, onopenlesson, onopenpractice, onexpand, onopenhistory }: Props = $props();
 
   const i18n = getI18n();
   const locale = $derived(i18n.locale);
@@ -38,7 +40,11 @@
   const locked = $derived(status === 'locked');
   const readCount = $derived(lessons.filter((l) => readIds.has(l.id)).length);
   const badge = $derived(i18n.t('mindmap.lessonsRead', { read: readCount, total: lessons.length }));
-  const hint = $derived(i18n.t('mindmap.lockedHint', { topic: prevTitle ?? title }));
+  const hint = $derived(
+    lockedByCheckpoint !== null
+      ? i18n.t('mindmap.lockedByCheckpoint', { group: lockedByCheckpoint })
+      : i18n.t('mindmap.lockedHint', { topic: prevTitle ?? title }),
+  );
   const statusText = $derived(i18n.t(status === 'done' ? 'mindmap.status.done' : status === 'current' ? 'mindmap.status.next' : 'mindmap.status.locked'));
   const reviewText = $derived.by(() => {
     if (status !== 'done' || !review) return null;

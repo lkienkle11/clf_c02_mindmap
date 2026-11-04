@@ -89,4 +89,19 @@ describe('waterPath', () => {
   it('is deterministic', () => {
     expect(run([ts[0].id], ts[1].id, 'practice')).toEqual(run([ts[0].id], ts[1].id, 'practice'));
   });
+
+  it('a pending checkpoint (no current topic, a topic locked) stops the water at the checkpoint', () => {
+    const topics3 = [1, 2, 3, 4].map((o) => makeTopic({ order: o }));
+    const statuses = topicStatuses(topics3, new Set(topics3.slice(0, 3).map((t) => t.id)), (id) => id !== topics3[3].id);
+    const layout = layoutTree(topics3, {
+      expandedTopicId: null,
+      checkpoints: [{ index: 1, afterTopicId: topics3[2].id }],
+    });
+    const { segments, head } = waterPath(layout, { statuses, currentTopicId: null, stopLeafId: null });
+    const cpY = layout.checkpoints[0].y;
+    expect(head).toBeNull();
+    expect(Math.max(...segments.map((s) => Math.max(s.y1, s.y2)))).toBe(cpY);
+    expect(segments.some((s) => s.y2 >= layout.branches[3].y)).toBe(false);
+    expect(segments).toContainEqual({ x1: layout.trunk.x, y1: layout.trunk.y1, x2: layout.trunk.x, y2: cpY, tone: 'done' });
+  });
 });

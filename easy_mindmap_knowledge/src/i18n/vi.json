@@ -238,5 +238,11 @@
   "exam.result.groupUnlocked": "Đã mở nhóm tiếp theo",
   "exam.breakdown.title": "Kết quả theo chủ đề",
   "exam.breakdown.topic": "Chủ đề",
-  "exam.breakdown.score": "Điểm"
+  "exam.breakdown.score": "Điểm",
+  "mindmap.lockedByCheckpoint": "Đạt điểm kiểm tra {group} để mở",
+  "mindmap.checkpoint.label": "Điểm kiểm tra {group}",
+  "mindmap.checkpoint.state.locked": "Đang khóa",
+  "mindmap.checkpoint.state.available": "Sẵn sàng",
+  "mindmap.checkpoint.state.passed": "Đã đạt",
+  "mindmap.checkpoint.lockedReason": "Hãy hoàn thành mọi chủ đề của nhóm {group} trước"
 }

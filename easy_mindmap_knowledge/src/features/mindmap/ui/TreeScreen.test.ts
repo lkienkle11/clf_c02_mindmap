@@ -202,3 +202,50 @@ describe('TreeScreen review badge', () => {
     expect(await screen.findByText('Cần ôn · 3 ngày')).toBeInTheDocument();
   });
 });
+
+describe('TreeScreen checkpoint nodes', () => {
+  const GROUP1 = ['cloud-concepts', 'global-infrastructure', 'compute'];
+
+  it('group 1 finished but unpassed: checkpoint 1 is available and opens the checkpoint route; storage is locked by it', async () => {
+    const { appState } = await mountTree({ passed: GROUP1 });
+    const cp = screen.getByRole('button', { name: /^Checkpoint 1/ });
+    expect(cp).toHaveAccessibleName(/Ready/);
+    expect(cp).not.toHaveAttribute('aria-disabled', 'true');
+    const locked = screen.getByRole('button', { name: /^storage/ });
+    expect(locked).toHaveAttribute('aria-disabled', 'true');
+    expect(locked).toHaveAccessibleName(/Pass checkpoint 1 to unlock/);
+    expect(locked).not.toHaveAccessibleName(/Score 80%/);
+    expect(screen.queryByRole('button', { name: /^Practice/ })).not.toBeInTheDocument(); // nothing expanded
+    await fireEvent.click(cp);
+    expect(appState.route).toEqual({ view: 'checkpoint', groupIndex: 1 });
+    appState.open({ view: 'tree' });
+    await fireEvent.keyDown(cp, { key: 'Enter' });
+    expect(appState.route).toEqual({ view: 'checkpoint', groupIndex: 1 });
+  });
+
+  it('nothing completed: checkpoint 1 is locked, explains why, and is not clickable', async () => {
+    const { appState } = await mountTree({ passed: [] });
+    const cp = screen.getByRole('button', { name: /^Checkpoint 1/ });
+    expect(cp).toHaveAttribute('aria-disabled', 'true');
+    expect(cp).toHaveAccessibleName(/Locked/);
+    expect(within(cp).getByText('🔒')).toBeInTheDocument();
+    expect(cp.querySelector('title')).toHaveTextContent('Finish all topics in group 1 first');
+    await fireEvent.click(cp);
+    await fireEvent.keyDown(cp, { key: 'Enter' });
+    expect(appState.route).toEqual({ view: 'tree' });
+  });
+
+  it('group 1 passed: shows a check and storage becomes current', async () => {
+    await mountTree({ passed: GROUP1, groups: [1] });
+    const cp = screen.getByRole('button', { name: /^Checkpoint 1/ });
+    expect(cp).toHaveAccessibleName(/Passed/);
+    expect(within(cp).getByText('✓')).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /^storage/ })).toHaveAccessibleName(/Up next/);
+  });
+
+  it('renders the four checkpoints and speaks Vietnamese', async () => {
+    await mountTree({ passed: GROUP1, locale: 'vi' });
+    expect(screen.getAllByRole('button', { name: /^Điểm kiểm tra \d/ })).toHaveLength(4);
+    expect(screen.getByRole('button', { name: /^storage/ })).toHaveAccessibleName(/Đạt điểm kiểm tra 1 để mở/);
+  });
+});
