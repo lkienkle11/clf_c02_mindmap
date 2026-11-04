@@ -55,6 +55,24 @@ describe('PracticeResult', () => {
     expect(within(rows[2]).getByText('Charlie')).toBeInTheDocument();
   });
 
+  it('shows no empty paragraph for a question missing from the catalog', async () => {
+    await mount({
+      scorePct: 0,
+      correct: 0,
+      total: 2,
+      passed: false,
+      items: [
+        { questionId: 'gone-1', selected: [], correct: ['A'], isCorrect: false },
+        { questionId: 'gone-2', selected: ['B'], correct: ['A'], isCorrect: false, explanation: 'Kept note.' },
+      ],
+    });
+    const [bare, noted] = screen.getAllByRole('listitem').filter((li) => li.getAttribute('data-question'));
+    expect(within(bare).getByText('No answer')).toBeInTheDocument();
+    expect(Array.from(bare.querySelectorAll('p')).filter((p) => p.textContent?.trim() === '')).toHaveLength(0);
+    expect(within(noted).getByText('Kept note.')).toBeInTheDocument();
+    expect(within(noted).queryByText('No answer')).not.toBeInTheDocument();
+  });
+
   it('lists every option of each item with badges', async () => {
     await mount({ scorePct: 33, correct: 1, total: 3, passed: false, items: [{ ...items[1], optionOrder: ['D', 'C', 'B', 'A'] }] });
     const opts = Array.from(document.querySelectorAll('li[data-option]')) as HTMLElement[];

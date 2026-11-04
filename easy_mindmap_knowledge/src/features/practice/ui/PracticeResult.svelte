@@ -69,7 +69,12 @@
           {#if q}
             <OptionReview question={explained(q, item.explanation)} selected={item.selected} optionOrder={item.optionOrder} />
           {:else}
-            <p class="text-sm text-muted-foreground">{item.explanation ?? ''}</p>
+            {#if item.selected.length === 0}
+              <p class="text-sm text-muted-foreground">{i18n.t('practice.result.noAnswer')}</p>
+            {/if}
+            {#if item.explanation}
+              <p class="text-sm text-muted-foreground">{item.explanation}</p>
+            {/if}
           {/if}
         </li>
       {/each}
