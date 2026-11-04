@@ -113,16 +113,16 @@ describe('learning flow (ruling R17: topics without lessons can be practised)', 
       await passWithSession(services, appState, topicId);
     }
 
-    // Capstone: no own questions and no lessons, yet practisable with the pooled bank (32 -> 30 asked).
+    // Capstone: no own questions and no lessons, yet practisable with the pooled bank (32 -> 10 asked).
     await waitFor(() => expect(appState.statuses.get('capstone')).toBe('current'));
     expect(practiceLeaf()).not.toHaveAttribute('aria-disabled', 'true');
     expect(screen.queryByText('No questions yet')).not.toBeInTheDocument();
     await user.click(practiceLeaf());
-    expect(await screen.findByText('30 questions')).toBeInTheDocument();
+    expect(await screen.findByText('10 questions')).toBeInTheDocument();
     const start = screen.getByRole('button', { name: 'Start' });
     await waitFor(() => expect(start).toBeEnabled());
     await user.click(start);
-    expect(await screen.findByText('1/30')).toBeInTheDocument();
+    expect(await screen.findByText('1/10')).toBeInTheDocument();
   }, 30_000);
 
   it('the last lesson of a topic offers Practice: locked until every required lesson is read, then it opens the topic practice', async () => {

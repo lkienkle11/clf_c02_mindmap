@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { makeQuestion } from '@/testing/fixtures';
 import type { Catalog, Question } from '@/content/types';
-import { buildPool, planAttempt, practiceCount } from './pick-questions';
+import { buildPool, planAttempt, planQuestions, practiceCount } from './pick-questions';
 import { makeRng } from '@/random/seeded-random';
 
 const qs = (n: number, over: Partial<Question> = {}) =>
@@ -13,8 +13,8 @@ const qs = (n: number, over: Partial<Question> = {}) =>
     }));
 
 describe('practiceCount', () => {
-  it('is 30 for capstone, else 10', () => {
-    expect(practiceCount('capstone')).toBe(30);
+  it('is 10 for every topic, capstone included', () => {
+    expect(practiceCount('capstone')).toBe(10);
     expect(practiceCount('compute')).toBe(10);
   });
 });
@@ -34,6 +34,26 @@ describe('buildPool', () => {
   });
   it('topic uses questionsOf', () => {
     expect(buildPool(catalog, 'compute').map((q) => q.id)).toEqual(['a']);
+  });
+});
+
+describe('planQuestions', () => {
+  it('plans every question once, in a shuffled order, without slicing', () => {
+    const pool = qs(20);
+    const plan = planQuestions(pool, makeRng(4));
+    expect(plan.map((p) => p.questionId).sort()).toEqual(pool.map((q) => q.id).sort());
+    expect(plan.map((p) => p.questionId)).not.toEqual(pool.map((q) => q.id));
+  });
+  it('keeps option order for orderDependent questions', () => {
+    const pool = qs(5, { orderDependent: true });
+    for (let seed = 0; seed < 10; seed++) {
+      for (const p of planQuestions(pool, makeRng(seed))) {
+        expect(p.optionOrder).toEqual(['A', 'B', 'C', 'D', 'E']);
+      }
+    }
+  });
+  it('returns [] for an empty list', () => {
+    expect(planQuestions([], makeRng(1))).toEqual([]);
   });
 });
 

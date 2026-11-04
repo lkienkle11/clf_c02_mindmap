@@ -81,9 +81,9 @@ describe('start', () => {
     }
     expect(s.questions.map((q) => q.questionId)).toEqual(found!.questions.map((q) => q.questionId));
   });
-  it('capstone uses 30', async () => {
+  it('capstone uses 10 like every topic', async () => {
     const s = await start('capstone');
-    expect(s.questions).toHaveLength(30);
+    expect(s.questions).toHaveLength(10);
   });
   it('pool smaller than count uses all', async () => {
     expect((await start('storage')).questions).toHaveLength(4);

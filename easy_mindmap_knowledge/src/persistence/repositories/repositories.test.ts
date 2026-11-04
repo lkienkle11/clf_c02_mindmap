@@ -234,6 +234,18 @@ describe('attempts', () => {
     expect(selects[0].sql).toContain('$500)');
   });
 
+  it('listGradedAnswers returns graded rows of submitted attempts only', async () => {
+    const repo = createAttemptsRepo(db);
+    // in progress: a graded row must still not count, the attempt is not submitted
+    await repo.create(attempt({ id: 'a1' }), [{ ...questions('a1')[0], isCorrect: true }]);
+    await repo.create(attempt({ id: 'a2' }), questions('a2'));
+    await repo.markSubmitted('a2', {
+      scorePct: 50, passed: false, reason: 'manual', at: 9,
+      grades: [{ position: 0, isCorrect: false, selected: ['B'] }], // position 1 stays ungraded
+    });
+    expect(await repo.listGradedAnswers()).toEqual([{ questionId: 'q1', isCorrect: false }]);
+  });
+
   it('listSubmitted excludes in_progress attempts', async () => {
     const repo = createAttemptsRepo(db);
     await repo.create(attempt({ id: 'a1' }), questions('a1'));

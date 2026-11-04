@@ -191,6 +191,16 @@ export function createAttemptsRepo(db: SqlExecutor) {
       );
       return rows.map(toAttempt);
     },
+
+    /** Graded answers of submitted attempts only: in-progress attempts and ungraded rows are not history. */
+    async listGradedAnswers(): Promise<{ questionId: string; isCorrect: boolean }[]> {
+      const rows = await db.select<{ question_id: string; is_correct: number }>(
+        `SELECT q.question_id, q.is_correct FROM attempt_questions q
+           JOIN attempts a ON a.id = q.attempt_id
+          WHERE a.status = 'submitted' AND q.is_correct IS NOT NULL`,
+      );
+      return rows.map((r) => ({ questionId: r.question_id, isCorrect: r.is_correct === 1 }));
+    },
   };
 }
 export type AttemptsRepo = ReturnType<typeof createAttemptsRepo>;
