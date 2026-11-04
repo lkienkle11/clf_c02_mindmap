@@ -4,6 +4,7 @@ import type { AttemptQuestionRow, AttemptRow, ClockState } from '@/persistence';
 import { advanceFreeze, isExpired, remainingAt, resolveOnResume, settleHidden as settleClockHidden, startClock } from './logic/attempt-clock';
 import { gradeQuestion, passes } from './logic/grading';
 import { buildPool, planAttempt } from './logic/pick-questions';
+import type { PlannedQuestion } from './logic/pick-questions';
 import { validateQuestionCount } from './logic/question-count';
 import { makeRng, shuffle } from '@/random/seeded-random';
 import { CorruptAttemptError, InvalidQuestionCountError, KnowledgeNotAllowedError, NoQuestionsError } from './errors';
@@ -167,6 +168,39 @@ export class PracticeSession {
     return new PracticeSession(services, onSubmitted, attempt, rows, clock);
   }
 
+  /**
+   * Starts an exam-mode attempt (checkpoint or Capstone): questions and option order exactly as PLANNED,
+   * no knowledge review, a run clock that keeps running while the tab is hidden. Leaves
+   * `practice_last_options` alone. Unanswered questions are graded wrong at submit, as always.
+   */
+  static async startExam(
+    services: Services,
+    input: {
+      kind: 'checkpoint' | 'practice';
+      topicId: string | null;
+      groupIndex: number | null;
+      plan: PlannedQuestion[];
+      limitMs: number;
+    },
+    onSubmitted: () => Promise<void>,
+  ): Promise<PracticeSession> {
+    if (input.plan.length === 0) throw new NoQuestionsError(input.topicId ?? input.kind);
+    const now = services.now();
+    const clock = startClock(input.limitMs, 'run', now, 'run');
+    const id = services.newId();
+    const attempt: AttemptRow = {
+      id, kind: input.kind, topicId: input.topicId, status: 'in_progress', startedAt: now,
+      submittedAt: null, submitReason: null, reviewAllowed: false, clock,
+      heartbeatAt: now, scorePct: null, passed: null, groupIndex: input.groupIndex, plannedCount: input.plan.length,
+    };
+    const rows: AttemptQuestionRow[] = input.plan.map((p, position) => ({
+      attemptId: id, position, questionId: p.questionId, optionOrder: [...p.optionOrder],
+      selected: [], isCorrect: null,
+    }));
+    await services.repos.attempts.create(attempt, rows);
+    return new PracticeSession(services, onSubmitted, attempt, rows, clock);
+  }
+
   static async resume(
     services: Services,
     found: { attempt: AttemptRow; questions: AttemptQuestionRow[] },
@@ -178,8 +212,9 @@ export class PracticeSession {
     if (questions.some((q, i) => q.position !== i)) throw new CorruptAttemptError('positions are not 0..n-1');
     const known = new Set(services.catalog.questions.map((q) => q.id));
     if (questions.some((q) => !known.has(q.questionId))) throw new CorruptAttemptError('unknown question');
-    if (attempt.kind === 'practice') {
-      if (attempt.topicId === null) throw new CorruptAttemptError('practice attempt without topic');
+    if (attempt.kind === 'practice' && attempt.topicId === null) throw new CorruptAttemptError('practice attempt without topic');
+    if (attempt.kind === 'checkpoint' && attempt.groupIndex === null) throw new CorruptAttemptError('checkpoint attempt without group');
+    if (attempt.kind === 'practice' || attempt.kind === 'checkpoint') {
       // plannedCount is the count drawn at start (already clamped to the pool). Null marks an attempt that
       // predates the column; it cannot be checked, so it is not.
       if (attempt.plannedCount !== null && questions.length < attempt.plannedCount) throw new CorruptAttemptError('partial attempt');
