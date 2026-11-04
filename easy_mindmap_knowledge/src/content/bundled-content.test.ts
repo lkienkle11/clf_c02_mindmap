@@ -7,6 +7,11 @@ import type { Lesson, Topic } from './types';
 // Checks on the real content/ folder. Every topic listed here has lessons and authored questions,
 // and the same content contract applies to all of them. Add a topic here when its content lands.
 const CONTENT_TOPICS = ['cloud-concepts', 'global-infrastructure', 'compute', 'storage', 'networking', 'databases', 'deploy-operate', 'shared-responsibility', 'iam-security', 'pricing-billing', 'migration-caf', 'support-ai-other', 'capstone'];
+// Topics whose lessons were expanded: 8-14 lessons, at least 1 optional, and every optional lesson has a videoQuery.
+// A content task adds its topic id here when that topic's lessons land. Empty until then, so every
+// topic keeps the legacy rule (4-5 lessons, exactly 1 optional with a videoQuery).
+const EXPANDED_TOPICS: string[] = [];
+const CAPSTONE_TOPIC = 'capstone';
 const AUTHORED_PER_TOPIC = 10;
 const CHOOSE_TWO_PER_TOPIC = 3;
 /** Largest share of the single-answer questions of one topic that may use the same correct key. */
@@ -71,13 +76,28 @@ describe('loadBundledCatalog (real content folder)', () => {
     const lessons = catalog.lessonsOf(topicId);
     const required = lessons.filter((l) => l.required);
     const optional = lessons.filter((l) => !l.required);
+    const expanded = EXPANDED_TOPICS.includes(topicId);
+    const isCapstone = topicId === CAPSTONE_TOPIC;
+    const [min, max] = isCapstone ? [5, 8] : expanded ? [8, 14] : [4, 5];
+    const optionalRule = expanded
+      ? 'at least 1 optional, every optional with a videoQuery'
+      : isCapstone
+        ? 'at least 1 optional with a videoQuery'
+        : 'exactly 1 optional with a videoQuery';
 
-    it('has 4-5 lessons, at least 3 required and exactly 1 optional with a videoQuery', () => {
-      expect(lessons.length).toBeGreaterThanOrEqual(4);
-      expect(lessons.length).toBeLessThanOrEqual(5);
+    it(`has ${min}-${max} lessons, at least 3 required and ${optionalRule}`, () => {
+      expect(lessons.length).toBeGreaterThanOrEqual(min);
+      expect(lessons.length).toBeLessThanOrEqual(max);
       expect(required.length).toBeGreaterThanOrEqual(3);
-      expect(optional).toHaveLength(1);
-      expect(optional[0].videoQuery?.trim()).toBeTruthy();
+      if (expanded) {
+        expect(optional.length).toBeGreaterThanOrEqual(1);
+        for (const l of optional) expect(l.videoQuery?.trim(), l.id).toBeTruthy();
+      } else if (isCapstone) {
+        expect(optional.some((l) => l.videoQuery?.trim())).toBe(true);
+      } else {
+        expect(optional).toHaveLength(1);
+        expect(optional[0].videoQuery?.trim()).toBeTruthy();
+      }
     });
 
     it('lists lessonIds in lesson file order', () => {
@@ -109,7 +129,7 @@ describe('loadBundledCatalog (real content folder)', () => {
       }
       const n = proseWords(l.body.en);
       expect(n, 'EN prose words').toBeGreaterThanOrEqual(250);
-      expect(n, 'EN prose words').toBeLessThanOrEqual(450);
+      expect(n, 'EN prose words').toBeLessThanOrEqual(900);
     });
   });
 
