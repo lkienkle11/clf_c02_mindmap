@@ -5,7 +5,7 @@ required: true
 ---
 ## Who registers, and where
 
-You book the exam yourself. Sign in to your AWS Training and Certification account at **aws.training**, where the accommodation request is also made. The exam is delivered by **Pearson VUE**, so the booking you make there decides where and how you sit it.
+You book the exam yourself. Sign in to your AWS Training and Certification account at **aws.training**, where the accommodation request is also made. The exam is delivered at a **Pearson VUE testing center** or as an **online proctored exam**.
 
 ## Testing center or online proctored
 
@@ -18,7 +18,7 @@ The rules for each option, such as what you may have with you and how check-in w
 
 ## The ESL +30 MINUTES accommodation
 
-AWS offers a **30-minute exam extension** to non-native English speakers who take the exam in English. With the extension the exam time is **120 minutes**. The app's extra-time option uses the same 120-minute limit when you practise, so you can rehearse the longer time.
+AWS offers a **30-minute exam extension** to non-native English speakers who take the exam in English. With the extension the exam time is **120 minutes**. The app's extra-time option uses the same 120-minute limit in the checkpoint and Capstone exams, so you can rehearse the longer time there.
 
 The request follows one important rule: **request it once, before you register for an exam**. The accommodation then applies to all future registrations, with any test delivery provider, so you do not need to ask again for later exams.
 

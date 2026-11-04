@@ -5,7 +5,7 @@ required: true
 ---
 ## Ai đăng ký, và đăng ký ở đâu
 
-Bạn tự đặt lịch thi. Đăng nhập vào tài khoản **AWS Training and Certification** tại **aws.training**; yêu cầu accommodation cũng được gửi từ tài khoản này. Kỳ thi do **Pearson VUE** tổ chức, nên lịch bạn đặt qua Pearson VUE sẽ quyết định nơi và cách bạn thi.
+Bạn tự đặt lịch thi. Đăng nhập vào tài khoản **AWS Training and Certification** tại **aws.training**; yêu cầu accommodation cũng được gửi từ tài khoản này. Kỳ thi được tổ chức tại **trung tâm khảo thí Pearson VUE** hoặc dưới dạng **thi trực tuyến có giám sát (online proctored)**.
 
 ## Thi tại trung tâm hay thi trực tuyến
 
@@ -18,7 +18,7 @@ Quy định cho từng hình thức, chẳng hạn những gì được mang the
 
 ## Accommodation ESL +30 MINUTES
 
-AWS cho phép **thêm 30 phút** khi thi với thí sinh không phải người bản ngữ tiếng Anh, nếu bài thi làm bằng tiếng Anh. Với phần thêm này, thời gian thi là **120 phút**. Tùy chọn thêm giờ của app dùng cùng mức 120 phút khi bạn luyện thi, nên bạn có thể làm quen với thời gian dài hơn trước.
+AWS cho phép **thêm 30 phút** khi thi với thí sinh không phải người bản ngữ tiếng Anh, nếu bài thi làm bằng tiếng Anh. Với phần thêm này, thời gian thi là **120 phút**. Tùy chọn thêm giờ của app cho cùng mức 120 phút trong bài kiểm tra mốc và bài thi Capstone, nên bạn có thể làm quen với thời gian dài hơn ở đó.
 
 Có một quy tắc quan trọng: **chỉ cần yêu cầu một lần, trước khi đăng ký kỳ thi**. Accommodation này áp dụng cho mọi lần đăng ký sau đó, với bất kỳ đơn vị cung cấp thi nào, nên bạn không cần yêu cầu lại cho các kỳ thi tiếp theo.
 

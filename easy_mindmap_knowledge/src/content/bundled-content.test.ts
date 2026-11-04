@@ -215,6 +215,15 @@ describe('Capstone lessons match the official exam (real content folder)', () =>
     expect(lesson('capstone-exam-format').body.vi).not.toContain('30 câu');
   });
 
+  it('the exam-format lesson does not claim review is impossible during the attempt', () => {
+    expect(lesson('capstone-exam-format').body.en.toLowerCase()).not.toContain('cannot review earlier answers');
+    expect(lesson('capstone-exam-format').body.vi.toLowerCase()).not.toContain('không thể xem lại câu đã trả lời');
+  });
+
+  it('the Vietnamese Capstone lessons use the project term "bài kiểm tra mốc", not "bài thi checkpoint"', () => {
+    for (const l of capstone) expect(l.body.vi.toLowerCase(), l.id).not.toContain('bài thi checkpoint');
+  });
+
   it('the Capstone has 6 lessons in topic order and ends with the optional further-learning lesson', () => {
     expect(catalog.topic('capstone').lessonIds).toEqual([
       'capstone-exam-format',

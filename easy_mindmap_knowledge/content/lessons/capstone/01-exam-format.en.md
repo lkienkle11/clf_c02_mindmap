@@ -40,7 +40,7 @@ AWS updates the exam guide from time to time and publishes changes about **one m
 ## How this app compares
 
 - Topic practice lets you choose 10 questions, up to all the questions of the topic.
-- The checkpoint exams and the Capstone exam are **65 questions in 90 minutes**, or 120 minutes with the app's extra-time option. You cannot review earlier answers during the attempt.
+- The checkpoint exams and the Capstone exam are **65 questions in 90 minutes**, or 120 minutes with the app's extra-time option. You cannot open the lessons during the attempt, and answers and explanations appear only after you submit; you can move between questions and change your answers until then.
 - The app's pass mark is **80%**, which is stricter than the official passing score of 700 out of 1,000 on the scaled score.
 - **Every question counts.** The real exam has 15 unscored questions that you cannot identify, so the app treats all 65 as scored.
 

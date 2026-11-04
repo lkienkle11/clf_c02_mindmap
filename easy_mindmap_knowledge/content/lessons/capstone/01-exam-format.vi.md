@@ -39,7 +39,7 @@ AWS cập nhật exam guide theo thời gian và công bố thay đổi khoảng
 ## So với app này
 
 - Bài thực hành theo chủ đề cho bạn chọn từ 10 câu đến toàn bộ câu hỏi của chủ đề.
-- Bài thi checkpoint và bài thi Capstone đều gồm **65 câu trong 90 phút**, hoặc 120 phút nếu bật tùy chọn thêm giờ của app. Trong lúc làm bài, bạn không thể xem lại câu đã trả lời.
+- Bài kiểm tra mốc và bài thi Capstone đều gồm **65 câu trong 90 phút**, hoặc 120 phút nếu bật tùy chọn thêm giờ của app. Trong lúc làm bài, bạn không thể mở bài học; đáp án và giải thích chỉ hiện sau khi nộp, còn bạn vẫn có thể chuyển giữa các câu và đổi đáp án cho đến lúc đó.
 - Ngưỡng đạt của app là **80%**, chặt hơn điểm đạt chính thức 700 trên 1.000 điểm quy đổi.
 - **Mọi câu đều được tính điểm.** Kỳ thi thật có 15 câu không tính điểm mà bạn không thể nhận ra, nên app coi cả 65 câu là câu tính điểm.
 
