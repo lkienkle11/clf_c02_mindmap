@@ -1,3 +1,16 @@
+import type { QuestionCountReason } from './logic/question-count';
+
+/** The requested question count cannot start an attempt (not an integer, or below the minimum). */
+export class InvalidQuestionCountError extends Error {
+  readonly reason: QuestionCountReason;
+
+  constructor(reason: QuestionCountReason) {
+    super(`Invalid question count: ${reason}`);
+    this.name = 'InvalidQuestionCountError';
+    this.reason = reason;
+  }
+}
+
 export class NoQuestionsError extends Error {
   constructor(topicId: string) {
     super(`No questions available for topic "${topicId}"`);

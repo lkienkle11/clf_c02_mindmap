@@ -74,7 +74,7 @@ async function passCurrentTopicViaUi(user: ReturnType<typeof userEvent.setup>): 
 }
 
 async function passWithSession(services: Services, appState: AppState, topicId: string): Promise<void> {
-  const s = await PracticeSession.start(services, topicId, { allowReview: false, limitMs: null, clockMode: 'freeze', onHidden: 'freeze' }, () => appState.refresh());
+  const s = await PracticeSession.start(services, topicId, { allowReview: false, limitMs: null, clockMode: 'freeze', onHidden: 'freeze', questionCount: 10 }, () => appState.refresh());
   const byId = new Map(services.catalog.questions.map((q) => [q.id, q]));
   for (const q of s.questions) await s.select(q.position, byId.get(q.questionId)!.correct);
   const result = await s.submit('manual');

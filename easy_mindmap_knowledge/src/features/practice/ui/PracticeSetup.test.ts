@@ -82,7 +82,7 @@ describe('PracticeSetup', () => {
     const session = onstarted.mock.calls[0][0] as PracticeSession;
     expect(session).toBeInstanceOf(PracticeSession);
     expect(session.allowReview).toBe(true);
-    expect(await loadLastOptions(services.repos.settings)).toEqual({ allowReview: true, limitMs: 150_000, clockMode: 'run', onHidden: 'freeze' });
+    expect(await loadLastOptions(services.repos.settings)).toEqual({ allowReview: true, limitMs: 150_000, clockMode: 'run', onHidden: 'freeze', questionCount: 10 });
   });
 
   it('starts from the last saved options', async () => {

@@ -6,7 +6,7 @@
   import Button from '@/ui/Button.svelte';
   import { buildPool, practiceCount } from '../logic/pick-questions';
   import { NoQuestionsError } from '../errors';
-  import { loadLastOptions } from '../options';
+  import { DEFAULT_PRACTICE_OPTIONS, loadLastOptions } from '../options';
   import { PracticeSession } from '../session.svelte';
   import { limitFromParts } from './time';
 
@@ -27,6 +27,7 @@
   let timeMode = $state<'set' | 'none'>('none');
   let clock = $state<'freeze' | 'run'>('freeze');
   let onHidden = $state<'freeze' | 'run'>('freeze');
+  let questionCount = $state(DEFAULT_PRACTICE_OPTIONS.questionCount);
   let minutes = $state<number | null>(10);
   let seconds = $state<number | null>(0);
   let loaded = $state(false);
@@ -43,6 +44,7 @@
           review = o.allowReview ? 'allow' : 'deny';
           clock = o.clockMode;
           onHidden = o.onHidden;
+          questionCount = o.questionCount;
           if (o.limitMs !== null) {
             timeMode = 'set';
             const total = Math.round(o.limitMs / 1000);
@@ -68,7 +70,7 @@
       const session = await PracticeSession.start(
         services,
         topicId,
-        { allowReview: review === 'allow', limitMs, clockMode: clock, onHidden },
+        { allowReview: review === 'allow', limitMs, clockMode: clock, onHidden, questionCount },
         () => appState.refresh(),
       );
       onstarted(session);

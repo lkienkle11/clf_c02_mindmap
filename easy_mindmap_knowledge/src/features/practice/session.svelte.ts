@@ -3,9 +3,10 @@ import { AttemptMissingError } from '@/persistence';
 import type { AttemptQuestionRow, AttemptRow, ClockState } from '@/persistence';
 import { advanceFreeze, isExpired, remainingAt, resolveOnResume, settleHidden as settleClockHidden, startClock } from './logic/attempt-clock';
 import { gradeQuestion, passes } from './logic/grading';
-import { buildPool, planAttempt, practiceCount } from './logic/pick-questions';
+import { buildPool, planAttempt } from './logic/pick-questions';
+import { validateQuestionCount } from './logic/question-count';
 import { makeRng, shuffle } from '@/random/seeded-random';
-import { CorruptAttemptError, KnowledgeNotAllowedError, NoQuestionsError } from './errors';
+import { CorruptAttemptError, InvalidQuestionCountError, KnowledgeNotAllowedError, NoQuestionsError } from './errors';
 import { saveLastOptions } from './options';
 import type { PracticeOptions } from './options';
 
@@ -108,14 +109,18 @@ export class PracticeSession {
   ): Promise<PracticeSession> {
     const pool = buildPool(services.catalog, topicId);
     if (pool.length === 0) throw new NoQuestionsError(topicId);
+    // Only the integer and minimum rules apply here: a count above the pool is clamped below, so a small topic still starts.
+    const requested = validateQuestionCount(options.questionCount, Number.POSITIVE_INFINITY);
+    if (!requested.ok) throw new InvalidQuestionCountError(requested.reason);
+    const count = Math.min(requested.count, pool.length);
     const now = services.now();
     // Shuffles happen exactly once, here; resume replays the stored order.
-    const plan = planAttempt(pool, practiceCount(topicId), makeRng(now % 0x100000000));
+    const plan = planAttempt(pool, count, makeRng(now % 0x100000000));
     const clock = startClock(options.limitMs, options.clockMode, now, options.onHidden);
     const attempt: AttemptRow = {
       id: services.newId(), kind: 'practice', topicId, status: 'in_progress', startedAt: now,
       submittedAt: null, submitReason: null, reviewAllowed: options.allowReview, clock,
-      heartbeatAt: now, scorePct: null, passed: null, groupIndex: null, plannedCount: null,
+      heartbeatAt: now, scorePct: null, passed: null, groupIndex: null, plannedCount: count,
     };
     const rows: AttemptQuestionRow[] = plan.map((p, position) => ({
       attemptId: attempt.id, position, questionId: p.questionId, optionOrder: p.optionOrder,
@@ -175,10 +180,9 @@ export class PracticeSession {
     if (questions.some((q) => !known.has(q.questionId))) throw new CorruptAttemptError('unknown question');
     if (attempt.kind === 'practice') {
       if (attempt.topicId === null) throw new CorruptAttemptError('practice attempt without topic');
-      const expected = Math.min(practiceCount(attempt.topicId), buildPool(services.catalog, attempt.topicId).length);
-      // Depends on the CURRENT catalog: a content update that shrinks a pool relaxes the check, and one that
-      // grows it may flag an old attempt as partial; accepted, since the cost is only a discarded attempt.
-      if (questions.length < expected) throw new CorruptAttemptError('partial attempt');
+      // plannedCount is the count drawn at start (already clamped to the pool). Null marks an attempt that
+      // predates the column; it cannot be checked, so it is not.
+      if (attempt.plannedCount !== null && questions.length < attempt.plannedCount) throw new CorruptAttemptError('partial attempt');
     }
     const now = services.now();
     const resolved = resolveOnResume(attempt.clock, now, attempt.heartbeatAt ?? attempt.startedAt);
