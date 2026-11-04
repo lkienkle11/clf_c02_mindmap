@@ -20,29 +20,50 @@ async function mount(over: Record<string, unknown> = {}) {
   return { onclose };
 }
 
+/** The per-question list items of the dialog (the option items carry data-option instead). */
+const recordedItems = () =>
+  within(screen.getByRole('dialog')).getAllByRole('listitem').filter((li) => li.getAttribute('data-question'));
+const optionKeys = (item: HTMLElement) =>
+  Array.from(item.querySelectorAll('li[data-option]')).map((li) => (li as HTMLElement).dataset.option);
+const optionOf = (item: HTMLElement, key: string) =>
+  within(item.querySelector(`li[data-option="${key}"]`) as HTMLElement);
+
 describe('AttemptDetail', () => {
-  it('lists every question with a mark by isCorrect and the answer texts', async () => {
+  it('lists every option of each recorded question in the stored order, with picked and correct badges', async () => {
     await mount();
-    const dialog = screen.getByRole('dialog');
-    const items = within(dialog).getAllByRole('listitem').filter((li) => li.getAttribute('data-question'));
+    const items = recordedItems();
     expect(items).toHaveLength(3);
-    expect(within(items[0]).getByText(/✗/)).toHaveTextContent('Incorrect');
+    expect(within(items[0]).getByText('✗ Incorrect')).toBeInTheDocument();
     expect(within(items[0]).getByText('Pick the first?')).toBeInTheDocument();
-    const lists0 = within(items[0]).getAllByRole('list');
-    expect(within(lists0[0]).getAllByRole('listitem').map((l) => l.textContent)).toEqual(['Bravo']);
-    expect(within(lists0[1]).getAllByRole('listitem').map((l) => l.textContent)).toEqual(['Alpha']);
+    // q1: stored order B, A, C, D; picked B (wrong), correct A
+    expect(optionKeys(items[0])).toEqual(['B', 'A', 'C', 'D']);
+    expect(optionOf(items[0], 'B').getByText('Your answer · Incorrect')).toBeInTheDocument();
+    expect(optionOf(items[0], 'A').getByText('Correct answer')).toBeInTheDocument();
+    expect(optionOf(items[0], 'C').queryByText(/answer/i)).not.toBeInTheDocument();
     expect(within(items[0]).getByText('Because alpha.')).toBeInTheDocument();
-    expect(within(items[1]).getByText(/✓/)).toHaveTextContent('Correct');
-    // the stored option order decides the order of the texts
-    const lists1 = within(items[1]).getAllByRole('list');
-    expect(within(lists1[0]).getAllByRole('listitem').map((l) => l.textContent)).toEqual(['Bravo', 'Alpha']);
+    expect(within(items[1]).getByText('✓ Correct')).toBeInTheDocument();
+    // q2: stored order D, C, B, A; picked A and B, both correct
+    expect(optionKeys(items[1])).toEqual(['D', 'C', 'B', 'A']);
+    expect(optionOf(items[1], 'A').getByText('Your answer · Correct')).toBeInTheDocument();
+    expect(optionOf(items[1], 'B').getByText('Your answer · Correct')).toBeInTheDocument();
+    expect(optionOf(items[1], 'C').queryByText(/answer/i)).not.toBeInTheDocument();
   });
 
-  it('shows "No answer" for an unanswered question', async () => {
+  it('shows "No answer" and the correct option for an unanswered question', async () => {
     await mount();
-    const items = screen.getAllByRole('listitem').filter((li) => li.getAttribute('data-question'));
+    const items = recordedItems();
     expect(within(items[2]).getByText('No answer')).toBeInTheDocument();
-    expect(within(items[2]).getByText('Charlie')).toBeInTheDocument();
+    expect(optionKeys(items[2])).toEqual(['A', 'B', 'C', 'D']);
+    expect(optionOf(items[2], 'C').getByText('Correct answer')).toBeInTheDocument();
+  });
+
+  it('shows the question id and no options when the question is missing from the catalog', async () => {
+    await mount({ rows: [makeRow('a2', 0, { questionId: 'gone', selected: ['A'], isCorrect: false })] });
+    const items = recordedItems();
+    expect(items).toHaveLength(1);
+    expect(within(items[0]).getByText('gone')).toBeInTheDocument();
+    expect(within(items[0]).getByText('✗ Incorrect')).toBeInTheDocument();
+    expect(optionKeys(items[0])).toEqual([]);
   });
 
   it('says so when no questions were recorded, and closes', async () => {
@@ -52,10 +73,10 @@ describe('AttemptDetail', () => {
     expect(onclose).toHaveBeenCalled();
   });
 
-  it('marks the English question content with lang="en"', async () => {
+  it('marks the English question and option content with lang="en"', async () => {
     await mount();
-    const item = within(screen.getByRole('dialog')).getAllByRole('listitem').filter((li) => li.getAttribute('data-question'))[0];
+    const item = recordedItems()[0];
     expect(within(item).getByText('Pick the first?').closest('[lang="en"]')).not.toBeNull();
-    expect(within(item).getByText('Your answer').closest('[lang="en"]')).toBeNull();
+    expect(within(item).getByText('Alpha').closest('[lang="en"]')).not.toBeNull();
   });
 });
