@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { loadBundledCatalog } from './bundled';
+import { findGaps } from './explanation-gaps';
 import { isAllowedExternalUrl } from '@/features/lesson/ui/external-url';
 import type { Lesson, Topic } from './types';
 
@@ -172,5 +173,24 @@ describe('loadBundledCatalog (real content folder)', () => {
     const ids = catalog.questions.filter((q) => q.source === 'authored').map((q) => q.id);
     expect(new Set(ids).size).toBe(ids.length);
     for (const id of ids) expect(imported.has(id)).toBe(false);
+  });
+});
+
+describe('explanations (real content folder)', () => {
+  const gaps = findGaps(catalog.questions);
+
+  it('every question has a non-empty explanation', () => {
+    expect(gaps.missingExplanation, 'question ids without an explanation').toEqual([]);
+  });
+
+  it('every question has a non-empty optionNotes entry for each option and no note for a non-option key', () => {
+    expect(
+      [...gaps.missingNotes, ...gaps.extraNoteKeys],
+      'id:KEY pairs with a missing note or a note for a non-option key',
+    ).toEqual([]);
+  });
+
+  it('no learner-facing explanation or note uses internal wording (keyed, answer key)', () => {
+    expect(gaps.internalWording, 'question ids with internal wording in an explanation or note').toEqual([]);
   });
 });
