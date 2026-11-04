@@ -1,0 +1,241 @@
+{
+ "q_822206bdbfef": {
+  "explanation": "An Availability Zone is one or more discrete data centers with redundant power, networking, and connectivity inside an AWS Region.",
+  "optionNotes": {
+   "A": "CloudFront is a content delivery network that caches content at edge locations; it is a service, not an environment made of data centers.",
+   "B": "An Availability Zone consists of one or more discrete data centers within a Region, which is exactly what the question describes.",
+   "C": "A VPC is a logically isolated virtual network that you define; it is not a physical group of data centers.",
+   "D": "Outposts is AWS infrastructure installed at a customer site, not an environment defined as one or more AWS data centers."
+  }
+ },
+ "q_aa55b1e4a4d7": {
+  "explanation": "AWS does not charge for data transferred in from the internet, so inbound transfer of 2 TB is the free option. The other listed transfers are generally charged.",
+  "optionNotes": {
+   "A": "Data transferred in to AWS from the internet is not charged, so this is the no-cost transfer.",
+   "B": "Data transferred out from AWS to the internet is charged per GB (after any free tier allowance).",
+   "C": "Data transferred between AWS Regions is charged, because the traffic leaves the source Region.",
+   "D": "Data transferred between Availability Zones is generally charged, even though it stays within one Region."
+  }
+ },
+ "q_a8cbe4ca36bb": {
+  "explanation": "AWS Outposts runs AWS infrastructure on premises while staying connected to an AWS Region, which is a hybrid deployment model.",
+  "optionNotes": {
+   "A": "An on-premises model runs entirely in the customer's own facilities without using AWS as part of the deployment; Outposts connects on-premises resources to AWS.",
+   "B": "Serverless describes services such as Lambda where you do not manage servers; it does not describe on-premises AWS hardware.",
+   "C": "A cloud-native model runs fully in the cloud, while Outposts places AWS hardware at the customer's site.",
+   "D": "Hybrid combines on-premises infrastructure with the AWS Cloud, which is what Outposts provides."
+  }
+ },
+ "q_6d65a98f156c": {
+  "explanation": "Deploying to multiple AWS Regions places the application in several geographic areas so it can serve users worldwide.",
+  "optionNotes": {
+   "A": "A multi-Region architecture runs the application in several Regions around the world, meeting the global deployment requirement.",
+   "B": "A single-Region deployment keeps everything in one geographic area, so it is not a global deployment.",
+   "C": "Multi-AZ improves availability inside one Region but does not spread the application across the globe.",
+   "D": "Single-AZ runs in one data center group in one Region, which is the opposite of a global deployment."
+  }
+ },
+ "q_945e2036e8dc": {
+  "explanation": "AWS Outposts puts AWS infrastructure in the company's own facility, so data stays on premises with low latency to local resources while still using AWS services and APIs.",
+  "optionNotes": {
+   "A": "Local Zones are AWS-operated sites near large cities; the data would sit in AWS facilities, not on the company's premises.",
+   "B": "Availability Zones are AWS data centers within a Region, so data would not remain on the company's premises.",
+   "C": "Outposts installs AWS infrastructure on premises, keeping data local and giving low latency to nearby systems.",
+   "D": "Wavelength Zones are embedded in telecommunications providers' networks for mobile low latency, not in the company's own facility."
+  }
+ },
+ "q_239a160f0c63": {
+  "explanation": "Global reach is the cloud benefit of deploying applications to users worldwide using AWS Regions, Availability Zones, and edge locations.",
+  "optionNotes": {
+   "A": "Economy of scale means lower prices from AWS's large volume of usage; it does not describe worldwide deployment.",
+   "B": "Global reach lets a company deploy to users anywhere through Regions, AZs, and edge locations.",
+   "C": "Agility is the ability to provision and experiment quickly, not geographic coverage.",
+   "D": "High availability concerns staying operational during failures; the scenario is about reaching users around the world."
+  }
+ },
+ "q_849e34b5cd58": {
+  "explanation": "Availability Zones in the same Region are separate locations in one geographic area with independent power and networking, so placing EC2 instances in multiple AZs meets all the requirements.",
+  "optionNotes": {
+   "A": "Edge locations are used by services like CloudFront for caching and do not host EC2 instances for independent power and networking.",
+   "B": "Multiple AZs in one Region are in the same geographic area but have independent power grids and networking.",
+   "C": "Amazon Connect is a cloud contact center service and has no locations for placing EC2 instances.",
+   "D": "AWS Artifact provides compliance reports and has no locations for placing EC2 instances."
+  }
+ },
+ "q_be38c294a4ef": {
+  "explanation": "AWS Outposts brings AWS infrastructure and services into the company's own site, giving low-latency access to on-premises systems and keeping data in place for residency needs.",
+  "optionNotes": {
+   "A": "Wavelength embeds AWS compute in telecom providers' networks for mobile 5G latency; it is not for on-premises systems or data residency.",
+   "B": "Transit Gateway connects VPCs and on-premises networks; it does not run AWS infrastructure on site or address data residency.",
+   "C": "Ground Station is a service for communicating with satellites and is unrelated to on-premises latency or data residency.",
+   "D": "Outposts runs AWS infrastructure on premises, giving low latency to local systems and keeping data on site."
+  }
+ },
+ "q_58ea2edfaca4": {
+  "explanation": "There are more edge locations than Regions, and there are more Availability Zones than Regions because each Region contains multiple AZs. So B and E are correct.",
+  "optionNotes": {
+   "A": "Each Region has multiple Availability Zones, so there are fewer Regions than AZs, not more.",
+   "B": "AWS has far more edge locations than Regions, so this is true.",
+   "C": "An edge location is a separate type of site used for caching and delivery; it is not an Availability Zone.",
+   "D": "Edge locations greatly outnumber Regions, so there are not more Regions than edge locations.",
+   "E": "Every Region contains multiple Availability Zones, so total AZs exceed the number of Regions."
+  }
+ },
+ "q_9cfa8622081d": {
+  "explanation": "The AWS global footprint lets a company choose the specific Region, and therefore the geographic area, where an application is hosted to meet regulations.",
+  "optionNotes": {
+   "A": "Scalability is about adjusting capacity to demand and does not control where an application is located.",
+   "B": "The global footprint of Regions in many geographic areas lets the company host the application where regulations require.",
+   "C": "Availability is about keeping the application running and does not decide which geographic area hosts it.",
+   "D": "Performance relates to speed and latency, not to meeting a geographic regulatory requirement."
+  }
+ },
+ "q_ebf12e3ef27c": {
+  "explanation": "AWS Regions and Availability Zones are the core building blocks of the AWS global infrastructure (alongside edge locations). The other options are services that run on top of it.",
+  "optionNotes": {
+   "A": "Availability Zones are the data center groups inside Regions and form part of the global infrastructure.",
+   "B": "ElastiCache is a managed in-memory caching service that runs on the infrastructure; it is not part of it.",
+   "C": "Regions are the geographic areas that make up the global infrastructure.",
+   "D": "Amazon S3 is a storage service that runs on the global infrastructure, not a part of it.",
+   "E": "A VPC is a virtual network you create within a Region; it is a service, not part of the physical global infrastructure."
+  }
+ },
+ "q_a82dd006dfb8": {
+  "explanation": "AWS Outposts runs AWS services on hardware in the company's own facility, so applications controlling factory equipment communicate locally with the least latency.",
+  "optionNotes": {
+   "A": "Outposts runs AWS compute on site next to the factory equipment, giving the lowest latency.",
+   "B": "EC2 normally runs in an AWS Region, so traffic to the factory must cross the network to AWS and back.",
+   "C": "Lambda runs in an AWS Region and adds network distance from the factory equipment.",
+   "D": "Fargate is a serverless container engine that runs in a Region, so it is not located next to the factory."
+  }
+ },
+ "q_5cfba44f46ca": {
+  "explanation": "AWS Outposts extends AWS infrastructure, services, APIs, and tools to data centers, co-location spaces, or on-premises facilities for a hybrid architecture.",
+  "optionNotes": {
+   "A": "Snowmobile is a truck-sized device for moving exabytes of data to AWS; it does not extend AWS services on premises.",
+   "B": "Local Zones are AWS-operated extensions near large cities; they are not installed in the customer's own data center.",
+   "C": "Outposts brings AWS infrastructure, services, APIs, and tools to the customer's own facilities, enabling hybrid architectures.",
+   "D": "Fargate is a serverless compute engine for containers and does not extend AWS infrastructure to customer sites."
+  }
+ },
+ "q_eab56f93dd2b": {
+  "explanation": "AWS Outposts runs workloads on premises for regulatory reasons while using the same AWS APIs, tools, and services as the cloud.",
+  "optionNotes": {
+   "A": "Dedicated Hosts give a physical EC2 server for licensing or compliance but do not extend AWS APIs to on-premises workloads.",
+   "B": "Outposts installs AWS infrastructure on premises and uses the same APIs as in the cloud, so both sets of workloads are managed consistently.",
+   "C": "Availability Zones are AWS data centers, so workloads would not run on the company's premises.",
+   "D": "Wavelength places compute in telecom networks for mobile low latency, not on the company's premises."
+  }
+ },
+ "q_875e8ec9600a": {
+  "explanation": "The AWS global infrastructure of Regions, Availability Zones, and edge locations lets a company run applications and deliver content close to users around the world, lowering latency.",
+  "optionNotes": {
+   "A": "Regions and edge locations around the world let the company place applications and content near users to reduce latency.",
+   "B": "Pay-as-you-go pricing is a billing model and does not affect latency.",
+   "C": "Managed services reduce operational work but do not bring applications closer to users.",
+   "D": "Economy of scale lowers prices and does not improve latency for global users."
+  }
+ },
+ "q_e7bee2939470": {
+  "explanation": "AWS Outposts lets the company run AWS services in the cloud while keeping part of the workload on its own premises for compliance.",
+  "optionNotes": {
+   "A": "AWS Config records and evaluates resource configurations; it does not run workloads on premises.",
+   "B": "Outposts brings AWS infrastructure into the company's own data center, supporting a hybrid split between cloud and on-site workloads.",
+   "C": "Lightsail is a simple managed service for virtual servers and small apps in AWS; it does not place workloads on site.",
+   "D": "Amazon Connect is a cloud contact center service and has nothing to do with hosting workloads on premises."
+  }
+ },
+ "auth-global-infrastructure-01": {
+  "explanation": "An Availability Zone is one or more discrete data centers with redundant power, networking, and connectivity, located inside a Region.",
+  "optionNotes": {
+   "A": "This reverses the hierarchy: a Region contains multiple Availability Zones, not the other way around.",
+   "B": "A site that caches content for CloudFront is an edge location, not an Availability Zone.",
+   "C": "This is the definition of an Availability Zone: one or more discrete data centers with redundant power, networking, and connectivity in a Region.",
+   "D": "AWS hardware installed at a customer's own data center describes AWS Outposts, not an Availability Zone."
+  }
+ },
+ "auth-global-infrastructure-02": {
+  "explanation": "Legal and regulatory requirements come first, because a Region outside the EU cannot be used however cheap or feature-rich it is. Price, services, and latency are weighed only among compliant Regions.",
+  "optionNotes": {
+   "A": "Price matters, but it is considered only after the Region satisfies the data residency rule.",
+   "B": "Newer services are a secondary factor and cannot justify storing EU patient records outside the EU.",
+   "C": "Developer location is not a primary factor and is irrelevant to the legal residency requirement.",
+   "D": "The regulation requires data to stay in the EU, so compliance with data residency is the first filter for choosing a Region."
+  }
+ },
+ "auth-global-infrastructure-03": {
+  "explanation": "With no compliance limits, a company should weigh latency to end users and pricing in each Region (along with service availability). Prices for the same service differ between Regions.",
+  "optionNotes": {
+   "A": "Latency to end users affects application performance and is a standard factor when choosing a Region.",
+   "B": "The number of IAM users does not differ by Region, because IAM is a global service.",
+   "C": "Prices for the same service vary between Regions, so cost is a standard selection factor.",
+   "D": "A Support plan applies to the whole account and does not change from Region to Region.",
+   "E": "Existing S3 data size is not a Region selection factor for a new application, and S3 buckets can be created in any chosen Region."
+  }
+ },
+ "auth-global-infrastructure-04": {
+  "explanation": "Amazon CloudFront is a CDN that caches content such as videos at edge locations near viewers and can use an S3 bucket as its origin, which speeds up loading for distant students.",
+  "optionNotes": {
+   "A": "Global Accelerator improves the network path to endpoints using static IPs but does not cache video content at the edge.",
+   "B": "CloudFront caches the videos at edge locations close to students, reducing load times from an S3 origin in one Region.",
+   "C": "Outposts runs AWS infrastructure in a customer's facility and does not cache content for users on other continents.",
+   "D": "Route 53 is a DNS service that routes users to endpoints; it does not cache or deliver video content."
+  }
+ },
+ "auth-global-infrastructure-05": {
+  "explanation": "AWS Global Accelerator provides static anycast IP addresses and routes TCP or UDP traffic over the AWS global network to the nearest healthy endpoint in one or more Regions.",
+  "optionNotes": {
+   "A": "CloudFront is aimed at caching and delivering web content, not at providing static IP entry points for UDP game traffic.",
+   "B": "Local Zones extend a Region to a metro area for low latency but do not provide static anycast IPs that route to healthy endpoints across Regions.",
+   "C": "Global Accelerator gives fixed static IPs and sends TCP or UDP traffic over the AWS global network to healthy endpoints in several Regions.",
+   "D": "Wavelength places compute inside telecom provider networks for mobile users and does not provide static IPs routing to multiple Regions."
+  }
+ },
+ "auth-global-infrastructure-06": {
+  "explanation": "Local Zones place compute, storage, and other services close to large population centers for low-latency workloads such as media production, without the customer hosting hardware.",
+  "optionNotes": {
+   "A": "An AWS-operated extension of a Region placed near a metro area, giving single-digit millisecond latency with no hardware to host.",
+   "B": "Outposts gives low latency but needs AWS hardware installed at the customer's own site, which the company wants to avoid.",
+   "C": "CloudFront is a content delivery network that caches content near viewers; it does not run the editing application's compute.",
+   "D": "A distant Region adds network distance, so it cannot give single-digit millisecond latency to editors in the city."
+  }
+ },
+ "auth-global-infrastructure-07": {
+  "explanation": "AWS Wavelength deploys AWS compute and storage inside telecommunications providers' data centers at the edge of their networks, giving low latency to 5G mobile devices.",
+  "optionNotes": {
+   "A": "Local Zones sit near large cities but are not inside the mobile carriers' networks.",
+   "B": "Outposts installs AWS hardware at a customer's own site and is not embedded in telecom provider networks.",
+   "C": "Direct Connect is a dedicated network connection to AWS and does not host compute at the telecom edge.",
+   "D": "Wavelength embeds AWS compute and storage in telecom providers' networks so 5G devices reach the backend with ultra-low latency."
+  }
+ },
+ "auth-global-infrastructure-08": {
+  "explanation": "Running instances in at least two Availability Zones and using a load balancer to spread traffic across them keeps the application available if one AZ fails. Options that stay in one AZ fail together with it.",
+  "optionNotes": {
+   "A": "A larger instance type adds capacity but the instances still sit in the same failed Availability Zone.",
+   "B": "Instances in at least two Availability Zones mean the application keeps running if one AZ fails.",
+   "C": "More instances in the same AZ all fail together when that AZ fails.",
+   "D": "A load balancer across multiple AZs sends traffic only to healthy instances in the remaining AZs.",
+   "E": "An Auto Scaling group confined to the current AZ cannot launch instances elsewhere when that AZ fails."
+  }
+ },
+ "auth-global-infrastructure-09": {
+  "explanation": "For regional services, data created in a Region stays there unless the customer copies or replicates it elsewhere, which supports data residency. Regions have multiple AZs, and services are not equally available in every Region.",
+  "optionNotes": {
+   "A": "Public Regions are built with at least three Availability Zones, so the number is not fixed at two.",
+   "B": "Regional services keep data in the chosen Region unless the customer explicitly copies or replicates it elsewhere.",
+   "C": "Service availability differs between Regions, and new services often launch in some Regions first.",
+   "D": "An edge location is a separate type of site for content delivery and is not a type of Region."
+  }
+ },
+ "auth-global-infrastructure-10": {
+  "explanation": "Deploying in multiple Regions supports disaster recovery if an entire Region is unavailable and gives lower latency to users on different continents.",
+  "optionNotes": {
+   "A": "Extra Regions do not add Availability Zones to an existing Region; each Region has its own set.",
+   "B": "Components spread across Regions have higher latency between them, so this is a reason to keep them in one Region.",
+   "C": "A second Region lets the workload recover from a disaster that makes an entire Region unavailable.",
+   "D": "A multi-Region design needs more data replication between locations, not less.",
+   "E": "Placing the workload in Regions near users on different continents lowers latency for each group."
+  }
+ }
+}
