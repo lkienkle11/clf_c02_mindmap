@@ -1,0 +1,623 @@
+{
+ "q_59c0c5331867": {
+  "explanation": "AWS Trusted Advisor inspects your account and recommends ways to cut cost, such as flagging idle or underutilized resources, and to improve security by checking for risky configurations. The correct options are C and D.",
+  "optionNotes": {
+   "A": "Container orchestration is the job of Amazon ECS or Amazon EKS, not Trusted Advisor, which only inspects and recommends.",
+   "B": "Creating and rotating encryption keys is done with AWS KMS; Trusted Advisor does not manage keys.",
+   "C": "Trusted Advisor has cost optimization checks that flag low-utilization and idle resources so you can save money.",
+   "D": "Trusted Advisor has security checks, for example open security group ports and missing root MFA, that help you find risks in your environment.",
+   "E": "Enforcing tagging is done with tag policies in AWS Organizations or AWS Config rules; Trusted Advisor does not enforce anything."
+  }
+ },
+ "q_4ea8b2b217e3": {
+  "explanation": "Amazon Personalize is a managed machine learning service that builds real-time personalized recommendations, such as product recommendations, from a company's customer and item data.",
+  "optionNotes": {
+   "A": "Amazon Polly converts text to speech; it does not generate product recommendations.",
+   "B": "Amazon Personalize is built specifically to create personalized product and content recommendations from customer interaction data.",
+   "C": "Amazon Comprehend performs natural language processing such as sentiment and entity detection, not recommendations.",
+   "D": "Amazon Rekognition analyzes images and videos; it does not recommend products from customer data."
+  }
+ },
+ "q_f4e3a3d1d6f5": {
+  "explanation": "AWS Trusted Advisor evaluates an AWS account against best practices and reports on cost optimization, performance, security, fault tolerance, and service limits (service quotas).",
+  "optionNotes": {
+   "A": "AWS Shield protects against DDoS attacks; it does not review an environment against best practices.",
+   "B": "AWS WAF is a web application firewall that filters web requests; it does not produce best practice recommendations.",
+   "C": "Trusted Advisor reports on cost, performance, service limits, fault tolerance, and security, which are exactly the listed categories.",
+   "D": "AWS Service Catalog lets organizations publish approved products for users to deploy; it does not evaluate an environment."
+  }
+ },
+ "q_b2d5da578047": {
+  "explanation": "The benefit that Enterprise Support adds beyond Business-level support is a designated technical account manager (TAM) who helps monitor and optimize the customer's environment. Phone, email, and chat access and the full Trusted Advisor checks are already part of Business-level support.",
+  "optionNotes": {
+   "A": "The full set of Trusted Advisor checks is already available on Business-level support, so it is not an additional benefit.",
+   "B": "24x7 phone, email, and chat access to Cloud Support Engineers is already included in Business-level support.",
+   "C": "A designated TAM is the distinguishing Enterprise Support benefit and gives proactive monitoring and optimization guidance.",
+   "D": "Architecture guidance is not what separates Enterprise from Business-level support here; the exam expects the designated TAM."
+  }
+ },
+ "q_9d9b868845a8": {
+  "explanation": "AWS Glue discovers (crawls and catalogs) and transforms data, and Amazon QuickSight builds visualizations and dashboards from it. The correct options are A and D.",
+  "optionNotes": {
+   "A": "AWS Glue is a serverless data integration service that discovers, catalogs, and transforms data.",
+   "B": "Amazon EFS is shared file storage for Linux workloads; it does not discover, transform, or visualize data.",
+   "C": "Amazon Redshift is a data warehouse for running analytic queries; it is not the tool used here to discover and transform data or to build visualizations.",
+   "D": "Amazon QuickSight is the business intelligence service used to visualize data in dashboards.",
+   "E": "Amazon QLDB was a ledger database for an immutable transaction log (AWS ended support on July 31, 2025); it is not a discovery, transformation, or visualization tool."
+  }
+ },
+ "q_435353b535f6": {
+  "explanation": "Amazon SQS decouples components with a message queue, and AWS Step Functions coordinates workflow steps without tight links between components, so both support a loosely coupled architecture. The correct options are B and E.",
+  "optionNotes": {
+   "A": "Amazon WorkSpaces provides virtual desktops; it is not an application integration service.",
+   "B": "Amazon SQS lets components exchange messages through a queue so they do not depend on each other directly.",
+   "C": "Amazon Connect is a cloud contact center, not a way to decouple application components.",
+   "D": "AWS Trusted Advisor gives best practice recommendations; it plays no part in application architecture.",
+   "E": "AWS Step Functions orchestrates serverless workflows across services, keeping the individual steps loosely coupled."
+  }
+ },
+ "q_860183f0f1e0": {
+  "explanation": "AWS Professional Services is a global team of AWS experts that works with customers, following AWS best practices, to accelerate and de-risk cloud projects such as migrations.",
+  "optionNotes": {
+   "A": "AWS Support provides technical help and guidance for issues, not a hands-on team that runs the migration project.",
+   "B": "AWS Professional Services supplies a global team of experts for paid engagements, such as migrating applications following AWS best practices.",
+   "C": "AWS Launch Wizard guides the sizing and deployment of specific enterprise workloads; it is a tool, not a team of experts.",
+   "D": "AWS Managed Services operates and maintains an AWS environment after it is built; it is not aimed at carrying out a migration."
+  }
+ },
+ "q_54b23f513d3b": {
+  "explanation": "Amazon AppStream 2.0 (now called Amazon WorkSpaces Applications) streams a demanding application from AWS to any device through a browser, so students need no high-end laptops and the company runs no backend servers itself.",
+  "optionNotes": {
+   "A": "AppStream 2.0 streams applications from AWS to low-cost devices, so heavy hardware requirements are met in the cloud.",
+   "B": "AWS AppSync is a managed GraphQL API service for apps; it does not stream applications to client devices.",
+   "C": "Amazon WorkLink gave secure mobile access to internal web content and has since been shut down; it never hosted and streamed a hardware-intensive application.",
+   "D": "AWS Elastic Beanstalk deploys and runs web applications on managed infrastructure, but the company would still need to run and size the backend itself and it does not solve the client-hardware problem."
+  }
+ },
+ "q_902ee9b8b384": {
+  "explanation": "Amazon QuickSight is the AWS business intelligence service for building interactive dashboards, with built-in machine learning insights such as anomaly detection and forecasting.",
+  "optionNotes": {
+   "A": "Amazon Athena runs SQL queries on data in S3; it does not build dashboards.",
+   "B": "Amazon Kendra is an intelligent enterprise search service, not a dashboard tool.",
+   "C": "QuickSight creates interactive BI dashboards and includes machine learning insights.",
+   "D": "Amazon Redshift is a data warehouse that stores and queries data; it is not the dashboarding tool."
+  }
+ },
+ "q_8b690d672e80": {
+  "explanation": "Amazon SQS is a message queue service that sends, stores, and receives messages between application components, and its FIFO queues preserve first-in, first-out ordering.",
+  "optionNotes": {
+   "A": "AWS Step Functions orchestrates workflows; it is not a message queue that stores messages.",
+   "B": "Amazon SNS pushes messages to subscribers (pub/sub) and does not store messages for components to pull in FIFO order.",
+   "C": "Amazon Kinesis Data Streams ingests streaming data in real time; it is not the standard service for a simple FIFO message queue between components.",
+   "D": "Amazon SQS sends, stores, and receives messages, and FIFO queues deliver them in first-in, first-out order."
+  }
+ },
+ "q_24e9052bfa69": {
+  "explanation": "The AWS Partner Network (APN) is the community of consulting and technology partners that can help customers build, maintain, and support their AWS environments.",
+  "optionNotes": {
+   "A": "AWS Support is provided by AWS itself, not by third-party consultants.",
+   "B": "AWS Organizations manages multiple AWS accounts centrally; it does not provide consultants.",
+   "C": "AWS Service Catalog lets you publish approved products to your users; it does not supply consultants.",
+   "D": "APN consulting partners are third parties who can help design, maintain, and support an AWS environment."
+  }
+ },
+ "q_9d37a7fce025": {
+  "explanation": "AWS Glue is a fully managed, serverless extract, transform, and load (ETL) service that prepares and moves data between data stores.",
+  "optionNotes": {
+   "A": "Amazon Athena queries data in S3 with SQL; it is a query service, not an ETL service.",
+   "B": "AWS Glue is the managed ETL and data integration service.",
+   "C": "Amazon S3 is object storage and does not transform data by itself.",
+   "D": "AWS Snowball Edge is a physical device for moving data and edge computing, not an ETL service."
+  }
+ },
+ "q_015e489dfcab": {
+  "explanation": "The Concierge team that comes with Enterprise Support helps customers with billing and account inquiries, such as understanding charges and managing the account.",
+  "optionNotes": {
+   "A": "Supporting application development is not a Concierge function; AWS Support does not build applications for customers.",
+   "B": "Architecture guidance comes from the technical account manager and solutions architects, not the Concierge team.",
+   "C": "The Concierge team answers billing and account questions for Enterprise Support customers.",
+   "D": "Technical support cases are handled by Cloud Support Engineers, not the Concierge team."
+  }
+ },
+ "q_b1581f589ff9": {
+  "explanation": "Trusted Advisor provides cost optimization recommendations and security checks. The correct options are B and D.",
+  "optionNotes": {
+   "A": "Trusted Advisor gives recommendations; it does not provide access to Amazon SQS, which is a separate messaging service.",
+   "B": "Cost optimization recommendations, such as finding idle or underused resources, are a core Trusted Advisor category.",
+   "C": "Service limit checks are part of Trusted Advisor, but AWS docs do not describe a fixed hourly refresh as a benefit; the expected answers are cost and security.",
+   "D": "Security checks, such as open ports in security groups and root MFA, are a core Trusted Advisor category.",
+   "E": "Approving IAM access is not a Trusted Advisor function; IAM permissions are managed in IAM."
+  }
+ },
+ "q_55b01fe322eb": {
+  "explanation": "Amazon WorkSpaces is a managed Desktop-as-a-Service that gives employees cloud-based Windows or Linux desktops.",
+  "optionNotes": {
+   "A": "AWS Organizations manages multiple AWS accounts; it does not provide desktops.",
+   "B": "AWS Fargate runs containers without managing servers; it is not a desktop service.",
+   "C": "AWS WAF filters web requests to protect applications; it does not provide desktops.",
+   "D": "WorkSpaces provisions managed virtual desktop environments for employees."
+  }
+ },
+ "q_cefb0844cef2": {
+  "explanation": "Amazon SNS is a pub/sub messaging service that can deliver notifications to many endpoints, including SMS text messages and email, from distributed applications.",
+  "optionNotes": {
+   "A": "SNS can publish to both SMS and email subscribers, so it covers text and email messages.",
+   "B": "Amazon SES sends email only; it does not cover text messages in this scenario.",
+   "C": "CloudWatch alarms can trigger notifications, but sending the messages is done through a service like SNS.",
+   "D": "Amazon SQS is a queue for decoupling components; it does not send text or email to people."
+  }
+ },
+ "q_84e672a08627": {
+  "explanation": "Amazon Athena is serverless and runs standard SQL directly on all the CSV files in S3 with nothing to provision, so it has the least operational overhead.",
+  "optionNotes": {
+   "A": "S3 Select retrieves a subset of data from a single object, so it does not easily summarize across all the files.",
+   "B": "Athena queries many files in S3 at once with SQL and requires no infrastructure to manage.",
+   "C": "Amazon Redshift requires provisioning and loading data into a warehouse, which adds overhead for a simple query.",
+   "D": "Running the query on Amazon EC2 means managing servers and software yourself, the most operational overhead."
+  }
+ },
+ "q_55be1aec2934": {
+  "explanation": "AWS re:Post is a free, community-driven Q&A site where AWS users ask questions, find answers, and read community and expert-written content on best practices.",
+  "optionNotes": {
+   "A": "The Knowledge Center is a library of AWS-written articles for common questions; it is not a community platform for asking questions.",
+   "B": "re:Post is the free community forum for questions, answers, and community-generated articles.",
+   "C": "AWS IQ connects customers with AWS-certified experts for paid work, so it is not a no-cost community platform.",
+   "D": "Enterprise Support is a paid support plan, not a free community platform."
+  }
+ },
+ "q_7880cdf20a82": {
+  "explanation": "Amazon Kendra is an intelligent, machine learning powered search service that can index documents, including those stored in Amazon S3, and answer natural language queries.",
+  "optionNotes": {
+   "A": "Kendra indexes documents in sources like S3 and lets users search them.",
+   "B": "Amazon Rekognition analyzes images and videos, not text search across documents.",
+   "C": "Amazon Polly turns text into speech; it does not search documents.",
+   "D": "Amazon Lex builds conversational chatbots; it does not search a document store."
+  }
+ },
+ "q_85762b7b8cf4": {
+  "explanation": "Amazon Polly turns text into lifelike speech in many languages and voices.",
+  "optionNotes": {
+   "A": "Amazon Transcribe does the opposite, converting speech to text.",
+   "B": "Amazon Rekognition analyzes images and videos; it does not produce speech.",
+   "C": "Polly is the text-to-speech service that produces lifelike voices.",
+   "D": "Amazon Textract extracts text and data from scanned documents; it does not generate speech."
+  }
+ },
+ "q_c0cab4ad56fa": {
+  "explanation": "Amazon Comprehend is a natural language processing service that analyzes text to find topics, entities, key phrases, and sentiment, and it can classify documents by their contents.",
+  "optionNotes": {
+   "A": "Amazon Redshift is a data warehouse; it does not understand the content of text.",
+   "B": "Amazon CloudSearch is a managed search service for finding documents; it does not classify them by meaning.",
+   "C": "Comprehend uses NLP to analyze text and classify documents based on their content.",
+   "D": "Amazon Aurora is a relational database; it does not analyze or classify text."
+  }
+ },
+ "q_126ab4125066": {
+  "explanation": "Amazon QuickSight Q let business users ask questions about their data in natural language and get answers with relevant visualizations; it is what the exam expects. AWS has since retired the original Q add-on in favor of Amazon Q in QuickSight generative Q&A.",
+  "optionNotes": {
+   "A": "Amazon Macie discovers sensitive data in S3; it is not a BI question-and-answer tool.",
+   "B": "Amazon Rekognition analyzes images and videos, not BI data.",
+   "C": "QuickSight Q adds natural language questions to BI dashboards and returns answers as visualizations (the original add-on is now replaced by Amazon Q in QuickSight).",
+   "D": "Amazon Lex builds chatbots but is not a BI tool that returns visualizations from your data."
+  }
+ },
+ "q_7d1828bb3384": {
+  "explanation": "Amazon SNS is a publish/subscribe service: publishers send messages to topics, and subscribers receive them.",
+  "optionNotes": {
+   "A": "AWS Lambda runs code in response to events; it does not use a publisher and subscriber model itself.",
+   "B": "SNS uses topics with publishers that send messages and subscribers that receive them.",
+   "C": "Amazon CloudWatch monitors metrics and logs; it is not a pub/sub messaging service.",
+   "D": "AWS CloudFormation provisions infrastructure from templates and has no publishers or subscribers."
+  }
+ },
+ "q_d7d3fb8966b0": {
+  "explanation": "A technical account manager (TAM) is included with Enterprise On-Ramp Support (a pool of TAMs) and Enterprise Support (a designated TAM). The correct options are D and E. AWS is discontinuing Enterprise On-Ramp on January 1, 2027 and moving its customers to Enterprise Support.",
+  "optionNotes": {
+   "A": "Basic Support has no TAM; it covers account and billing help plus documentation and forums.",
+   "B": "Developer Support gives guidance from Cloud Support Associates but no TAM.",
+   "C": "Business Support gives 24x7 access to support engineers but no TAM.",
+   "D": "Enterprise On-Ramp Support provides access to a pool of TAMs (AWS is retiring this plan on January 1, 2027 and upgrading customers to Enterprise Support).",
+   "E": "Enterprise Support provides a designated TAM."
+  }
+ },
+ "q_7fe438a142fa": {
+  "explanation": "Athena is serverless and charges per query based on the data scanned, so occasional SQL queries on data in S3 are cheap and need no infrastructure.",
+  "optionNotes": {
+   "A": "Redshift needs a provisioned or serverless warehouse and data loading, which costs more than needed for occasional queries.",
+   "B": "Athena queries S3 data in place with SQL and you pay only for the queries you run.",
+   "C": "Amazon Kinesis processes streaming data; it is not for querying data stored in S3.",
+   "D": "Amazon RDS needs a running database instance and loaded data, which is costlier for occasional queries."
+  }
+ },
+ "q_9387d6871661": {
+  "explanation": "AWS Glue is a serverless data integration service that discovers, prepares, moves, and integrates data from multiple sources for analytics and machine learning.",
+  "optionNotes": {
+   "A": "Glue is the serverless data integration service described in the question.",
+   "B": "AWS Data Exchange is a marketplace for finding and subscribing to third-party datasets, not an integration tool.",
+   "C": "Amazon Athena queries data with SQL but does not prepare and move data between sources.",
+   "D": "Amazon EMR runs big data frameworks on clusters; it is not the serverless data integration service."
+  }
+ },
+ "q_e84127d5194d": {
+  "explanation": "Amazon QuickSight is the AWS business intelligence service that turns data into insights and interactive dashboards.",
+  "optionNotes": {
+   "A": "Amazon SageMaker builds, trains, and deploys machine learning models; it is not a dashboarding tool.",
+   "B": "Amazon Rekognition analyzes images and videos, not business data dashboards.",
+   "C": "QuickSight builds interactive dashboards and visualizations from data.",
+   "D": "Amazon Kinesis ingests and processes streaming data; it does not visualize it."
+  }
+ },
+ "q_af5e2b712f12": {
+  "explanation": "Amazon QuickSight creates and publishes interactive BI dashboards and includes machine learning powered insights.",
+  "optionNotes": {
+   "A": "AWS Glue Studio is a visual interface for creating ETL jobs, not for BI dashboards.",
+   "B": "QuickSight is the BI service for interactive dashboards with ML insights.",
+   "C": "Amazon Redshift stores and queries data; it does not provide dashboards.",
+   "D": "Amazon Athena runs SQL on S3 data and has no dashboard publishing."
+  }
+ },
+ "q_24e9d798f280": {
+  "explanation": "Amazon Connect is a cloud-based contact center service that includes AI features, so the company can replace its on-premises contact center.",
+  "optionNotes": {
+   "A": "AWS Wavelength puts AWS compute at the edge of 5G networks; it is not a contact center.",
+   "B": "IAM Identity Center provides single sign-on to accounts and apps, not a contact center.",
+   "C": "AWS Direct Connect is a dedicated network link to AWS, not a contact center.",
+   "D": "Amazon Connect is the cloud contact center with AI capabilities such as chatbots and speech analytics."
+  }
+ },
+ "q_b2efe52ee26d": {
+  "explanation": "Under the shared responsibility model, AWS is responsible for security of the cloud, including the physical and environmental safety of the facilities that host WorkSpaces. Setting up MFA, managing user accounts, and logging are customer duties.",
+  "optionNotes": {
+   "A": "Setting up MFA for users is the customer's responsibility as security in the cloud.",
+   "B": "Protecting the data centers and infrastructure that host WorkSpaces is AWS's responsibility, security of the cloud.",
+   "C": "Managing user accounts and permissions through IAM is the customer's responsibility.",
+   "D": "Configuring CloudTrail to log activity is the customer's responsibility."
+  }
+ },
+ "q_70e11243b70f": {
+  "explanation": "Amazon Rekognition is a machine learning service that detects and analyzes objects, people, text, and activities in images and videos.",
+  "optionNotes": {
+   "A": "Amazon Connect is a contact center service, not an image or video analysis service.",
+   "B": "Amazon Lightsail provides simple virtual servers and hosting, not machine learning analysis.",
+   "C": "Amazon Personalize builds recommendations, not image analysis.",
+   "D": "Rekognition provides the image and video detection and analysis."
+  }
+ },
+ "q_d63798499b69": {
+  "explanation": "Amazon Connect is a cloud contact center that handles voice calls and web chat for customer service.",
+  "optionNotes": {
+   "A": "Amazon Aurora is a relational database, not a customer service tool.",
+   "B": "Amazon Connect provides voice and chat contact center capabilities.",
+   "C": "Amazon WorkSpaces provides virtual desktops, not customer service channels.",
+   "D": "AWS Organizations manages multiple AWS accounts and has no customer service features."
+  }
+ },
+ "q_19754cd5f1ee": {
+  "explanation": "The full set of Trusted Advisor checks starts at the Business-level plan (now Business Support+), which is the lowest-cost plan that includes them. Developer Support does not include the full set, and Enterprise plans cost more.",
+  "optionNotes": {
+   "A": "Developer Support does not include the full set of Trusted Advisor checks.",
+   "B": "Business-level support is the least expensive plan that includes the full set of Trusted Advisor checks.",
+   "C": "Enterprise On-Ramp includes the full checks but costs more than Business.",
+   "D": "Enterprise Support includes the full checks but is the most expensive of these options."
+  }
+ },
+ "q_55b6abeef526": {
+  "explanation": "Amazon Rekognition can analyze video and recognize faces, so it can identify employees entering the offices.",
+  "optionNotes": {
+   "A": "Rekognition analyzes video and performs facial recognition to identify people.",
+   "B": "Amazon Polly converts text to speech; it cannot analyze video.",
+   "C": "Amazon Cognito handles user sign-up and sign-in for apps, not video analysis.",
+   "D": "AWS Lambda runs code; it is not itself a video analysis service."
+  }
+ },
+ "q_a34ab2d3e28b": {
+  "explanation": "Amazon WorkSpaces gives remote employees a managed cloud desktop they can reach from their own personal devices.",
+  "optionNotes": {
+   "A": "WorkSpaces provides managed desktops in the cloud that users can access from personal devices.",
+   "B": "AWS Cloud9 is a cloud-based IDE for writing code, not a general managed workstation.",
+   "C": "AWS Outposts runs AWS infrastructure in the company's own data center, not a remote desktop.",
+   "D": "Amazon Lightsail provides simple virtual servers, not managed desktops for employees."
+  }
+ },
+ "q_a31da552d63b": {
+  "explanation": "Amazon Athena is an interactive query service that lets you run standard SQL directly against objects in Amazon S3 without loading the data anywhere first.",
+  "optionNotes": {
+   "A": "AWS Glue is for ETL and cataloging data; the direct SQL query service is Athena.",
+   "B": "Athena queries objects in S3 in place using SQL.",
+   "C": "AWS Lambda runs code and is not a SQL query service, so you would have to write the querying yourself.",
+   "D": "Amazon Kinesis handles streaming data, not SQL queries over stored S3 objects."
+  }
+ },
+ "q_03e001f44e4e": {
+  "explanation": "Community forums, now AWS re:Post and the older Developer Forums, are free for everyone whatever their support plan. Developer Support, programmatic case management, and a TAM come only with paid plans.",
+  "optionNotes": {
+   "A": "Developer Support is a paid plan, so it is not free of charge.",
+   "B": "The AWS forums are open to all users at no cost, regardless of support plan.",
+   "C": "Programmatic case management through the Support API requires a paid support plan.",
+   "D": "A TAM is only included with the Enterprise-level plans."
+  }
+ },
+ "q_4d61f5df0c2f": {
+  "explanation": "The exam expects Developer Support, the cheapest paid plan, since Basic Support has no technical support cases. Be aware that current AWS documentation lists the AWS Support API as available from Business-level plans (now Business Support+) upward, and that Developer Support is being discontinued on January 1, 2027.",
+  "optionNotes": {
+   "A": "Basic Support includes no technical support cases and no Support API access.",
+   "B": "The exam expects Developer Support as the lowest-cost paid plan; current AWS docs, however, list Support API access starting with Business-level plans.",
+   "C": "Current AWS docs list the Support API with Business Support+ and above, but it costs more than Developer Support, so the exam does not treat it as the most cost-effective choice.",
+   "D": "Enterprise Support covers the need but is the most expensive option."
+  }
+ },
+ "q_147574dbaa2c": {
+  "explanation": "Trusted Advisor provides checks for cost optimization, security, fault tolerance, performance, and service quotas, and the full set of checks needs Business-level support or higher. The Health Dashboard reports AWS service events, not best practice checks.",
+  "optionNotes": {
+   "A": "Developer Support does not include the full set of Trusted Advisor checks.",
+   "B": "The AWS Health Dashboard reports events that affect your resources; it does not give best practice checks.",
+   "C": "Trusted Advisor with Business-level support gives the full set of best practice checks at a lower cost than Enterprise.",
+   "D": "The Health Dashboard is not the service that provides these best practice checks."
+  }
+ },
+ "q_bb93189c3ba8": {
+  "explanation": "AWS Professional Services is a global team of experts that offers paid engagements in specialty practice areas to help customers adopt the cloud.",
+  "optionNotes": {
+   "A": "Enterprise Support is a support plan, not a set of paid specialty engagements.",
+   "B": "AWS solutions architects give guidance but do not run paid specialty practice engagements.",
+   "C": "Professional Services provides paid engagements in practice areas to accelerate cloud adoption.",
+   "D": "AWS account managers manage the customer relationship but do not deliver paid specialty engagements."
+  }
+ },
+ "q_72ebe27b9963": {
+  "explanation": "Amazon Lex builds conversational interfaces, such as chatbots, using voice and text, so it fits adding a chatbot to a website.",
+  "optionNotes": {
+   "A": "Amazon Textract extracts text from documents; it is not a chatbot.",
+   "B": "Lex provides the conversational chatbot capability, using the same technology as Alexa.",
+   "C": "AWS Glue is a data integration service, not a chatbot service.",
+   "D": "Amazon Rekognition analyzes images and video, not conversation."
+  }
+ },
+ "q_8bc907a66e58": {
+  "explanation": "AWS recommends Business-level support or higher for production workloads, and Business is the lowest-cost plan that meets this. Developer is meant for non-production, and the Enterprise plans cost more.",
+  "optionNotes": {
+   "A": "Developer Support is intended for testing and non-production workloads, not production.",
+   "B": "Enterprise On-Ramp meets the need but is more expensive than Business.",
+   "C": "Enterprise Support meets the need but is the most expensive option.",
+   "D": "Business-level support is the lowest-cost plan recommended for production workloads."
+  }
+ },
+ "q_a55ce0ead984": {
+  "explanation": "Amazon Polly converts text into natural-sounding speech, which suits an accessibility application.",
+  "optionNotes": {
+   "A": "Amazon MQ is a managed message broker, not a text-to-speech service.",
+   "B": "Polly converts text into audible speech.",
+   "C": "Amazon Neptune is a graph database, not a speech service.",
+   "D": "Amazon Timestream is a time series database, not a speech service."
+  }
+ },
+ "q_e307758c7391": {
+  "explanation": "Amazon QuickSight is the business intelligence service that provides dashboards and charts to analyze business data.",
+  "optionNotes": {
+   "A": "Amazon Macie finds sensitive data in S3, not dashboards.",
+   "B": "Amazon Aurora is a relational database and does not build dashboards.",
+   "C": "QuickSight creates dashboards and charts for business insights.",
+   "D": "AWS CloudTrail records API activity for auditing, not business dashboards."
+  }
+ },
+ "q_72e2c61d3ddd": {
+  "explanation": "Amazon Elastic Transcoder converts video and audio files into formats that play on smartphones, and the exam expects it. Note that AWS ended support for Elastic Transcoder on November 13, 2025 and recommends AWS Elemental MediaConvert for new work.",
+  "optionNotes": {
+   "A": "Amazon Comprehend analyzes text; it does not convert media formats.",
+   "B": "Amazon Rekognition analyzes the content of images and video; it does not convert formats.",
+   "C": "Elastic Transcoder converts media files to formats suited for phones, which is what the exam expects; AWS has since ended support for it in favor of AWS Elemental MediaConvert.",
+   "D": "Amazon Polly turns text into speech; it does not convert existing media files."
+  }
+ },
+ "q_228bc7f9eb50": {
+  "explanation": "Amazon Transcribe converts speech to text, which can be used to produce meeting notes.",
+  "optionNotes": {
+   "A": "Amazon Polly does the reverse, converting text to speech.",
+   "B": "Amazon Textract extracts text from scanned documents, not from audio.",
+   "C": "Amazon Rekognition analyzes images and video, not speech.",
+   "D": "Transcribe uses speech-to-text conversion to turn spoken meetings into text."
+  }
+ },
+ "q_63c92bac529c": {
+  "explanation": "AWS Trusted Advisor continuously checks an account against best practices for cost, performance, security, fault tolerance, and service limits, so it can report on ongoing optimization and security as the environment changes.",
+  "optionNotes": {
+   "A": "Trusted Advisor keeps checking the environment and reports optimization and security recommendations over time.",
+   "B": "The AWS Health Dashboard reports AWS service events that affect your resources, not optimization or security findings.",
+   "C": "Amazon Connect is a cloud contact center, unrelated to optimization reporting.",
+   "D": "AWS Systems Manager helps operate and patch resources; it does not report on cost and security optimization."
+  }
+ },
+ "q_46a9cfc0afd1": {
+  "explanation": "Amazon WorkSpaces provides managed Windows virtual desktops, and Amazon AppStream 2.0 (now Amazon WorkSpaces Applications) streams applications securely to users. The correct options are B and C.",
+  "optionNotes": {
+   "A": "Amazon Connect is a contact center, not a desktop or application delivery service.",
+   "B": "AppStream 2.0 streams managed applications to remote users over a secure connection.",
+   "C": "WorkSpaces provides managed Windows virtual desktops for remote employees.",
+   "D": "Site-to-Site VPN provides a network connection but does not supply desktops or applications.",
+   "E": "Amazon ECS runs containers and is not an end-user desktop or application streaming service."
+  }
+ },
+ "q_08727ca120aa": {
+  "explanation": "Amazon Rekognition analyzes images and can detect objects, scenes, and faces, which lets a company organize, characterize, and search large image collections.",
+  "optionNotes": {
+   "A": "Amazon Transcribe converts speech to text and does not analyze images.",
+   "B": "Rekognition detects objects, scenes, and faces in images so they can be labeled and searched.",
+   "C": "Amazon Aurora is a relational database and cannot characterize images by itself.",
+   "D": "Amazon QuickSight builds dashboards from data; it does not analyze image content."
+  }
+ },
+ "q_d193e5d2e69e": {
+  "explanation": "AWS Trusted Advisor has a security check that flags security groups allowing unrestricted access to specific ports.",
+  "optionNotes": {
+   "A": "Trusted Advisor includes a check for security groups with unrestricted access to specific ports.",
+   "B": "Amazon CloudWatch monitors metrics and logs; it does not review security group rules for best practice.",
+   "C": "Amazon GuardDuty detects threats from log and network activity; it does not audit security group configuration against best practices.",
+   "D": "The AWS Health Dashboard reports AWS service events, not configuration problems in your account."
+  }
+ },
+ "q_8fce7233cb6f": {
+  "explanation": "Amazon SageMaker is the fully managed service for building, training, and deploying machine learning models.",
+  "optionNotes": {
+   "A": "Amazon Personalize is a prebuilt recommendation service, not a general platform for building models.",
+   "B": "Amazon Comprehend is a prebuilt NLP service and does not let you build and train your own models in general.",
+   "C": "Amazon Forecast is a prebuilt time-series forecasting service (no longer open to new customers), not a general ML build, train, and deploy platform.",
+   "D": "SageMaker covers building, training, and deploying ML models."
+  }
+ },
+ "q_a8863202916c": {
+  "explanation": "Amazon Athena lets you explore and analyze data in Amazon S3 by running queries in standard SQL, with no servers to set up.",
+  "optionNotes": {
+   "A": "Amazon Kendra is an intelligent search service, not a service for analyzing data in S3 with queries.",
+   "B": "Athena analyzes data directly in S3 using SQL; the exam expects Athena.",
+   "C": "Amazon Comprehend performs NLP on text, not general data exploration.",
+   "D": "SageMaker is for building and training ML models rather than for exploring S3 data with queries."
+  }
+ },
+ "q_5b2d383458ce": {
+  "explanation": "Enterprise Support provides a designated TAM who reviews readiness and capacity before a launch, AWS Countdown event management during it, and fast real-time support for production-critical cases, which suits a business-critical release.",
+  "optionNotes": {
+   "A": "Trusted Advisor gives recommendations but not strategic planning help or real-time event support.",
+   "B": "The AWS Partner Network offers third-party consultants, not AWS infrastructure event management and real-time support.",
+   "C": "Enterprise Support includes a TAM for planning, AWS Countdown event support, and fast response during the release.",
+   "D": "Professional Services provides paid project engagements; it is not the support plan that gives real-time support during the release."
+  }
+ },
+ "q_7fa6e2082917": {
+  "explanation": "Amazon Kendra is an intelligent enterprise search service that lets employees ask questions and get specific answers through a single search interface.",
+  "optionNotes": {
+   "A": "Amazon Connect is a contact center, not an enterprise search tool.",
+   "B": "Kendra provides a single intelligent search interface that returns specific answers.",
+   "C": "Amazon Lex builds chatbots; it does not index company content for search.",
+   "D": "Amazon Comprehend analyzes text for insights but is not a search interface."
+  }
+ },
+ "q_559c800b1841": {
+  "explanation": "Amazon WorkSpaces provides Windows or Linux virtual desktops that employees can reach from anywhere on supported devices.",
+  "optionNotes": {
+   "A": "WorkSpaces provides persistent Windows and Linux cloud desktops accessible from supported devices.",
+   "B": "AppStream 2.0 streams individual applications rather than full desktops.",
+   "C": "Amazon Keyspaces is a managed Cassandra-compatible database, not a desktop service.",
+   "D": "AWS Cloud9 is a cloud IDE for developers, not a desktop for all employees."
+  }
+ },
+ "q_12fe20e3c20a": {
+  "explanation": "The exam expects Business-level support for this question. Be aware that current AWS documentation ties launch readiness work to higher plans: Enterprise Support includes a TAM who reviews readiness and capacity before events plus AWS Countdown event management, and Unified Operations adds critical workload reviews.",
+  "optionNotes": {
+   "A": "The exam expects Business-level support as the plan offering this guidance.",
+   "B": "Basic Support covers only account and billing help and self-service resources, not launch readiness guidance.",
+   "C": "Developer Support gives general guidance during business hours but not operational readiness for a launch.",
+   "D": "Enterprise Support includes TAM-led readiness reviews and AWS Countdown event support, so it fits this need in current AWS docs, but the exam does not select it for this question."
+  }
+ },
+ "q_b64dc24b949c": {
+  "explanation": "Amazon Connect is a cloud contact center that handles voice and chat so a company can consolidate its call centers.",
+  "optionNotes": {
+   "A": "Amazon SNS sends notifications and does not run a call center.",
+   "B": "AWS Support Center is where customers open cases with AWS, not a contact center for their own customers.",
+   "C": "Amazon Cognito manages user sign-in for applications, not customer calls.",
+   "D": "Connect provides the voice and chat customer experience for call center agents."
+  }
+ },
+ "q_d03d5453a424": {
+  "explanation": "Amazon SQS lets applications send messages to each other through queues, decoupling them.",
+  "optionNotes": {
+   "A": "AWS Auto Scaling adjusts capacity; it does not carry messages between applications.",
+   "B": "Elastic Load Balancing distributes incoming traffic; it is not a messaging service.",
+   "C": "SQS is a message queue service for sending messages between applications.",
+   "D": "Kinesis Data Streams is for streaming data ingestion and processing, not the standard choice for simple application-to-application messaging."
+  }
+ },
+ "auth-support-ai-other-01": {
+  "explanation": "Business-level support (now Business Support+) gives 24x7 phone, web, and chat access to Cloud Support Engineers at the lowest cost among the options. The Enterprise-level plans cost more, and re:Post is only a community forum.",
+  "optionNotes": {
+   "A": "Enterprise Support includes this access but costs far more than needed.",
+   "B": "Unified Operations is a premium plan with designated specialists, costing more than needed.",
+   "C": "Business Support+ adds 24x7 phone and chat access to Cloud Support Engineers at the lowest cost of these plans.",
+   "D": "re:Post is a community Q&A site; it does not provide support cases or phone access to AWS engineers."
+  }
+ },
+ "auth-support-ai-other-02": {
+  "explanation": "Every AWS account gets Basic Support at no extra cost, which includes help with account and billing questions and service quota increases. Technical cases, a TAM, and the full Trusted Advisor checks need a paid plan.",
+  "optionNotes": {
+   "A": "Account and billing help and service quota increases are included for every account.",
+   "B": "Technical support cases answered by Cloud Support Engineers need a paid support plan.",
+   "C": "A designated TAM is only included with Enterprise-level plans.",
+   "D": "The full set of Trusted Advisor checks needs a paid plan; Basic gets only a limited set."
+  }
+ },
+ "auth-support-ai-other-03": {
+  "explanation": "With Basic Support, Trusted Advisor offers all service limits (quotas) checks and a limited set of core checks, including the root user MFA check. The correct options are B and D.",
+  "optionNotes": {
+   "A": "Only a limited set of checks is available on Basic Support; the full cost optimization category needs a paid plan.",
+   "B": "All checks in the service limits category are available on Basic Support.",
+   "C": "Trusted Advisor Priority is for customers with Enterprise-level plans.",
+   "D": "The root user MFA check is one of the core security checks available on Basic Support.",
+   "E": "The Trusted Advisor API, through the AWS Support API, requires a paid plan."
+  }
+ },
+ "auth-support-ai-other-04": {
+  "explanation": "Abuse of AWS resources, such as spam or scanning from an AWS IP address, is reported to the AWS Trust and Safety team.",
+  "optionNotes": {
+   "A": "Professional Services is a paid consulting team, not the place to report abuse.",
+   "B": "Trusted Advisor reviews your own account for best practices; it does not take abuse reports.",
+   "C": "The Health Dashboard shows AWS service events that affect your account, not abuse by others.",
+   "D": "The Trust and Safety team handles reports of abusive activity coming from AWS resources."
+  }
+ },
+ "auth-support-ai-other-05": {
+  "explanation": "AWS IoT Core lets connected devices such as sensors connect securely to AWS and routes their messages to other AWS services for processing.",
+  "optionNotes": {
+   "A": "Amazon Connect is a contact center and does not connect sensors.",
+   "B": "IoT Core securely connects devices at scale and uses rules to route their data to other AWS services.",
+   "C": "AWS Amplify helps build web and mobile apps; it does not connect factory sensors.",
+   "D": "Amazon WorkSpaces provides virtual desktops, not device connectivity."
+  }
+ },
+ "auth-support-ai-other-06": {
+  "explanation": "Amazon Transcribe turns the recorded calls into text, and Amazon Comprehend analyzes that text to detect sentiment. The correct options are A and C.",
+  "optionNotes": {
+   "A": "Transcribe converts the recorded speech into text.",
+   "B": "Amazon Polly converts text to speech, the opposite of what is needed.",
+   "C": "Comprehend performs sentiment analysis on text to find positive or negative tone.",
+   "D": "Amazon Rekognition analyzes images and video, not phone recordings.",
+   "E": "Amazon Translate converts text between languages and does not determine sentiment."
+  }
+ },
+ "auth-support-ai-other-07": {
+  "explanation": "Amazon Bedrock offers foundation models through a managed API, so the company can add summarization without training a model or managing infrastructure.",
+  "optionNotes": {
+   "A": "SageMaker AI is for building, training, and deploying your own models, which involves more management than this company wants.",
+   "B": "Amazon Textract extracts text and data from documents; it does not summarize with a foundation model.",
+   "C": "Bedrock provides ready-to-use foundation models through an API with no infrastructure to manage.",
+   "D": "Amazon Lex builds conversational chatbots, not report summarization."
+  }
+ },
+ "auth-support-ai-other-08": {
+  "explanation": "Amazon Textract extracts text, form fields, and tables from scanned documents, so it can feed claim form data into a database.",
+  "optionNotes": {
+   "A": "Comprehend analyzes the meaning of text but does not extract fields and tables from scanned images.",
+   "B": "Amazon Transcribe converts audio to text, not scanned forms.",
+   "C": "Amazon Rekognition detects objects and text in images but is not built to extract structured form fields and tables.",
+   "D": "Textract pulls out form field values and table rows from scanned documents."
+  }
+ },
+ "auth-support-ai-other-09": {
+  "explanation": "Amazon SQS queues orders so the web tier can keep accepting them while processing is slow, and Amazon SNS fans each order out to both the warehouse and billing systems at once. The correct options are C and E.",
+  "optionNotes": {
+   "A": "AWS Glue is for ETL and does not buffer or distribute messages.",
+   "B": "Amazon Athena runs SQL queries on S3 data, not message handling.",
+   "C": "SQS buffers orders in a queue to decouple the tiers.",
+   "D": "Amazon SES sends email and is not used to notify the warehouse and billing systems of each order.",
+   "E": "SNS publishes each order to multiple subscribers at the same time."
+  }
+ },
+ "auth-support-ai-other-10": {
+  "explanation": "Amazon WorkSpaces Applications (formerly AppStream 2.0) streams a single application to a browser on the user's own device, which fits contractors who do not need a full desktop.",
+  "optionNotes": {
+   "A": "WorkSpaces provides full virtual desktops, which the contractors do not need.",
+   "B": "WorkSpaces Applications streams just the application to any browser-capable device.",
+   "C": "Amazon ECS runs containers and is not an application streaming service for end users.",
+   "D": "Lightsail virtual servers would need you to build and manage your own remote access, not stream the application."
+  }
+ }
+}
