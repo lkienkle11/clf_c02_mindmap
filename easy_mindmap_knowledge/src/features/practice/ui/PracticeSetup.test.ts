@@ -1,14 +1,27 @@
 import { describe, expect, it, vi } from 'vitest';
 import { screen, waitFor } from '@testing-library/svelte';
 import userEvent from '@testing-library/user-event';
-import { makePracticeEnv } from '@/testing/practice-env';
+import { makeQuestion } from '@/testing/fixtures';
+import { makePracticeEnv, makePracticeRawCatalog } from '@/testing/practice-env';
 import { renderWithI18n } from '@/testing/render-with-i18n';
 import { loadLastOptions } from '../options';
 import { PracticeSession } from '../index';
 import PracticeSetup from './PracticeSetup.svelte';
 
-async function mount(topicId = 'compute', seed: string | null = null) {
-  const env = await makePracticeEnv();
+type RawCatalog = ReturnType<typeof makePracticeRawCatalog>;
+
+/** compute with `total` questions: the three from makePracticeRawCatalog, then fillers. */
+function computeCatalog(total: number): RawCatalog {
+  const raw = makePracticeRawCatalog();
+  const options = [{ key: 'A', text: 'Alpha' }, { key: 'B', text: 'Bravo' }];
+  for (let n = raw.questions.length + 1; n <= total; n++) {
+    raw.questions.push(makeQuestion({ id: `f${n}`, topicId: 'compute', text: `Filler ${n}`, options, correct: ['A'] }));
+  }
+  return raw;
+}
+
+async function mount(topicId = 'compute', seed: string | null = null, rawCatalog?: RawCatalog) {
+  const env = await makePracticeEnv({ rawCatalog });
   if (seed) env.store.set('practice_last_options', seed);
   const onstarted = vi.fn();
   renderWithI18n(PracticeSetup, { services: env.services, appState: env.appState, topicId, onstarted });
@@ -153,5 +166,136 @@ describe('PracticeSetup', () => {
     const env = await makePracticeEnv();
     renderWithI18n(PracticeSetup, { services: env.services, appState: env.appState, topicId: 'compute', onstarted: vi.fn() }, 'vi');
     expect(screen.getByRole('button', { name: 'Về sơ đồ' })).toBeInTheDocument();
+  });
+});
+
+describe('PracticeSetup question count', () => {
+  const countInput = () => screen.getByRole('spinbutton', { name: 'Number of questions' });
+  const start = () => screen.getByRole('button', { name: 'Start' });
+  const minutes = () => screen.getByRole('spinbutton', { name: 'Minutes' });
+  const seconds = () => screen.getByRole('spinbutton', { name: 'Seconds' });
+  const savedOptions = (o: object) => JSON.stringify({ allowReview: false, limitMs: null, clockMode: 'freeze', onHidden: 'freeze', ...o });
+
+  it('labels the count input and starts at 10', async () => {
+    await mount('compute', null, computeCatalog(26));
+    expect(countInput()).toHaveValue(10);
+    expect(countInput()).toBeEnabled();
+  });
+
+  it('shows a too-few alert and disables Start for 9, then clears it at 10', async () => {
+    await mount('compute', null, computeCatalog(26));
+    await userEvent.clear(countInput());
+    await userEvent.type(countInput(), '9');
+    const error = screen.getByText(/at least 10 questions/);
+    expect(error).toHaveAttribute('role', 'alert');
+    expect(countInput()).toHaveAttribute('aria-invalid', 'true');
+    expect(countInput().getAttribute('aria-describedby')).toContain(error.id);
+    expect(start().getAttribute('aria-describedby')).toContain(error.id);
+    expect(start()).toBeDisabled();
+    await userEvent.clear(countInput());
+    await userEvent.type(countInput(), '10');
+    expect(screen.queryByText(/at least 10 questions/)).not.toBeInTheDocument();
+    expect(countInput()).toHaveAttribute('aria-invalid', 'false');
+    expect(start()).toBeEnabled();
+  });
+
+  it('shows a too-many alert for 1000 and names the pool size', async () => {
+    await mount('compute', null, computeCatalog(26));
+    await userEvent.clear(countInput());
+    await userEvent.type(countInput(), '1000');
+    const error = screen.getByText(/at most 26 questions/);
+    expect(error).toHaveAttribute('role', 'alert');
+    expect(countInput().getAttribute('aria-describedby')).toContain(error.id);
+    expect(start()).toBeDisabled();
+  });
+
+  it('shows a whole-number alert for 1.5', async () => {
+    await mount('compute', null, computeCatalog(26));
+    await userEvent.clear(countInput());
+    await userEvent.type(countInput(), '1.5');
+    expect(screen.getByText(/whole number/)).toHaveAttribute('role', 'alert');
+    expect(start()).toBeDisabled();
+  });
+
+  it('quick button 20 sets the input and the header; All sets the pool size', async () => {
+    await mount('compute', null, computeCatalog(26));
+    await userEvent.click(screen.getByRole('button', { name: '20' }));
+    expect(countInput()).toHaveValue(20);
+    expect(screen.getByText('20 questions')).toBeInTheDocument();
+    await userEvent.click(screen.getByRole('button', { name: 'All' }));
+    expect(countInput()).toHaveValue(26);
+    expect(screen.getByText('26 questions')).toBeInTheDocument();
+  });
+
+  it('starting with 15 makes a session of 15 questions and saves 15', async () => {
+    const { services, onstarted } = await mount('compute', null, computeCatalog(26));
+    await userEvent.clear(countInput());
+    await userEvent.type(countInput(), '15');
+    await userEvent.click(start());
+    await waitFor(() => expect(onstarted).toHaveBeenCalledTimes(1));
+    expect((onstarted.mock.calls[0][0] as PracticeSession).questions).toHaveLength(15);
+    expect((await loadLastOptions(services.repos.settings)).questionCount).toBe(15);
+  });
+
+  it('restores the saved count', async () => {
+    await mount('compute', savedOptions({ questionCount: 20 }), computeCatalog(26));
+    expect(countInput()).toHaveValue(20);
+    expect(screen.getByText('20 questions')).toBeInTheDocument();
+  });
+
+  it('clamps a saved count that is larger than the pool', async () => {
+    await mount('compute', savedOptions({ questionCount: 500 }), computeCatalog(26));
+    expect(countInput()).toHaveValue(26);
+    expect(screen.getByText('26 questions')).toBeInTheDocument();
+    expect(start()).toBeEnabled();
+  });
+
+  it('hides the count control for a pool below the minimum and keeps Start enabled', async () => {
+    const { onstarted } = await mount();
+    expect(screen.getByText('3 questions')).toBeInTheDocument();
+    expect(screen.queryByRole('spinbutton', { name: 'Number of questions' })).not.toBeInTheDocument();
+    expect(screen.queryByRole('alert')).not.toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: 'All' })).not.toBeInTheDocument();
+    await userEvent.click(start());
+    await waitFor(() => expect(onstarted).toHaveBeenCalledTimes(1));
+    expect((onstarted.mock.calls[0][0] as PracticeSession).questions).toHaveLength(3);
+  });
+
+  it('pre-fills the time from the chosen count the first time a time is set', async () => {
+    await mount('compute', null, computeCatalog(26));
+    await userEvent.click(screen.getByRole('radio', { name: 'Set a time' }));
+    // ceil(10 x 90 / 65) = 14 minutes
+    expect(minutes()).toHaveValue(14);
+    expect(seconds()).toHaveValue(0);
+  });
+
+  it('uses the chosen count for the time pre-fill', async () => {
+    await mount('compute', null, computeCatalog(26));
+    await userEvent.clear(countInput());
+    await userEvent.type(countInput(), '20');
+    await userEvent.click(screen.getByRole('radio', { name: 'Set a time' }));
+    // ceil(20 x 90 / 65) = 28 minutes
+    expect(minutes()).toHaveValue(28);
+  });
+
+  it('does not pre-fill again once the user has edited the time', async () => {
+    await mount('compute', null, computeCatalog(26));
+    await userEvent.click(screen.getByRole('radio', { name: 'Set a time' }));
+    expect(minutes()).toHaveValue(14);
+    await userEvent.clear(minutes());
+    await userEvent.type(minutes(), '2');
+    await userEvent.click(screen.getByRole('radio', { name: 'No time limit' }));
+    await userEvent.clear(countInput());
+    await userEvent.type(countInput(), '20');
+    await userEvent.click(screen.getByRole('radio', { name: 'Set a time' }));
+    expect(minutes()).toHaveValue(2);
+  });
+
+  it('keeps a saved time limit instead of pre-filling', async () => {
+    await mount('compute', savedOptions({ limitMs: 90_000, clockMode: 'run', questionCount: 20 }), computeCatalog(26));
+    await userEvent.click(screen.getByRole('radio', { name: 'No time limit' }));
+    await userEvent.click(screen.getByRole('radio', { name: 'Set a time' }));
+    expect(minutes()).toHaveValue(1);
+    expect(seconds()).toHaveValue(30);
   });
 });
