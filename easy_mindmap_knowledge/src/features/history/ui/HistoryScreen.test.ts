@@ -84,6 +84,12 @@ describe('HistoryScreen', () => {
     expect(missedItems[0]).toHaveTextContent('Missed 2 out of 3');
   });
 
+  it('shows the attempts only once, as the one table on the screen', async () => {
+    await mount({ attempts: attempts.slice(0, 3) });
+    await screen.findByRole('table', { name: 'Attempts' });
+    expect(screen.getAllByRole('table')).toHaveLength(1);
+  });
+
   it('filters by topic with a chip that can be removed', async () => {
     const { appState } = await mount({}, { view: 'history', topicId: 'storage' });
     const table = await screen.findByRole('table', { name: 'Attempts' });
