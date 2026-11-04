@@ -13,7 +13,7 @@ The **AWS Certified Cloud Practitioner (CLF-C02)** exam checks overall knowledge
 | Item | What the official pages say |
 | --- | --- |
 | Questions | 65 in total: **50 scored** and **15 unscored** |
-| Time | 90 minutes |
+| Time | 90 minutes. Non-native English speakers taking the exam in English can request **30 extra minutes** (120 in total) with the accommodation **ESL +30 MINUTES**; see the registration lesson |
 | Question types | Multiple choice and multiple response |
 | Result | Pass or fail, with a **scaled score from 100 to 1,000** |
 | Passing score | **700** |
@@ -39,13 +39,14 @@ AWS updates the exam guide from time to time and publishes changes about **one m
 
 ## How this app compares
 
-- Topic practice uses 10 questions; the Capstone practice draws **30 questions from the whole bank**.
-- The app's pass mark is **80%**, a little stricter than you need, to leave a safety margin.
-- App questions with several answers are always "(Choose two.)" and are scored all or nothing.
+- Topic practice lets you choose 10 questions, up to all the questions of the topic.
+- The checkpoint exams and the Capstone exam are **65 questions in 90 minutes**, or 120 minutes with the app's extra-time option. You cannot review earlier answers during the attempt.
+- The app's pass mark is **80%**, which is stricter than the official passing score of 700 out of 1,000 on the scaled score.
+- **Every question counts.** The real exam has 15 unscored questions that you cannot identify, so the app treats all 65 as scored.
 
 ## Key points
 
-- 65 questions (50 scored, 15 unscored and unmarked), 90 minutes.
+- 65 questions (50 scored, 15 unscored and unmarked), 90 minutes; 120 with the ESL +30 MINUTES accommodation, requested before you register.
 - Multiple choice (one answer) or multiple response (two or more answers).
 - Scaled score 100 to 1,000; pass at 700; no penalty for guessing.
 

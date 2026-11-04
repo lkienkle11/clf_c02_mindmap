@@ -196,6 +196,48 @@ describe('loadBundledCatalog (real content folder)', () => {
   });
 });
 
+describe('Capstone lessons match the official exam (real content folder)', () => {
+  const lesson = (id: string) => {
+    const found = catalog.lessons.find((l) => l.id === id);
+    if (!found) throw new Error(`lesson ${id} is missing`);
+    return found;
+  };
+  const capstone = catalog.lessonsOf('capstone');
+
+  it('the exam-format lesson states the 90-minute exam and the ESL accommodation, with no 30-question exam', () => {
+    const en = lesson('capstone-exam-format').body.en;
+    expect(en).toContain('90 minutes');
+    expect(en).toContain('ESL');
+    expect(en).not.toContain('30 questions');
+  });
+
+  it('the Vietnamese exam-format lesson does not say 30 câu', () => {
+    expect(lesson('capstone-exam-format').body.vi).not.toContain('30 câu');
+  });
+
+  it('the Capstone has 6 lessons in topic order and ends with the optional further-learning lesson', () => {
+    expect(catalog.topic('capstone').lessonIds).toEqual([
+      'capstone-exam-format',
+      'capstone-domains',
+      'capstone-answering',
+      'capstone-final-review',
+      'capstone-exam-registration',
+      'capstone-further',
+    ]);
+    expect(capstone).toHaveLength(6);
+    const last = capstone[capstone.length - 1];
+    expect(last.id).toBe('capstone-further');
+    expect(last.required).toBe(false);
+  });
+
+  it('the registration lesson is required and covers the ESL +30 MINUTES accommodation', () => {
+    const reg = lesson('capstone-exam-registration');
+    expect(reg.required).toBe(true);
+    expect(reg.body.en).toContain('ESL +30 MINUTES');
+    expect(reg.body.vi).toContain('ESL +30 MINUTES');
+  });
+});
+
 describe('explanations (real content folder)', () => {
   const gaps = findGaps(catalog.questions);
 

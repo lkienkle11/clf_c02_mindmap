@@ -12,7 +12,7 @@ Kỳ thi **AWS Certified Cloud Practitioner (CLF-C02)** kiểm tra hiểu biết
 | Mục | Trang chính thức ghi gì |
 | --- | --- |
 | Câu hỏi | Tổng cộng 65: **50 câu tính điểm** và **15 câu không tính điểm** |
-| Thời gian | 90 phút |
+| Thời gian | 90 phút. Thí sinh không phải người bản ngữ tiếng Anh thi bằng tiếng Anh có thể yêu cầu thêm **30 phút** (tổng 120 phút) với accommodation **ESL +30 MINUTES**; xem bài đăng ký thi |
 | Loại câu hỏi | Multiple choice và multiple response |
 | Kết quả | Đạt hoặc không đạt, với **điểm quy đổi (scaled score) từ 100 đến 1.000** |
 | Điểm đạt | **700** |
@@ -38,13 +38,14 @@ AWS cập nhật exam guide theo thời gian và công bố thay đổi khoảng
 
 ## So với app này
 
-- Bài thực hành theo chủ đề có 10 câu; bài thực hành Capstone lấy **30 câu từ toàn bộ kho câu hỏi**.
-- Ngưỡng đạt của app là **80%**, chặt hơn mức cần một chút để có khoảng an toàn.
-- Câu nhiều đáp án trong app luôn là "(Choose two.)" và chỉ được tính đúng khi chọn đủ cả hai.
+- Bài thực hành theo chủ đề cho bạn chọn từ 10 câu đến toàn bộ câu hỏi của chủ đề.
+- Bài thi checkpoint và bài thi Capstone đều gồm **65 câu trong 90 phút**, hoặc 120 phút nếu bật tùy chọn thêm giờ của app. Trong lúc làm bài, bạn không thể xem lại câu đã trả lời.
+- Ngưỡng đạt của app là **80%**, chặt hơn điểm đạt chính thức 700 trên 1.000 điểm quy đổi.
+- **Mọi câu đều được tính điểm.** Kỳ thi thật có 15 câu không tính điểm mà bạn không thể nhận ra, nên app coi cả 65 câu là câu tính điểm.
 
 ## Ý chính
 
-- 65 câu (50 câu tính điểm, 15 câu không tính điểm và không được đánh dấu), 90 phút.
+- 65 câu (50 câu tính điểm, 15 câu không tính điểm và không được đánh dấu), 90 phút; 120 phút với accommodation ESL +30 MINUTES, yêu cầu trước khi đăng ký thi.
 - Multiple choice (một đáp án) hoặc multiple response (hai đáp án trở lên).
 - Điểm quy đổi từ 100 đến 1.000; đạt từ 700; đoán sai không bị trừ điểm.
 
