@@ -53,6 +53,15 @@ describe('OptionReview', () => {
     expect(screen.getByText('Because.')).toBeInTheDocument();
   });
 
+  it('shows No answer only when nothing is picked', () => {
+    const question = makeQuestion({ options, correct: ['A'] });
+    const { unmount } = renderWithI18n(OptionReview, { question, selected: [] });
+    expect(screen.getByText('No answer')).toBeInTheDocument();
+    unmount();
+    renderWithI18n(OptionReview, { question, selected: ['A'] });
+    expect(screen.queryByText('No answer')).not.toBeInTheDocument();
+  });
+
   it('renders nothing for an unknown question', () => {
     renderWithI18n(OptionReview, { question: undefined, selected: [] });
     expect(rows()).toHaveLength(0);

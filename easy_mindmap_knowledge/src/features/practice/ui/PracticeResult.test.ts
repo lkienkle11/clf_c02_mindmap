@@ -50,6 +50,7 @@ describe('PracticeResult', () => {
     const second = within(rows[1]);
     expect(second.getAllByText(/✗/)[0]).toHaveTextContent('Incorrect');
     expect(second.getAllByRole('listitem')).toHaveLength(4);
+    expect(within(rows[2]).getByText('No answer')).toBeInTheDocument();
     expect(within(rows[2]).getByText('Correct answer')).toBeInTheDocument();
     expect(within(rows[2]).getByText('Charlie')).toBeInTheDocument();
   });

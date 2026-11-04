@@ -39,6 +39,9 @@
 {#if question}
   <section class="flex flex-col gap-2">
     <h3 class="text-sm text-muted-foreground">{i18n.t('practice.result.options')}</h3>
+    {#if selected.length === 0}
+      <p class="font-medium text-muted-foreground">{i18n.t('practice.result.noAnswer')}</p>
+    {/if}
     <ul lang="en" class="flex flex-col gap-2">
       {#each ordered as option (option.key)}
         {@const state = stateOf(option.key)}
