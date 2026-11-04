@@ -15,9 +15,11 @@
     lesson: Lesson;
     /** Allowlisted opener (YouTube search only). Rejects for anything else. */
     openExternal: (url: string) => Promise<void>;
+    /** Injected by the app layer: whether the topic's practice is unlocked (every required lesson read). */
+    canPractice: (topicId: string) => boolean;
   }
 
-  let { services, appState, lesson, openExternal }: Props = $props();
+  let { services, appState, lesson, openExternal, canPractice }: Props = $props();
 
   const i18n = getI18n();
   const locale = $derived(i18n.locale);
@@ -26,6 +28,7 @@
   const previous = $derived(index > 0 ? siblings[index - 1] : null);
   const next = $derived(index >= 0 && index < siblings.length - 1 ? siblings[index + 1] : null);
   const isRead = $derived(appState.readIds.has(lesson.id));
+  const practiceLocked = $derived(!canPractice(lesson.topicId));
   const html = $derived(withoutDeadLinks(renderLessonBody(lesson.body[locale])));
   let saving = $state(false);
   let error = $state<string | null>(null);
@@ -64,6 +67,11 @@
 
   function go(target: Lesson | null): void {
     if (target) appState.open({ view: 'lesson', topicId: target.topicId, lessonId: target.id });
+  }
+
+  function openPractice(): void {
+    if (practiceLocked) return;
+    appState.open({ view: 'practice', topicId: lesson.topicId });
   }
 
   /** Lesson bodies must never navigate the webview: allowed links go through the injected opener, all else is blocked. */
@@ -124,8 +132,15 @@
     {#if !isRead}
       <Button disabled={saving} onclick={complete}>{i18n.t('lesson.complete')}</Button>
     {/if}
-    <Button variant="secondary" disabled={next === null} onclick={() => go(next)}>{i18n.t('lesson.next')} <span aria-hidden="true">→</span></Button>
+    {#if next === null}
+      <Button variant="secondary" disabled={practiceLocked} onclick={openPractice}>{i18n.t('nav.practice')} <span aria-hidden="true">→</span></Button>
+    {:else}
+      <Button variant="secondary" onclick={() => go(next)}>{i18n.t('lesson.next')} <span aria-hidden="true">→</span></Button>
+    {/if}
   </footer>
+  {#if next === null && practiceLocked}
+    <p class="self-end text-sm text-muted-foreground">{i18n.t('mindmap.practiceLockedLessons')}</p>
+  {/if}
 </article>
 
 <style>

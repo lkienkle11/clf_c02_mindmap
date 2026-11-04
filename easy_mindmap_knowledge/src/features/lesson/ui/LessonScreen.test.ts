@@ -6,10 +6,10 @@ import { makeFakeServices } from '@/testing/fake-services';
 import { renderWithI18n } from '@/testing/render-with-i18n';
 import LessonScreen from './LessonScreen.svelte';
 
-async function mountScreen(passed: string[]) {
+async function mountScreen(passed: string[], canPractice: (topicId: string) => boolean = () => true) {
   const fake = await makeFakeServices({ catalog: loadCatalog(makeTreeRawCatalog()), passedTopicIds: passed });
   const openExternal = vi.fn(async () => {});
-  renderWithI18n(LessonScreen, { services: fake.services, appState: fake.appState, openExternal });
+  renderWithI18n(LessonScreen, { services: fake.services, appState: fake.appState, openExternal, canPractice });
   return fake;
 }
 
@@ -25,6 +25,15 @@ describe('LessonScreen', () => {
     appState.open({ view: 'lesson', topicId: 'compute', lessonId: 'compute-ec2' });
     await waitFor(() => expect(appState.route).toEqual({ view: 'tree' }));
     expect(screen.queryByRole('heading', { level: 1, name: 'EC2 basics' })).not.toBeInTheDocument();
+  });
+
+  it('passes canPractice down to the last lesson: a locked topic disables Practice with the reason', async () => {
+    const canPractice = vi.fn(() => false);
+    const { appState } = await mountScreen(['cloud-concepts', 'global-infrastructure'], canPractice);
+    appState.open({ view: 'lesson', topicId: 'compute', lessonId: 'compute-video' });
+    expect(await screen.findByRole('button', { name: 'Practice' })).toBeDisabled();
+    expect(screen.getByText('Read all required lessons first')).toBeInTheDocument();
+    expect(canPractice).toHaveBeenCalledWith('compute');
   });
 
   it('redirects to the tree for an unknown lesson or a lesson of another topic', async () => {
