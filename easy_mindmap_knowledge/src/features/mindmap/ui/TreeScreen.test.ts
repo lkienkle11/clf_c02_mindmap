@@ -246,6 +246,6 @@ describe('TreeScreen checkpoint nodes', () => {
   it('renders the four checkpoints and speaks Vietnamese', async () => {
     await mountTree({ passed: GROUP1, locale: 'vi' });
     expect(screen.getAllByRole('button', { name: /^Bài kiểm tra mốc \d/ })).toHaveLength(4);
-    expect(screen.getByRole('button', { name: /^storage/ })).toHaveAccessibleName(/Đạt điểm kiểm tra 1 để mở/);
+    expect(screen.getByRole('button', { name: /^storage/ })).toHaveAccessibleName(/Đạt bài kiểm tra mốc 1 để mở/);
   });
 });

@@ -166,6 +166,19 @@ describe('HistoryScreen', () => {
     expect(screen.getByText('Checkpoint 2')).toBeInTheDocument();
   });
 
+  it('keeps a checkpoint out of the weak-topics list and the topic filter options', async () => {
+    await mount(withCheckpoint);
+    const weak = await screen.findByRole('region', { name: 'Topics needing attention' });
+    const weakItems = within(weak).getAllByRole('listitem');
+    expect(weakItems).toHaveLength(2); // storage and compute, as without the checkpoint
+    expect(weak).not.toHaveTextContent('Checkpoint');
+    await userEvent.click(await screen.findByRole('button', { name: 'View most-missed questions (3)' }));
+    const dialog = await screen.findByRole('dialog', { name: 'Most-missed questions' });
+    const select = within(dialog).getByRole('combobox', { name: 'Topic' });
+    // only catalog topics that have a missed question (q1, q2, q3 are all compute); the checkpoint adds no option
+    expect(within(select).getAllByRole('option').map((o) => o.textContent)).toEqual(['All topics', 'compute']);
+  });
+
   it('counts the wrong answers of a checkpoint in the most-missed dialog', async () => {
     await mount(withCheckpoint);
     await userEvent.click(await screen.findByRole('button', { name: 'View most-missed questions (3)' }));

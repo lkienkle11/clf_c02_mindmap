@@ -241,7 +241,7 @@
   "exam.breakdown.title": "Kết quả theo chủ đề",
   "exam.breakdown.topic": "Chủ đề",
   "exam.breakdown.score": "Điểm",
-  "mindmap.lockedByCheckpoint": "Đạt điểm kiểm tra {group} để mở",
+  "mindmap.lockedByCheckpoint": "Đạt bài kiểm tra mốc {group} để mở",
   "mindmap.checkpoint.label": "Bài kiểm tra mốc {group}",
   "mindmap.checkpoint.state.locked": "Đang khóa",
   "mindmap.checkpoint.state.available": "Sẵn sàng",
