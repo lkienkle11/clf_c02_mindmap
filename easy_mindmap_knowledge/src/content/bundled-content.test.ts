@@ -10,7 +10,7 @@ const CONTENT_TOPICS = ['cloud-concepts', 'global-infrastructure', 'compute', 's
 // Topics whose lessons were expanded: 8-14 lessons, at least 1 optional, and every optional lesson has a videoQuery.
 // A content task adds its topic id here when that topic's lessons land. Empty until then, so every
 // topic keeps the legacy rule (4-5 lessons, exactly 1 optional with a videoQuery).
-const EXPANDED_TOPICS: string[] = [];
+const EXPANDED_TOPICS: string[] = ['cloud-concepts'];
 const CAPSTONE_TOPIC = 'capstone';
 const AUTHORED_PER_TOPIC = 10;
 const CHOOSE_TWO_PER_TOPIC = 3;

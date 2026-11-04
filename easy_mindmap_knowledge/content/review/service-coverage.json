@@ -1,7 +1,7 @@
 {
   "services": [
-    { "name": "Well-Architected Tool", "aliases": ["AWS Well-Architected Tool"], "topicId": "cloud-concepts", "active": false },
-    { "name": "Customer Carbon Footprint Tool", "aliases": ["AWS Customer Carbon Footprint Tool"], "topicId": "cloud-concepts", "active": false },
+    { "name": "Well-Architected Tool", "aliases": ["AWS Well-Architected Tool"], "topicId": "cloud-concepts", "active": true },
+    { "name": "Customer Carbon Footprint Tool", "aliases": ["AWS Customer Carbon Footprint Tool"], "topicId": "cloud-concepts", "active": true },
     { "name": "Global Accelerator", "aliases": ["AWS Global Accelerator"], "topicId": "global-infrastructure", "active": false },
     { "name": "S3 Transfer Acceleration", "aliases": ["Amazon S3 Transfer Acceleration"], "topicId": "global-infrastructure", "active": false },
     { "name": "EC2 Image Builder", "aliases": ["Amazon EC2 Image Builder"], "topicId": "compute", "active": false },
