@@ -119,6 +119,7 @@
   "practice.result.badge.missed": "Correct answer",
   "practice.result.backToMap": "Back to the map",
   "practice.result.tryAgain": "Try again",
+  "practice.result.checkpointNext": "Complete checkpoint {group} to unlock the next topics",
   "practice.resume.title": "Unfinished attempt",
   "practice.resume.question": "You have an unfinished attempt. Continue?",
   "practice.resume.continue": "Continue",
@@ -232,5 +233,10 @@
   "exam.setup.start": "Start exam",
   "exam.setup.back": "Back to the map",
   "exam.setup.notAvailable": "There are not enough questions to build this exam yet.",
-  "exam.setup.startFailed": "Could not start the exam. Please try again."
+  "exam.setup.startFailed": "Could not start the exam. Please try again.",
+  "exam.result.title": "Exam result",
+  "exam.result.groupUnlocked": "Next group unlocked",
+  "exam.breakdown.title": "Results by topic",
+  "exam.breakdown.topic": "Topic",
+  "exam.breakdown.score": "Score"
 }

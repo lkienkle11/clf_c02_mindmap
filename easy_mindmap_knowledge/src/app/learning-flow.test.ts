@@ -180,3 +180,51 @@ describe('learning flow (ruling R17: topics without lessons can be practised)', 
     expect(await screen.findByRole('dialog', { name: 'Time to review' })).toBeInTheDocument();
   });
 });
+
+/** Clicks the expanded topic's Practice leaf, answers every question correctly and submits; stops on the result. */
+async function submitAllRightUi(user: ReturnType<typeof userEvent.setup>): Promise<void> {
+  await user.click(practiceLeaf());
+  const start = await screen.findByRole('button', { name: 'Start' });
+  await waitFor(() => expect(start).toBeEnabled());
+  await user.click(start);
+  await screen.findByRole('button', { name: 'Exit' });
+  for (;;) {
+    await user.click(screen.getByLabelText(RIGHT));
+    const next = screen.getByRole('button', { name: 'Next question' });
+    if (next.hasAttribute('disabled')) break;
+    await user.click(next);
+  }
+  await user.click(screen.getByRole('button', { name: 'Submit' }));
+  await user.click(within(screen.getByRole('dialog')).getByRole('button', { name: 'Submit' }));
+  expect(await screen.findByText('100%')).toBeInTheDocument();
+}
+
+describe('checkpoint hints on the result screen', () => {
+  it('a topic that closes a group says to take the checkpoint; the topics before it say the next topic unlocked', async () => {
+    const { services, appState } = await makeEnv();
+    const user = userEvent.setup();
+    render(App, { services, appState, i18n: createI18n('en') });
+
+    await user.click(screen.getByRole('button', { name: /^Cloud intro/ }));
+    await user.click(await screen.findByRole('button', { name: 'Complete lesson' }));
+    await waitFor(() => expect(appState.readIds.has('cc-intro')).toBe(true));
+    await user.click(screen.getByRole('button', { name: /Back to the mindmap/ }));
+    await waitFor(() => expect(practiceLeaf()).not.toHaveAttribute('aria-disabled', 'true'));
+
+    // Topic 1 and topic 2 are not the last of group 1: the normal unlock line.
+    await submitAllRightUi(user);
+    expect(screen.getByText('Next topic unlocked')).toBeInTheDocument();
+    await user.click(screen.getByRole('button', { name: 'Back to the map' }));
+    await screen.findByRole('heading', { name: 'Mindmap' });
+
+    await submitAllRightUi(user);
+    expect(screen.getByText('Next topic unlocked')).toBeInTheDocument();
+    await user.click(screen.getByRole('button', { name: 'Back to the map' }));
+    await screen.findByRole('heading', { name: 'Mindmap' });
+
+    // Topic 3 (compute) is the last topic of group 1: the checkpoint hint, no unlock line.
+    await submitAllRightUi(user);
+    expect(screen.getByText('Complete checkpoint 1 to unlock the next topics')).toBeInTheDocument();
+    expect(screen.queryByText('Next topic unlocked')).not.toBeInTheDocument();
+  }, 30_000);
+});

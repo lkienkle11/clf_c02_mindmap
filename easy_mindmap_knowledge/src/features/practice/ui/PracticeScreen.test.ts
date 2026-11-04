@@ -89,4 +89,34 @@ describe('PracticeScreen', () => {
     expect(await screen.findByText('Passed!')).toBeInTheDocument();
     expect(screen.queryByText('Next topic unlocked')).not.toBeInTheDocument();
   });
+
+  it('shows the checkpoint hint, not the unlock line, on the first pass of a group\'s last topic', async () => {
+    const env = await makePracticeEnv();
+    const s = await passedSession(env.services, 'compute', () => env.appState.refresh());
+    env.appState.open({ view: 'practice', topicId: 'compute' });
+    renderWithI18n(PracticeScreen, { services: env.services, appState: env.appState, topicId: 'compute', checkpointAfter: 1, initialSession: s });
+    await s.submit('manual');
+    expect(await screen.findByText('Passed!')).toBeInTheDocument();
+    expect(screen.getByText('Complete checkpoint 1 to unlock the next topics')).toBeInTheDocument();
+    expect(screen.queryByText('Next topic unlocked')).not.toBeInTheDocument();
+  });
+
+  it('a redo of a group\'s last topic shows neither the hint nor the unlock line', async () => {
+    const env = await makePracticeEnv({ submitted: [passedAttempt('compute')] });
+    const s = await passedSession(env.services, 'compute', () => env.appState.refresh());
+    renderWithI18n(PracticeScreen, { services: env.services, appState: env.appState, topicId: 'compute', checkpointAfter: 1, initialSession: s });
+    await s.submit('manual');
+    expect(await screen.findByText('Passed!')).toBeInTheDocument();
+    expect(screen.queryByText(/Complete checkpoint/)).not.toBeInTheDocument();
+    expect(screen.queryByText('Next topic unlocked')).not.toBeInTheDocument();
+  });
+
+  it('a topic that does not close a group keeps the unlock line and no hint', async () => {
+    const env = await makePracticeEnv();
+    const s = await passedSession(env.services, 'compute', () => env.appState.refresh());
+    renderWithI18n(PracticeScreen, { services: env.services, appState: env.appState, topicId: 'compute', checkpointAfter: null, initialSession: s });
+    await s.submit('manual');
+    expect(await screen.findByText('Next topic unlocked')).toBeInTheDocument();
+    expect(screen.queryByText(/Complete checkpoint/)).not.toBeInTheDocument();
+  });
 });

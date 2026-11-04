@@ -17,14 +17,21 @@
     onretry?: () => void;
     /** True when this pass completed the topic for the first time and opened the next one. */
     unlocked?: boolean;
-    /** 'review' shows the score and breakdown only: no pass mark, no unlock wording, no retry. */
-    mode?: 'practice' | 'review';
+    /**
+     * 'review' shows the score and breakdown only: no pass mark, no unlock wording, no retry.
+     * 'exam' uses the exam title and the pass mark, and never the unlock wording.
+     */
+    mode?: 'practice' | 'review' | 'exam';
+    /** A status line under the pass line (e.g. the checkpoint hint or the group that just opened). */
+    notice?: string;
     /** Replaces the default buttons (e.g. the review screen's next-batch / stop actions). */
     actions?: Snippet;
   }
 
-  let { services, result, onback, timedOut = false, canRetry = false, onretry, unlocked = false, mode = 'practice', actions }: Props = $props();
+  let { services, result, onback, timedOut = false, canRetry = false, onretry, unlocked = false, mode = 'practice', notice, actions }: Props = $props();
   const isReview = $derived(mode === 'review');
+  const isExam = $derived(mode === 'exam');
+  const titleKey = $derived(isReview ? 'review.result.title' : isExam ? 'exam.result.title' : 'practice.result.title');
 
   const i18n = getI18n();
   const questions = $derived(new Map(services.catalog.questions.map((q) => [q.id, q])));
@@ -38,7 +45,7 @@
 
 <div class="mx-auto flex max-w-3xl flex-col gap-6 p-6">
   <header class="flex flex-col items-start gap-2">
-    <h1 tabindex="-1" class="text-2xl font-semibold focus:outline-none" {@attach focusOnMount}>{i18n.t(isReview ? 'review.result.title' : 'practice.result.title')}</h1>
+    <h1 tabindex="-1" class="text-2xl font-semibold focus:outline-none" {@attach focusOnMount}>{i18n.t(titleKey)}</h1>
     {#if timedOut && !isReview}
       <p role="status" class="rounded-lg bg-muted p-3 font-medium">{i18n.t('practice.timeUp')}</p>
     {/if}
@@ -48,10 +55,13 @@
       <p class={cn('text-lg font-semibold', result.passed ? 'text-leaf-done-ink' : 'text-danger')}>
         {i18n.t(result.passed ? 'quiz.passed' : 'quiz.failed')}
       </p>
-      {#if result.passed && unlocked}
+      {#if result.passed && unlocked && !isExam}
         <p class="font-medium text-leaf-done-ink">{i18n.t('quiz.unlocked')}</p>
       {/if}
       <p class="text-muted-foreground">{i18n.t('practice.result.threshold')}</p>
+    {/if}
+    {#if notice}
+      <p role="status" class="font-medium text-leaf-done-ink">{notice}</p>
     {/if}
   </header>
 

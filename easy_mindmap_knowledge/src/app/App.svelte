@@ -3,7 +3,7 @@
   import type { I18n } from '@/i18n/i18n.svelte';
   import { LessonScreen } from '@/features/lesson';
   import { TreeScreen, practiceUnlocked } from '@/features/mindmap';
-  import { ExamScreen } from '@/features/exam';
+  import { ExamScreen, checkpointGroups } from '@/features/exam';
   import { HistoryScreen } from '@/features/history';
   import { PracticeScreen, ResumeGate } from '@/features/practice';
   import type { PracticeSession } from '@/features/practice';
@@ -52,6 +52,11 @@
     ...(resumeNotice ? [{ id: 'resume', text: resumeNotice, onclose: () => (resumeNotice = null) }] : []),
   ]);
 
+  /** The checkpoint group this topic closes (when it is the group's last topic), or null. */
+  function checkpointAfter(topicId: string): number | null {
+    return checkpointGroups(services.catalog.topics).find((g) => g.topicIds.at(-1) === topicId)?.index ?? null;
+  }
+
   function onresumed(session: PracticeSession): void {
     if (session.kind === 'review') {
       appState.reviewRun = ReviewRun.adoptSingle(session);
@@ -86,7 +91,7 @@
     <ExamScreen {services} {appState} groupIndex={null} initialSession={resumed} />
   {:else if appState.route.view === 'practice'}
     {#key appState.route.topicId}
-      <PracticeScreen {services} {appState} topicId={appState.route.topicId} initialSession={resumed} />
+      <PracticeScreen {services} {appState} topicId={appState.route.topicId} checkpointAfter={checkpointAfter(appState.route.topicId)} initialSession={resumed} />
     {/key}
   {:else if appState.view === 'review'}
     <ReviewScreen {services} {appState} />

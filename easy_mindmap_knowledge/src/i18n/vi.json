@@ -119,6 +119,7 @@
   "practice.result.badge.missed": "Đáp án đúng",
   "practice.result.backToMap": "Về sơ đồ",
   "practice.result.tryAgain": "Làm lại",
+  "practice.result.checkpointNext": "Hoàn thành bài kiểm tra mốc {group} để mở các chủ đề tiếp theo",
   "practice.resume.title": "Lượt làm bài dở dang",
   "practice.resume.question": "Bạn có bài đang làm dở. Tiếp tục không?",
   "practice.resume.continue": "Tiếp tục",
@@ -232,5 +233,10 @@
   "exam.setup.start": "Bắt đầu thi",
   "exam.setup.back": "Về sơ đồ",
   "exam.setup.notAvailable": "Chưa đủ câu hỏi để tạo bài thi này.",
-  "exam.setup.startFailed": "Không thể bắt đầu bài thi. Vui lòng thử lại."
+  "exam.setup.startFailed": "Không thể bắt đầu bài thi. Vui lòng thử lại.",
+  "exam.result.title": "Kết quả bài thi",
+  "exam.result.groupUnlocked": "Đã mở nhóm tiếp theo",
+  "exam.breakdown.title": "Kết quả theo chủ đề",
+  "exam.breakdown.topic": "Chủ đề",
+  "exam.breakdown.score": "Điểm"
 }
