@@ -23,6 +23,15 @@ describe('ScoreChart', () => {
     expect(markers[2].tagName).not.toBe('circle');
   });
 
+  it('draws a checkpoint as a third shape, with a legend entry', () => {
+    renderWithI18n(ScoreChart, { points: [...points, { attemptId: 'c1', at: D + 3000, scorePct: 85, kind: 'checkpoint', topicId: null }] }, 'en');
+    const cp = screen.getAllByTestId('score-marker').find((m) => m.getAttribute('data-kind') === 'checkpoint');
+    expect(cp).toBeDefined();
+    expect(cp?.tagName).not.toBe('circle');
+    expect(cp?.tagName).not.toBe('rect');
+    expect(screen.getByText('Checkpoint')).toBeInTheDocument();
+  });
+
   it('draws a dashed line at 80% and labels it', () => {
     mount();
     const line = screen.getByTestId('threshold-line');

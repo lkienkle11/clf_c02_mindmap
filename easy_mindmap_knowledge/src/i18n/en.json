@@ -188,6 +188,8 @@
   "history.col.result": "Result",
   "history.kind.practice": "Practice",
   "history.kind.review": "Review",
+  "history.kind.checkpoint": "Checkpoint",
+  "history.checkpointName": "Checkpoint {group}",
   "history.mixed": "Mixed review",
   "history.passed": "Passed",
   "history.failed": "Not passed",
