@@ -1,0 +1,554 @@
+{
+ "q_fa03a468e0b6": {
+  "explanation": "Importing data into Amazon S3 from a Snowball Edge device incurs no data transfer charge. Device usage beyond the included on-site period and data transferred out of S3 are charged.",
+  "optionNotes": {
+   "A": "Appliance use is covered by the job's service fee rather than being a free activity, and shipping charges also apply.",
+   "B": "Exporting data out of Amazon S3 onto a Snowball Edge is a data transfer out, which is charged.",
+   "C": "Data transfer into Amazon S3 from the Snowball Edge appliance is free, like other inbound transfer into AWS.",
+   "D": "Using the appliance beyond the included on-site period incurs additional daily charges, so it is not free."
+  }
+ },
+ "q_1d1949cc3d83": {
+  "explanation": "AWS Storage Gateway has a Tape Gateway type that presents a virtual tape library to existing backup software, so the company keeps its backup workflow while storing the data in AWS.",
+  "optionNotes": {
+   "A": "Amazon EBS is block storage for EC2 instances and does not emulate a tape library for backup software.",
+   "B": "Storage Gateway (Tape Gateway) emulates a tape library and stores virtual tapes in AWS, so no workflow change is needed.",
+   "C": "Amazon ECS is a container orchestration service, not a backup storage target.",
+   "D": "AWS Lambda runs code on demand and cannot act as a tape library replacement."
+  }
+ },
+ "q_ad5132cf5577": {
+  "explanation": "Amazon FSx for Windows File Server provides a fully managed native Windows file server, which fits Windows-based applications.",
+  "optionNotes": {
+   "A": "Amazon FSx offers a fully managed Windows file server option (FSx for Windows File Server) with SMB support.",
+   "B": "Amazon EKS runs managed Kubernetes clusters and is not a file server.",
+   "C": "Amazon ECS orchestrates containers and does not provide file storage.",
+   "D": "Amazon EMR is a big data processing platform, not a Windows file server."
+  }
+ },
+ "q_c1ed6f913fe9": {
+  "explanation": "The Amazon S3 File Gateway exposes S3 buckets as NFS (and SMB) file shares, so an NFS-based on-premises workload can store its files in S3.",
+  "optionNotes": {
+   "A": "Tape Gateway presents a virtual tape library for backup software, not an NFS file share.",
+   "B": "Volume Gateway provides iSCSI block volumes, not NFS file access.",
+   "C": "FSx File Gateway gives local access to FSx for Windows File Server shares over SMB, not NFS.",
+   "D": "S3 File Gateway offers NFS and SMB file shares backed by Amazon S3, matching an NFS workload."
+  }
+ },
+ "q_24d14321f84a": {
+  "explanation": "Amazon S3 File Gateway lets on-premises applications read and write S3 objects as files by using NFS or SMB, so existing applications need no changes.",
+  "optionNotes": {
+   "A": "AWS DataSync is a data transfer service for moving data, not a file system interface for ongoing application access.",
+   "B": "Snowball Edge is a physical device for offline data transfer and edge compute, not a continuous file protocol interface to S3.",
+   "C": "S3 File Gateway exposes S3 through standard file protocols (NFS and SMB) for on-premises applications.",
+   "D": "AWS Transfer Family provides SFTP, FTPS, and FTP access, which are file transfer protocols rather than file system protocols for applications."
+  }
+ },
+ "q_acd70cb77f2b": {
+  "explanation": "S3 Transfer Acceleration uses the AWS edge network to speed up transfers between a client and an S3 bucket over long distances.",
+  "optionNotes": {
+   "A": "S3 Versioning keeps multiple versions of objects and does not affect transfer speed.",
+   "B": "Transfer Acceleration routes uploads through edge locations and the AWS backbone to speed long-distance transfers.",
+   "C": "S3 ACLs control access permissions and do not speed up transfers.",
+   "D": "S3 Intelligent-Tiering is a storage class that moves objects between access tiers to save cost, not a transfer feature."
+  }
+ },
+ "q_fbf56b3d37b0": {
+  "explanation": "AWS Snowmobile is an exabyte-scale transfer service using a truck, designed for moving tens of petabytes with little operational effort compared with many smaller devices.",
+  "optionNotes": {
+   "A": "Snowmobile is built for extremely large transfers such as 50 PB, so it needs far less handling than many devices.",
+   "B": "Snowball Edge holds tens of terabytes per device, so 50 PB would need a very large number of devices and much more effort.",
+   "C": "AWS Data Exchange is for subscribing to third-party datasets, not migrating a data center.",
+   "D": "AWS DMS migrates databases, not bulk file storage."
+  }
+ },
+ "q_beba776a2afc": {
+  "explanation": "Amazon S3 is low-cost object storage for log data, and the stored logs can be queried in place with services such as Amazon Athena.",
+  "optionNotes": {
+   "A": "Aurora is a relational database and costs far more than object storage for raw log files.",
+   "B": "EFS is a file system priced higher per GB than S3 and is not intended for cheap log archives.",
+   "C": "EBS is block storage attached to EC2 and is more costly than S3 for bulk logs.",
+   "D": "S3 is the most cost-effective durable storage for logs and can be queried directly, for example with Athena."
+  }
+ },
+ "q_ec144717921a": {
+  "explanation": "Amazon S3 is an object storage service offering performance, security, scalability, and availability.",
+  "optionNotes": {
+   "A": "High-performance block storage for EC2 describes Amazon EBS, not S3.",
+   "B": "S3 is object storage with high scalability, durability, availability, and security.",
+   "C": "Managed file storage over SMB describes Amazon FSx for Windows File Server, not S3.",
+   "D": "An elastic managed NFS file system describes Amazon EFS, not S3."
+  }
+ },
+ "q_ed5bab584802": {
+  "explanation": "S3 Versioning keeps every version of an object, so an overwritten or deleted object can be restored.",
+  "optionNotes": {
+   "A": "Lifecycle rules transition or expire objects automatically and do not protect against accidental overwrite or deletion.",
+   "B": "Versioning preserves previous versions and uses delete markers, so accidental deletes and overwrites are recoverable.",
+   "C": "Bucket policies control who can access the bucket but do not retain old versions of objects.",
+   "D": "Server-side encryption protects data at rest but does not prevent or undo deletion or overwriting."
+  }
+ },
+ "q_9e69f4c2c3ed": {
+  "explanation": "AWS Snowball Edge can collect and process data locally with edge compute while offline, then be shipped back to AWS to load the data.",
+  "optionNotes": {
+   "A": "AWS IoT Core relies on internet connectivity to connect devices to the cloud, which is not available at sea.",
+   "B": "Amazon Lightsail is a simple cloud hosting service and cannot run on a ship offline.",
+   "C": "Storage Gateway needs ongoing network connectivity to AWS to sync data.",
+   "D": "Snowball Edge provides local compute and storage that works without connectivity, and is shipped to AWS later."
+  }
+ },
+ "q_8d0cef14475d": {
+  "explanation": "Amazon FSx for Windows File Server is fully managed file storage accessed over the SMB protocol.",
+  "optionNotes": {
+   "A": "Amazon S3 is object storage accessed via APIs, not a native SMB file share.",
+   "B": "Amazon EFS provides NFS file storage, not SMB.",
+   "C": "FSx for Windows File Server is a managed file system accessible over SMB.",
+   "D": "Amazon EBS is block storage attached to a single EC2 instance, not a shared SMB file service."
+  }
+ },
+ "q_0f22f2fd1718": {
+  "explanation": "S3 Glacier Flexible Retrieval is a low-cost archive class for rarely accessed data with retrieval times from minutes to hours, which fits a 12-hour retrieval window.",
+  "optionNotes": {
+   "A": "S3 Standard is for frequently accessed data and has a higher per-GB storage cost.",
+   "B": "Glacier Flexible Retrieval offers low storage cost and retrieval within hours, suiting infrequent access with a 12-hour window.",
+   "C": "One Zone-IA is cheaper than Standard-IA but still costs more per GB than Glacier classes and stores data in one AZ.",
+   "D": "Standard-IA gives millisecond access but costs more per GB than Glacier Flexible Retrieval, so it is not the lowest storage cost."
+  }
+ },
+ "q_64f231977866": {
+  "explanation": "AWS Storage Gateway connects on-premises backups to cloud storage and keeps frequently used data cached locally.",
+  "optionNotes": {
+   "A": "Storage Gateway stores data in AWS while caching recent data locally for low-latency access.",
+   "B": "Snowcone is a small edge and data transfer device, not a locally cached cloud backup target.",
+   "C": "AWS Backup centralizes and automates backups of AWS resources and has no local cache.",
+   "D": "Amazon EFS is a cloud file system and does not provide a local cache for on-premises storage replacement."
+  }
+ },
+ "q_412eade8e113": {
+  "explanation": "S3 One Zone-IA stores data in a single Availability Zone at a lower price, which suits rarely accessed data that can be regenerated if lost.",
+  "optionNotes": {
+   "A": "S3 Standard is intended for frequently accessed data and costs the most per GB.",
+   "B": "Intelligent-Tiering adds a monitoring charge and is meant for unknown or changing patterns, not known rare access.",
+   "C": "Standard-IA stores data across multiple AZs and costs more than One Zone-IA, which is unnecessary resilience for regenerable data.",
+   "D": "One Zone-IA is the cheapest of these for infrequent access, and the single-AZ risk is acceptable since the data can be regenerated."
+  }
+ },
+ "q_af50321ba430": {
+  "explanation": "AWS Storage Gateway with the Tape Gateway type provides a virtual tape library backed by AWS, extending the tape library without changing backup software.",
+  "optionNotes": {
+   "A": "EFS is a file system and does not emulate tape for backup applications.",
+   "B": "EBS is block storage for EC2 and cannot act as a virtual tape library.",
+   "C": "S3 stores objects but needs a gateway to present a tape interface to backup software.",
+   "D": "Storage Gateway (Tape Gateway) presents virtual tapes stored in S3 and S3 Glacier archive storage, extending the tape library."
+  }
+ },
+ "q_7e4823459948": {
+  "explanation": "AWS Snowmobile moves petabyte to exabyte scale data physically by truck, avoiding the internet entirely.",
+  "optionNotes": {
+   "A": "DataSync transfers data over the network, which would use an internet or private connection.",
+   "B": "Amazon Connect is a cloud contact center service and unrelated to data migration.",
+   "C": "Snowmobile is a physical transfer service for very large datasets that needs no internet connection.",
+   "D": "Direct Connect is a dedicated network connection, not an offline physical transfer, and moving petabytes over it would take a long time."
+  }
+ },
+ "q_bf5df2f4a2d8": {
+  "explanation": "The AWS Snow Family provides rugged devices that capture and store data offline in the field and are shipped to AWS to upload the data.",
+  "optionNotes": {
+   "A": "AWS Outposts extends AWS infrastructure to a data center and requires a connection back to a Region.",
+   "B": "Transfer Family offers SFTP, FTPS, and FTP access to AWS storage and requires connectivity.",
+   "C": "Snow Family devices work offline in remote locations and are shipped back to load data into AWS.",
+   "D": "Migration Hub tracks migration progress and does not capture data in the field."
+  }
+ },
+ "q_ec555d274906": {
+  "explanation": "S3 Lifecycle rules automatically transition objects to cheaper archival storage classes as they age, saving cost on data that is rarely accessed.",
+  "optionNotes": {
+   "A": "Versioning keeps multiple object versions, which can raise storage cost rather than archive data.",
+   "B": "Lifecycle rules move objects to lower-cost classes such as S3 Glacier after a set time.",
+   "C": "Object Lock prevents objects from being deleted or overwritten and does not archive them.",
+   "D": "S3 Inventory produces reports listing objects and metadata, and does not move data."
+  }
+ },
+ "q_42a8ed428ae7": {
+  "explanation": "AWS Snowball Edge can collect and process data locally with built-in compute and storage, then be shipped to AWS, which suits a 10 TB dataset and intermittent connectivity.",
+  "optionNotes": {
+   "A": "AWS DMS migrates databases and does not provide a local device for processing data.",
+   "B": "DataSync transfers data over the network and has no local processing, so it struggles with intermittent connectivity.",
+   "C": "AWS Backup manages backups of AWS resources and does not process data locally.",
+   "D": "Snowball Edge offers local storage and compute, then ships the data to AWS."
+  }
+ },
+ "q_d48539383e4d": {
+  "explanation": "S3 Intelligent-Tiering moves objects between access tiers automatically, so it is cost-effective when access patterns are unknown or change.",
+  "optionNotes": {
+   "A": "S3 Standard has no automatic savings and costs more if data is rarely accessed.",
+   "B": "Standard-IA charges retrieval fees, which can be costly if the data turns out to be accessed often.",
+   "C": "One Zone-IA is for infrequent access, adds retrieval fees, and stores data in one AZ, so it is poor for unknown patterns.",
+   "D": "Intelligent-Tiering automatically shifts objects between tiers based on access, avoiding guesswork for unknown patterns."
+  }
+ },
+ "q_66b89402dfb9": {
+  "explanation": "An AWS Storage Gateway file gateway extends file storage to S3 and caches frequently used files locally, giving local performance with minimal management.",
+  "optionNotes": {
+   "A": "Mounting a separate bucket per user adds management overhead and gives no local cache for sharing content.",
+   "B": "A file gateway stores files in S3 and caches them locally, so the group keeps local sharing performance with unlimited capacity.",
+   "C": "WorkSpaces and WorkDocs change the users' working environment and do not extend on-premises shared file storage with local performance.",
+   "D": "An EBS volume cannot be shared directly across users and needs an EC2 instance to manage, which is not operationally efficient."
+  }
+ },
+ "q_9e0621fb4149": {
+  "explanation": "An EC2 instance store is temporary storage on the host's physical disks, and its data is lost when the instance is stopped or terminated.",
+  "optionNotes": {
+   "A": "EBS volumes are persistent and can survive instance stop or termination, depending on settings.",
+   "B": "Instance store is ephemeral and its data is lost when the instance stops or terminates.",
+   "C": "EFS is a persistent shared file system independent of instance lifecycle.",
+   "D": "S3 is durable object storage that persists regardless of instances."
+  }
+ },
+ "q_a52add3b9f7a": {
+  "explanation": "Amazon FSx File Gateway lets on-premises workloads access Windows file shares stored in Amazon FSx for Windows File Server over SMB, with local caching, and is the expected choice among these options.",
+  "optionNotes": {
+   "A": "FSx File Gateway provides on-premises access to Windows file shares in FSx for Windows File Server over SMB.",
+   "B": "DataSync transfers and syncs data and does not provide a Windows file share for workloads.",
+   "C": "Amazon S3 is object storage and not a native Windows (SMB) file share.",
+   "D": "Snow Family devices are physical appliances shipped to the data center, which the company wants to avoid."
+  }
+ },
+ "q_ba57292a6fbd": {
+  "explanation": "Amazon S3 is durable, virtually unlimited object storage at low cost, which suits static content.",
+  "optionNotes": {
+   "A": "EBS is block storage tied to EC2, with capacity limits and higher cost for static content.",
+   "B": "S3 offers very high durability, virtually unlimited capacity, and low cost for static content.",
+   "C": "Storage Gateway connects on-premises environments to AWS storage and is not itself the scalable storage.",
+   "D": "EFS is scalable file storage but costs more per GB than S3 for static content."
+  }
+ },
+ "q_c27ddb65e264": {
+  "explanation": "Amazon FSx for Windows File Server is a fully managed file server built on Windows Server with native SMB support for Microsoft workloads.",
+  "optionNotes": {
+   "A": "EFS supports NFS for Linux workloads, not SMB or native Windows features.",
+   "B": "FSx for Lustre is a high-performance file system for compute workloads and does not support SMB.",
+   "C": "FSx for Windows File Server provides native Windows file systems and SMB, fully managed.",
+   "D": "EBS is block storage attached to instances and is not a managed file server."
+  }
+ },
+ "q_0eee5475395d": {
+  "explanation": "S3 Inventory reports list objects and their metadata, such as tags, bucket, and prefix details, on a schedule.",
+  "optionNotes": {
+   "A": "S3 Inventory produces scheduled reports of objects and their metadata.",
+   "B": "Lifecycle rules move or expire objects and do not produce tracking reports.",
+   "C": "Versioning keeps multiple versions of objects and does not report on tags or prefixes.",
+   "D": "ACLs control access to buckets and objects and do not list metadata."
+  }
+ },
+ "q_bbb943d51545": {
+  "explanation": "S3 Intelligent-Tiering saves cost automatically by moving objects between access tiers as access patterns change.",
+  "optionNotes": {
+   "A": "Reserving storage capacity for payment flexibility is not a feature of S3 storage classes.",
+   "B": "Intelligent-Tiering keeps data in S3 and does not copy it to EBS volumes.",
+   "C": "It automatically moves objects between tiers based on changing access patterns to cut cost.",
+   "D": "The lowest-cost archival storage describes S3 Glacier Deep Archive, not Intelligent-Tiering."
+  }
+ },
+ "q_f13959971b9f": {
+  "explanation": "AWS Snowmobile is built for extremely large transfers such as 75 PB, so it is the most cost-effective choice compared with many Snowball Edge devices or a network link.",
+  "optionNotes": {
+   "A": "Snowball Edge devices hold tens of terabytes each, so 75 PB would need a very large number of devices.",
+   "B": "Snowmobile handles up to exabyte-scale transfers by truck, which fits 75 PB.",
+   "C": "Direct Connect is a network link, and moving 75 PB over it would take a very long time.",
+   "D": "Storage Gateway provides hybrid access to cloud storage and is not meant for a one-time bulk migration."
+  }
+ },
+ "q_8d4bd058fa75": {
+  "explanation": "AWS Storage Gateway lets on-premises applications access data stored in AWS with low latency by caching frequently used data locally.",
+  "optionNotes": {
+   "A": "CloudFront is a CDN for delivering content to end users and does not provide on-premises applications with access to stored data.",
+   "B": "Storage Gateway connects on-premises applications to AWS storage with local caching for low latency.",
+   "C": "AWS Backup automates backups and does not offer low-latency access.",
+   "D": "DataSync moves data between locations and is not an access layer."
+  }
+ },
+ "q_38f22f74a648": {
+  "explanation": "S3 Transfer Acceleration uses CloudFront edge locations and the AWS backbone to reduce latency between users and S3.",
+  "optionNotes": {
+   "A": "Cross-Region Replication copies objects between Regions and does not speed up user uploads.",
+   "B": "Transfer Acceleration routes traffic through edge locations over the AWS backbone to lower latency.",
+   "C": "Event Notifications trigger actions on S3 events and do not affect latency.",
+   "D": "Standard-IA is a storage class for infrequent access and does not use edge locations."
+  }
+ },
+ "q_a53b05f2eded": {
+  "explanation": "AWS Backup lets a company define a central backup policy and apply it across services for compute, storage, and database resources.",
+  "optionNotes": {
+   "A": "AWS Batch runs batch computing jobs and does not manage data protection.",
+   "B": "Elastic Disaster Recovery recovers servers after a disaster and is not a central, cross-service backup policy tool.",
+   "C": "AWS Backup centralizes and automates backup policies across many AWS services.",
+   "D": "Amazon FSx provides managed file systems and is not a cross-service data protection service."
+  }
+ },
+ "q_a263b46248a9": {
+  "explanation": "S3 Intelligent-Tiering automatically moves objects that go unread for 90 days to the low-cost Archive Instant Access tier with no retrieval fees, so rarely read audit data ends up at a low price without anyone predicting access.",
+  "optionNotes": {
+   "A": "S3 on Outposts stores objects on AWS Outposts hardware at a customer site and is not a cost-saving class for rarely read data.",
+   "B": "Glacier Instant Retrieval is also a low-cost archive class with millisecond access, but it charges per-GB retrieval fees on each audit read; the exam expects Intelligent-Tiering here.",
+   "C": "S3 Standard has the highest storage price and is meant for frequently accessed data.",
+   "D": "Intelligent-Tiering moves data to cheaper tiers automatically as it goes unused, which keeps cost low for data read rarely."
+  }
+ },
+ "q_4e4e77dd8657": {
+  "explanation": "Amazon S3 stores files as objects that can be made available through a public URL, so users can download them directly.",
+  "optionNotes": {
+   "A": "Amazon Redshift is a data warehouse for analytics, not a file hosting service.",
+   "B": "EBS volumes attach to EC2 instances and cannot be downloaded through a public URL directly.",
+   "C": "EFS is a file system mounted by compute resources and does not serve files by URL.",
+   "D": "S3 objects have URLs and can be made publicly accessible for direct download."
+  }
+ },
+ "q_d868c8f62cff": {
+  "explanation": "S3 Intelligent-Tiering moves objects between frequent and infrequent access tiers automatically, so data accessed daily and data accessed yearly are each stored at a fitting price.",
+  "optionNotes": {
+   "A": "S3 Standard charges the full price for data that is only accessed yearly.",
+   "B": "Glacier Deep Archive takes hours to retrieve and would not suit data that is accessed daily.",
+   "C": "One Zone-IA suits infrequent access only and adds retrieval fees for the data accessed daily.",
+   "D": "Intelligent-Tiering automatically places each object in the right tier as access varies."
+  }
+ },
+ "q_7450223f9d69": {
+  "explanation": "S3 Glacier Flexible Retrieval is a low-cost archive storage class designed for long-term backups and archives that are rarely accessed.",
+  "optionNotes": {
+   "A": "FSx for Lustre is a high-performance file system for fast workloads, not low-cost archiving.",
+   "B": "EBS is block storage for running instances and costs more than archive classes.",
+   "C": "EFS is shared file storage with a higher cost than archive tiers for rarely used data.",
+   "D": "Glacier Flexible Retrieval is purpose-built for low-cost archives and long-term backups."
+  }
+ },
+ "q_5378ff8ca942": {
+  "explanation": "Amazon EFS is a shared NFS file system that many EC2 instances can mount at the same time.",
+  "optionNotes": {
+   "A": "Direct Connect is a dedicated network connection to AWS and does not provide file storage.",
+   "B": "Snowball Edge is a physical data transfer and edge device, not a shared file system for EC2.",
+   "C": "AWS Backup protects data but does not offer a shared file system.",
+   "D": "EFS provides shared file storage that multiple EC2 instances can access concurrently."
+  }
+ },
+ "q_16bb9539ef13": {
+  "explanation": "S3 Glacier Vault Lock enforces compliance controls such as WORM on archived data with a lockable policy that cannot be changed.",
+  "optionNotes": {
+   "A": "Versioning keeps object versions but does not make objects immutable.",
+   "B": "A bucket policy controls access but can be changed and does not enforce WORM retention.",
+   "C": "Vault Lock locks a policy to enforce write-once-read-many retention for compliance.",
+   "D": "MFA delete requires MFA to delete versions but does not enforce WORM retention."
+  }
+ },
+ "q_8d590e131282": {
+  "explanation": "An AWS Storage Gateway file gateway exposes S3 buckets as NFS (and SMB) shares so applications can store and retrieve objects as files.",
+  "optionNotes": {
+   "A": "FSx for Lustre is a high-performance file system and does not present S3 objects through NFS gateways.",
+   "B": "A volume gateway presents block volumes over iSCSI, not NFS file access.",
+   "C": "The file gateway lets clients use NFS to read and write objects stored in S3.",
+   "D": "EFS is its own NFS file system and does not store data as S3 objects."
+  }
+ },
+ "q_1a8720c74350": {
+  "explanation": "Amazon S3 can host a static website directly, with no servers to manage, so it has the least operational overhead.",
+  "optionNotes": {
+   "A": "EC2 requires managing instances, operating system, and web server software.",
+   "B": "Elastic Beanstalk manages application environments but still runs servers, which is more than a static site needs.",
+   "C": "Lightsail provisions virtual servers that must be configured and maintained.",
+   "D": "S3 static website hosting needs no servers and is fully managed."
+  }
+ },
+ "q_b4e1316fb6a5": {
+  "explanation": "An EBS snapshot is the built-in way to back up a volume, with no scripting or extra infrastructure.",
+  "optionNotes": {
+   "A": "Copying contents to another volume is manual work and adds management overhead.",
+   "B": "Copying to an external server over Direct Connect is complex and unnecessary.",
+   "C": "Creating an EBS snapshot is a single operation that stores an incremental backup in S3.",
+   "D": "A custom script adds development and maintenance effort compared with snapshots."
+  }
+ },
+ "q_74fabb7a9643": {
+  "explanation": "S3 Standard-IA is cheaper than Standard for rarely accessed data and still provides immediate millisecond retrieval.",
+  "optionNotes": {
+   "A": "S3 Standard has a higher storage cost than needed for rarely accessed files.",
+   "B": "Standard-IA offers lower storage cost with immediate access for infrequently read data.",
+   "C": "Glacier Flexible Retrieval does not return objects immediately, since retrieval takes minutes to hours.",
+   "D": "Deep Archive takes hours to retrieve, so it fails the immediate retrieval need."
+  }
+ },
+ "q_b20a3abbfd3c": {
+  "explanation": "Amazon EFS is a fully managed NFS file system for use with AWS compute resources.",
+  "optionNotes": {
+   "A": "EBS is block storage and is not an NFS file system.",
+   "B": "Tape Gateway provides a virtual tape library for backups, not NFS file storage.",
+   "C": "S3 Glacier Flexible Retrieval is archive object storage and not an NFS file system.",
+   "D": "EFS provides managed, scalable NFS file storage for AWS compute."
+  }
+ },
+ "q_a6351997657a": {
+  "explanation": "Amazon S3 offers virtually unlimited total storage, though individual objects are limited in size.",
+  "optionNotes": {
+   "A": "10 PB is not a limit on total S3 storage.",
+   "B": "50 PB is not a limit on total S3 storage.",
+   "C": "100 PB is not a limit on total S3 storage.",
+   "D": "The total amount of data in S3 is virtually unlimited."
+  }
+ },
+ "q_9773d41aa8b6": {
+  "explanation": "Under the shared responsibility model, AWS protects the infrastructure that runs S3, while the customer configures features such as lifecycle, versioning, and policies.",
+  "optionNotes": {
+   "A": "Configuring a Lifecycle policy is a customer choice about their data.",
+   "B": "Activating Versioning is a customer configuration of their bucket.",
+   "C": "Bucket policies control access to customer data and are the customer's responsibility.",
+   "D": "Protecting the underlying infrastructure that supports S3 is AWS's responsibility, as security of the cloud."
+  }
+ },
+ "q_9c05bd4847d5": {
+  "explanation": "AWS Snowball Edge provides local storage and compute that operates without a stable internet connection, for use in isolated locations.",
+  "optionNotes": {
+   "A": "S3 is a cloud service that requires connectivity to reach.",
+   "B": "Snowball Edge processes data locally and works offline, then ships data to AWS.",
+   "C": "Storage Gateway depends on a network connection to AWS to sync data.",
+   "D": "AWS Backup protects AWS resources and does not run local processing."
+  }
+ },
+ "q_b8b1969fd4d3": {
+  "explanation": "AWS Backup is a fully managed service that centralizes and automates backups across AWS services and hybrid workloads.",
+  "optionNotes": {
+   "A": "AWS Artifact provides compliance reports and agreements, not data protection.",
+   "B": "AWS Backup centralizes and automates data protection for AWS and hybrid workloads.",
+   "C": "AWS Batch runs batch computing jobs and does not back up data.",
+   "D": "AWS Shield protects against DDoS attacks and does not back up data."
+  }
+ },
+ "q_d67cf66549c4": {
+  "explanation": "S3 Express One Zone is a high-performance class designed for single-digit millisecond access to frequently accessed data.",
+  "optionNotes": {
+   "A": "S3 Express One Zone is built for consistent single-digit millisecond latency.",
+   "B": "S3 Standard gives millisecond access but is not the class designed for single-digit millisecond performance.",
+   "C": "Glacier Flexible Retrieval takes minutes to hours to retrieve data.",
+   "D": "Glacier Instant Retrieval gives millisecond access for archive data but is not the class designed for single-digit millisecond latency."
+  }
+ },
+ "q_10406d92a839": {
+  "explanation": "Access Analyzer for S3 reviews buckets with ACLs, bucket policies, and access points and flags buckets that allow public or cross-account access.",
+  "optionNotes": {
+   "A": "Multi-Region Access Points route requests across buckets in different Regions and do not review permissions.",
+   "B": "S3 Storage Lens gives usage and activity metrics, not a review of access policies.",
+   "C": "IAM Identity Center manages workforce sign-in and does not review bucket permissions.",
+   "D": "Access Analyzer for S3 shows buckets with ACLs and bucket policies and highlights risky access in the console."
+  }
+ },
+ "q_b67734e2e3bc": {
+  "explanation": "Amazon S3 is object storage designed for very high durability (eleven 9s).",
+  "optionNotes": {
+   "A": "S3 is object storage designed for 99.999999999% durability.",
+   "B": "EFS is file storage and the question asks for object storage.",
+   "C": "EBS is block storage and the question asks for object storage.",
+   "D": "FSx provides managed file systems, not object storage."
+  }
+ },
+ "q_c50d1f537e15": {
+  "explanation": "AWS Storage Gateway is a hybrid cloud storage service that gives on-premises users access to virtually unlimited cloud storage.",
+  "optionNotes": {
+   "A": "DataSync transfers data and is not an ongoing hybrid storage access service.",
+   "B": "S3 Glacier is archive storage in the cloud and has no on-premises access layer.",
+   "C": "Storage Gateway bridges on-premises environments with cloud storage.",
+   "D": "EBS is block storage for EC2 and does not serve on-premises users."
+  }
+ },
+ "auth-storage-01": {
+  "explanation": "Durability is about not losing data, and current S3 storage classes are designed for eleven 9s of durability. Availability is about being able to access data, and S3 Standard is designed for 99.99% availability.",
+  "optionNotes": {
+   "A": "Being able to reach data when requested is availability, not durability.",
+   "B": "Eleven 9s is the durability figure, while S3 Standard availability is designed for 99.99%.",
+   "C": "One Zone-IA stores data in a single Availability Zone, not three or more.",
+   "D": "Durability concerns data loss, and S3 classes are designed for 99.999999999% durability."
+  }
+ },
+ "auth-storage-02": {
+  "explanation": "S3 Standard-IA is cheaper than S3 Standard for rarely read data, returns objects in milliseconds, and stores data across multiple Availability Zones.",
+  "optionNotes": {
+   "A": "One Zone-IA keeps data in a single Availability Zone, which is risky for reports that cannot be re-created.",
+   "B": "Standard-IA offers lower cost, millisecond access, and multi-AZ storage for rarely read data.",
+   "C": "Deep Archive retrieval takes hours, so it cannot return reports within milliseconds.",
+   "D": "S3 Standard costs more per GB than necessary for rarely read reports."
+  }
+ },
+ "auth-storage-03": {
+  "explanation": "S3 Versioning (A) lets the company restore deleted or overwritten objects, and S3 Block Public Access (C) prevents objects from being made public by mistake.",
+  "optionNotes": {
+   "A": "Versioning keeps earlier versions and uses delete markers so deleted or overwritten objects can be restored.",
+   "B": "Transfer Acceleration speeds up transfers and does not protect objects.",
+   "C": "Block Public Access overrides policies and ACLs that would make data public, at account or bucket level.",
+   "D": "Intelligent-Tiering optimizes storage cost and does not protect against deletion or public exposure.",
+   "E": "Static website hosting makes content publicly reachable, which works against the goal."
+  }
+ },
+ "auth-storage-04": {
+  "explanation": "An EBS volume is block storage that acts like a low-latency disk and persists independently of the instance, so the database data survives stop and start.",
+  "optionNotes": {
+   "A": "Instance store data is lost when the instance stops.",
+   "B": "S3 is object storage accessed through an API and is not a disk for a database.",
+   "C": "EBS provides persistent, low-latency block storage for database files.",
+   "D": "Glacier Flexible Retrieval is archive storage with slow retrieval and cannot serve as a disk."
+  }
+ },
+ "auth-storage-05": {
+  "explanation": "Amazon EFS is a managed NFS file system that Linux instances across Availability Zones can mount concurrently, and it grows and shrinks automatically.",
+  "optionNotes": {
+   "A": "EFS provides shared, automatically scaling file storage across multiple AZs.",
+   "B": "An EBS volume lives in one Availability Zone and is normally attached to one instance.",
+   "C": "Instance store is local to one instance and not shared or persistent.",
+   "D": "FSx for Windows File Server targets Windows SMB workloads, not Linux web servers."
+  }
+ },
+ "auth-storage-06": {
+  "explanation": "Snapshots are incremental (B) and can be used to create a new volume in any Availability Zone of the same Region (D).",
+  "optionNotes": {
+   "A": "Snapshots are stored durably in Amazon S3, not on the instance store.",
+   "B": "After the first full snapshot, only blocks that changed are saved.",
+   "C": "AWS does not automatically snapshot volumes; customers create them or schedule them, for example with AWS Backup.",
+   "D": "A snapshot can restore a volume in any AZ of the Region, which helps move data across AZs.",
+   "E": "Snapshots are not tied to one Availability Zone for restore."
+  }
+ },
+ "auth-storage-07": {
+  "explanation": "S3 Lifecycle configuration uses transition actions to move objects to cheaper classes and expiration actions to delete them after a set time.",
+  "optionNotes": {
+   "A": "Versioning keeps extra copies and does not move or delete objects on a schedule.",
+   "B": "Block Public Access restricts public exposure and does not manage object age.",
+   "C": "Cross-Region Replication copies objects to another Region and does not tier or delete them.",
+   "D": "Lifecycle rules can transition logs after 30 days and expire them after a year."
+  }
+ },
+ "auth-storage-08": {
+  "explanation": "AWS DataSync automates online transfers from on-premises NFS or SMB shares to Amazon EFS, with encryption in transit and data integrity checks.",
+  "optionNotes": {
+   "A": "Tape Gateway replaces tape libraries and does not copy NAS file shares to EFS.",
+   "B": "DataSync automates, encrypts, and verifies transfers from NAS shares to EFS over the network.",
+   "C": "AWS Backup creates backups of AWS resources and does not migrate on-premises NAS data.",
+   "D": "Transfer Acceleration speeds uploads to S3 buckets only, not to EFS."
+  }
+ },
+ "auth-storage-09": {
+  "explanation": "S3 Glacier Deep Archive has the lowest storage cost and suits long-term archives that are rarely read, where retrieval of up to a couple of days is acceptable.",
+  "optionNotes": {
+   "A": "Standard-IA keeps millisecond access, which is not needed and costs more per GB.",
+   "B": "Glacier Instant Retrieval offers millisecond access at a higher storage price than Deep Archive.",
+   "C": "Deep Archive is the cheapest class and fits records read almost never with slow retrieval allowed.",
+   "D": "Intelligent-Tiering adds monitoring cost and keeps access flexibility that this workload does not need."
+  }
+ },
+ "auth-storage-10": {
+  "explanation": "Amazon EBS (C) and EC2 instance store (E) both present block devices to an instance.",
+  "optionNotes": {
+   "A": "S3 is object storage accessed through an API, not block storage.",
+   "B": "EFS is file storage mounted over NFS, not block storage.",
+   "C": "EBS provides persistent block storage volumes for EC2.",
+   "D": "Tape Gateway presents a virtual tape library, not block storage for EC2.",
+   "E": "Instance store provides temporary block-level storage on the host's disks."
+  }
+ }
+}
