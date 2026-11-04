@@ -5,10 +5,9 @@
 
   interface Props {
     points: ScorePoint[];
-    topicName: (topicId: string | null) => string;
   }
 
-  let { points, topicName }: Props = $props();
+  let { points }: Props = $props();
 
   const i18n = getI18n();
   const locale = $derived(i18n.locale);

@@ -10,9 +10,8 @@ const points: ScorePoint[] = [
   { attemptId: 'a2', at: D + 1000, scorePct: 55, kind: 'practice', topicId: 'storage' },
   { attemptId: 'a3', at: D + 2000, scorePct: 70, kind: 'review', topicId: null },
 ];
-const topicName = (id: string | null) => id ?? 'Mixed review';
 
-const mount = (locale: 'en' | 'vi' = 'en') => renderWithI18n(ScoreChart, { points, topicName }, locale);
+const mount = (locale: 'en' | 'vi' = 'en') => renderWithI18n(ScoreChart, { points }, locale);
 
 describe('ScoreChart', () => {
   it('draws one marker per attempt, with a different shape for review', () => {
