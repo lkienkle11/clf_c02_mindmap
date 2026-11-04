@@ -36,7 +36,7 @@ These three are easy to confuse. Match the **need**.
 | **Dedicated Instances** | Instances on hardware dedicated to your account, with no host-level visibility | Isolation from other customers without managing a host |
 | **On-Demand Capacity Reservation** | Reserved capacity for a specific instance type in one Availability Zone | Making sure capacity exists when you need it |
 
-A Dedicated Host is billed per host; Dedicated Instances are billed per instance. Dedicated Host Reservations can lower the host price compared with On-Demand host pricing. A Capacity Reservation can be created and cancelled at any time, with no one- or three-year term, but it gives **no discount** on its own and you are charged while it is active. To save money as well, combine it with a Savings Plan or Regional Reserved Instance. A Regional Reserved Instance alone reserves no capacity. Dedicated Hosts cannot be placed in placement groups.
+A Dedicated Host is billed per host; Dedicated Instances are billed per instance. Dedicated Host Reservations can lower the host price compared with On-Demand host pricing. An immediate-use Capacity Reservation can be created and cancelled at any time, with no one- or three-year term (a future-dated one carries a commitment period), but it gives **no discount** on its own and you are charged while it is active. To save money as well, combine it with a Savings Plan or Regional Reserved Instance. A Regional Reserved Instance alone reserves no capacity. Dedicated Hosts cannot be placed in placement groups.
 
 ## Spot Instances: what interruption means
 

@@ -32,7 +32,7 @@ Most AMIs are **EBS-backed**: the root volume comes from an **Amazon EBS snapsho
 
 To use an AMI in another Region, **copy** it there. The copy becomes a separate AMI in the destination Region and is backed by new snapshots. Launch permissions and bucket permissions are **not** copied, and only your own user-defined tags are. Copying itself is free, but you pay standard storage for the extra snapshots. You can also share an AMI with other AWS accounts without copying it.
 
-AMIs and snapshots also support **disaster recovery** for EC2. An AMI can recreate a whole server, including its configuration, and an EBS snapshot holds everything needed to restore a volume's data. Because an AMI can be copied to a second Region, you can launch the same server there if the first Region has trouble. A question in this app's bank accepts AMIs and EBS snapshots as the two EC2 recovery tools. AWS does not back up your EBS volumes automatically; taking snapshots is your responsibility.
+AMIs and snapshots also support **disaster recovery** for EC2. An AMI can recreate a whole server, including its configuration, and an EBS snapshot holds everything needed to restore a volume's data. Because an AMI can be copied to a second Region, you can launch the same server there if the first Region has trouble. AWS's disaster recovery guidance lists both as building blocks of backup and restore for EC2: EBS snapshots give point-in-time backups of volume data, and an AMI, which is built from snapshots of the instance's volumes, can be copied within or across Regions and used to launch a restored version of the server. AWS does not back up your EBS volumes automatically; taking snapshots is your responsibility.
 
 A subtle point: **user data is an instance setting, not part of the AMI**. A new instance from your AMI does not inherit the old instance's user data.
 
@@ -74,5 +74,5 @@ There is no charge for Image Builder itself. You pay for the resources it uses, 
 ## Sources
 
 - [Amazon Machine Images in Amazon EC2](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/AMIs.html)
-- [Copy an Amazon EC2 AMI](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/CopyingAMIs.html)
+- [Disaster Recovery of Workloads on AWS](https://docs.aws.amazon.com/whitepapers/latest/disaster-recovery-workloads-on-aws/)
 - [What is EC2 Image Builder?](https://docs.aws.amazon.com/imagebuilder/latest/userguide/what-is-image-builder.html)

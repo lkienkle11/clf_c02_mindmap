@@ -6,7 +6,7 @@ videoQuery: Amazon Lightsail AWS Batch AWS App Runner AWS Cloud Map overview for
 ---
 ## Optional: services you may still meet
 
-This lesson is optional. It covers smaller compute-related services that show up in practice questions and AWS documentation. Some are changing, so the notes on availability matter.
+This lesson is optional. It covers smaller compute-related services that show up in exam-style questions and AWS documentation. Some are changing, so the notes on availability matter.
 
 ## Amazon Lightsail
 
@@ -18,7 +18,7 @@ This lesson is optional. It covers smaller compute-related services that show up
 
 ## AWS App Runner
 
-**AWS App Runner** deploys a web application or API straight from source code or a container image. It builds, runs, load balances and scales the service for you, with no infrastructure to design. The practice question bank asks which service builds a container from source and deploys it, and this is the match. Be aware that AWS has **closed App Runner to new customers**. Existing customers can continue to use it, and AWS recommends Amazon ECS Express Mode as the path for others. Learn the concept for the exam, but do not plan new projects on it.
+**AWS App Runner** deploys a web application or API straight from source code or a container image. It builds, runs, load balances and scales the service for you, with no infrastructure to design. An exam-style question about a managed service that builds and deploys a container from source code points to App Runner. Be aware that AWS has **closed App Runner to new customers**. Existing customers can continue to use it, and AWS recommends Amazon ECS Express Mode as the path for others. Learn the concept for the exam, but do not plan new projects on it.
 
 ## AWS Cloud Map
 

@@ -54,10 +54,11 @@ There is no extra charge for Amazon EC2 Auto Scaling. You pay for the instances 
 | Approach | You configure the group and its policies | Scaling plans configure scaling for several resources together |
 | Cost | No additional charge | No additional charge |
 
-If a question mentions **only EC2 instances**, think Amazon EC2 Auto Scaling. If it needs scaling across several resource types, think AWS Auto Scaling. AWS now documents moving scaling plans to EC2 Auto Scaling and Application Auto Scaling policies, so treat EC2 Auto Scaling as the main tool.
+The scope is the real difference: Amazon EC2 Auto Scaling is for EC2 instances, while AWS Auto Scaling can cover several resource types. The names are closely linked, and the AWS Auto Scaling product page itself carries a note that Amazon EC2 Auto Scaling has moved. AWS now documents moving scaling plans to EC2 Auto Scaling and Application Auto Scaling policies, so treat EC2 Auto Scaling as the main tool.
 
 ## Common exam traps
 
+- Exam wording uses "Auto Scaling", "AWS Auto Scaling", "Auto Scaling groups" and "Amazon EC2 Auto Scaling" loosely for "automatically add, remove or replace EC2 instances". If only one Auto Scaling option is offered, pick it. If both "AWS Auto Scaling" and "Amazon EC2 Auto Scaling" appear, prefer the one that matches the scope of the question (EC2 only, or several resource types), and read the options carefully.
 - Auto Scaling does not spread requests; Elastic Load Balancing does.
 - Scaling **out** adds instances; scaling **up** makes one bigger.
 - A group inside one Availability Zone is not highly available.

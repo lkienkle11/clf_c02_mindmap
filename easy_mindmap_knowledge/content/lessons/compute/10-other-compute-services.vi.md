@@ -5,7 +5,7 @@ required: false
 ---
 ## Tùy chọn: những dịch vụ bạn vẫn có thể gặp
 
-Bài này là tùy chọn. Nó nói về các dịch vụ nhỏ hơn liên quan đến compute, thường xuất hiện trong câu hỏi luyện tập và tài liệu AWS. Một số đang thay đổi, nên các ghi chú về tình trạng sẵn có rất quan trọng.
+Bài này là tùy chọn. Nó nói về các dịch vụ nhỏ hơn liên quan đến compute, thường xuất hiện trong các câu hỏi kiểu đề thi và tài liệu AWS. Một số đang thay đổi, nên các ghi chú về tình trạng sẵn có rất quan trọng.
 
 ## Amazon Lightsail
 
@@ -17,7 +17,7 @@ Bài này là tùy chọn. Nó nói về các dịch vụ nhỏ hơn liên quan 
 
 ## AWS App Runner
 
-**AWS App Runner** triển khai ứng dụng web hoặc API trực tiếp từ mã nguồn hoặc container image. Nó build, chạy, cân bằng tải và mở rộng dịch vụ giúp bạn, không cần thiết kế hạ tầng. Ngân hàng câu hỏi luyện tập có hỏi dịch vụ nào tạo container từ mã nguồn rồi triển khai, và đây là đáp án khớp. Lưu ý rằng AWS đã **đóng App Runner với khách hàng mới**. Khách hàng hiện tại vẫn tiếp tục dùng được, còn với người khác AWS khuyên dùng Amazon ECS Express Mode. Hãy nắm khái niệm để thi, nhưng đừng lập dự án mới trên nó.
+**AWS App Runner** triển khai ứng dụng web hoặc API trực tiếp từ mã nguồn hoặc container image. Nó build, chạy, cân bằng tải và mở rộng dịch vụ giúp bạn, không cần thiết kế hạ tầng. Một câu hỏi kiểu đề thi về dịch vụ được quản lý có thể build và triển khai container từ mã nguồn sẽ hướng tới App Runner. Lưu ý rằng AWS đã **đóng App Runner với khách hàng mới**. Khách hàng hiện tại vẫn tiếp tục dùng được, còn với người khác AWS khuyên dùng Amazon ECS Express Mode. Hãy nắm khái niệm để thi, nhưng đừng lập dự án mới trên nó.
 
 ## AWS Cloud Map
 

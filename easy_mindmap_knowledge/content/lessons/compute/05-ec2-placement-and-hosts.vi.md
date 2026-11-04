@@ -35,7 +35,7 @@ Ba thứ này dễ nhầm. Hãy khớp theo **nhu cầu**.
 | **Dedicated Instances** | Instance chạy trên phần cứng dành riêng cho tài khoản bạn, không thấy cấp host | Cô lập khỏi khách hàng khác mà không phải quản lý host |
 | **On-Demand Capacity Reservation** | Dung lượng đặt trước cho một instance type trong một Availability Zone | Bảo đảm có dung lượng khi bạn cần |
 
-Dedicated Host tính tiền theo host; Dedicated Instances tính theo instance. Dedicated Host Reservation có thể giảm giá host so với giá host On-Demand. Capacity Reservation tạo và hủy được bất cứ lúc nào, không có kỳ hạn một hay ba năm, nhưng bản thân nó **không giảm giá** và bạn bị tính phí khi nó còn hiệu lực. Muốn tiết kiệm thêm, hãy kết hợp với Savings Plan hoặc Regional Reserved Instance. Riêng Regional Reserved Instance không đặt trước dung lượng. Dedicated Host không đặt được vào placement group.
+Dedicated Host tính tiền theo host; Dedicated Instances tính theo instance. Dedicated Host Reservation có thể giảm giá host so với giá host On-Demand. Capacity Reservation dùng ngay (immediate-use) tạo và hủy được bất cứ lúc nào, không có kỳ hạn một hay ba năm (loại đặt trước cho ngày tương lai thì có thời hạn cam kết), nhưng bản thân nó **không giảm giá** và bạn bị tính phí khi nó còn hiệu lực. Muốn tiết kiệm thêm, hãy kết hợp với Savings Plan hoặc Regional Reserved Instance. Riêng Regional Reserved Instance không đặt trước dung lượng. Dedicated Host không đặt được vào placement group.
 
 ## Spot Instance: bị ngắt nghĩa là gì
 

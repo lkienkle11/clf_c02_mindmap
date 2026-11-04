@@ -53,10 +53,11 @@ Amazon EC2 Auto Scaling không tính thêm phí. Bạn trả cho instance và c�
 | Cách làm | Bạn cấu hình group và policy | Scaling plan cấu hình việc mở rộng cho nhiều tài nguyên cùng lúc |
 | Chi phí | Không tính thêm | Không tính thêm |
 
-Nếu câu hỏi chỉ nhắc **EC2 instance**, hãy nghĩ đến Amazon EC2 Auto Scaling. Nếu cần mở rộng nhiều loại tài nguyên, hãy nghĩ đến AWS Auto Scaling. AWS hiện có tài liệu hướng dẫn chuyển scaling plan sang policy của EC2 Auto Scaling và Application Auto Scaling, nên hãy coi EC2 Auto Scaling là công cụ chính.
+Điểm khác biệt thật sự là phạm vi: Amazon EC2 Auto Scaling dành cho EC2 instance, còn AWS Auto Scaling có thể bao phủ nhiều loại tài nguyên. Hai tên gọi này liên hệ chặt chẽ, và chính trang sản phẩm AWS Auto Scaling có ghi chú rằng Amazon EC2 Auto Scaling đã chuyển đi nơi khác. AWS hiện có tài liệu hướng dẫn chuyển scaling plan sang policy của EC2 Auto Scaling và Application Auto Scaling, nên hãy coi EC2 Auto Scaling là công cụ chính.
 
 ## Bẫy thường gặp khi thi
 
+- Đề thi dùng các tên "Auto Scaling", "AWS Auto Scaling", "Auto Scaling groups" và "Amazon EC2 Auto Scaling" khá lẫn lộn để chỉ việc "tự động thêm, bớt hoặc thay thế EC2 instance". Nếu chỉ có một lựa chọn Auto Scaling, hãy chọn nó. Nếu có cả "AWS Auto Scaling" và "Amazon EC2 Auto Scaling", hãy ưu tiên cái khớp với phạm vi của câu hỏi (chỉ EC2, hay nhiều loại tài nguyên) và đọc kỹ các phương án.
 - Auto Scaling không chia yêu cầu; Elastic Load Balancing làm việc đó.
 - Scale **out** là thêm instance; scale **up** là làm một instance lớn hơn.
 - Một group nằm trong một Availability Zone thì chưa sẵn sàng cao.
