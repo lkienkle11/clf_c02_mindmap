@@ -11,7 +11,7 @@ const passedAttempt = (topicId: string): AttemptRow => ({
   id: `a-${topicId}`, kind: 'practice', topicId, status: 'submitted', startedAt: 0, submittedAt: 1,
   submitReason: 'manual', reviewAllowed: true,
   clock: { mode: 'freeze', limitMs: null, remainingMs: null, deadlineAt: null, onHidden: 'freeze' },
-  heartbeatAt: null, scorePct: 90, passed: true,
+  heartbeatAt: null, scorePct: 90, passed: true, groupIndex: null, plannedCount: null,
 });
 
 export interface FakeSetup {

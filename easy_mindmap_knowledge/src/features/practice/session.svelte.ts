@@ -115,7 +115,7 @@ export class PracticeSession {
     const attempt: AttemptRow = {
       id: services.newId(), kind: 'practice', topicId, status: 'in_progress', startedAt: now,
       submittedAt: null, submitReason: null, reviewAllowed: options.allowReview, clock,
-      heartbeatAt: now, scorePct: null, passed: null,
+      heartbeatAt: now, scorePct: null, passed: null, groupIndex: null, plannedCount: null,
     };
     const rows: AttemptQuestionRow[] = plan.map((p, position) => ({
       attemptId: attempt.id, position, questionId: p.questionId, optionOrder: p.optionOrder,
@@ -156,7 +156,7 @@ export class PracticeSession {
     const attempt: AttemptRow = {
       id, kind: 'review', topicId: null, status: 'in_progress', startedAt: now,
       submittedAt: null, submitReason: null, reviewAllowed: true, clock,
-      heartbeatAt: now, scorePct: null, passed: null,
+      heartbeatAt: now, scorePct: null, passed: null, groupIndex: null, plannedCount: null,
     };
     await services.repos.attempts.create(attempt, rows);
     return new PracticeSession(services, onSubmitted, attempt, rows, clock);

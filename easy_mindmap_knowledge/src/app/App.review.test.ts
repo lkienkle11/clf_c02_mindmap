@@ -113,7 +113,7 @@ describe('App resume of a review attempt', () => {
   const attempt: AttemptRow = {
     id: 'old-review', kind: 'review', topicId: null, status: 'in_progress', startedAt: 0, submittedAt: null,
     submitReason: null, reviewAllowed: true, clock: { mode: 'freeze', limitMs: null, remainingMs: null, deadlineAt: null, onHidden: 'freeze' },
-    heartbeatAt: null, scorePct: null, passed: null,
+    heartbeatAt: null, scorePct: null, passed: null, groupIndex: null, plannedCount: null,
   };
   const rows = (ids: string[]): AttemptQuestionRow[] =>
     ids.map((questionId, position) => ({ attemptId: 'old-review', position, questionId, optionOrder: ['A', 'B'], selected: [], isCorrect: null }));

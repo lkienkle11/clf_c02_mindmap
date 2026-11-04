@@ -11,7 +11,7 @@ export interface ClockState {
 
 export interface AttemptRow {
   id: string;
-  kind: 'practice' | 'review';
+  kind: 'practice' | 'review' | 'checkpoint';
   topicId: string | null;
   status: 'in_progress' | 'submitted';
   startedAt: number;
@@ -22,6 +22,10 @@ export interface AttemptRow {
   heartbeatAt: number | null;
   scorePct: number | null;
   passed: boolean | null;
+  /** Checkpoint attempts only (set exactly when kind is 'checkpoint'). */
+  groupIndex: number | null;
+  /** Question count the attempt was planned with; null for attempts that predate it. */
+  plannedCount: number | null;
 }
 
 export interface AttemptQuestionRow {

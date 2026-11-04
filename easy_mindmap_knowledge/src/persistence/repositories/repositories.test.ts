@@ -26,6 +26,8 @@ const attempt = (over: Partial<AttemptRow> = {}): AttemptRow => ({
   heartbeatAt: 1500,
   scorePct: null,
   passed: null,
+  groupIndex: null,
+  plannedCount: null,
   ...over,
 });
 const questions = (attemptId = 'a1'): AttemptQuestionRow[] => [
@@ -126,6 +128,13 @@ describe('attempts', () => {
       clock: { mode: 'run', limitMs: null, remainingMs: null, deadlineAt: null, onHidden: 'freeze' },
       heartbeatAt: null,
     });
+    await repo.create(a, questions());
+    expect((await repo.findInProgress())!.attempt).toEqual(a);
+  });
+
+  it('round-trips a checkpoint attempt with groupIndex and plannedCount', async () => {
+    const repo = createAttemptsRepo(db);
+    const a = attempt({ kind: 'checkpoint', topicId: null, reviewAllowed: false, groupIndex: 2, plannedCount: 40 });
     await repo.create(a, questions());
     expect((await repo.findInProgress())!.attempt).toEqual(a);
   });

@@ -4,7 +4,7 @@ export interface ScorePoint {
   attemptId: string;
   at: number;
   scorePct: number;
-  kind: 'practice' | 'review';
+  kind: AttemptRow['kind'];
   topicId: string | null;
 }
 

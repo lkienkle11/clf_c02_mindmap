@@ -33,6 +33,8 @@ const attempt = (over: Partial<AttemptRow>): AttemptRow => ({
   heartbeatAt: null,
   scorePct: 80,
   passed: true,
+  groupIndex: null,
+  plannedCount: null,
   ...over
 });
 

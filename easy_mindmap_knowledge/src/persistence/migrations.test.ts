@@ -46,6 +46,62 @@ describe('migrations', () => {
     expect(indexes(db)).toContain('idx_attempt_questions_question');
   });
 
+  describe('0004 checkpoint attempts', () => {
+    const upTo = (n: number) => {
+      const db = new DatabaseSync(':memory:');
+      for (const f of files.slice(0, n)) db.exec(sql(f));
+      return db;
+    };
+    const insert = (db: DatabaseSync, kind: string, groupIndex: number | null, plannedCount: number | null = null) =>
+      db.prepare(
+        "INSERT INTO attempts (id, kind, status, started_at, clock_mode, group_index, planned_count) VALUES ('x', ?1, 'in_progress', 1, 'freeze', ?2, ?3)",
+      ).run(kind, groupIndex, plannedCount);
+
+    it('is the fourth migration file', () => {
+      expect(files[3]).toBe('0004_checkpoint_attempts.sql');
+    });
+
+    it('on an empty database adds group_index and planned_count', () => {
+      const db = upTo(4);
+      const cols = (db.prepare('PRAGMA table_info(attempts)').all() as { name: string }[]).map((c) => c.name);
+      expect(cols).toEqual(expect.arrayContaining(['group_index', 'planned_count', 'clock_on_hidden']));
+    });
+
+    it('keeps a version-3 practice row with NULL group_index and planned_count', () => {
+      const db = upTo(3);
+      db.exec(
+        "INSERT INTO attempts (id, kind, topic_id, status, started_at, clock_mode, clock_on_hidden, review_allowed, score_pct, passed) VALUES ('a1', 'practice', 't', 'submitted', 5, 'run', 'run', 1, 80.5, 1)",
+      );
+      db.exec(sql(files[3]));
+      expect(db.prepare('SELECT * FROM attempts').all()).toEqual([
+        expect.objectContaining({
+          id: 'a1', kind: 'practice', topic_id: 't', status: 'submitted', started_at: 5, clock_mode: 'run',
+          clock_on_hidden: 'run', review_allowed: 1, score_pct: 80.5, passed: 1, group_index: null, planned_count: null,
+        }),
+      ]);
+    });
+
+    it('accepts a checkpoint with a group_index and a practice without', () => {
+      const db = upTo(4);
+      expect(() => insert(db, 'checkpoint', 2, 40)).not.toThrow();
+      db.exec('DELETE FROM attempts');
+      expect(() => insert(db, 'practice', null)).not.toThrow();
+    });
+
+    it('rejects a checkpoint with a NULL group_index', () => {
+      expect(() => insert(upTo(4), 'checkpoint', null)).toThrow(/CHECK/i);
+    });
+
+    it('rejects a practice or review attempt that has a group_index', () => {
+      expect(() => insert(upTo(4), 'practice', 1)).toThrow(/CHECK/i);
+      expect(() => insert(upTo(4), 'review', 1)).toThrow(/CHECK/i);
+    });
+
+    it('rejects an unknown kind', () => {
+      expect(() => insert(upTo(4), 'bogus', null)).toThrow(/CHECK/i);
+    });
+  });
+
   it('lib.rs registers every migration file once, with version = file number, in order', () => {
     const lib = readFileSync(join(ROOT, 'src-tauri', 'src', 'lib.rs'), 'utf8');
     const registered = [...lib.matchAll(/version:\s*(\d+)[\s\S]*?include_str!\("\.\.\/migrations\/([^"]+)"\)/g)]

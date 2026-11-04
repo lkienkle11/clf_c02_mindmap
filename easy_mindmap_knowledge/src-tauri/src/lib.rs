@@ -28,6 +28,12 @@ pub fn run() {
               sql: include_str!("../migrations/0003_attempt_clock_on_hidden.sql"),
               kind: MigrationKind::Up,
             },
+            Migration {
+              version: 4,
+              description: "checkpoint_attempts",
+              sql: include_str!("../migrations/0004_checkpoint_attempts.sql"),
+              kind: MigrationKind::Up,
+            },
           ],
         )
         .build(),
