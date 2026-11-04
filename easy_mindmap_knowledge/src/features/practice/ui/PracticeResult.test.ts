@@ -45,15 +45,41 @@ describe('PracticeResult', () => {
     expect(rows).toHaveLength(3);
     const first = within(rows[0]);
     expect(first.getByText('Pick the first?')).toBeInTheDocument();
-    expect(first.getByText(/✓/)).toHaveTextContent('Correct');
+    expect(first.getAllByText(/✓/)[0]).toHaveTextContent('Correct');
     expect(first.getByText('Because alpha.')).toBeInTheDocument();
     const second = within(rows[1]);
-    expect(second.getByText(/✗/)).toHaveTextContent('Incorrect');
-    const lists = second.getAllByRole('list');
-    expect(within(lists[0]).getAllByRole('listitem').map((li) => li.textContent)).toEqual(['Alpha', 'Charlie']);
-    expect(within(lists[1]).getAllByRole('listitem').map((li) => li.textContent)).toEqual(['Alpha', 'Bravo']);
+    expect(second.getAllByText(/✗/)[0]).toHaveTextContent('Incorrect');
+    expect(second.getAllByRole('listitem')).toHaveLength(4);
     expect(within(rows[2]).getByText('No answer')).toBeInTheDocument();
+    expect(within(rows[2]).getByText('Correct answer')).toBeInTheDocument();
     expect(within(rows[2]).getByText('Charlie')).toBeInTheDocument();
+  });
+
+  it('shows no empty paragraph for a question missing from the catalog', async () => {
+    await mount({
+      scorePct: 0,
+      correct: 0,
+      total: 2,
+      passed: false,
+      items: [
+        { questionId: 'gone-1', selected: [], correct: ['A'], isCorrect: false },
+        { questionId: 'gone-2', selected: ['B'], correct: ['A'], isCorrect: false, explanation: 'Kept note.' },
+      ],
+    });
+    const [bare, noted] = screen.getAllByRole('listitem').filter((li) => li.getAttribute('data-question'));
+    expect(within(bare).getByText('No answer')).toBeInTheDocument();
+    expect(Array.from(bare.querySelectorAll('p')).filter((p) => p.textContent?.trim() === '')).toHaveLength(0);
+    expect(within(noted).getByText('Kept note.')).toBeInTheDocument();
+    expect(within(noted).queryByText('No answer')).not.toBeInTheDocument();
+  });
+
+  it('lists every option of each item with badges', async () => {
+    await mount({ scorePct: 33, correct: 1, total: 3, passed: false, items: [{ ...items[1], optionOrder: ['D', 'C', 'B', 'A'] }] });
+    const opts = Array.from(document.querySelectorAll('li[data-option]')) as HTMLElement[];
+    expect(opts.map((o) => o.dataset.option)).toEqual(['D', 'C', 'B', 'A']);
+    expect(within(opts[1]).getByText('Your answer · Incorrect')).toBeInTheDocument();
+    expect(within(opts[3]).getByText('Your answer · Correct')).toBeInTheDocument();
+    expect(within(opts[2]).getByText('Correct answer')).toBeInTheDocument();
   });
 
   it('shows the automatic-submit message', async () => {
@@ -81,6 +107,6 @@ describe('PracticeResult', () => {
     expect(within(row).getByText('Pick the first?').closest('[lang="en"]')).not.toBeNull();
     expect(within(row).getByText('Because alpha.').closest('[lang="en"]')).not.toBeNull();
     expect(within(row).getAllByText('Alpha')[0].closest('[lang="en"]')).not.toBeNull();
-    expect(within(row).getByText('Your answer').closest('[lang="en"]')).toBeNull();
+    expect(within(row).getByText('Options').closest('[lang="en"]')).toBeNull();
   });
 });

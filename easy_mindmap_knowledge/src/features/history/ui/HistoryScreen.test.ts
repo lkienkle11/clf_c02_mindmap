@@ -79,9 +79,15 @@ describe('HistoryScreen', () => {
     expect(weakItems[1]).toHaveTextContent('70%');
 
     const missed = screen.getByRole('region', { name: 'Most-missed questions' });
-    const missedItems = within(missed).getAllByRole('listitem');
-    expect(missedItems[0]).toHaveTextContent('Pick the first?');
-    expect(missedItems[0]).toHaveTextContent('Missed 2 out of 3');
+    // q1, q2 and q3 were each missed at least once
+    expect(within(missed).getByRole('button', { name: 'View most-missed questions (3)' })).toBeInTheDocument();
+    expect(within(missed).queryByRole('listitem')).not.toBeInTheDocument();
+  });
+
+  it('shows the attempts only once, as the one table on the screen', async () => {
+    await mount({ attempts: attempts.slice(0, 3) });
+    await screen.findByRole('table', { name: 'Attempts' });
+    expect(screen.getAllByRole('table')).toHaveLength(1);
   });
 
   it('filters by topic with a chip that can be removed', async () => {
@@ -93,6 +99,33 @@ describe('HistoryScreen', () => {
     expect(appState.route).toEqual({ view: 'history' });
     await waitFor(() => expect(within(screen.getByRole('table', { name: 'Attempts' })).getAllByRole('row')).toHaveLength(5));
     expect(screen.queryByText('Topic: storage')).not.toBeInTheDocument();
+  });
+
+  it('opens the most-missed dialog from the button, worst first', async () => {
+    await mount();
+    await userEvent.click(await screen.findByRole('button', { name: 'View most-missed questions (3)' }));
+    const dialog = await screen.findByRole('dialog', { name: 'Most-missed questions' });
+    const entries = within(dialog).getAllByRole('listitem').filter((li) => li.hasAttribute('data-question'));
+    expect(entries.map((li) => li.getAttribute('data-question'))).toEqual(['q1', 'q2', 'q3']);
+    expect(within(entries[0]).getByText('Missed 2 out of 3')).toBeInTheDocument();
+    // latest wrong answer of q1 is a3's pick, C
+    expect(within(entries[0].querySelector('li[data-option="C"]') as HTMLElement).getByText('Your answer · Incorrect')).toBeInTheDocument();
+    await userEvent.click(within(dialog).getByRole('button', { name: 'Close' }));
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+  });
+
+  it('pre-selects the history topic filter in the dialog and counts only that topic', async () => {
+    await mount({}, { view: 'history', topicId: 'compute' });
+    await userEvent.click(await screen.findByRole('button', { name: 'View most-missed questions (2)' }));
+    const dialog = await screen.findByRole('dialog', { name: 'Most-missed questions' });
+    expect(within(dialog).getByRole('combobox', { name: 'Topic' })).toHaveValue('compute');
+  });
+
+  it('shows the empty message and no button when nothing was missed', async () => {
+    await mount({ attempts: [attempts[0]], rows: { a1: rows.a1 } });
+    await screen.findByRole('table', { name: 'Attempts' });
+    expect(screen.getByText('No missed questions. Nice work.')).toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: /most-missed questions/ })).not.toBeInTheDocument();
   });
 
   it('opens the attempt detail from a row', async () => {

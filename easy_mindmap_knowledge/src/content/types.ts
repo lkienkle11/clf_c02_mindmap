@@ -28,6 +28,8 @@ export interface Question {
   multi: boolean;
   orderDependent: boolean;
   explanation?: string;
+  /** Per-option notes keyed by option key; shown in the results review. */
+  optionNotes?: Record<string, string>;
   source: 'imported' | 'authored';
 }
 

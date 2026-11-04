@@ -1,0 +1,616 @@
+{
+  "q_5e32ce5af5bf": {
+    "explanation": "VPC Flow Logs capture information about the IP traffic going to and from network interfaces in a VPC. They can be published to CloudWatch Logs, Amazon S3, or Kinesis Data Firehose for analysis.",
+    "optionNotes": {
+      "A": "CloudWatch Logs can store and search log data, but it does not itself generate network-interface traffic records; Flow Logs is the source of that data.",
+      "B": "CloudTrail records AWS API calls made in the account, not the network traffic flowing through VPC network interfaces.",
+      "C": "VPC Flow Logs record accepted and rejected IP traffic for network interfaces, subnets, or the whole VPC, which is exactly this requirement.",
+      "D": "IAM manages users, roles, and permissions; it does not log network traffic."
+    }
+  },
+  "q_647d6801f107": {
+    "explanation": "VPC Flow Logs capture information about the IP traffic going to and from network interfaces in an Amazon VPC.",
+    "optionNotes": {
+      "A": "VPC Flow Logs collect inbound and outbound IP traffic information for the VPC, which is what the question asks for.",
+      "B": "Amazon Inspector scans workloads for software vulnerabilities and unintended network exposure; it does not record VPC traffic flows.",
+      "C": "VPC endpoint services let you expose your own service privately to other VPCs; they do not capture traffic information.",
+      "D": "A NAT gateway lets private instances start outbound connections to the internet; it is a routing device, not a traffic logging tool."
+    }
+  },
+  "q_fbce3fc94778": {
+    "explanation": "AWS VPN (Site-to-Site VPN) and AWS Direct Connect both connect an on-premises network to a VPC, the first over encrypted tunnels on the internet and the second over a dedicated private link.",
+    "optionNotes": {
+      "A": "AWS Site-to-Site VPN creates encrypted IPsec tunnels between an on-premises network and a VPC, so it fits.",
+      "B": "Elastic Load Balancing spreads incoming traffic across targets; it does not link an on-premises network to a VPC.",
+      "C": "AWS Direct Connect provides a dedicated private network connection from on premises to AWS, so it fits.",
+      "D": "VPC peering connects two VPCs to each other, not an on-premises network to a VPC.",
+      "E": "Amazon CloudFront is a content delivery network that caches content at edge locations; it does not connect networks."
+    }
+  },
+  "q_5b1ed7ad25ab": {
+    "explanation": "Security groups act as virtual firewalls attached to individual EC2 instances (their network interfaces), so rules apply to specific instances.",
+    "optionNotes": {
+      "A": "Network ACLs apply to a whole subnet, so they cannot target specific instances individually.",
+      "B": "Security groups are associated with instances and control their inbound and outbound traffic, matching the requirement.",
+      "C": "AWS Trusted Advisor gives best-practice recommendations; it does not apply network security rules.",
+      "D": "AWS WAF filters web requests for resources such as CloudFront, ALB, or API Gateway; it is not an instance-level firewall."
+    }
+  },
+  "q_bf1179b18e16": {
+    "explanation": "Amazon CloudFront is a content delivery network that securely delivers data, videos, applications, and APIs worldwide with low latency by caching at edge locations.",
+    "optionNotes": {
+      "A": "CloudFront is the CDN that delivers content globally with low latency and high transfer speeds, matching every stated requirement.",
+      "B": "Elastic Load Balancing distributes traffic across targets in a Region; it is not a global content delivery network.",
+      "C": "Amazon S3 stores objects in a Region; it can be an origin for a CDN but is not itself a CDN.",
+      "D": "Amazon Elastic Transcoder converts media files between formats; it does not deliver content to users."
+    }
+  },
+  "q_d5b8b3d404b4": {
+    "explanation": "A NAT gateway lets instances in a private subnet start outbound connections to the internet, such as for OS updates, while blocking connections that start from the internet.",
+    "optionNotes": {
+      "A": "A VPC endpoint gives private access to supported AWS services, not general internet access for OS updates.",
+      "B": "A managed NAT gateway allows outbound-only internet access from a private subnet, which is exactly the scenario.",
+      "C": "AWS PrivateLink provides private connectivity to services without using the internet; it does not give access to the public internet.",
+      "D": "VPC peering connects two VPCs privately; it does not provide a path to the internet."
+    }
+  },
+  "q_9414fdb4b4b2": {
+    "explanation": "Security groups are instance-level firewalls with allow rules, so you can permit access to an EC2 instance on only a specific port.",
+    "optionNotes": {
+      "A": "A security group rule can allow traffic on only a specific port and protocol to an EC2 instance.",
+      "B": "Explicit deny rules at the subnet level are a network ACL capability; security groups only have allow rules and work at the instance level.",
+      "C": "Security groups do not protect data cached by CloudFront; caching and its protection are handled in CloudFront.",
+      "D": "Security groups are stateful, not stateless; stateless filtering is what network ACLs do."
+    }
+  },
+  "q_26c6c9e1d58a": {
+    "explanation": "Under the shared responsibility model, customers configure the security groups they use and classify their own assets and data. AWS operates the managed services and underlying infrastructure.",
+    "optionNotes": {
+      "A": "Although the security group firewall is provided by AWS, the customer decides and configures its rules, which is a customer responsibility.",
+      "B": "Customers are responsible for classifying and protecting their own assets and data in the cloud.",
+      "C": "Amazon S3 automatically stores data across multiple Availability Zones; AWS manages this, not the customer.",
+      "D": "DynamoDB is a managed service, so AWS patches and upgrades it.",
+      "E": "AWS Lambda is serverless; AWS manages the underlying compute and the customer does not choose EC2 instances for it."
+    }
+  },
+  "q_32d8c7e3e05e": {
+    "explanation": "Network ACLs are stateless and evaluate their numbered rules in order starting from the lowest number, applying the first match.",
+    "optionNotes": {
+      "A": "Network ACLs are stateless, so return traffic must be allowed explicitly by its own rule.",
+      "B": "Stateful behavior describes security groups, not network ACLs.",
+      "C": "Network ACLs stop at the first matching rule rather than evaluating all rules before deciding.",
+      "D": "Network ACL rules are processed in ascending rule-number order, and the first match decides.",
+      "E": "Network ACLs work at the subnet level; instance-level filtering is done by security groups."
+    }
+  },
+  "q_223a2dfbe202": {
+    "explanation": "VPC Flow Logs capture information about the IP traffic going to and from network interfaces in a VPC.",
+    "optionNotes": {
+      "A": "VPC Flow Logs record IP traffic information for the VPC, subnets, or network interfaces, matching the requirement.",
+      "B": "Amazon Inspector assesses workloads for vulnerabilities and network exposure; it does not capture VPC traffic information.",
+      "C": "Route tables define where network traffic is directed; they do not record it.",
+      "D": "CloudTrail logs AWS API activity, not the network traffic inside a VPC."
+    }
+  },
+  "q_47647b3fd2ed": {
+    "explanation": "Amazon CloudFront and AWS Global Accelerator both use the AWS global network of edge locations, CloudFront to cache and deliver content and Global Accelerator to route traffic onto the AWS backbone.",
+    "optionNotes": {
+      "A": "AWS Fargate is a serverless compute engine for containers that runs in Regions, not at edge locations.",
+      "B": "CloudFront caches and delivers content from edge locations close to users.",
+      "C": "Global Accelerator brings user traffic into the AWS global network at edge locations and routes it to your endpoints.",
+      "D": "AWS Wavelength places AWS infrastructure inside telecom providers' 5G networks, which is separate from global edge locations.",
+      "E": "Amazon VPC is a Regional virtual network service and does not use edge locations."
+    }
+  },
+  "q_0db3d035e4ae": {
+    "explanation": "AWS Direct Connect establishes a dedicated private network connection between a corporate network and AWS.",
+    "optionNotes": {
+      "A": "Amazon Connect is a cloud contact center service, not a networking service.",
+      "B": "Amazon Route 53 is a DNS service; it does not create network connections.",
+      "C": "AWS Direct Connect creates a private, dedicated link between the corporate network and AWS.",
+      "D": "VPC peering connects two VPCs, not a corporate network to AWS."
+    }
+  },
+  "q_8f3d719c6f61": {
+    "explanation": "VPC peering connects two VPCs directly, and AWS Transit Gateway connects many VPCs through a central hub.",
+    "optionNotes": {
+      "A": "VPC endpoints give private access to AWS services; they do not link two VPCs together.",
+      "B": "Route 53 provides DNS and routing of names; it does not build network connections between VPCs.",
+      "C": "VPC peering creates a private network connection between two VPCs.",
+      "D": "Direct Connect links an on-premises network to AWS, not one VPC to another.",
+      "E": "Transit Gateway acts as a hub that interconnects multiple VPCs (and on-premises networks)."
+    }
+  },
+  "q_e6b995e99171": {
+    "explanation": "Security groups act as a virtual firewall for an EC2 instance, controlling both inbound and outbound traffic at the instance level.",
+    "optionNotes": {
+      "A": "AWS Shield protects against DDoS attacks; it does not define instance-level inbound and outbound rules.",
+      "B": "Security groups control incoming and outgoing traffic for an instance, which fits the requirement.",
+      "C": "Network Access Analyzer helps identify unintended network access paths; it does not enforce traffic rules.",
+      "D": "VPC endpoints provide private connectivity to AWS services; they do not filter instance traffic."
+    }
+  },
+  "q_2210f2baf431": {
+    "explanation": "An internet gateway attached to a VPC enables communication between the VPC and the internet, including inbound traffic to resources with public IP addresses.",
+    "optionNotes": {
+      "A": "An internet gateway allows traffic from the internet to reach resources in the VPC and vice versa.",
+      "B": "A NAT gateway only allows outbound connections started from inside the VPC; it does not accept inbound internet traffic.",
+      "C": "AWS WAF filters web requests; it does not provide the path between a VPC and the internet.",
+      "D": "VPC peering links two VPCs and does not give access to the internet."
+    }
+  },
+  "q_9736f3de50d1": {
+    "explanation": "AWS Direct Connect provides a dedicated network connection from a data center to AWS with consistent network performance and low latency compared with internet-based connections.",
+    "optionNotes": {
+      "A": "Global Accelerator improves performance of user traffic to application endpoints; it does not connect a data center to AWS.",
+      "B": "CloudFront is a content delivery network and does not connect an on-premises data center to AWS.",
+      "C": "Direct Connect is a dedicated connection that avoids the public internet, giving consistent, low-latency performance.",
+      "D": "A managed VPN runs over the public internet, so its performance and latency can vary."
+    }
+  },
+  "q_f29fdaa761e7": {
+    "explanation": "Amazon CloudFront securely delivers data, videos, applications, and APIs to users globally with low latency by using a worldwide network of edge locations.",
+    "optionNotes": {
+      "A": "Automatic scaling of resources from a single interface describes AWS Auto Scaling, not CloudFront.",
+      "B": "This is the description of CloudFront as a content delivery network.",
+      "C": "Latency-based, geo, geoproximity, and weighted routing are Amazon Route 53 routing policies.",
+      "D": "Distributing traffic across EC2 instances, containers, IPs, and Lambda functions describes Elastic Load Balancing."
+    }
+  },
+  "q_6618bfe4df85": {
+    "explanation": "AWS Managed Services operates the AWS infrastructure for you, including landing zone, network management, monitoring, patching, and incident management. Developing applications and building pipelines remain the customer's work.",
+    "optionNotes": {
+      "A": "Landing zone and network management are part of the operational infrastructure services that AMS provides.",
+      "B": "Developing customer applications is the customer's responsibility and is not in the AMS scope.",
+      "C": "Configuring DevSecOps pipelines for application delivery is customer work, not an AMS operational feature.",
+      "D": "Monitoring application logs belongs to the customer's application operations; AMS focuses on the infrastructure."
+    }
+  },
+  "q_2ed663e44158": {
+    "explanation": "Security groups are the native AWS feature for controlling traffic to and from specific EC2 instances, including traffic between instances in the same VPC.",
+    "optionNotes": {
+      "A": "Network ACLs filter at the subnet boundary, so they do not fit well for controlling traffic between certain individual instances.",
+      "B": "AWS WAF filters web requests to supported web-facing resources; it does not control instance-to-instance network traffic.",
+      "C": "Amazon GuardDuty detects threats; it does not block or allow network traffic.",
+      "D": "Security groups let you allow traffic from specific instances or other security groups, controlling traffic between EC2 instances."
+    }
+  },
+  "q_364c9d882157": {
+    "explanation": "An internet gateway and a subnet are components of a VPC. API Gateway, S3, and Storage Gateway are services that sit outside the VPC.",
+    "optionNotes": {
+      "A": "Amazon API Gateway is a managed regional service and is not a component of a VPC.",
+      "B": "S3 buckets and objects live in the S3 service, not inside a VPC.",
+      "C": "AWS Storage Gateway is a hybrid storage service and is not a VPC component.",
+      "D": "An internet gateway is attached to a VPC to provide internet access.",
+      "E": "A subnet is a range of IP addresses within a VPC where resources are placed."
+    }
+  },
+  "q_4e0e4222070b": {
+    "explanation": "Network ACLs act as a firewall at the subnet level, controlling traffic entering and leaving a subnet.",
+    "optionNotes": {
+      "A": "AWS Shield protects against DDoS attacks and is not configured per subnet.",
+      "B": "AWS WAF filters web requests at layers like CloudFront or ALB, not at the subnet level.",
+      "C": "A network ACL is associated with a subnet and allows or denies traffic in and out of it.",
+      "D": "Security groups apply at the instance (network interface) level, not the subnet level."
+    }
+  },
+  "q_4083b78600ce": {
+    "explanation": "Amazon CloudFront caches content at edge locations close to users worldwide, which reduces latency for a website hosted on EC2.",
+    "optionNotes": {
+      "A": "Route 53 resolves DNS names; it can route users but does not cache content close to them to cut latency.",
+      "B": "CloudFront serves content from the nearest edge location, giving global users minimal latency.",
+      "C": "Elastic Load Balancing distributes traffic within a Region and does not bring content closer to global users.",
+      "D": "AWS Lambda runs code without servers in a Region; it does not provide global content delivery."
+    }
+  },
+  "q_16391b741a3f": {
+    "explanation": "AWS Transit Gateway is a central hub that connects VPCs and on-premises networks, so each network connects once to the hub instead of to every other network.",
+    "optionNotes": {
+      "A": "A virtual private gateway is the VPN endpoint on a single VPC; it is not a central hub for many networks.",
+      "B": "Transit Gateway acts as a central hub for VPCs and on-premises networks.",
+      "C": "An internet gateway connects a VPC to the internet, not to a hub of private networks.",
+      "D": "A customer gateway represents the on-premises side of a VPN connection; it is not a hub."
+    }
+  },
+  "q_787bf6467584": {
+    "explanation": "AWS Transit Gateway works like a cloud router, connecting many VPCs and on-premises networks through one hub and removing the need for complex peering relationships.",
+    "optionNotes": {
+      "A": "Direct Connect provides a dedicated link to AWS; it does not act as a router that simplifies VPC peering relationships.",
+      "B": "Transit Gateway is the hub-and-spoke cloud router that simplifies connecting many VPCs and on-premises networks.",
+      "C": "Amazon Connect is a contact center service, not a networking service.",
+      "D": "Route 53 is a DNS service; it does not route traffic between networks."
+    }
+  },
+  "q_8b37663f5560": {
+    "explanation": "AWS Direct Connect gives a dedicated private connection with consistent performance and low latency, which suits real-time data feeds from a data center.",
+    "optionNotes": {
+      "A": "Direct Connect provides a consistent, low-latency dedicated connection between the data center and AWS.",
+      "B": "The public internet has variable latency and bandwidth, so it cannot guarantee a consistent connection.",
+      "C": "AWS VPN runs over the internet, so network performance and latency can vary.",
+      "D": "Amazon Connect is a contact center service and has nothing to do with network connectivity."
+    }
+  },
+  "q_7560b199e7a1": {
+    "explanation": "AWS Direct Connect needs a physical connection made at a Direct Connect location, which usually involves a colocation facility and a network provider or ISP.",
+    "optionNotes": {
+      "A": "AWS VPN is set up in software over the existing internet connection, with no colocation facility needed.",
+      "B": "Amazon Connect is a cloud contact center service, not a connectivity option.",
+      "C": "Direct Connect uses a dedicated physical link into an AWS Direct Connect location, which requires a provider and colocation facility.",
+      "D": "An internet gateway is a VPC component and needs no ISP or colocation facility on your side."
+    }
+  },
+  "q_95add5cd2811": {
+    "explanation": "Amazon Route 53 is AWS's DNS and domain registration service, so it can host the domain name for the website.",
+    "optionNotes": {
+      "A": "AWS Lambda runs code; it does not host DNS records for a domain.",
+      "B": "Route 53 hosts DNS zones and routes users to the website for the company's domain name.",
+      "C": "CloudFront delivers and caches content; it is not the service that hosts domain names.",
+      "D": "Direct Connect provides a private network link and has no DNS function."
+    }
+  },
+  "q_0abae2c91deb": {
+    "explanation": "Amazon CloudFront caches images and videos at edge locations near users, giving low latency worldwide at a lower cost than building your own global infrastructure.",
+    "optionNotes": {
+      "A": "CloudFront delivers cached content from edge locations close to users, which is both low latency and cost effective.",
+      "B": "S3 cross-region replication copies data to other Regions, which adds storage cost and manual Region management compared with a CDN.",
+      "C": "A VPN across Regions connects networks privately; it does not speed up content delivery to end users.",
+      "D": "AWS PrivateLink provides private connectivity between VPCs and services; it is not used for global content delivery."
+    }
+  },
+  "q_d853fa2e68ed": {
+    "explanation": "A network ACL acts as a firewall at the subnet level, controlling traffic entering and leaving the subnet.",
+    "optionNotes": {
+      "A": "A security group works at the instance level, not the subnet level.",
+      "B": "A network ACL is the subnet-level firewall in a VPC.",
+      "C": "Traffic Mirroring copies network traffic for inspection and analysis; it does not filter traffic.",
+      "D": "An internet gateway provides internet connectivity for a VPC and is not a firewall."
+    }
+  },
+  "q_6d754900f157": {
+    "explanation": "Amazon Route 53 is a highly available and scalable Domain Name System (DNS) web service.",
+    "optionNotes": {
+      "A": "Route 53 is the managed, highly available and scalable DNS service.",
+      "B": "Amazon Lightsail offers simple virtual servers and preconfigured stacks; it is not a DNS service.",
+      "C": "AWS Amplify Hosting hosts web apps, not a general DNS service for workloads.",
+      "D": "Amazon S3 is object storage and does not provide DNS."
+    }
+  },
+  "q_40024a90cfed": {
+    "explanation": "An internet gateway must be attached to a VPC to allow communication, including inbound access, between the VPC and the internet.",
+    "optionNotes": {
+      "A": "A NAT gateway permits outbound-only connections from private subnets and does not enable inbound internet access.",
+      "B": "A VPC endpoint gives private access to AWS services without using the internet.",
+      "C": "A VPN connection links a VPC to another network privately; it does not give general internet access.",
+      "D": "The internet gateway is the component attached to a VPC that enables internet traffic to and from it."
+    }
+  },
+  "q_a96a6d19e3cf": {
+    "explanation": "Amazon Route 53 provides DNS resolution, translating domain names into IP addresses.",
+    "optionNotes": {
+      "A": "CloudFront is a content delivery network; it relies on DNS but does not provide the DNS service.",
+      "B": "Amazon VPC creates virtual networks; the DNS service that resolves and hosts domain names is Route 53, not VPC itself.",
+      "C": "Route 53 is the AWS DNS service that resolves domain names.",
+      "D": "Direct Connect provides a dedicated network link, not DNS resolution."
+    }
+  },
+  "q_f5a8bf3f5615": {
+    "explanation": "A network ACL is the optional firewall layer that controls traffic in and out of a subnet within a VPC.",
+    "optionNotes": {
+      "A": "A security group is a firewall at the instance level, not the subnet level.",
+      "B": "A network ACL filters traffic at the subnet boundary.",
+      "C": "An elastic network interface is a virtual network card attached to an instance; it does not filter subnet traffic.",
+      "D": "AWS WAF protects web applications from common web exploits; it is not a subnet firewall."
+    }
+  },
+  "q_4dccd5f225ae": {
+    "explanation": "AWS Direct Connect uses a dedicated private connection, so it keeps bandwidth steady and gives a more consistent network experience than internet-based links.",
+    "optionNotes": {
+      "A": "AWS VPN travels over the public internet, so it cannot promise consistent bandwidth.",
+      "B": "Direct Connect is a dedicated connection that gives more predictable throughput than the internet.",
+      "C": "Amazon Connect is a contact center service, not a network service.",
+      "D": "CloudFront speeds up content delivery with caching but does not provide a consistent network link to AWS."
+    }
+  },
+  "q_d901bbeb9455": {
+    "explanation": "A security group is a firewall attached to an individual instance, so it affects only that instance and not others in the same subnet.",
+    "optionNotes": {
+      "A": "A network ACL applies to every instance in the subnet, which is what the company does not want.",
+      "B": "AWS WAF filters web requests for supported web resources and is not an EC2 instance firewall.",
+      "C": "A route table directs traffic and does not allow or block connections.",
+      "D": "A security group controls traffic to and from a single instance (its network interface) only."
+    }
+  },
+  "q_d62f18492400": {
+    "explanation": "Amazon VPC lets you provision a logically isolated section of the AWS Cloud where you launch resources in a virtual network you define.",
+    "optionNotes": {
+      "A": "AWS VPN encrypts connections between networks; it does not create an isolated section of the cloud.",
+      "B": "Availability Zones are physical data center groups within a Region, not a logical isolated network.",
+      "C": "Amazon VPC provides your own logically isolated virtual network in the AWS Cloud.",
+      "D": "AWS Regions are geographic areas containing multiple Availability Zones, not an isolated customer network."
+    }
+  },
+  "q_8752ac68916e": {
+    "explanation": "Security groups and network ACLs both filter traffic and can block (or not allow) traffic to an instance. Flow logs, CloudWatch, and CloudTrail only record or monitor activity.",
+    "optionNotes": {
+      "A": "Security groups only permit listed traffic, so anything not allowed is blocked from reaching the instance.",
+      "B": "VPC flow logs record traffic information but do not block anything.",
+      "C": "Network ACLs can explicitly deny traffic at the subnet level, blocking it from the instance.",
+      "D": "CloudWatch monitors metrics and logs; it does not filter network traffic.",
+      "E": "CloudTrail records API activity and cannot block network traffic."
+    }
+  },
+  "q_b6d7a9f7b924": {
+    "explanation": "Amazon CloudFront delivers website content from edge locations close to users worldwide, which provides low-latency responses for a global audience.",
+    "optionNotes": {
+      "A": "AWS CloudFormation provisions infrastructure from templates; it does not deliver content to users.",
+      "B": "CloudFront is the content delivery network that serves a website from edge locations near global users.",
+      "C": "Amazon ElastiCache is an in-memory cache for application data in a Region, not a global website delivery service.",
+      "D": "Amazon DynamoDB is a NoSQL database and does not deliver websites to users."
+    }
+  },
+  "q_8dc487c6de1a": {
+    "explanation": "A security group acts as a virtual firewall at the EC2 instance level, controlling inbound and outbound traffic for that instance.",
+    "optionNotes": {
+      "A": "A network ACL works at the subnet level, not the instance level.",
+      "B": "A security group is the instance-level virtual firewall in a VPC.",
+      "C": "A route table directs traffic to destinations and does not act as a firewall.",
+      "D": "A NAT gateway enables outbound internet access for private subnets; it does not filter instance traffic."
+    }
+  },
+  "q_38f2fdf642e6": {
+    "explanation": "AWS Site-to-Site VPN creates an encrypted connection over the internet and can be set up quickly, while Direct Connect requires a physical circuit that usually takes much longer to provision.",
+    "optionNotes": {
+      "A": "Direct Connect needs a physical connection and often takes weeks or longer to provision, so it is unlikely to fit within a week.",
+      "B": "Amazon VPC is the virtual network in AWS; it does not by itself connect on premises to AWS.",
+      "C": "Site-to-Site VPN is a secure, encrypted connection that can be established in a short time.",
+      "D": "An edge location is part of the content delivery infrastructure, not a way to connect a network to AWS."
+    }
+  },
+  "q_7e74ab049ae9": {
+    "explanation": "Security group rules and network ACL rules both specify IP address ranges using CIDR block notation. AMIs, Budgets, and EBS do not take IP ranges.",
+    "optionNotes": {
+      "A": "Security group rules accept a CIDR block as the source or destination of traffic.",
+      "B": "An AMI is an image used to launch instances and has no IP range setting.",
+      "C": "Network ACL rules specify a CIDR block for the source or destination.",
+      "D": "AWS Budgets tracks costs and usage, not IP address ranges.",
+      "E": "Amazon EBS provides block storage volumes and does not use CIDR notation."
+    }
+  },
+  "q_8f3fde21b15a": {
+    "explanation": "AWS Direct Connect provides dedicated private connectivity between an on-premises data center and AWS that does not traverse the public internet.",
+    "optionNotes": {
+      "A": "Transit Gateway interconnects VPCs and networks as a hub, but it does not itself provide the dedicated physical link.",
+      "B": "AWS VPN tunnels run over the public internet, which the company cannot use.",
+      "C": "CloudFront is a content delivery network and does not connect a data center to AWS.",
+      "D": "Direct Connect is a dedicated network connection that bypasses the public internet."
+    }
+  },
+  "q_ed43fe32377d": {
+    "explanation": "AWS Direct Connect creates a private, dedicated network connection from on premises to AWS.",
+    "optionNotes": {
+      "A": "AWS Config tracks resource configuration and compliance; it does not create network connections.",
+      "B": "Amazon VPC provides the virtual network in AWS, but connecting it to on premises needs a service like Direct Connect.",
+      "C": "Direct Connect establishes a private connection between the on-premises environment and AWS.",
+      "D": "Route 53 is a DNS service and does not create private connections."
+    }
+  },
+  "q_fb25f39a1680": {
+    "explanation": "Amazon CloudFront caches copies of content at edge locations so users get it from a nearby location.",
+    "optionNotes": {
+      "A": "Amazon Kinesis ingests and processes streaming data; it does not cache content at edge locations.",
+      "B": "Amazon SQS is a message queuing service and does not cache content.",
+      "C": "CloudFront is the CDN that caches content at edge locations.",
+      "D": "Route 53 answers DNS queries from edge locations, but it does not cache and deliver content."
+    }
+  },
+  "q_2dba8c390de6": {
+    "explanation": "A VPC endpoint (a gateway endpoint for S3) lets an EC2 instance reach Amazon S3 over the AWS private network without going through the internet.",
+    "optionNotes": {
+      "A": "A VPN connection links a VPC to another network; it is not how a VPC privately reaches S3.",
+      "B": "An internet gateway sends traffic over the internet, which the company wants to avoid.",
+      "C": "A VPC endpoint gives private connectivity to S3 without an internet gateway or NAT device.",
+      "D": "A NAT gateway sends traffic out to the internet, which does not meet the no-internet requirement."
+    }
+  },
+  "q_303663f30376": {
+    "explanation": "AWS Transit Gateway is a centralized gateway that connects multiple VPCs and on-premises networks through one hub.",
+    "optionNotes": {
+      "A": "A gateway VPC endpoint gives private access to S3 or DynamoDB; it does not connect VPCs and on-premises networks.",
+      "B": "Direct Connect is a dedicated link to AWS, not a centralized gateway between multiple VPCs.",
+      "C": "Transit Gateway acts as the central hub between multiple VPCs and on-premises networks.",
+      "D": "AWS PrivateLink exposes specific services privately; it is not a central gateway for whole networks."
+    }
+  },
+  "q_594195ada196": {
+    "explanation": "AWS Global Accelerator routes users over the AWS global network to the best healthy application endpoint across Regions, improving both performance and availability.",
+    "optionNotes": {
+      "A": "Global Accelerator uses static anycast IPs and the AWS backbone to direct traffic to healthy endpoints in multiple Regions.",
+      "B": "Amazon DataZone is a data management and cataloging service, unrelated to application traffic.",
+      "C": "AWS Cloud Map is a service discovery tool and does not improve global performance.",
+      "D": "AWS Auto Scaling adjusts capacity within a Region and does not route users between Regions."
+    }
+  },
+  "q_66175febbc08": {
+    "explanation": "Network ACLs are stateless firewalls at the subnet level, so return traffic needs its own explicit rule. Security groups are stateful.",
+    "optionNotes": {
+      "A": "AWS PrivateLink provides private connectivity to services; it is not a traffic filter.",
+      "B": "Security groups are stateful, which is the opposite of stateless filtering.",
+      "C": "Network ACLs are stateless and evaluate inbound and outbound traffic separately.",
+      "D": "AWS WAF filters web requests at the application layer; it is not the VPC stateless filtering feature."
+    }
+  },
+  "q_5b31b517c950": {
+    "explanation": "Amazon WorkSpaces provides managed Windows (or Linux) virtual desktops that users can access from anywhere using a client application or a web browser.",
+    "optionNotes": {
+      "A": "Dedicated Hosts are physical EC2 servers for licensing or compliance needs, not virtual desktops.",
+      "B": "Global Accelerator improves network routing for applications and does not provide desktops.",
+      "C": "WorkSpaces is the managed virtual desktop service accessible from a computer or a web browser.",
+      "D": "CloudFront is a content delivery network and does not provide virtual desktops."
+    }
+  },
+  "q_e5ecccd387d8": {
+    "explanation": "AWS Transit Gateway lets one Direct Connect link serve many VPCs through a central hub, which simplifies and scales connectivity as the VPC count grows.",
+    "optionNotes": {
+      "A": "VPC endpoints give private access to AWS services and do not connect on premises to many VPCs.",
+      "B": "Transit Gateway connects many VPCs and on-premises networks via one hub, so it scales as VPCs are added.",
+      "C": "Route 53 provides DNS and does not handle network connectivity between VPCs and on premises.",
+      "D": "AWS Secrets Manager stores and rotates secrets and is unrelated to networking."
+    }
+  },
+  "q_c6e6746d2ee9": {
+    "explanation": "AWS Global Accelerator improves the performance of applications behind Application Load Balancers by routing user traffic over the AWS global network to the nearest healthy endpoint.",
+    "optionNotes": {
+      "A": "Global Accelerator supports ALBs as endpoints and sends traffic over the AWS backbone, improving performance.",
+      "B": "Amazon Connect is a contact center service and does not improve application performance.",
+      "C": "ElastiCache caches data in memory for backend applications; it does not improve network path performance to public ALBs.",
+      "D": "CloudWatch monitors performance but does not improve it."
+    }
+  },
+  "q_5317ae93313c": {
+    "explanation": "AWS PrivateLink provides private connectivity between VPCs and supported AWS services without exposing traffic to the public internet.",
+    "optionNotes": {
+      "A": "Amazon Inspector scans for vulnerabilities and is not a connectivity service.",
+      "B": "PrivateLink keeps traffic between VPCs and supported services on the AWS network, off the public internet.",
+      "C": "Amazon Connect is a cloud contact center service, not a networking service.",
+      "D": "An internet gateway exposes traffic to the public internet, which is what the company wants to avoid."
+    }
+  },
+  "q_9971980c1eec": {
+    "explanation": "AWS Direct Connect creates a private connection between an on-premises workload and workloads in AWS.",
+    "optionNotes": {
+      "A": "Route 53 is a DNS service and does not create private connections.",
+      "B": "Amazon Macie discovers and protects sensitive data in S3; it is not a networking service.",
+      "C": "Direct Connect provides a private network connection between the on-premises environment and AWS.",
+      "D": "PrivateLink connects VPCs and AWS services privately within AWS; it does not link an on-premises site by itself."
+    }
+  },
+  "q_7d5a67fa2102": {
+    "explanation": "AWS Global Accelerator provides static entry IP addresses and health checks that shift traffic quickly to healthy endpoints across Regions and Availability Zones.",
+    "optionNotes": {
+      "A": "AWS WAF blocks malicious web requests and does not manage failover between Regions.",
+      "B": "Global Accelerator monitors endpoint health and fails over quickly across multi-Region and Multi-AZ setups.",
+      "C": "AWS Shield protects against DDoS attacks and does not provide failover.",
+      "D": "Direct Connect is a dedicated link to AWS and does not fail applications over between Regions."
+    }
+  },
+  "q_762b125f361b": {
+    "explanation": "Amazon CloudFront runs on a global network of edge locations and can run code at the edge (CloudFront Functions, Lambda@Edge), so content and logic are served close to end users. Of the listed options it is the only one built to bring delivery near users.",
+    "optionNotes": {
+      "A": "CloudFront delivers content and applications from edge locations near end users.",
+      "B": "AWS Auto Scaling adjusts capacity in a Region and does not place anything close to users.",
+      "C": "AWS AppSync is a managed GraphQL and real-time API service, not a service that places applications near users.",
+      "D": "Route 53 resolves DNS names and can route by latency, but it does not host the application near users."
+    }
+  },
+  "q_1b7a7722dc70": {
+    "explanation": "AWS Global Accelerator sends user traffic onto the AWS global network at the nearest edge location, improving performance compared with the public internet.",
+    "optionNotes": {
+      "A": "A route table sets where traffic goes in a VPC; it does not use the worldwide AWS network.",
+      "B": "Transit Gateway connects VPCs and on-premises networks within and across Regions; it does not accelerate user traffic over the global network.",
+      "C": "Global Accelerator routes user traffic through the AWS global network to improve performance and availability.",
+      "D": "Amazon VPC provides an isolated virtual network but does not accelerate traffic."
+    }
+  },
+  "q_999988be4d37": {
+    "explanation": "A network ACL is a firewall at the subnet level that controls inbound and outbound traffic for the subnet.",
+    "optionNotes": {
+      "A": "A security group controls traffic at the instance level, not for the whole subnet.",
+      "B": "AWS WAF filters web requests for web applications and is not a subnet firewall.",
+      "C": "AWS Firewall Manager centrally manages firewall rules across accounts; it is not the subnet-level firewall itself.",
+      "D": "A network ACL controls traffic entering and leaving a subnet."
+    }
+  },
+  "auth-networking-01": {
+    "explanation": "A subnet is public when its route table has a route that sends internet-bound traffic directly to an internet gateway. Naming or Availability Zone placement is irrelevant.",
+    "optionNotes": {
+      "A": "A name is only a label and has no effect on whether a subnet can reach the internet.",
+      "B": "Availability Zone placement does not decide public or private status.",
+      "C": "A direct route to an internet gateway in the route table is what defines a public subnet.",
+      "D": "A NAT gateway provides outbound-only access for private subnets, and instances do not each need their own."
+    }
+  },
+  "auth-networking-02": {
+    "explanation": "Network ACLs operate at the subnet level and support explicit deny rules, so they can block a whole IP range for every instance in the subnet.",
+    "optionNotes": {
+      "A": "Security groups have allow rules only, so they cannot explicitly deny an IP range.",
+      "B": "A network ACL deny rule blocks the offending range for all instances in the subnet.",
+      "C": "A Route 53 failover policy handles DNS failover between endpoints and does not block attackers.",
+      "D": "A NAT gateway provides outbound internet access and does not filter inbound attacks."
+    }
+  },
+  "auth-networking-03": {
+    "explanation": "Security groups are stateful, and a new security group has no inbound rules, so no inbound traffic is allowed until you add some. Deny rules, subnet-wide scope, and ordered rule evaluation describe network ACLs.",
+    "optionNotes": {
+      "A": "Security groups are stateful, so response traffic for allowed requests is allowed automatically.",
+      "B": "Security groups support allow rules only; explicit deny rules are a network ACL feature.",
+      "C": "A security group applies only to the resources it is associated with, not automatically to every instance in a subnet.",
+      "D": "A new security group has no inbound rules, so all inbound traffic is blocked until rules are added.",
+      "E": "Security groups evaluate all rules together and have no rule numbers; ordered first-match evaluation is how network ACLs work."
+    }
+  },
+  "auth-networking-04": {
+    "explanation": "AWS Site-to-Site VPN creates encrypted IPsec tunnels over the internet and can be set up quickly, which fits the one-day timeline.",
+    "optionNotes": {
+      "A": "Direct Connect needs a physical circuit that takes much longer than a day and is not encrypted by default.",
+      "B": "VPC peering connects two VPCs, not a branch office network to a VPC.",
+      "C": "CloudFront is a content delivery network and does not connect office networks to a VPC.",
+      "D": "Site-to-Site VPN gives an encrypted connection to the VPC over the internet that is quick to establish."
+    }
+  },
+  "auth-networking-05": {
+    "explanation": "VPC peering is a one-to-one private connection between two VPCs, and it is not transitive, so traffic cannot pass through one peered VPC to reach another.",
+    "optionNotes": {
+      "A": "VPC peering links exactly two VPCs privately and does not allow transitive routing.",
+      "B": "A central hub for many VPCs and on-premises networks describes AWS Transit Gateway.",
+      "C": "A dedicated physical connection from a data center to AWS describes AWS Direct Connect.",
+      "D": "Caching content at edge locations describes Amazon CloudFront."
+    }
+  },
+  "auth-networking-06": {
+    "explanation": "The company needs an internet gateway attached to the VPC and a route in the subnet's route table that sends internet-bound traffic to it. Together these make the subnet public so internet requests can reach the web servers.",
+    "optionNotes": {
+      "A": "A NAT gateway only allows connections that start inside the VPC, so it cannot accept requests from the internet.",
+      "B": "The internet gateway provides the VPC's connection point to the internet.",
+      "C": "VPC peering connects two VPCs and does not give internet access.",
+      "D": "Direct Connect links an on-premises network to AWS and is not needed for internet-originated requests.",
+      "E": "The route to the internet gateway is what makes the subnet public and lets internet traffic reach it."
+    }
+  },
+  "auth-networking-07": {
+    "explanation": "Latency routing sends each user to the Region that gives that user the lowest latency, which matches the fastest-response goal.",
+    "optionNotes": {
+      "A": "Weighted routing splits traffic by fixed proportions regardless of user speed.",
+      "B": "Geolocation routing chooses by the user's location, which does not guarantee the fastest response.",
+      "C": "Latency routing answers with the Region that offers the user the lowest latency.",
+      "D": "Simple routing returns one record or set of values without considering performance."
+    }
+  },
+  "auth-networking-08": {
+    "explanation": "Geolocation routing picks the answer based on where the user is located, such as the country, so each country can be sent to its own website version.",
+    "optionNotes": {
+      "A": "Latency routing selects the fastest Region, which may not match the user's country or language.",
+      "B": "Geolocation routing directs users to resources based on their geographic location.",
+      "C": "Failover routing handles active-passive failover when a resource is unhealthy, not location-based content.",
+      "D": "Multivalue answer routing returns several healthy records at random and ignores user location."
+    }
+  },
+  "auth-networking-09": {
+    "explanation": "Direct Connect is a private, dedicated connection but is not encrypted by default. Encryption can be added, for example with a VPN over the connection or MACsec on supported links.",
+    "optionNotes": {
+      "A": "Direct Connect does not encrypt with IPsec by default; IPsec is added through a VPN running over it.",
+      "B": "Direct Connect does not send traffic over the public internet, so TLS over the internet is not how it works.",
+      "C": "Encryption can be added to Direct Connect, for example with a VPN or MACsec.",
+      "D": "Direct Connect is unencrypted by default, but encryption options can be added."
+    }
+  },
+  "auth-networking-10": {
+    "explanation": "Amazon API Gateway provides the managed front door for the REST API, handling authorization and traffic management in front of Lambda. Amazon Route 53 provides DNS so users can reach it through the company's own domain name.",
+    "optionNotes": {
+      "A": "API Gateway creates, secures, and manages APIs in front of backends such as Lambda.",
+      "B": "Transit Gateway connects private networks and does not publish APIs.",
+      "C": "Route 53 hosts the DNS records that map the company's domain name to the API.",
+      "D": "Direct Connect provides a private link to AWS and does not expose APIs.",
+      "E": "A NAT gateway gives private subnets outbound internet access and does not front an API."
+    }
+  }
+}

@@ -1,5 +1,6 @@
 <script lang="ts">
   import type { Services } from '@/app/composition';
+  import { OptionReview } from '@/features/practice';
   import { getI18n } from '@/i18n/i18n.svelte';
   import type { AttemptQuestionRow, AttemptRow } from '@/persistence';
   import Modal from '@/ui/Modal.svelte';
@@ -27,16 +28,6 @@
   const title = $derived(
     i18n.t('history.detail.title', { topic: topicTitle, date: formatDateTime(attempt.submittedAt ?? attempt.startedAt, locale) }),
   );
-
-  /** Option texts for the given keys, in the order the attempt showed the options. */
-  function texts(questionId: string, keys: string[], order: string[]): string[] {
-    const options = questions.get(questionId)?.options ?? [];
-    const rank = (k: string): number => {
-      const at = order.indexOf(k);
-      return at === -1 ? order.length : at;
-    };
-    return [...keys].sort((a, b) => rank(a) - rank(b)).map((k) => options.find((o) => o.key === k)?.text ?? k);
-  }
 </script>
 
 <Modal open {title} {onclose} closeOnBackdrop>
@@ -56,28 +47,7 @@
           <p class={cn('font-semibold', ok ? 'text-leaf-done-ink' : 'text-danger')}>
             {ok ? `✓ ${i18n.t('practice.result.correct')}` : `✗ ${i18n.t('practice.result.incorrect')}`}
           </p>
-          <dl class="grid gap-1">
-            <div>
-              <dt class="text-sm text-muted-foreground">{i18n.t('practice.result.yourAnswer')}</dt>
-              <dd>
-                {#if row.selected.length === 0}
-                  {i18n.t('practice.result.noAnswer')}
-                {:else}
-                  <ul lang="en">{#each texts(row.questionId, row.selected, row.optionOrder) as text (text)}<li>{text}</li>{/each}</ul>
-                {/if}
-              </dd>
-            </div>
-            <div>
-              <dt class="text-sm text-muted-foreground">{i18n.t('practice.result.correctAnswer')}</dt>
-              <dd><ul lang="en">{#each texts(row.questionId, q?.correct ?? [], row.optionOrder) as text (text)}<li>{text}</li>{/each}</ul></dd>
-            </div>
-            {#if q?.explanation}
-              <div>
-                <dt class="text-sm text-muted-foreground">{i18n.t('practice.result.explanation')}</dt>
-                <dd lang="en">{q.explanation}</dd>
-              </div>
-            {/if}
-          </dl>
+          <OptionReview question={q} selected={row.selected} optionOrder={row.optionOrder} />
         </li>
       {/each}
     </ol>

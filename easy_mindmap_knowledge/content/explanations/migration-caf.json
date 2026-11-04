@@ -1,0 +1,765 @@
+{
+ "q_daf8d9c909b5": {
+  "explanation": "Data architecture is a capability of the Platform perspective, which covers the technical foundation including data and analytics architecture. The other options belong to other perspectives.",
+  "optionNotes": {
+   "A": "Data architecture is a Platform perspective capability, covering how data and analytics platforms are designed.",
+   "B": "Data protection is a Security perspective capability, not a Platform one.",
+   "C": "Data governance is not a Platform capability; the related Governance perspective capability is data curation.",
+   "D": "Data science is a Business perspective capability about using data to produce insights and value."
+  }
+ },
+ "q_1babf46a313a": {
+  "explanation": "The Align phase of the AWS CAF transformation journey is where organizations identify capability gaps across the perspectives and build an action plan to close them.",
+  "optionNotes": {
+   "A": "Envision is about defining transformation opportunities and business outcomes, not about finding capability gaps across perspectives.",
+   "B": "Align identifies capability gaps across the CAF perspectives and creates a plan to address them, which matches this scenario.",
+   "C": "Scale expands pilots and initiatives to the desired size and realizes ongoing business benefits, after gaps have been identified.",
+   "D": "Launch delivers pilot initiatives in production, which happens after the gaps are identified and planned."
+  }
+ },
+ "q_9f24bb9f4cbc": {
+  "explanation": "Configuration management and patch management are capabilities of the Operations perspective, which covers running and supporting workloads at the agreed service levels.",
+  "optionNotes": {
+   "A": "The Platform perspective covers architecture, engineering, and provisioning of the technical foundation, not day-to-day configuration and patching.",
+   "B": "Operations includes configuration management and patch management, along with observability and incident management.",
+   "C": "Security covers capabilities such as threat detection and incident response, while patching is listed under Operations.",
+   "D": "Governance covers capabilities such as risk, benefits, and financial management, not configuration or patch management."
+  }
+ },
+ "q_5d8ebe0102fd": {
+  "explanation": "Data monetization is a capability of the Business perspective, which focuses on turning data into business value. The other options sit in the People, Operations, and Platform perspectives.",
+  "optionNotes": {
+   "A": "Culture evolution is a People perspective capability about changing how the organization works and thinks.",
+   "B": "Event management is an Operations perspective capability about detecting and responding to operational events.",
+   "C": "Data monetization is a Business perspective capability about creating revenue and value from data.",
+   "D": "Platform architecture is a Platform perspective capability about designing the technical foundation."
+  }
+ },
+ "q_56b19c1e74b3": {
+  "explanation": "Incident response and infrastructure protection are both Security perspective capabilities. Observability, incident and problem management, and availability and continuity belong to the Operations perspective.",
+  "optionNotes": {
+   "A": "Observability is an Operations perspective capability for gaining insight into workload health and performance.",
+   "B": "Incident and problem management is an Operations capability for restoring service and fixing root causes, separate from security incident response.",
+   "C": "Incident response is a Security perspective capability for reacting to security events.",
+   "D": "Infrastructure protection is a Security perspective capability for protecting systems and services from unauthorized access.",
+   "E": "Availability and continuity management is an Operations perspective capability, not a Security one."
+  }
+ },
+ "q_c68aa06e892a": {
+  "explanation": "Benefits management in the Governance perspective is the capability for defining, tracking, and realizing the business outcomes of cloud investments.",
+  "optionNotes": {
+   "A": "Benefits management lets a company define and track business outcomes, which is exactly the stated need.",
+   "B": "Risk management is about identifying and mitigating risks, not defining and tracking expected business outcomes.",
+   "C": "Application portfolio management is about managing and rationalizing the set of applications, not tracking outcomes.",
+   "D": "Cloud financial management is about planning and controlling cloud spend, rather than tracking business outcomes."
+  }
+ },
+ "q_e09612a54792": {
+  "explanation": "The Envision phase focuses on showing how the cloud can accelerate business outcomes, by identifying transformation opportunities and aligning them to business goals.",
+  "optionNotes": {
+   "A": "Scale expands successful pilots to production size, rather than demonstrating the value of the cloud at the start.",
+   "B": "Envision demonstrates how the cloud helps accelerate business outcomes and sets the transformation vision.",
+   "C": "Align finds capability gaps across perspectives and plans how to close them, not demonstrating business value.",
+   "D": "Launch delivers pilot initiatives in production and shows value through real results, which comes after envisioning."
+  }
+ },
+ "q_aacb3bfbbf99": {
+  "explanation": "Refactor means re-architecting an application, for example splitting a monolith into microservices, to take advantage of cloud-native features.",
+  "optionNotes": {
+   "A": "Rehost moves the application as is (lift and shift) and would leave the monolith unchanged.",
+   "B": "Replatform makes small optimizations such as moving to a managed database but does not redesign the application into microservices.",
+   "C": "Repurchase replaces the application with a different product, usually SaaS, rather than modernizing the existing one.",
+   "D": "Refactor re-architects the application into microservices, which matches the modernization goal."
+  }
+ },
+ "q_32188a50171e": {
+  "explanation": "The Reliability pillar covers a workload's ability to recover from infrastructure or service disruptions and to dynamically acquire resources to meet demand.",
+  "optionNotes": {
+   "A": "Security covers protecting data, systems, and assets, not recovery from disruptions.",
+   "B": "Reliability is defined as the ability to recover from disruptions and acquire resources dynamically to meet demand.",
+   "C": "Performance efficiency is about using resources efficiently to meet requirements, not recovering from disruptions.",
+   "D": "Cost optimization is about avoiding unnecessary costs and delivering value at the lowest price point."
+  }
+ },
+ "q_2bfa37b37f25": {
+  "explanation": "AWS Application Discovery Service collects information about on-premises servers, such as hostname, IP address, and MAC address, to help plan a migration.",
+  "optionNotes": {
+   "A": "DataSync transfers data between storage systems and does not inventory server details.",
+   "B": "Application Migration Service replicates servers to AWS for cutover; it is not the discovery tool for hostnames and MAC addresses.",
+   "C": "Application Discovery Service gathers server inventory, including hostname, IP address, and MAC address, for migration planning.",
+   "D": "DMS migrates databases and does not gather infrastructure inventory information."
+  }
+ },
+ "q_90a03997e6ae": {
+  "explanation": "The AWS CAF provides guidance, including perspectives and a readiness assessment approach, to analyze an organization's readiness for cloud migration.",
+  "optionNotes": {
+   "A": "AWS CAF helps identify capability gaps across its perspectives and assess readiness for migration.",
+   "B": "The Pricing Calculator estimates costs of AWS services; it does not assess organizational readiness.",
+   "C": "The Well-Architected Framework reviews workload architecture against best practices, not migration readiness.",
+   "D": "AWS Budgets tracks and alerts on spending against a budget, and does not evaluate readiness."
+  }
+ },
+ "q_8e424f1d0bf8": {
+  "explanation": "Automatically scaling to meet demand and automatically recovering from failure are design principles of the Reliability pillar.",
+  "optionNotes": {
+   "A": "Performing operations as code is a design principle of the Operational excellence pillar.",
+   "B": "Enabling traceability is a design principle of the Security pillar.",
+   "C": "Automatically scaling to meet demand supports reliability, by avoiding capacity shortfalls (stop guessing capacity).",
+   "D": "Deploying globally to improve response time (go global in minutes) is a Performance efficiency design principle.",
+   "E": "Automatically recovering from failure is a core Reliability design principle."
+  }
+ },
+ "q_310faab600fd": {
+  "explanation": "Splitting a monolith into microservices follows the best practice of implementing loosely coupled dependencies, so components can scale and fail independently.",
+  "optionNotes": {
+   "A": "Functional testing in deployment is a good practice but is not what breaking a monolith into microservices achieves.",
+   "B": "Automating deployments is a separate practice; splitting the application does not by itself automate changes.",
+   "C": "Deploying to multiple locations is about redundancy across Availability Zones or Regions, not decomposing the application.",
+   "D": "Microservices reduce dependencies between components, which is the loosely coupled dependencies best practice."
+  }
+ },
+ "q_4f82131a5346": {
+  "explanation": "AWS Managed Services (AMS) provides ongoing operational support for AWS workloads, helping companies adopt AWS at scale and operate more efficiently and securely.",
+  "optionNotes": {
+   "A": "AWS Support provides technical guidance and help with issues but does not operate the workloads for the company.",
+   "B": "AWS CAF is guidance for planning cloud adoption, not an operational support service.",
+   "C": "AMS operates and supports AWS infrastructure on the company's behalf to improve efficiency and security.",
+   "D": "The Well-Architected Framework is a set of best practices for reviewing workloads, not an operational support offering."
+  }
+ },
+ "q_e86f523845d8": {
+  "explanation": "The Operations perspective covers monitoring and managing workloads so that cloud services are delivered at the level the business needs.",
+  "optionNotes": {
+   "A": "The Business perspective is about strategy, value, and data-driven outcomes rather than monitoring workload performance.",
+   "B": "The Governance perspective covers risk, benefits, and financial management, not service delivery levels.",
+   "C": "The Platform perspective covers building and architecting the technical foundation, not running it day to day.",
+   "D": "The Operations perspective focuses on operating workloads and delivering services at levels that meet business needs."
+  }
+ },
+ "q_e0f772669fc7": {
+  "explanation": "The AWS CAF helps organizations identify and prioritize transformation opportunities and assess their cloud readiness across its perspectives.",
+  "optionNotes": {
+   "A": "AWS CAF supports identifying transformation opportunities and evaluating cloud readiness.",
+   "B": "AMS provides operational management of AWS workloads, not planning or readiness evaluation.",
+   "C": "The Well-Architected Framework evaluates architecture against best practices, not business transformation readiness.",
+   "D": "Migration Hub tracks the progress of migrations; it does not prioritize business transformation opportunities."
+  }
+ },
+ "q_5f53ee83b17e": {
+  "explanation": "Migration Evaluator builds a baseline of on-premises resources and projects the cost of running them on AWS to create a business case.",
+  "optionNotes": {
+   "A": "Compute Optimizer recommends right-sized AWS resources for existing AWS workloads, not on-premises baselines.",
+   "B": "Cost Explorer analyzes spending already incurred in AWS, not on-premises environments.",
+   "C": "The SSM Agent lets Systems Manager manage instances; it does not build a cost projection.",
+   "D": "Migration Evaluator gives a baseline of on-premises workloads and projected AWS costs for the business case."
+  }
+ },
+ "q_4c8bf748a5ed": {
+  "explanation": "The Reliability pillar is about workloads performing their intended functions correctly and recovering quickly from failure.",
+  "optionNotes": {
+   "A": "Performance efficiency is about using resources efficiently, not recovery from failure.",
+   "B": "Sustainability focuses on minimizing the environmental impact of workloads.",
+   "C": "Reliability covers performing the intended function and recovering from failures quickly.",
+   "D": "Security focuses on protecting data and systems rather than recovery from failure."
+  }
+ },
+ "q_f1464b36ad70": {
+  "explanation": "Performance efficiency and Cost optimization are two of the six pillars of the AWS Well-Architected Framework. High availability, going global in minutes, and continuous development are not pillars.",
+  "optionNotes": {
+   "A": "High availability is a goal addressed by the Reliability pillar, not a pillar itself.",
+   "B": "Performance efficiency is one of the six Well-Architected pillars.",
+   "C": "Cost optimization is one of the six Well-Architected pillars.",
+   "D": "Going global in minutes is a design principle (within Performance efficiency), not a pillar.",
+   "E": "Continuous development is not a Well-Architected pillar."
+  }
+ },
+ "q_94e5852c263d": {
+  "explanation": "Making frequent, small, reversible changes is a design principle of the Operational excellence pillar.",
+  "optionNotes": {
+   "A": "Going global in minutes is a Performance efficiency design principle.",
+   "B": "Frequent, small, reversible changes is a design principle of Operational excellence.",
+   "C": "A strong identity foundation is a Security pillar design principle.",
+   "D": "Stopping spending on data center operations is one of the general benefits of cloud computing, not an Operational excellence design principle."
+  }
+ },
+ "q_0b895a5a9cb1": {
+  "explanation": "The Operational excellence pillar covers running workloads effectively, gaining insight into operations, and continuously improving processes and procedures.",
+  "optionNotes": {
+   "A": "Reliability covers recovery from failures and meeting demand, not improving processes.",
+   "B": "Operational excellence is about running workloads effectively, reducing operational overhead, and improving processes.",
+   "C": "Performance efficiency focuses on using computing resources efficiently for the workload requirements.",
+   "D": "Cost optimization focuses on avoiding unnecessary spending, not improving operational processes."
+  }
+ },
+ "q_ef1155efc15f": {
+  "explanation": "Reliability and Operational excellence are two of the Well-Architected pillars. Availability, scalability, and responsive design are not pillar names.",
+  "optionNotes": {
+   "A": "Availability is not a pillar; it is addressed within the Reliability pillar.",
+   "B": "Reliability is one of the Well-Architected pillars.",
+   "C": "Scalability is not a pillar; it is part of the Reliability and Performance efficiency pillars.",
+   "D": "Responsive design is a web development term, not a Well-Architected pillar.",
+   "E": "Operational excellence is one of the Well-Architected pillars."
+  }
+ },
+ "q_c89119db5dfb": {
+  "explanation": "AWS DataSync securely transfers data with encryption in transit and verifies data integrity end to end during and after the transfer.",
+  "optionNotes": {
+   "A": "Application Migration Service migrates servers, not unstructured data sets.",
+   "B": "Amazon EFS is a file storage service, not a tool for migrating data with transfer validation.",
+   "C": "DataSync moves data with in-transit encryption and data integrity verification.",
+   "D": "Migration Hub tracks migration progress; it does not move data."
+  }
+ },
+ "q_ea907910d5b1": {
+  "explanation": "The question text does not list its requirements, so it looks incomplete. The exam expects People, the CAF perspective for culture, organization, leadership, and workforce skills.",
+  "optionNotes": {
+   "A": "Business focuses on strategy, value creation, and data-driven outcomes; the exam expects People here instead.",
+   "B": "People covers culture, leadership, organization design, and workforce skills, which is the perspective the exam expects.",
+   "C": "Platform focuses on the technical foundation and architecture rather than people and culture.",
+   "D": "Operations focuses on running and supporting workloads, not on people and organization."
+  }
+ },
+ "q_ed55ad67e5df": {
+  "explanation": "AWS DMS migrates on-premises databases to managed AWS database services with a simplified process and minimal downtime.",
+  "optionNotes": {
+   "A": "Storage Gateway connects on-premises storage to AWS storage; it does not migrate databases.",
+   "B": "Application Migration Service rehosts servers, not databases into managed database services.",
+   "C": "DataSync transfers files and objects, not database workloads.",
+   "D": "DMS is designed to move databases to managed AWS database services."
+  }
+ },
+ "q_a8f739fbce2c": {
+  "explanation": "Threat detection is the Security perspective capability for understanding and identifying potential misconfigurations or unexpected behaviors and prioritizing protective controls.",
+  "optionNotes": {
+   "A": "Identity and access management is about managing identities and permissions, not detecting misconfigurations and unexpected behavior.",
+   "B": "Threat detection identifies misconfigurations and unexpected behaviors and helps prioritize protective controls.",
+   "C": "Platform engineering is a Platform perspective capability about building the technical environment.",
+   "D": "Availability and continuity management is an Operations capability for keeping services available."
+  }
+ },
+ "q_854411fcc00d": {
+  "explanation": "Envision and Align are two of the four phases of the AWS CAF cloud transformation journey (Envision, Align, Launch, Scale). Assess, Mobilize, and Migrate and modernize are AWS migration phases.",
+  "optionNotes": {
+   "A": "Envision is a CAF cloud transformation journey phase.",
+   "B": "Align is a CAF cloud transformation journey phase.",
+   "C": "Assess is a phase of the AWS migration process, not a CAF transformation phase.",
+   "D": "Mobilize is a phase of the AWS migration process, not a CAF transformation phase.",
+   "E": "Migrate and modernize is a phase of the AWS migration process, not a CAF transformation phase."
+  }
+ },
+ "q_ae3fe6e1a68b": {
+  "explanation": "Designing for regular updates in small, reversible increments is a design principle of the Operational excellence pillar.",
+  "optionNotes": {
+   "A": "Security is about protecting data and systems, not about incremental change practices.",
+   "B": "Performance efficiency is about efficient resource use, not the size of changes.",
+   "C": "Operational excellence includes making frequent, small, reversible changes.",
+   "D": "Reliability focuses on recovery and meeting demand rather than change practices."
+  }
+ },
+ "q_45f1f721d56b": {
+  "explanation": "Cloud financial management and Application portfolio management are Governance perspective capabilities. Identity and access management belongs to Security, and innovation and product management belong to Business.",
+  "optionNotes": {
+   "A": "Identity and access management is a Security perspective capability.",
+   "B": "Cloud financial management is a Governance capability for planning and controlling cloud costs.",
+   "C": "Application portfolio management is a Governance capability for managing the application estate.",
+   "D": "Innovation management is a Business perspective capability.",
+   "E": "Product management is a Business perspective capability."
+  }
+ },
+ "q_9584300295b3": {
+  "explanation": "AWS Migration Hub provides a single location to track the progress of application migrations across multiple AWS and partner tools.",
+  "optionNotes": {
+   "A": "Application Discovery Service collects on-premises server data; it is not the place that tracks migration progress.",
+   "B": "Application Migration Service performs server replication and cutover, and reports to Migration Hub rather than being the single tracking view.",
+   "C": "Service Catalog manages approved products for provisioning, not migration tracking.",
+   "D": "Migration Hub is the central location to track application migrations."
+  }
+ },
+ "q_748e0d7f3dd0": {
+  "explanation": "The Envision phase identifies transformation opportunities and the measurable business outcomes that explain the value of moving to the cloud.",
+  "optionNotes": {
+   "A": "Envision defines the business outcomes and value that justify the cloud transformation.",
+   "B": "Align identifies capability gaps across perspectives and builds an action plan, after the outcomes are defined.",
+   "C": "Scale expands working pilots to production size, rather than defining outcomes.",
+   "D": "Launch delivers pilot initiatives in production, after outcomes have been defined and aligned."
+  }
+ },
+ "q_d4d093462288": {
+  "explanation": "Designing for automated recovery from failure is a Well-Architected design principle (Reliability). The other choices contradict recommended practice.",
+  "optionNotes": {
+   "A": "Keeping static data close to compute is not a stated Well-Architected design principle.",
+   "B": "Provisioning for peak capacity wastes resources; the framework recommends scaling to match demand.",
+   "C": "Automatically recovering from failure is a core design principle, supporting the Reliability pillar.",
+   "D": "Tightly coupled components are discouraged; the framework recommends loosely coupled designs."
+  }
+ },
+ "q_b6f83704b7d7": {
+  "explanation": "Performance efficiency and Operational excellence are two of the six Well-Architected pillars. Resource scalability, system elasticity, and agile development are not pillars.",
+  "optionNotes": {
+   "A": "Resource scalability is a concept covered within pillars, not a pillar itself.",
+   "B": "Performance efficiency is one of the Well-Architected pillars.",
+   "C": "System elasticity is a cloud characteristic, not a Well-Architected pillar.",
+   "D": "Agile development is a software practice, not a Well-Architected pillar.",
+   "E": "Operational excellence is one of the Well-Architected pillars."
+  }
+ },
+ "q_1562d9b64c49": {
+  "explanation": "AWS Application Discovery Service collects configuration, usage, and behavior data from on-premises servers to help plan migrations.",
+  "optionNotes": {
+   "A": "Resource Groups organizes AWS resources by tags and does not inspect on-premises data centers.",
+   "B": "Application Discovery Service gathers configuration, usage, and behavior data of on-premises servers for migration planning.",
+   "C": "Service Catalog manages approved products for provisioning, not data center discovery.",
+   "D": "Systems Manager operates and manages resources, rather than discovering on-premises dependencies for migration planning."
+  }
+ },
+ "q_79a6198b037a": {
+  "explanation": "The exam expects Program and project management here. Note that current AWS CAF 3.0 lists program and project management under Governance and lists data science under Business, so this item conflicts with the current framework.",
+  "optionNotes": {
+   "A": "The exam expects this, although AWS CAF 3.0 places program and project management under the Governance perspective.",
+   "B": "Data science is a Business perspective capability in AWS CAF 3.0, even though the exam expects a different option here.",
+   "C": "Observability is an Operations perspective capability.",
+   "D": "Change and release management is an Operations perspective capability."
+  }
+ },
+ "q_2eb4b06e1d1d": {
+  "explanation": "The Platform perspective includes capabilities such as data architecture for well-designed data and analytics architecture.",
+  "optionNotes": {
+   "A": "Security covers protection capabilities such as data protection and threat detection, not data and analytics architecture design.",
+   "B": "Governance covers capabilities like risk, benefits, and data curation, not designing the data and analytics architecture.",
+   "C": "Operations covers running workloads, not designing data and analytics architecture.",
+   "D": "Platform includes data architecture and related engineering capabilities for the technical foundation."
+  }
+ },
+ "q_1830934a0536": {
+  "explanation": "Organizational alignment and Organization design are People perspective capabilities. Portfolio management, risk management, and modern application development belong to other perspectives.",
+  "optionNotes": {
+   "A": "Organizational alignment is a People perspective capability.",
+   "B": "Portfolio management is not a People perspective capability.",
+   "C": "Organization design is a People perspective capability.",
+   "D": "Risk management is a Governance perspective capability.",
+   "E": "Modern application development is a Platform perspective capability."
+  }
+ },
+ "q_6a9a6e56f161": {
+  "explanation": "The Performance efficiency pillar focuses on structured and streamlined allocation of IT and computing resources to meet requirements.",
+  "optionNotes": {
+   "A": "Reliability focuses on recovering from failures and meeting demand, not on how resources are allocated.",
+   "B": "Operational excellence focuses on running workloads and improving processes.",
+   "C": "Performance efficiency is about efficient, structured use of computing resources as demand and technology change.",
+   "D": "Sustainability focuses on minimizing environmental impact."
+  }
+ },
+ "q_af399656dd4d": {
+  "explanation": "The exam expects Portfolio management and Risk management. Risk management is a Governance capability; in AWS CAF 3.0 portfolio management is under Business (Governance has application portfolio management) and program and project management is the Governance capability, so this item conflicts with current AWS docs.",
+  "optionNotes": {
+   "A": "Program and project management is a Governance capability in the current CAF, even though the exam does not expect it here.",
+   "B": "Product management is a Business perspective capability.",
+   "C": "The exam expects this option, although the current CAF lists portfolio management under Business (Governance has application portfolio management).",
+   "D": "Risk management is a Governance perspective capability for managing cloud-related risks.",
+   "E": "Event management is an Operations perspective capability."
+  }
+ },
+ "q_dcedc8da1393": {
+  "explanation": "AWS DMS can migrate NoSQL sources to Amazon DynamoDB as a target.",
+  "optionNotes": {
+   "A": "Migration Hub tracks migration progress and does not move database data.",
+   "B": "DMS supports DynamoDB as a migration target and moves the data.",
+   "C": "Migration Evaluator builds a cost business case and does not perform migrations.",
+   "D": "Application Migration Service rehosts servers; it is not the database migration tool."
+  }
+ },
+ "q_6a3f4c8ceace": {
+  "explanation": "Migration Evaluator is a free service that builds data-driven business cases for migrating on-premises workloads to AWS.",
+  "optionNotes": {
+   "A": "Migration Evaluator is a complimentary tool that creates data-driven business cases for cloud planning.",
+   "B": "Billing Conductor customizes billing data for chargeback, not migration business cases.",
+   "C": "The Billing Console shows current bills and payment details, not projected migration business cases.",
+   "D": "Amazon Forecast is a time-series forecasting ML service, not a cloud planning business-case tool."
+  }
+ },
+ "q_aae9ec1c29c3": {
+  "explanation": "AWS DataSync transfers data between AWS storage services such as Amazon S3, Amazon EFS, and Amazon FSx.",
+  "optionNotes": {
+   "A": "DataSync moves data between AWS storage services as well as between on premises and AWS.",
+   "B": "Direct Connect provides a dedicated network connection, not a service for migrating data between storage services.",
+   "C": "Lake Formation builds and secures data lakes and does not transfer data between storage services.",
+   "D": "Amazon S3 is a storage service, not a migration service."
+  }
+ },
+ "q_6bd6d424cb09": {
+  "explanation": "Supporting development innovations and continuously improving processes and procedures is the focus of the Operational excellence pillar.",
+  "optionNotes": {
+   "A": "Security is about protecting data and systems, not about improving processes.",
+   "B": "Performance efficiency is about using resources efficiently, not continuous process improvement.",
+   "C": "Operational excellence covers supporting development, running workloads effectively, and continuously improving processes.",
+   "D": "Reliability is about recovering from failures and meeting demand."
+  }
+ },
+ "q_daa6807d238b": {
+  "explanation": "The Security perspective includes identity and access management capabilities for managing identities and permissions at scale.",
+  "optionNotes": {
+   "A": "Operations covers running and supporting workloads, not managing identities and permissions.",
+   "B": "Platform covers architecture and engineering of the technical foundation, not identity and permissions.",
+   "C": "Governance covers risk, benefits, and financial management, not identity management.",
+   "D": "Security includes identity and access management, which manages identities and permissions at scale."
+  }
+ },
+ "q_1146c4abb2bd": {
+  "explanation": "Making frequent, small, reversible changes is a design principle of the Operational excellence pillar.",
+  "optionNotes": {
+   "A": "Security design principles focus on protecting data, identity, and traceability.",
+   "B": "Cost optimization focuses on avoiding unnecessary costs, not change practices.",
+   "C": "Operational excellence includes making frequent, small, reversible changes.",
+   "D": "Performance efficiency covers efficient resource use rather than change size."
+  }
+ },
+ "q_fee8f0a65c13": {
+  "explanation": "Cloud fluency is a People perspective capability that builds the cloud skills and knowledge of the workforce.",
+  "optionNotes": {
+   "A": "Data architecture is a Platform perspective capability.",
+   "B": "Event management is an Operations perspective capability.",
+   "C": "Cloud fluency is a People perspective capability about workforce cloud skills.",
+   "D": "Strategic partnership is a Business perspective capability."
+  }
+ },
+ "q_bf2cd57e6a78": {
+  "explanation": "Moving from a local data center to an architecture split between the data center and AWS is a migration from on premises to hybrid.",
+  "optionNotes": {
+   "A": "On-premises to cloud native would move everything to the cloud, not keep part in the local data center.",
+   "B": "Hybrid to cloud native starts from a hybrid setup, but this workload starts fully on premises.",
+   "C": "The workload starts on premises and ends up spread across the data center and AWS, which is on-premises to hybrid.",
+   "D": "Cloud native to hybrid starts in the cloud, which is the opposite of this scenario."
+  }
+ },
+ "q_c9a26de19235": {
+  "explanation": "AWS Schema Conversion Tool converts the database schema and code to the target engine, and AWS DMS moves the data. Together they migrate a commercial database to a managed open-source database.",
+  "optionNotes": {
+   "A": "DMS migrates the data to the managed target database.",
+   "B": "AWS SDKs are for calling AWS services from code and do not migrate databases.",
+   "C": "Schema Conversion Tool converts schemas and code from the commercial engine to an open-source engine.",
+   "D": "Systems Manager manages operations for resources, not heterogeneous database migrations.",
+   "E": "Amazon EMR runs big data processing frameworks, not database migration."
+  }
+ },
+ "q_6b0db21f1002": {
+  "explanation": "Rehost (lift and shift) moves a workload to AWS without making changes to it.",
+  "optionNotes": {
+   "A": "Repurchase replaces the workload with a different product, which changes it.",
+   "B": "Replatform makes some optimizations during the move, which means making changes.",
+   "C": "Rehost moves the workload as is, without changes.",
+   "D": "Refactor redesigns the application, which is the most change possible."
+  }
+ },
+ "q_677db91ace22": {
+  "explanation": "The exam expects Retire and Rehost as the lowest-effort strategies: retire removes the application, and rehost moves it as is. AWS notes that an application that cannot run in the cloud is often retired or retained, so rehost is a debatable fit for an incompatible CMS.",
+  "optionNotes": {
+   "A": "Retire removes the application if it is no longer needed, which takes the least effort.",
+   "B": "The exam expects Rehost as a low-effort option because it moves the application as is, though an incompatible CMS might not run unchanged.",
+   "C": "Repurchase means adopting a new product and migrating to it, which takes more effort.",
+   "D": "Replatform requires optimizations to the application or its platform, which is more effort.",
+   "E": "Refactor redesigns the application and takes the most effort."
+  }
+ },
+ "q_71cbd5277ea6": {
+  "explanation": "Replatform (lift, tinker, and shift) moves a self-managed database to a managed service such as Amazon RDS with only small changes.",
+  "optionNotes": {
+   "A": "Rehost moves the database as is onto servers such as EC2, without moving to a managed service.",
+   "B": "Repurchase replaces the product with another, usually SaaS, rather than moving the same database engine.",
+   "C": "Refactor redesigns the application, which is more than the stated need.",
+   "D": "Replatform moves MySQL to a managed service like Amazon RDS with minimal changes."
+  }
+ },
+ "q_67f9b2a5e37c": {
+  "explanation": "Refactor re-architects an application, such as splitting a monolith into microservices, to modernize it on AWS.",
+  "optionNotes": {
+   "A": "Rehost keeps the monolith unchanged.",
+   "B": "Repurchase swaps in a different product, rather than modernizing the existing application.",
+   "C": "Replatform makes minor optimizations but does not break the application into microservices.",
+   "D": "Refactor splits the monolith into microservices using cloud-native architecture."
+  }
+ },
+ "q_9c74378f6082": {
+  "explanation": "Realigning teams around products and value streams is an organizational transformation task in the AWS CAF that makes the company more responsive to customers.",
+  "optionNotes": {
+   "A": "Realigning teams to products and value streams is an organizational transformation task that improves responsiveness.",
+   "B": "Creating new value propositions with new products is product transformation, not organizational transformation.",
+   "C": "Using a new data and analytics platform is process transformation.",
+   "D": "Migrating and modernizing legacy infrastructure is technology transformation."
+  }
+ },
+ "q_7ade079b6be4": {
+  "explanation": "AWS Migration Hub helps plan and track server and application inventory and migration data in one place.",
+  "optionNotes": {
+   "A": "CloudWatch monitors AWS resources and applications, not migration progress.",
+   "B": "DataSync transfers data between storage systems and does not track migrations.",
+   "C": "Migration Hub lets users plan and track migration data for servers and applications.",
+   "D": "Application Migration Service replicates servers; Migration Hub is the tracking tool."
+  }
+ },
+ "q_8c01aab11b9e": {
+  "explanation": "Governance is one of the six AWS CAF perspectives. Sustainability, Performance efficiency, and Reliability are Well-Architected pillars, not CAF perspectives.",
+  "optionNotes": {
+   "A": "Sustainability is a Well-Architected pillar, not a CAF perspective.",
+   "B": "Performance efficiency is a Well-Architected pillar, not a CAF perspective.",
+   "C": "Governance is a CAF perspective, the only one among these options.",
+   "D": "Reliability is a Well-Architected pillar, not a CAF perspective."
+  }
+ },
+ "q_fb9fd67c1d85": {
+  "explanation": "Organizing an inventory of data products in a data catalog is data curation, a capability of the Governance perspective.",
+  "optionNotes": {
+   "A": "Operations covers running and supporting workloads, not curating a data catalog.",
+   "B": "Governance includes data curation, which organizes data products in a catalog.",
+   "C": "Business covers capabilities such as strategy and data monetization, not data catalog curation.",
+   "D": "Platform covers building data and analytics architecture, not cataloging data products."
+  }
+ },
+ "q_b6b37bdf7dc4": {
+  "explanation": "AWS DataSync is built to move large amounts of data, including millions of files, from on premises to AWS, for one-time or recurring transfers.",
+  "optionNotes": {
+   "A": "DMS migrates databases, not file datasets.",
+   "B": "DataSync moves large file datasets to AWS quickly, with scheduling and validation.",
+   "C": "Migration Hub tracks migrations and does not transfer data.",
+   "D": "Application Migration Service rehosts servers, not a large file dataset."
+  }
+ },
+ "q_50fc564d23bb": {
+  "explanation": "Performing the intended function correctly and consistently throughout the lifecycle is the definition of the Reliability pillar.",
+  "optionNotes": {
+   "A": "Operational excellence is about running workloads and improving processes, not about correct and consistent function.",
+   "B": "Security is about protecting data and systems.",
+   "C": "Reliability is the ability of a workload to perform its intended function correctly and consistently when expected.",
+   "D": "Performance efficiency is about using resources efficiently to meet requirements."
+  }
+ },
+ "q_6e5055488b62": {
+  "explanation": "AWS Application Discovery Service gathers information about on-premises servers and their configuration to support migration planning.",
+  "optionNotes": {
+   "A": "Application Discovery Service collects data about the on-premises data center to plan the migration.",
+   "B": "DataSync transfers data and does not gather server information.",
+   "C": "Storage Gateway connects on-premises storage to AWS and does not inventory the data center.",
+   "D": "DMS migrates databases rather than collecting data center information."
+  }
+ },
+ "q_771a4cb0d48e": {
+  "explanation": "Continuously improving processes and procedures to deliver business value is a focus of the Operational excellence pillar.",
+  "optionNotes": {
+   "A": "Performance efficiency is about efficient resource use, not process improvement.",
+   "B": "Operational excellence includes running workloads and continuously improving processes to deliver business value.",
+   "C": "Reliability is about recovering from failures and meeting demand.",
+   "D": "Sustainability is about minimizing environmental impact."
+  }
+ },
+ "q_cee2338bb0d1": {
+  "explanation": "Testing recovery procedures is a design principle of the Reliability pillar.",
+  "optionNotes": {
+   "A": "Test recovery procedures is a Reliability design principle.",
+   "B": "Experiment more often is a Performance efficiency design principle.",
+   "C": "Go global in minutes is a Performance efficiency design principle.",
+   "D": "Analyze and attribute expenditure is a Cost optimization design principle."
+  }
+ },
+ "q_1a1a759bf034": {
+  "explanation": "AWS Application Migration Service replicates and automatically converts source servers so they run natively on AWS infrastructure.",
+  "optionNotes": {
+   "A": "DataSync transfers files and objects, not whole servers.",
+   "B": "DMS migrates databases, not entire servers.",
+   "C": "Application Discovery Service collects inventory data and does not migrate servers.",
+   "D": "AWS Application Migration Service (now AWS Transform MGN) converts and migrates servers to run natively on AWS."
+  }
+ },
+ "q_098bad216ad6": {
+  "explanation": "Moving to AWS reduces tasks such as hardware troubleshooting, capacity planning, and procurement, and speeds up the deployment of new features and applications.",
+  "optionNotes": {
+   "A": "AWS handles the physical infrastructure, reducing hardware, capacity planning, and procurement work.",
+   "B": "Companies still need trained IT staff to design, secure, and operate their workloads.",
+   "C": "Under the shared responsibility model, customers must configure security for their applications; it is not automatic.",
+   "D": "Disaster recovery planning is still required in the cloud.",
+   "E": "Resources can be provisioned quickly, so new features and applications are deployed faster."
+  }
+ },
+ "q_5f174a0ff741": {
+  "explanation": "Realigning teams around products and value streams and using agile methods to iterate rapidly are both organizational transformation tasks that improve responsiveness to customers.",
+  "optionNotes": {
+   "A": "Realigning teams to products and value streams is an organizational transformation task.",
+   "B": "Creating new value propositions is product transformation, not organizational transformation.",
+   "C": "Using agile methods to rapidly iterate and evolve is an organizational transformation task.",
+   "D": "Using a new data and analytics platform to gain insights is process transformation.",
+   "E": "Migrating and modernizing legacy infrastructure is technology transformation."
+  }
+ },
+ "q_741f678652df": {
+  "explanation": "The Business perspective includes capabilities such as business insights, which provide real-time information to answer questions about strategy.",
+  "optionNotes": {
+   "A": "Operations covers running workloads, not strategic insights.",
+   "B": "People covers culture, organization, and skills.",
+   "C": "Business includes business insights and strategy management, giving real-time insights on strategy questions.",
+   "D": "Platform covers the technical foundation and architecture."
+  }
+ },
+ "q_8dbda4b2d28d": {
+  "explanation": "The exam expects Durability. AWS documentation normally defines durability as long-term data persistence, while staying functional during problems is described as fault tolerance or resilience, so this item is loosely worded.",
+  "optionNotes": {
+   "A": "Consistency is about all readers seeing the same data, not about remaining functional during problems.",
+   "B": "Elasticity is the ability to scale resources up and down with demand, not to withstand operational problems.",
+   "C": "The exam expects Durability here, although AWS docs use durability for long-term data persistence rather than continued operation during problems.",
+   "D": "Latency measures delay in responses, not the ability to keep functioning."
+  }
+ },
+ "q_a87d9b79c7c6": {
+  "explanation": "The Reliability pillar focuses on recovering automatically from service interruptions and failures.",
+  "optionNotes": {
+   "A": "Security is about protecting data and systems.",
+   "B": "Performance efficiency is about efficient resource use.",
+   "C": "Operational excellence is about running workloads and improving processes.",
+   "D": "Reliability includes the ability to recover automatically from service disruptions."
+  }
+ },
+ "q_6ac10c72e267": {
+  "explanation": "AWS Application Discovery Service collects usage and configuration data from on-premises application components to support migration planning.",
+  "optionNotes": {
+   "A": "DMS migrates databases and does not gather application usage and configuration data.",
+   "B": "Transfer Family provides managed file transfer over SFTP, FTPS, and FTP, not discovery.",
+   "C": "Application Discovery Service gathers usage and configuration data from on-premises resources.",
+   "D": "Global Accelerator improves network performance for global users, not discovery."
+  }
+ },
+ "q_170468ef4f96": {
+  "explanation": "The exam expects Scaling horizontally. AWS lists the Performance efficiency design principles as democratize advanced technologies, go global in minutes, use serverless architectures, experiment more often, and consider mechanical sympathy; horizontal scaling is usually a Reliability principle.",
+  "optionNotes": {
+   "A": "Using serverless architectures is a listed Performance efficiency design principle in AWS docs, even though the exam expects a different option.",
+   "B": "The exam expects this option, although AWS docs usually associate scaling horizontally with the Reliability pillar.",
+   "C": "Measuring the cost of workloads relates to the Cost optimization pillar.",
+   "D": "Using managed services is mostly associated with Operational excellence and Cost optimization."
+  }
+ },
+ "q_cefaa55a11e3": {
+  "explanation": "AWS Application Discovery Service collects usage and configuration data without replicating workloads, which fits a company that only wants to understand its environment for now.",
+  "optionNotes": {
+   "A": "Application Discovery Service gathers usage and configuration data without replicating anything.",
+   "B": "Application Migration Service replicates servers to AWS, which the company does not want yet.",
+   "C": "Cloud Migration Factory helps orchestrate large-scale migrations, not simply discover the environment.",
+   "D": "Transfer Family provides managed file transfer, not discovery."
+  }
+ },
+ "q_5d7ec7e653f2": {
+  "explanation": "Strategy management is a capability of the Business perspective.",
+  "optionNotes": {
+   "A": "Strategy management is a Business perspective capability.",
+   "B": "People covers culture, leadership, and skills.",
+   "C": "Governance covers risk, benefits, and financial management.",
+   "D": "Operations covers running and supporting workloads."
+  }
+ },
+ "q_1e875cc08466": {
+  "explanation": "AWS Application Migration Service can replicate and migrate EC2 instances from one AWS Region to another.",
+  "optionNotes": {
+   "A": "Application Migration Service replicates and cuts over servers, including EC2 instances across Regions.",
+   "B": "DMS migrates databases, not EC2 instances.",
+   "C": "DataSync transfers files and objects, not instances.",
+   "D": "Migration Hub tracks migrations and does not perform them."
+  }
+ },
+ "q_fb8b85769700": {
+  "explanation": "Learning from operational failures to improve is a recommended design principle of the Operational excellence pillar.",
+  "optionNotes": {
+   "A": "The framework recommends frequent, small changes, not infrequent large ones.",
+   "B": "Manual configuration is discouraged in favor of automation and operations as code.",
+   "C": "Learn from all operational failures is an Operational excellence design principle.",
+   "D": "Monolithic designs are discouraged in favor of loosely coupled components."
+  }
+ },
+ "auth-migration-caf-01": {
+  "explanation": "The People perspective covers culture, organization design, leadership, and workforce skills. Governance instead covers program management, risk, and financial management.",
+  "optionNotes": {
+   "A": "Business focuses on strategy and value creation rather than culture and workforce skills.",
+   "B": "Governance focuses on program management, risk, and cloud financial management.",
+   "C": "People covers culture, organization structure, leadership, and workforce skills.",
+   "D": "Operations focuses on running and supporting workloads."
+  }
+ },
+ "auth-migration-caf-02": {
+  "explanation": "Rehost (lift and shift) moves servers to Amazon EC2 without changing the applications, making it one of the fastest strategies and a good fit for a tight deadline.",
+  "optionNotes": {
+   "A": "Refactor redesigns the applications, which takes too long for a three-month deadline.",
+   "B": "Rehost moves servers to EC2 quickly without application changes.",
+   "C": "Repurchase replaces the applications with new products, which is not a quick unchanged move.",
+   "D": "Retain leaves applications in the data center, which does not meet the goal of leaving it."
+  }
+ },
+ "auth-migration-caf-03": {
+  "explanation": "Relocate moves VMware workloads to a VMware environment on AWS without new hardware, application changes, or operational changes.",
+  "optionNotes": {
+   "A": "Relocate moves workloads to the cloud version of the same platform, such as VMware Cloud on AWS.",
+   "B": "Rehost moves applications onto EC2 instances rather than keeping the VMware platform.",
+   "C": "Replatform makes optimizations such as moving to a managed service, which is not asked for.",
+   "D": "Repurchase replaces the software with a different product."
+  }
+ },
+ "auth-migration-caf-04": {
+  "explanation": "Repurchase (drop and shop) replaces an application with a different product, commonly SaaS, as in moving from self-run CRM servers to a SaaS CRM.",
+  "optionNotes": {
+   "A": "Rehost moves the same application to AWS and does not switch to SaaS.",
+   "B": "Relocate moves workloads to the same platform in the cloud, not to SaaS.",
+   "C": "Retain keeps the application where it is.",
+   "D": "Repurchase swaps the application for a SaaS product."
+  }
+ },
+ "auth-migration-caf-05": {
+  "explanation": "Governance and Platform are two of the six AWS CAF perspectives. Sustainability, Reliability, and Cost Optimization are Well-Architected pillars.",
+  "optionNotes": {
+   "A": "Governance is a CAF perspective.",
+   "B": "Sustainability is a Well-Architected pillar, not a CAF perspective.",
+   "C": "Reliability is a Well-Architected pillar, not a CAF perspective.",
+   "D": "Platform is a CAF perspective.",
+   "E": "Cost Optimization is a Well-Architected pillar, not a CAF perspective."
+  }
+ },
+ "auth-migration-caf-06": {
+  "explanation": "The mobilize phase builds the foundation, including the landing zone and skills, and migrates a small set of applications to gain experience.",
+  "optionNotes": {
+   "A": "Assess comes earlier and produces the readiness assessment and business case.",
+   "B": "Mobilize builds the landing zone, trains teams, and migrates initial applications.",
+   "C": "Migrate and modernize moves applications at scale after the foundation exists.",
+   "D": "Operate is not one of the three AWS migration phases used here."
+  }
+ },
+ "auth-migration-caf-07": {
+  "explanation": "Application Migration Service continuously replicates whole servers while they keep running, then allows cutover with only minutes of downtime.",
+  "optionNotes": {
+   "A": "DataSync copies files and objects, not entire running servers.",
+   "B": "DMS migrates databases, not whole servers.",
+   "C": "Transfer Family provides managed file transfer endpoints, not server migration.",
+   "D": "AWS Transform MGN (formerly AWS Application Migration Service) continuously replicates servers and enables low-downtime cutover."
+  }
+ },
+ "auth-migration-caf-08": {
+  "explanation": "Retain means keeping an application in the source environment for now, and refactor is the most complex and costly strategy. The other statements describe different strategies incorrectly.",
+  "optionNotes": {
+   "A": "Moving unchanged software to EC2 is rehost, not repurchase.",
+   "B": "Retain keeps an application in its current environment, possibly migrating later.",
+   "C": "Relocate does not require code changes, since it moves to the same platform in the cloud.",
+   "D": "Refactor redesigns the application, making it the most complex and costly strategy.",
+   "E": "Retire decommissions an application; moving to a managed service is replatform."
+  }
+ },
+ "auth-migration-caf-09": {
+  "explanation": "Migration Evaluator collects utilization data from on-premises servers with an agentless collector and produces a data-driven business case comparing current and projected AWS costs.",
+  "optionNotes": {
+   "A": "AWS Budgets tracks spending against budgets in AWS, not on-premises servers.",
+   "B": "Cost Explorer analyzes AWS spending and does not assess on-premises servers.",
+   "C": "Migration Evaluator collects on-premises data and builds a migration business case.",
+   "D": "The Well-Architected Tool reviews workload architecture, not costs of on-premises servers."
+  }
+ },
+ "auth-migration-caf-10": {
+  "explanation": "The assess phase includes completing a Migration Readiness Assessment and producing a high-level TCO analysis. Migrating at scale and modernizing belong to migrate and modernize, and the landing zone belongs to mobilize.",
+  "optionNotes": {
+   "A": "A Migration Readiness Assessment is an assess phase activity.",
+   "B": "Migrating at scale with a migration factory belongs to the migrate and modernize phase.",
+   "C": "A high-level TCO analysis supports the business case in the assess phase.",
+   "D": "Building and securing the landing zone belongs to the mobilize phase.",
+   "E": "Modernizing applications after migration belongs to the migrate and modernize phase."
+  }
+ }
+}

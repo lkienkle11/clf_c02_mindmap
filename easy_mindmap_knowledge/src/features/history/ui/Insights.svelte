@@ -1,23 +1,25 @@
 <script lang="ts">
   import { getI18n } from '@/i18n/i18n.svelte';
+  import Button from '@/ui/Button.svelte';
   import { formatPct } from './format';
 
   interface Props {
     /** Null hides the section (e.g. while one topic is filtered). */
     weak: { topicId: string; avgPct: number }[] | null;
-    missed: { questionId: string; misses: number; seen: number }[];
+    /** How many questions were missed at least once under the current filter. */
+    missedCount: number;
     topicName: (topicId: string | null) => string;
-    questionText: (questionId: string) => string;
+    onopen: () => void;
   }
 
-  let { weak, missed, topicName, questionText }: Props = $props();
+  let { weak, missedCount, topicName, onopen }: Props = $props();
 
   const i18n = getI18n();
   const locale = $derived(i18n.locale);
   const uid = $props.id();
 </script>
 
-<div class="grid gap-6 md:grid-cols-2">
+<div class="flex flex-col gap-6">
   {#if weak}
     <section aria-labelledby="{uid}-weak" class="flex flex-col gap-2">
       <h2 id="{uid}-weak" class="text-xl font-semibold">{i18n.t('history.weak.title')}</h2>
@@ -35,19 +37,12 @@
       {/if}
     </section>
   {/if}
-  <section aria-labelledby="{uid}-missed" class="flex flex-col gap-2">
+  <section aria-labelledby="{uid}-missed" class="flex flex-col items-start gap-2">
     <h2 id="{uid}-missed" class="text-xl font-semibold">{i18n.t('history.missed.title')}</h2>
-    {#if missed.length === 0}
+    {#if missedCount === 0}
       <p class="text-muted-foreground">{i18n.t('history.missed.empty')}</p>
     {:else}
-      <ul class="flex flex-col gap-2">
-        {#each missed as m (m.questionId)}
-          <li class="flex flex-col gap-1 rounded-lg border border-border-subtle bg-surface p-3">
-            <span lang="en" class="font-medium">{questionText(m.questionId)}</span>
-            <span class="text-sm text-muted-foreground">{i18n.t('history.missed.stat', { misses: m.misses, seen: m.seen })}</span>
-          </li>
-        {/each}
-      </ul>
+      <Button variant="secondary" onclick={onopen}>{i18n.t('history.missed.open', { count: missedCount })}</Button>
     {/if}
   </section>
 </div>

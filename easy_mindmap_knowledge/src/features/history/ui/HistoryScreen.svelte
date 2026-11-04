@@ -5,10 +5,11 @@
   import { getI18n } from '@/i18n/i18n.svelte';
   import type { AttemptQuestionRow, AttemptRow } from '@/persistence';
   import Button from '@/ui/Button.svelte';
-  import { mostMissed, scoreSeries, weakTopics } from '../logic/history-stats';
+  import { missedDetails, scoreSeries, weakTopics } from '../logic/history-stats';
   import AttemptDetail from './AttemptDetail.svelte';
   import AttemptsTable from './AttemptsTable.svelte';
   import Insights from './Insights.svelte';
+  import MissedQuestionsDialog from './MissedQuestionsDialog.svelte';
   import ScoreChart from './ScoreChart.svelte';
 
   interface Props {
@@ -50,9 +51,9 @@
   const filterTopic = $derived(appState.route.view === 'history' ? (appState.route.topicId ?? null) : null);
   const topicById = $derived(new Map(services.catalog.topics.map((t) => [t.id, t])));
   const questionById = $derived(new Map(services.catalog.questions.map((q) => [q.id, q])));
+  let missedOpen = $state(false);
   const topicName = (id: string | null): string =>
     id === null ? i18n.t('history.mixed') : (topicById.get(id)?.title[i18n.locale] ?? id);
-  const questionText = (id: string): string => questionById.get(id)?.text ?? id;
 
   const shown = $derived(
     appState.submittedAttempts.filter((a) => a.status === 'submitted' && (filterTopic === null || a.topicId === filterTopic)),
@@ -64,12 +65,7 @@
   const newestFirst = $derived([...shown].sort((x, y) => (y.submittedAt ?? 0) - (x.submittedAt ?? 0) || (x.id < y.id ? 1 : -1)));
   const points = $derived(scoreSeries(shown));
   const weak = $derived(filterTopic === null ? weakTopics(shown, 5) : null);
-  const missed = $derived(
-    mostMissed(
-      shown.flatMap((a) => rowsByAttempt.get(a.id) ?? []).map((r) => ({ questionId: r.questionId, isCorrect: r.isCorrect === true })),
-      5,
-    ),
-  );
+  const missed = $derived(missedDetails(shown, rowsByAttempt, (id) => questionById.get(id)?.topicId ?? null));
 </script>
 
 <section class="mx-auto flex max-w-4xl flex-col gap-6 p-4">
@@ -103,11 +99,15 @@
       <Button onclick={() => appState.open({ view: 'tree' })}>{i18n.t('history.goToMap')}</Button>
     </div>
   {:else}
-    <ScoreChart {points} {topicName} />
+    <ScoreChart {points} />
     <AttemptsTable attempts={newestFirst} {topicName} onopen={(a) => (selected = a)} />
-    <Insights {weak} {missed} {topicName} {questionText} />
+    <Insights {weak} missedCount={missed.length} {topicName} onopen={() => (missedOpen = true)} />
   {/if}
 </section>
+
+{#if missedOpen}
+  <MissedQuestionsDialog items={missed} {services} initialTopicId={filterTopic} onclose={() => (missedOpen = false)} />
+{/if}
 
 {#if selected}
   <AttemptDetail {services} attempt={selected} rows={rowsByAttempt.get(selected.id) ?? []} onclose={() => (selected = null)} />

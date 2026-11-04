@@ -125,6 +125,21 @@ describe('learning flow (ruling R17: topics without lessons can be practised)', 
     expect(await screen.findByText('1/30')).toBeInTheDocument();
   }, 30_000);
 
+  it('the last lesson of a topic offers Practice: locked until every required lesson is read, then it opens the topic practice', async () => {
+    const { services, appState } = await makeEnv();
+    const user = userEvent.setup();
+    render(App, { services, appState, i18n: createI18n('en') });
+    appState.open({ view: 'lesson', topicId: 'cloud-concepts', lessonId: 'cc-video' });
+    const practice = await screen.findByRole('button', { name: 'Practice' });
+    expect(practice).toBeDisabled();
+    expect(screen.getByText('Read all required lessons first')).toBeInTheDocument();
+    await services.repos.lessonProgress.markRead('cc-intro', T0);
+    await appState.refresh();
+    await waitFor(() => expect(practice).toBeEnabled());
+    await user.click(practice);
+    expect(appState.route).toEqual({ view: 'practice', topicId: 'cloud-concepts' });
+  });
+
   it('a passed practice whose questions fall due yields a review summary and the daily modal on the next load()', async () => {
     const first = await makeEnv(T0);
     await first.services.repos.lessonProgress.markRead('cc-intro', T0);

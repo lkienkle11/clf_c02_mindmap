@@ -2,7 +2,7 @@
   import { setI18n } from '@/i18n/i18n.svelte';
   import type { I18n } from '@/i18n/i18n.svelte';
   import { LessonScreen } from '@/features/lesson';
-  import { TreeScreen } from '@/features/mindmap';
+  import { TreeScreen, practiceUnlocked } from '@/features/mindmap';
   import { HistoryScreen } from '@/features/history';
   import { PracticeScreen, ResumeGate } from '@/features/practice';
   import type { PracticeSession } from '@/features/practice';
@@ -67,7 +67,12 @@
   {#if appState.view === 'tree'}
     <TreeScreen {services} {appState} />
   {:else if appState.view === 'lesson'}
-    <LessonScreen {services} {appState} {openExternal} />
+    <LessonScreen
+      {services}
+      {appState}
+      {openExternal}
+      canPractice={(topicId) => practiceUnlocked(services.catalog.lessonsOf(topicId), appState.readIds)}
+    />
   {:else if appState.route.view === 'practice'}
     {#key appState.route.topicId}
       <PracticeScreen {services} {appState} topicId={appState.route.topicId} initialSession={resumed} />

@@ -1,19 +1,16 @@
 <script lang="ts">
   import { getI18n } from '@/i18n/i18n.svelte';
-  import Button from '@/ui/Button.svelte';
   import type { ScorePoint } from '../logic/history-stats';
   import { formatDateTime, formatPct } from './format';
 
   interface Props {
     points: ScorePoint[];
-    topicName: (topicId: string | null) => string;
   }
 
-  let { points, topicName }: Props = $props();
+  let { points }: Props = $props();
 
   const i18n = getI18n();
   const locale = $derived(i18n.locale);
-  const tableId = $props.id();
 
   const W = 640;
   const H = 260;
@@ -32,15 +29,12 @@
       best: formatPct(Math.max(0, ...points.map((p) => p.scorePct)), locale),
     }),
   );
-  let table = $state(false);
 </script>
 
 <figure class="flex flex-col gap-3">
   <figcaption class="flex flex-wrap items-center justify-between gap-2">
     <span class="font-semibold">{i18n.t('history.chart.title')}</span>
-    <Button variant="secondary" aria-expanded={table} aria-controls={tableId} onclick={() => (table = !table)}>
-      {i18n.t(table ? 'history.chart.hideTable' : 'history.chart.showTable')}
-    </Button>
+    <span class="text-sm text-muted-foreground">{i18n.t('history.chart.seeTable')}</span>
   </figcaption>
 
   <svg role="img" aria-label={label} viewBox="0 0 {W} {H}" class="h-auto w-full max-w-3xl rounded-lg border border-border-subtle bg-surface font-sans">
@@ -70,28 +64,4 @@
     <li class="flex items-center gap-1.5"><svg width="14" height="14" aria-hidden="true"><circle cx="7" cy="7" r="6" class="fill-primary" /></svg>{i18n.t('history.kind.practice')}</li>
     <li class="flex items-center gap-1.5"><svg width="14" height="14" aria-hidden="true"><rect x="2" y="2" width="10" height="10" stroke-width="3" class="fill-surface stroke-primary" /></svg>{i18n.t('history.kind.review')}</li>
   </ul>
-
-  {#if table}
-    <table id={tableId} class="w-full max-w-3xl text-left text-sm">
-      <caption class="sr-only">{i18n.t('history.chart.title')}</caption>
-      <thead>
-        <tr>
-          <th scope="col" class="py-1 pr-3">{i18n.t('history.col.date')}</th>
-          <th scope="col" class="py-1 pr-3">{i18n.t('history.col.topic')}</th>
-          <th scope="col" class="py-1 pr-3">{i18n.t('history.col.mode')}</th>
-          <th scope="col" class="py-1">{i18n.t('history.col.score')}</th>
-        </tr>
-      </thead>
-      <tbody>
-        {#each points as p (p.attemptId)}
-          <tr class="border-t border-border-subtle">
-            <td class="py-1 pr-3">{formatDateTime(p.at, locale)}</td>
-            <td class="py-1 pr-3">{topicName(p.topicId)}</td>
-            <td class="py-1 pr-3">{i18n.t(`history.kind.${p.kind}`)}</td>
-            <td class="py-1 tabular-nums">{formatPct(p.scorePct, locale)}</td>
-          </tr>
-        {/each}
-      </tbody>
-    </table>
-  {/if}
 </figure>

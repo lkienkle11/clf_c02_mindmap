@@ -1,0 +1,1032 @@
+{
+ "q_5ea0307c02be": {
+  "explanation": "Under the shared responsibility model, customers are responsible for security in the cloud, which includes client-side data encryption and configuring IAM credentials. AWS handles the global infrastructure, edge locations, and managed service patching.",
+  "optionNotes": {
+   "A": "Building and operating the global infrastructure (Regions, AZs, data centers) is AWS responsibility, security of the cloud.",
+   "B": "Client-side encryption happens before data reaches AWS, so protecting and encrypting that data is the customer's job.",
+   "C": "Creating and managing IAM users, keys, and credentials is part of customer security in the cloud.",
+   "D": "Edge locations are AWS-owned physical facilities, so AWS secures them.",
+   "E": "Amazon RDS is a managed service, so AWS patches the underlying DB instance; the customer does not."
+  }
+ },
+ "q_31e57801f449": {
+  "explanation": "Granting only the permissions needed (least privilege) and enforcing a minimum password length through the account password policy are IAM security best practices. Sharing root credentials, broad admin rights, or blocking password changes weaken security.",
+  "optionNotes": {
+   "A": "Least privilege limits the damage of misuse or compromise and is a core IAM best practice.",
+   "B": "Root user credentials must never be shared; the root user has unrestricted access to the account.",
+   "C": "Placing a new developer in the administrators group grants far more access than the job needs, violating least privilege.",
+   "D": "Preventing password changes stops users from rotating compromised passwords, which reduces security.",
+   "E": "A password policy requiring a minimum length makes passwords harder to guess and is a recommended practice."
+  }
+ },
+ "q_5432810a156f": {
+  "explanation": "An IAM role attached to the EC2 instance gives applications temporary credentials to call other AWS services, so no long-term keys need to be stored on the instance.",
+  "optionNotes": {
+   "A": "Security groups act as virtual firewalls for network traffic; they do not authorize AWS API calls.",
+   "B": "AWS Firewall Manager centrally manages firewall rules across accounts; it does not grant applications permission to call AWS services.",
+   "C": "IAM roles supply temporary credentials to the instance, which is the secure way for applications to call other AWS services.",
+   "D": "SSH keys are for logging in to instances, not for authorizing application calls to AWS services."
+  }
+ },
+ "q_856bd6905c5c": {
+  "explanation": "AWS WAF is a web application firewall that filters HTTP and HTTPS requests and can block common exploits such as SQL injection and cross-site scripting.",
+  "optionNotes": {
+   "A": "Amazon Inspector scans workloads for vulnerabilities; it does not filter incoming web requests.",
+   "B": "AWS WAF inspects web requests and blocks patterns such as SQL injection and cross-site scripting.",
+   "C": "Amazon GuardDuty detects threats from logs and activity; it does not block web exploits at the application layer.",
+   "D": "Amazon CloudWatch monitors metrics and logs; it does not protect an application from web exploits."
+  }
+ },
+ "q_a15f6db002d5": {
+  "explanation": "Amazon Inspector automatically and continuously scans EC2 instances for software vulnerabilities and unintended network exposure.",
+  "optionNotes": {
+   "A": "GuardDuty detects malicious activity and threats in logs and accounts; it does not scan instances for software vulnerabilities.",
+   "B": "Inspector performs automated, continuous vulnerability scanning of EC2 instances.",
+   "C": "Amazon Detective investigates and visualizes the root cause of security findings; it does not scan for vulnerabilities.",
+   "D": "Amazon Cognito provides user sign-up and sign-in for applications; it is not a vulnerability scanner."
+  }
+ },
+ "q_09c145c48f77": {
+  "explanation": "AWS WAF lets you create rules that inspect web request content and block SQL injection attempts.",
+  "optionNotes": {
+   "A": "AWS WAF can match and block SQL injection patterns in web requests.",
+   "B": "Network ACLs filter by IP, port, and protocol at the subnet level; they cannot inspect request content for SQL injection.",
+   "C": "Security groups filter traffic by IP, port, and protocol; they do not inspect application-layer content.",
+   "D": "AWS Certificate Manager provisions and manages TLS certificates; it does not block attacks."
+  }
+ },
+ "q_750829d68114": {
+  "explanation": "AWS is responsible for security of the cloud, which includes the hypervisor layer such as the Nitro Hypervisor. Client-side encryption, IAM policies, and guest OS patching are customer duties.",
+  "optionNotes": {
+   "A": "Client-side encryption of S3 objects is done by the customer before upload.",
+   "B": "Writing IAM policies that follow least privilege is the customer's responsibility.",
+   "C": "On EC2 the customer manages and patches the guest operating system.",
+   "D": "The Nitro Hypervisor is part of the AWS-managed virtualization layer, so AWS updates it."
+  }
+ },
+ "q_582f3ca9337c": {
+  "explanation": "IAM user access keys provide programmatic access, for example through the AWS CLI, SDKs, or API calls; console sign-in uses a user name and password.",
+  "optionNotes": {
+   "A": "Root user access is separate from IAM users; an IAM user's access key does not act as the root user.",
+   "B": "Console access uses a user name and password, not an access key.",
+   "C": "Access keys (access key ID and secret access key) sign programmatic requests such as those from the AWS CLI.",
+   "D": "An IAM user's access keys apply only to its own account and do not span all of a company's accounts."
+  }
+ },
+ "q_fff2d60b5c05": {
+  "explanation": "AWS Secrets Manager stores secrets and can automatically rotate them, so shared credentials are managed securely with little operational effort.",
+  "optionNotes": {
+   "A": "CloudHSM provides dedicated hardware security modules for key storage; it does not manage and rotate application credentials.",
+   "B": "AWS KMS creates and manages encryption keys; it does not store and rotate credentials shared between applications.",
+   "C": "Secrets Manager securely stores credentials and automates their rotation, minimizing management effort.",
+   "D": "Server-side encryption protects stored data at rest; it does not handle credential rotation."
+  }
+ },
+ "q_78c17563bb4c": {
+  "explanation": "Amazon Macie uses machine learning and pattern matching to discover and classify sensitive data, such as PII, in Amazon S3.",
+  "optionNotes": {
+   "A": "GuardDuty detects threats and anomalous activity; it does not classify data.",
+   "B": "Macie automatically discovers, classifies, and protects sensitive data like PII and intellectual property.",
+   "C": "Inspector scans for software vulnerabilities and network exposure, not for sensitive data.",
+   "D": "AWS Shield protects against DDoS attacks; it does not classify data."
+  }
+ },
+ "q_7c443b4d2130": {
+  "explanation": "Enabling MFA on the root user and using an IAM user with administrator privileges for daily tasks are root user best practices. Root credentials should not be shared, and an account has only one root user.",
+  "optionNotes": {
+   "A": "Root credentials must never be shared because the root user has unrestricted access.",
+   "B": "An AWS account has exactly one root user, so multiple root users cannot be created.",
+   "C": "MFA adds a second authentication factor and strongly protects the powerful root user.",
+   "D": "Using an IAM administrator for daily tasks keeps the root user for the few tasks that require it.",
+   "E": "Creating access keys for the root user is discouraged; the best practice is to avoid root access keys and use IAM identities instead."
+  }
+ },
+ "q_7d4d65d78f25": {
+  "explanation": "IAM Access Analyzer identifies resources, including S3 buckets, that are shared with external entities such as another AWS account.",
+  "optionNotes": {
+   "A": "AWS Lake Formation builds and secures data lakes; it does not report external sharing of S3 buckets.",
+   "B": "The IAM credential report lists IAM users and credential status, not resource sharing.",
+   "C": "CloudWatch monitors metrics and logs; it does not analyze resource policies for external access.",
+   "D": "IAM Access Analyzer analyzes resource policies and flags buckets shared outside the account."
+  }
+ },
+ "q_230b89c4fe86": {
+  "explanation": "Granting applications access to S3 through IAM roles provides temporary credentials and least-privilege permissions, which is a security best practice for sensitive data.",
+  "optionNotes": {
+   "A": "Cross-Region Replication copies objects for resilience or compliance; it does not control access.",
+   "B": "IAM roles give applications temporary, scoped credentials instead of long-term keys.",
+   "C": "AWS WAF protects web applications from web exploits; it does not control access to an S3 bucket.",
+   "D": "GuardDuty detects threats and alerts on them; it does not prevent unauthorized access."
+  }
+ },
+ "q_8be2ef9947e6": {
+  "explanation": "AWS IAM Identity Center provides a central portal for single sign-on to AWS accounts and to SAML 2.0 business applications.",
+  "optionNotes": {
+   "A": "IAM manages identities and permissions within AWS but does not provide a SAML application sign-in portal.",
+   "B": "Amazon Cognito provides sign-in for your own customer-facing web and mobile apps, not a central workforce portal to third-party apps.",
+   "C": "IAM Identity Center offers a single user portal for SSO to SAML 2.0 applications and AWS accounts.",
+   "D": "The AWS CLI is a command line tool for managing services; it is not a user portal."
+  }
+ },
+ "q_e231c853705b": {
+  "explanation": "AWS Artifact is the portal for on-demand access to AWS security and compliance reports and agreements.",
+  "optionNotes": {
+   "A": "Secrets Manager stores and rotates secrets; it does not provide compliance reports.",
+   "B": "Artifact provides on-demand downloads of AWS compliance reports such as SOC and ISO documents.",
+   "C": "Security Hub aggregates security findings and checks, not AWS compliance reports.",
+   "D": "AWS Certificate Manager manages TLS certificates; it does not supply compliance reports."
+  }
+ },
+ "q_c7cb45dd25db": {
+  "explanation": "Amazon Inspector assesses EC2 instances for vulnerabilities, using predefined rules packages and assessment templates (the classic Inspector model).",
+  "optionNotes": {
+   "A": "AWS WAF filters web requests; it does not assess instances for vulnerabilities.",
+   "B": "Trusted Advisor gives best-practice checks across cost, security, and performance, but not template-based vulnerability assessments.",
+   "C": "Inspector runs assessments against EC2 instances using predefined rules packages (the classic assessment-template model) to find vulnerabilities.",
+   "D": "AWS Shield provides DDoS protection and does not scan instances."
+  }
+ },
+ "q_6dccab3ca10f": {
+  "explanation": "Rotating access keys regularly limits how long a leaked or compromised key remains useful, which improves security.",
+  "optionNotes": {
+   "A": "Enabling programmatic access for everyone creates unnecessary long-term credentials and expands the attack surface.",
+   "B": "IAM roles with temporary credentials are preferred over IAM users for delegating permissions, so this is the opposite of best practice.",
+   "C": "Regular key rotation reduces the window in which a compromised key can be misused.",
+   "D": "Inline policies are harder to reuse and manage than managed policies, and choosing them does not improve security."
+  }
+ },
+ "q_d7b6b5316a51": {
+  "explanation": "An IAM role attached to the EC2 instances gives the application temporary credentials and the permissions it needs to publish to Amazon SNS.",
+  "optionNotes": {
+   "A": "ACM manages TLS certificates; it does not grant permissions to call AWS services.",
+   "B": "IAM roles give the instances permission to access SNS and other AWS services without stored credentials.",
+   "C": "Security Hub aggregates security findings; it does not grant permissions.",
+   "D": "GuardDuty detects threats; it does not provide application permissions."
+  }
+ },
+ "q_beb6fd0bea3d": {
+  "explanation": "AWS Firewall Manager centrally configures and manages firewall rules, including VPC security groups, across accounts in AWS Organizations.",
+  "optionNotes": {
+   "A": "Firewall Manager enforces security group policies, WAF rules, and other protections across an organization.",
+   "B": "GuardDuty detects threats; it does not configure security groups.",
+   "C": "Detective investigates security findings and does not manage security groups.",
+   "D": "AWS WAF filters web requests; it does not manage VPC security groups across accounts."
+  }
+ },
+ "q_850ab39b7c4f": {
+  "explanation": "Amazon Inspector assesses EC2 workloads for vulnerabilities and unintended network exposure, flagging deviations from security best practices.",
+  "optionNotes": {
+   "A": "Trusted Advisor checks account-level best practices but does not assess application vulnerabilities on EC2 instances.",
+   "B": "Inspector scans EC2 instances for vulnerabilities and network exposure that fall short of best practices.",
+   "C": "AWS Config tracks resource configuration and compliance with rules, but it does not assess application vulnerabilities.",
+   "D": "GuardDuty detects threats and malicious activity; it does not assess application vulnerabilities."
+  }
+ },
+ "q_ac68f5f2d649": {
+  "explanation": "The IAM credential report lists all IAM users and the status of their credentials, including password age and access key rotation.",
+  "optionNotes": {
+   "A": "IAM Access Analyzer finds resources shared externally; it does not report on password and key rotation.",
+   "B": "AWS Artifact provides AWS compliance reports, not your account's credential details.",
+   "C": "The credential report includes password and access key age and last rotation for each IAM user.",
+   "D": "Audit Manager helps gather evidence for audits against frameworks; it is not the tool that lists credential rotation details."
+  }
+ },
+ "q_ed68456a547a": {
+  "explanation": "AWS Security Token Service (AWS STS) issues temporary, limited-privilege security credentials for users and applications.",
+  "optionNotes": {
+   "A": "IAM policies define permissions; they do not issue credentials.",
+   "B": "IAM user groups collect users to assign permissions together; they do not issue temporary credentials.",
+   "C": "STS issues temporary security credentials for IAM users or federated users.",
+   "D": "IAM Identity Center provides workforce single sign-on; the temporary credentials it hands out are issued through STS, which is the service that provides them."
+  }
+ },
+ "q_0df373bf57a6": {
+  "explanation": "The AWS Knowledge Center collects answers to frequently asked questions, including common security-related questions, from AWS Support.",
+  "optionNotes": {
+   "A": "AWS Artifact provides compliance reports and agreements, not FAQ answers.",
+   "B": "Amazon Connect is a cloud contact center service, unrelated to security FAQs.",
+   "C": "AWS Chatbot sends notifications and runs commands from chat apps; it does not host FAQs.",
+   "D": "The Knowledge Center publishes answers to the questions AWS Support receives most often."
+  }
+ },
+ "q_21d0ab3ce633": {
+  "explanation": "AWS WAF is a managed web application firewall that blocks SQL injection and provides detailed logging of the web requests it inspects.",
+  "optionNotes": {
+   "A": "Network Firewall filters network traffic at the VPC level and is not the web-request SQL injection protection described here.",
+   "B": "Amazon RDS for SQL Server is a database service, not a security service.",
+   "C": "GuardDuty detects threats from logs; it does not block SQL injection attacks.",
+   "D": "AWS WAF blocks SQL injection patterns and can log details of each inspected request."
+  }
+ },
+ "q_7acb87e885d0": {
+  "explanation": "The IAM credential report lists every IAM user and whether MFA is enabled, so it answers the question across the account.",
+  "optionNotes": {
+   "A": "The Cost and Usage Report details billing and usage data, not MFA status.",
+   "B": "The credential report shows each IAM user's MFA status along with other credential details.",
+   "C": "AWS Artifact provides AWS compliance documents, not your users' MFA status.",
+   "D": "CloudFront reports describe content delivery activity, not IAM user MFA."
+  }
+ },
+ "q_cc79f70fd483": {
+  "explanation": "AWS Security Hub aggregates and organizes security alerts from AWS services and partner tools into a single dashboard.",
+  "optionNotes": {
+   "A": "GuardDuty generates threat findings but is one source of alerts, not the central aggregator.",
+   "B": "Inspector produces vulnerability findings and is not the single place to manage all alerts.",
+   "C": "Macie finds sensitive data in S3; it is one finding source, not an aggregator.",
+   "D": "Security Hub centralizes findings from multiple security services into one dashboard."
+  }
+ },
+ "q_920698380b7b": {
+  "explanation": "Amazon Macie scans S3 buckets for PII and other sensitive data and alerts staff about findings.",
+  "optionNotes": {
+   "A": "GuardDuty detects threats and suspicious activity; it does not discover PII in S3.",
+   "B": "Detective helps investigate security findings; it does not scan for PII.",
+   "C": "Macie uses machine learning to find PII in S3 and generates findings and alerts.",
+   "D": "AWS Shield protects against DDoS attacks and does not examine data."
+  }
+ },
+ "q_97d7f0be7430": {
+  "explanation": "AWS Artifact gives on-demand access to AWS security and compliance reports about the AWS infrastructure.",
+  "optionNotes": {
+   "A": "GuardDuty detects threats; it does not provide compliance reports.",
+   "B": "Security Hub aggregates your security findings and checks, not AWS audit reports.",
+   "C": "Artifact is the portal for downloading AWS compliance reports on demand.",
+   "D": "AWS Shield provides DDoS protection and no reports about AWS infrastructure compliance."
+  }
+ },
+ "q_d31d8dde2043": {
+  "explanation": "The IAM credential report is a downloadable file listing all IAM users with the status of their passwords, access keys, and MFA, making it the simplest way to share this information.",
+  "optionNotes": {
+   "A": "Giving an auditor an administrator user is unnecessary and grants far more access than required.",
+   "B": "Screenshots of each user page are manual, slow, and error-prone compared with a single report.",
+   "C": "The credential report lists all IAM users and the status of their credentials and keys in one download.",
+   "D": "Trusted Advisor reports on best-practice checks and does not list each user's credential status."
+  }
+ },
+ "q_05b655671054": {
+  "explanation": "When an existing managed policy lacks the needed permissions, you can create a custom (customer managed) IAM policy that grants exactly the required permissions.",
+  "optionNotes": {
+   "A": "Shield Advanced protects against DDoS attacks and has no effect on IAM permissions.",
+   "B": "A custom IAM policy can define the specific permissions the users need.",
+   "C": "A WAF managed rule filters web traffic and does not grant IAM permissions.",
+   "D": "A KMS customer managed key encrypts data and does not grant users permissions to do tasks."
+  }
+ },
+ "q_3e155519b988": {
+  "explanation": "The root user is the identity created with the AWS account and is the first sign-in identity available. It can use MFA, can change its password, and is not the only identity able to use the console.",
+  "optionNotes": {
+   "A": "MFA can be enabled for IAM users as well as the root user.",
+   "B": "IAM users can also sign in to the Management Console, so the root user is not the only one.",
+   "C": "The root user is created together with the account and is the initial sign-in identity.",
+   "D": "The root user password can be changed at any time."
+  }
+ },
+ "q_3577d4fc0e8b": {
+  "explanation": "Access keys (an access key ID and secret access key) let a user make programmatic calls through the AWS CLI, SDKs, or API.",
+  "optionNotes": {
+   "A": "Amazon Inspector is a vulnerability scanning service, not a credential type.",
+   "B": "Access keys sign programmatic requests made with the AWS CLI or API.",
+   "C": "SSH public keys are used for tasks such as CodeCommit Git access, not for general AWS CLI or API calls.",
+   "D": "KMS keys encrypt and decrypt data; they do not authenticate users to the CLI or API."
+  }
+ },
+ "q_adc73eb8b00c": {
+  "explanation": "The IAM credential report lists all IAM users in the account along with the status of their passwords, access keys, and MFA devices.",
+  "optionNotes": {
+   "A": "The credential report generates a list of IAM users with the status of passwords, access keys, and MFA devices.",
+   "B": "IAM Identity Center provides single sign-on access management, not a report on IAM user credential status.",
+   "C": "IAM Access Analyzer finds resources shared with external entities, not the status of user credentials.",
+   "D": "The Cost and Usage Report shows billing data, not IAM credentials."
+  }
+ },
+ "q_9df58f3c5dda": {
+  "explanation": "AWS IAM Identity Center provides single sign-on so users can access multiple AWS accounts with one set of credentials.",
+  "optionNotes": {
+   "A": "AWS Organizations manages and groups accounts, but does not provide single sign-on authentication.",
+   "B": "An IAM user exists in a single account, so it does not provide one set of credentials across multiple accounts.",
+   "C": "IAM Identity Center gives users one set of credentials with centrally managed access to multiple accounts.",
+   "D": "Control Tower sets up and governs a multi-account environment, but it is not the sign-in service."
+  }
+ },
+ "q_1a46e990bc9d": {
+  "explanation": "AWS IAM controls permissions through policies, so applications can be granted only the minimum permissions they need (least privilege).",
+  "optionNotes": {
+   "A": "IAM manages permissions and lets you grant least-privilege access with policies and roles.",
+   "B": "CloudWatch monitors metrics and logs; it does not assign permissions.",
+   "C": "Macie discovers sensitive data in S3 and does not control application permissions.",
+   "D": "GuardDuty detects threats and does not assign permissions."
+  }
+ },
+ "q_7f7a634431f6": {
+  "explanation": "Closing (deleting) an AWS account is one of the tasks that require the root user. IAM users, EC2 instances, and Organizations can be managed with suitably permitted IAM identities.",
+  "optionNotes": {
+   "A": "IAM users can be deleted by an administrator IAM identity; the root user is not required.",
+   "B": "Closing the AWS account is a task that can only be done by the root user.",
+   "C": "An organization can be created by an IAM identity with the proper permissions.",
+   "D": "EC2 instances can be terminated by any IAM identity that has the required permissions."
+  }
+ },
+ "q_51980c944dac": {
+  "explanation": "AWS WAF can inspect web requests and block SQL injection attacks.",
+  "optionNotes": {
+   "A": "AWS WAF can define rules that detect and block SQL injection in web requests.",
+   "B": "AWS Shield protects against DDoS attacks, not application-layer SQL injection.",
+   "C": "Network ACLs filter by IP and port and cannot inspect request content.",
+   "D": "Security groups filter by IP, port, and protocol and cannot inspect request content."
+  }
+ },
+ "q_dbe88b4d85b0": {
+  "explanation": "IAM Access Analyzer identifies resources such as S3 buckets and IAM roles that are shared with an external entity.",
+  "optionNotes": {
+   "A": "Service Catalog lets you manage approved products; it does not analyze external sharing.",
+   "B": "Systems Manager manages operations for resources; it does not report external access.",
+   "C": "IAM Access Analyzer detects S3 buckets and IAM roles that are shared outside the account or organization.",
+   "D": "AWS Organizations manages multiple accounts; it does not analyze resource sharing."
+  }
+ },
+ "q_6887df56f385": {
+  "explanation": "AWS compliance reports are available for download on demand from AWS Artifact.",
+  "optionNotes": {
+   "A": "There is no need to contact a compliance team; reports are self-service in Artifact.",
+   "B": "AWS Artifact provides on-demand downloads of AWS compliance reports.",
+   "C": "A Support case is not needed, since the reports are self-service in Artifact.",
+   "D": "Macie discovers sensitive data in S3 and does not produce AWS compliance reports."
+  }
+ },
+ "q_46949100dfd3": {
+  "explanation": "IAM Access Analyzer identifies resources, including IAM roles, that are shared with another account and reports on them.",
+  "optionNotes": {
+   "A": "The credential report covers user credential status, not resource sharing.",
+   "B": "IAM Identity Center provides single sign-on, not analysis of shared resources.",
+   "C": "IAM Access Analyzer identifies and reports on resources shared with other accounts.",
+   "D": "A Cognito user pool is a directory for application users and does not analyze account sharing."
+  }
+ },
+ "q_21a81c37f010": {
+  "explanation": "Turning on MFA adds a second factor to sign-in and is an IAM best practice. Root access keys, broad permissions, and avoiding rotation all weaken security.",
+  "optionNotes": {
+   "A": "Root user access keys should be avoided; use IAM identities for administrative tasks.",
+   "B": "Broad permissions violate least privilege; grant only what each person needs.",
+   "C": "MFA adds a second authentication factor and is a recommended IAM best practice.",
+   "D": "Credentials should be rotated regularly; not rotating leaves leaked credentials usable."
+  }
+ },
+ "q_60fd78a2e515": {
+  "explanation": "AWS IAM Identity Center lets you create workforce users and centrally manage their access across AWS accounts and applications.",
+  "optionNotes": {
+   "A": "Audit Manager collects evidence for audits; it does not manage user sign-in.",
+   "B": "Amazon Cognito is for application end users (customers), not for workforce access to AWS accounts.",
+   "C": "Security Hub aggregates security findings and does not manage user access.",
+   "D": "IAM Identity Center creates workforce users and centrally manages their access to accounts and applications."
+  }
+ },
+ "q_7edafd3d564a": {
+  "explanation": "The IAM credential report lists each IAM user and the status of their MFA devices.",
+  "optionNotes": {
+   "A": "Cost and Usage Reports show billing data, not MFA status.",
+   "B": "IAM credential reports include MFA device status for every user in the account.",
+   "C": "Detailed Billing Reports are about costs, not IAM users.",
+   "D": "Cost Explorer reports visualize spending, not MFA status."
+  }
+ },
+ "q_55f0c7b42814": {
+  "explanation": "Amazon Detective uses machine learning and graph analysis on log data to help investigate and find the root cause of security issues.",
+  "optionNotes": {
+   "A": "Inspector scans for vulnerabilities and does not analyze logs for investigations.",
+   "B": "QuickSight is a business intelligence service for dashboards, not a security investigation tool.",
+   "C": "Detective analyzes log data with machine learning to make security investigations efficient.",
+   "D": "GuardDuty detects threats and produces findings, but investigation of root cause is the role of Detective."
+  }
+ },
+ "q_403968ccdd0c": {
+  "explanation": "Amazon Cognito provides sign-up and sign-in for app users and supports federation with social identity providers.",
+  "optionNotes": {
+   "A": "Lambda runs code and does not handle user sign-in.",
+   "B": "Cognito supports sign-in through social IdPs such as Google and Facebook for mobile and web apps.",
+   "C": "Secrets Manager stores and rotates secrets and does not authenticate app users.",
+   "D": "CloudFront is a CDN and does not provide user sign-in."
+  }
+ },
+ "q_ab61fd54695d": {
+  "explanation": "With a managed service such as Amazon RDS, the customer is responsible for managing access, for example with IAM policies. AWS handles the infrastructure, hardware, and operating system.",
+  "optionNotes": {
+   "A": "AWS provisions and manages the underlying infrastructure for RDS.",
+   "B": "Controlling who can administer the service with IAM policies is the customer's responsibility.",
+   "C": "AWS owns and cables the data center hardware.",
+   "D": "RDS is managed, so AWS installs and patches the operating system."
+  }
+ },
+ "q_b40da0151b48": {
+  "explanation": "A key benefit of the AWS Cloud is that users no longer need to guess capacity, because they can scale resources up or down as needed.",
+  "optionNotes": {
+   "A": "Elasticity removes the need to guess infrastructure capacity needs in advance.",
+   "B": "Owning hardware is not how AWS lowers variable costs; the cloud replaces ownership with pay-as-you-go use.",
+   "C": "AWS controls the underlying hardware, so users do not maintain it.",
+   "D": "For managed services, AWS controls the operating system, not the user."
+  }
+ },
+ "q_10bc51e02b03": {
+  "explanation": "AWS Trusted Advisor includes a security check that flags IAM access keys that have not been rotated.",
+  "optionNotes": {
+   "A": "AWS WAF filters web requests and does not inspect IAM keys.",
+   "B": "AWS Shield protects against DDoS attacks and does not check access keys.",
+   "C": "Cognito handles app user sign-in and does not check IAM keys.",
+   "D": "Trusted Advisor's security checks flag IAM access keys that have not been rotated."
+  }
+ },
+ "q_ab0006cc5286": {
+  "explanation": "Amazon Macie is a managed service that discovers and helps protect sensitive data in Amazon S3.",
+  "optionNotes": {
+   "A": "IAM Access Analyzer finds externally shared resources and does not identify sensitive data.",
+   "B": "GuardDuty detects threats and does not discover sensitive data.",
+   "C": "Inspector looks for software vulnerabilities and not for sensitive data.",
+   "D": "Macie uses machine learning to identify and protect sensitive data stored in S3."
+  }
+ },
+ "q_7f0986a080e3": {
+  "explanation": "Of the offered options, AWS CloudHSM is the only one that manages encryption keys: it provides dedicated hardware security modules in the cloud to generate and manage keys. AWS KMS is the other key-management service, but it is not offered here.",
+  "optionNotes": {
+   "A": "License Manager tracks software licenses and does not manage encryption keys.",
+   "B": "ACM provisions and manages TLS/SSL certificates rather than general encryption keys.",
+   "C": "CloudHSM provides dedicated HSMs to generate and manage encryption keys in the cloud, and it is the only key-management service among these options.",
+   "D": "Directory Service provides managed Microsoft Active Directory, not key management."
+  }
+ },
+ "q_992d7b75ea3c": {
+  "explanation": "AWS Secrets Manager securely stores encrypted credentials and lets applications retrieve them when needed.",
+  "optionNotes": {
+   "A": "The AWS Encryption SDK is a client-side library for encrypting data; it is not a store for credentials.",
+   "B": "Security Hub aggregates security findings and does not store credentials.",
+   "C": "Secrets Manager stores secrets encrypted and retrieves them on demand.",
+   "D": "AWS Artifact provides compliance reports and does not store credentials."
+  }
+ },
+ "q_718e0fe1aca1": {
+  "explanation": "For least privilege, create an IAM user with programmatic access only (CLI and SDKs) and attach a policy that grants only Amazon RDS access.",
+  "optionNotes": {
+   "A": "Console access is not wanted, since the interaction is limited to the CLI and SDKs.",
+   "B": "Programmatic access only allows use of the CLI and SDKs and nothing else.",
+   "C": "A role with console access does not match the CLI and SDK requirement.",
+   "D": "Administrator access grants far more than RDS access and violates least privilege.",
+   "E": "A policy limited to Amazon RDS gives only the permissions the employee needs."
+  }
+ },
+ "q_6edd6b904fb1": {
+  "explanation": "IAM user groups let you collect users and assign permissions to the whole group at once.",
+  "optionNotes": {
+   "A": "Security groups are virtual firewalls for resources and do not group users.",
+   "B": "IAM lets you create user groups and attach permissions to them.",
+   "C": "Resource groups organize AWS resources, not users or their permissions.",
+   "D": "Security Hub aggregates security findings and does not organize users."
+  }
+ },
+ "q_a034819d0c0a": {
+  "explanation": "AWS Service Catalog lets organizations centrally govern which approved products users can deploy, manage, and retire, enforcing standards.",
+  "optionNotes": {
+   "A": "CloudWatch monitors resources and does not control who can deploy them.",
+   "B": "Service Catalog centrally governs approved resources and who can deploy them.",
+   "C": "GuardDuty detects threats and does not govern deployments.",
+   "D": "Security Hub aggregates security findings and does not control deployments."
+  }
+ },
+ "q_c3d49dce0a2d": {
+  "explanation": "Requiring MFA for privileged users adds a second factor and improves account security. The root user cannot be removed, and extra access keys increase risk.",
+  "optionNotes": {
+   "A": "MFA protects privileged accounts even if a password is compromised.",
+   "B": "The root user cannot be removed from an AWS account; it should be protected instead.",
+   "C": "Root user access keys are a security risk and should not be created.",
+   "D": "Creating access keys for every privileged user adds long-term credentials and increases risk."
+  }
+ },
+ "q_39185e4299a6": {
+  "explanation": "Enabling MFA with Amazon Cognito and using AWS Trusted Advisor security checks both help improve security. Broad permissions weaken security, and the other options do not themselves improve it.",
+  "optionNotes": {
+   "A": "Artifact provides compliance reports; reading them does not itself improve security.",
+   "B": "Broad permissions for every role violate least privilege and reduce security.",
+   "C": "Running application code on AWS is not by itself a way to improve security.",
+   "D": "MFA with Cognito adds another authentication factor for application users.",
+   "E": "Trusted Advisor security checks flag risky configurations so they can be fixed."
+  }
+ },
+ "q_d5f59f823c3c": {
+  "explanation": "AWS Artifact provides AWS-issued reports, certifications, accreditations, and third-party attestations on demand.",
+  "optionNotes": {
+   "A": "Artifact is the portal for AWS compliance reports and attestations.",
+   "B": "Trusted Advisor provides best-practice checks and no AWS audit reports.",
+   "C": "AWS Health Dashboard shows service health and events, not compliance reports.",
+   "D": "AWS Config records resource configurations and does not provide AWS compliance reports."
+  }
+ },
+ "q_aaa5aac1e3fd": {
+  "explanation": "AWS WAF can monitor and block malicious HTTP and HTTPS requests to CloudFront distributions.",
+  "optionNotes": {
+   "A": "GuardDuty detects threats from logs but does not block web requests.",
+   "B": "Inspector scans for vulnerabilities and does not filter web requests.",
+   "C": "AWS WAF integrates with CloudFront to monitor and block malicious web requests.",
+   "D": "Detective investigates security findings and does not block requests."
+  }
+ },
+ "q_0293464cc4ee": {
+  "explanation": "AWS IAM Identity Center centrally manages sign-in and access across the accounts in an organization.",
+  "optionNotes": {
+   "A": "Amazon VPC provides virtual networking, not login management.",
+   "B": "GuardDuty detects threats and does not manage logins.",
+   "C": "Cognito manages application end-user sign-in, not workforce access to AWS accounts.",
+   "D": "IAM Identity Center provides central, single sign-on access to multiple accounts in an organization."
+  }
+ },
+ "q_adc7e4bc2e3f": {
+  "explanation": "AWS IAM Identity Center can connect to a third-party identity provider so employees can use their existing credentials to access AWS accounts and services.",
+  "optionNotes": {
+   "A": "Directory Service provides managed Active Directory and is not the single sign-on service for an external IdP.",
+   "B": "Cognito serves application end users, not employee access to AWS accounts.",
+   "C": "IAM Identity Center federates with an external IdP so employees need no additional credentials.",
+   "D": "AWS RAM shares resources between accounts and does not handle sign-in."
+  }
+ },
+ "q_73100b87cfdf": {
+  "explanation": "AWS Artifact is the self-service portal that gives on-demand access to AWS compliance control reports.",
+  "optionNotes": {
+   "A": "AWS Config records and evaluates resource configurations; it does not provide AWS compliance reports.",
+   "B": "GuardDuty detects threats and does not provide compliance reports.",
+   "C": "Trusted Advisor gives best-practice checks and not AWS compliance control reports.",
+   "D": "Artifact offers on-demand, self-service downloads of compliance reports."
+  }
+ },
+ "q_383e0627584c": {
+  "explanation": "Rotating credentials regularly and configuring MFA are IAM best practices. Using the root user daily, storing long-term access keys on EC2, and sharing keys are not.",
+  "optionNotes": {
+   "A": "The root user should not be used for daily tasks because it has unrestricted access.",
+   "B": "Applications on EC2 should use IAM roles with temporary credentials instead of stored access keys.",
+   "C": "Regular rotation limits how long a compromised credential stays useful.",
+   "D": "Access keys should not be shared; each person should have individual credentials.",
+   "E": "MFA adds a second factor and protects against stolen passwords."
+  }
+ },
+ "q_e66f8dea9d13": {
+  "explanation": "AWS Shield protects applications from DDoS attacks, including network and transport layer attacks.",
+  "optionNotes": {
+   "A": "AWS WAF filters application-layer web requests and is not the DDoS protection service for network layer attacks.",
+   "B": "Firewall Manager centrally manages firewall policies and is not itself the DDoS protection service.",
+   "C": "GuardDuty detects threats and does not block DDoS attacks.",
+   "D": "AWS Shield provides managed DDoS protection against network layer attacks."
+  }
+ },
+ "q_4df0a3cd8eba": {
+  "explanation": "Amazon GuardDuty continuously monitors AWS accounts, workloads, and S3 data for malicious activity and unauthorized behavior.",
+  "optionNotes": {
+   "A": "AWS Shield protects against DDoS attacks and does not provide continuous threat detection.",
+   "B": "Firewall Manager manages firewall rules across accounts and does not detect threats.",
+   "C": "GuardDuty is the intelligent threat detection service for accounts, workloads, and S3.",
+   "D": "Inspector scans for vulnerabilities and not for malicious activity."
+  }
+ },
+ "q_910df268e269": {
+  "explanation": "Amazon Cognito provides user sign-up, sign-in, and access control for mobile and web applications.",
+  "optionNotes": {
+   "A": "Cognito supports user sign-up and authentication for mobile and web apps.",
+   "B": "AWS Config tracks resource configurations and does not authenticate users.",
+   "C": "GuardDuty detects threats and does not provide user sign-up.",
+   "D": "Systems Manager manages operations for AWS resources and does not authenticate app users."
+  }
+ },
+ "q_b6700f25b62c": {
+  "explanation": "Using IAM according to least privilege is a customer responsibility (security in the cloud). Patching DynamoDB, securing edge locations, and protecting hardware are AWS responsibilities.",
+  "optionNotes": {
+   "A": "DynamoDB is a managed service, so AWS handles its operating system.",
+   "B": "CloudFront edge locations are AWS facilities and AWS secures physical access.",
+   "C": "Protecting the hardware that runs AWS services is AWS responsibility.",
+   "D": "Configuring IAM with least privilege is the customer's responsibility."
+  }
+ },
+ "q_8827921d7a20": {
+  "explanation": "Amazon GuardDuty analyzes logs and activity to detect compromised instances and accounts and other threats.",
+  "optionNotes": {
+   "A": "GuardDuty continuously detects potential compromise and attacks against instances and accounts.",
+   "B": "AWS WAF filters web requests and does not detect compromised accounts or instances.",
+   "C": "Shield mitigates DDoS attacks but does not detect compromise.",
+   "D": "Inspector finds vulnerabilities and does not detect active threats."
+  }
+ },
+ "q_05765aa2e646": {
+  "explanation": "AWS STS issues temporary, limited-privilege credentials that an application can use to call other AWS APIs.",
+  "optionNotes": {
+   "A": "API Gateway publishes and manages APIs and does not issue AWS credentials.",
+   "B": "IAM users have long-term credentials, not temporary ones.",
+   "C": "STS provides temporary, limited-privilege credentials for AWS API calls.",
+   "D": "Instance profiles pass a role to an EC2 instance, but the requirement is for the service that issues the temporary credentials, which is STS."
+  }
+ },
+ "q_d18177901800": {
+  "explanation": "AWS Secrets Manager stores secrets encrypted, controls access with IAM, and can rotate them, making it the most secure choice for passwords.",
+  "optionNotes": {
+   "A": "S3 is general object storage and is not designed for managing secrets.",
+   "B": "CloudFormation parameters can expose values in templates or the console, so they are not a secure password store.",
+   "C": "Storage Gateway connects on-premises storage to AWS and is not a secrets store.",
+   "D": "Secrets Manager is purpose-built to store passwords securely with encryption and access control."
+  }
+ },
+ "q_c9e1be172621": {
+  "explanation": "AWS Security Hub is a cloud security posture management service that aggregates findings from AWS services and partner products in a standard format.",
+  "optionNotes": {
+   "A": "Security Hub aggregates alerts from services and partners into a standardized format.",
+   "B": "Trusted Advisor provides best-practice checks and does not aggregate findings from partner products.",
+   "C": "EventBridge routes events between services and is not a CSPM service.",
+   "D": "GuardDuty is a threat detection source whose findings Security Hub aggregates."
+  }
+ },
+ "q_70cbdce0dd77": {
+  "explanation": "A user with the permission can change their own IAM password using the AWS Management Console or the AWS CLI.",
+  "optionNotes": {
+   "A": "The AWS CLI can be used to change an IAM user's password.",
+   "B": "AWS KMS manages encryption keys and does not change IAM passwords.",
+   "C": "The Management Console lets IAM users change their own passwords.",
+   "D": "AWS RAM shares resources across accounts and does not manage passwords.",
+   "E": "Secrets Manager stores application secrets and does not change IAM user passwords."
+  }
+ },
+ "q_4a1a05d40368": {
+  "explanation": "Creating individual IAM users and using groups to assign permissions are IAM best practices. Sharing keys and granting maximum privileges are not.",
+  "optionNotes": {
+   "A": "Sharing access keys defeats accountability and is not recommended.",
+   "B": "Each person should have their own IAM user so actions can be traced.",
+   "C": "Customer managed policies are preferred because they can be reused and versioned.",
+   "D": "Maximum privileges violate least privilege.",
+   "E": "Groups simplify permission management by assigning permissions to many users together."
+  }
+ },
+ "q_cc4d1022f857": {
+  "explanation": "AWS IAM is offered at no additional charge; you pay only for the AWS resources your users create.",
+  "optionNotes": {
+   "A": "Amazon S3 is charged for storage, requests, and data transfer.",
+   "B": "IAM has no charge for its use.",
+   "C": "Elastic Load Balancers are charged per hour and for capacity used.",
+   "D": "AWS WAF is charged for web ACLs, rules, and requests."
+  }
+ },
+ "q_99bb1b8b57f6": {
+  "explanation": "PCI and other compliance reports are available for download from AWS Artifact.",
+  "optionNotes": {
+   "A": "Contacting Support is unnecessary because the reports are self-service in Artifact.",
+   "B": "Artifact provides on-demand compliance reports, including PCI.",
+   "C": "Security Hub aggregates security findings and does not provide AWS audit reports.",
+   "D": "A TAM is not needed because the reports are self-service in Artifact."
+  }
+ },
+ "q_3ef2fbce0665": {
+  "explanation": "AWS WAF lets you define custom conditions and rules to filter and control inbound web traffic to an application.",
+  "optionNotes": {
+   "A": "GuardDuty detects threats and does not filter inbound web traffic.",
+   "B": "AWS WAF supports custom rules and conditions for filtering inbound web requests.",
+   "C": "Macie discovers sensitive data in S3 and does not filter traffic.",
+   "D": "Shield protects against DDoS attacks and does not provide custom request filtering rules."
+  }
+ },
+ "q_4b5fbd7b521a": {
+  "explanation": "AWS IAM Identity Center centrally manages employee access to multiple AWS accounts.",
+  "optionNotes": {
+   "A": "IAM Access Analyzer identifies externally shared resources and does not manage employee access.",
+   "B": "Secrets Manager stores and rotates secrets and does not manage user access.",
+   "C": "IAM Identity Center provides central, single sign-on access to multiple accounts.",
+   "D": "STS issues temporary credentials but does not provide central management of employee access."
+  }
+ },
+ "q_169473f00750": {
+  "explanation": "Amazon Macie discovers and protects sensitive data stored in S3 buckets.",
+  "optionNotes": {
+   "A": "Macie uses machine learning to find and protect sensitive data in S3.",
+   "B": "Detective investigates security findings and does not find sensitive data.",
+   "C": "GuardDuty detects threats and does not discover sensitive data.",
+   "D": "IAM Access Analyzer finds externally shared resources and does not classify data."
+  }
+ },
+ "q_18940083cee1": {
+  "explanation": "IAM controls access to AWS service APIs and other resources, and it supports MFA to protect the environment. Threat detection, data center access, and web firewalls are handled elsewhere.",
+  "optionNotes": {
+   "A": "IAM controls who can call AWS service APIs and use specific resources.",
+   "B": "Intelligent threat detection is provided by GuardDuty, not IAM.",
+   "C": "IAM supports MFA to protect users and the root user.",
+   "D": "Physical data center access is controlled by AWS and is not managed in IAM.",
+   "E": "Firewall protection against web attacks is provided by AWS WAF, not IAM."
+  }
+ },
+ "q_476b25b75931": {
+  "explanation": "Only the AWS account owner, signing in as the root user, can manage the root user's access keys.",
+  "optionNotes": {
+   "A": "IAM users cannot manage the root user's access keys, even with permissions.",
+   "B": "IAM roles, in this or any account, cannot manage root user access keys.",
+   "C": "No IAM identity can be granted permission to manage root user access keys.",
+   "D": "The account owner using the root user is the only one who can manage its access keys."
+  }
+ },
+ "q_4703ef444ef5": {
+  "explanation": "Under the shared responsibility model, AWS and its customers share responsibility for security and compliance of the customer's accounts and resources.",
+  "optionNotes": {
+   "A": "Third-party vendors have no role in the shared responsibility model between AWS and customers.",
+   "B": "Customers share responsibility with AWS: AWS secures the cloud, customers secure what they put in it.",
+   "C": "Reseller partners are not part of the shared responsibility model.",
+   "D": "Internet providers are not part of the shared responsibility model."
+  }
+ },
+ "q_c07cdb1e1d6e": {
+  "explanation": "AWS Shield Advanced gives enhanced DDoS protection for EC2 instances and Application Load Balancers, plus near real-time visibility into attacks. Shield Standard offers only automatic baseline protection.",
+  "optionNotes": {
+   "A": "Shield Standard gives automatic baseline protection but not the real-time attack visibility required.",
+   "B": "Firewall Manager centrally manages firewall policies and is not the DDoS visibility service.",
+   "C": "Shield Advanced adds enhanced DDoS protection for EC2 and load balancers with real-time visibility into attacks.",
+   "D": "GuardDuty detects threats and does not protect against DDoS attacks."
+  }
+ },
+ "q_a3adfdfa104b": {
+  "explanation": "AWS IAM Identity Center provides a portal where users access assigned AWS accounts and cloud and SaaS applications, with centrally managed permissions.",
+  "optionNotes": {
+   "A": "Cognito is for application customers and does not provide a workforce access portal.",
+   "B": "IAM Identity Center provides a user portal to assigned AWS accounts and applications with central permissions.",
+   "C": "IAM manages permissions within an account and does not offer a SaaS access portal.",
+   "D": "Directory Service provides managed Active Directory and is not the access portal."
+  }
+ },
+ "q_f0260481418e": {
+  "explanation": "GuardDuty continuously monitors accounts and workloads to detect threats; that is its primary use case.",
+  "optionNotes": {
+   "A": "DDoS prevention is provided by AWS Shield.",
+   "B": "SQL injection protection is provided by AWS WAF.",
+   "C": "GuardDuty automatically monitors logs and activity for threats to AWS workloads.",
+   "D": "Provisioning resources is done by services such as CloudFormation, not GuardDuty."
+  }
+ },
+ "q_7061d4ff0c64": {
+  "explanation": "An AWS access key is the credential that lets a developer sign AWS CLI requests.",
+  "optionNotes": {
+   "A": "A user name and password are used to sign in to the console, not the CLI.",
+   "B": "Systems Manager manages operations for resources and is not a credential for the CLI.",
+   "C": "Root passwords are for console sign-in as the root user and should not be used for CLI access.",
+   "D": "An access key (ID and secret) authenticates AWS CLI calls."
+  }
+ },
+ "q_770469ebe24f": {
+  "explanation": "AWS WAF can use geographic match rules to block requests from specific countries.",
+  "optionNotes": {
+   "A": "AWS WAF supports geo match conditions that block traffic from chosen countries.",
+   "B": "Control Tower sets up and governs multi-account environments and does not filter website traffic.",
+   "C": "Amazon Fraud Detector identifies potentially fraudulent activity and does not block countries.",
+   "D": "Amazon Pinpoint sends marketing and engagement messages and does not control website access."
+  }
+ },
+ "q_8c41d3ce0dc2": {
+  "explanation": "AWS Artifact provides on-demand access to AWS SOC reports and other compliance documents.",
+  "optionNotes": {
+   "A": "Artifact is where compliance officers download SOC reports.",
+   "B": "Concierge Support is a billing and account assistance feature of Enterprise Support, not a source of SOC reports.",
+   "C": "Support helps with technical issues and does not host compliance reports.",
+   "D": "Trusted Advisor gives best-practice checks, not SOC reports."
+  }
+ },
+ "q_ebe211520ec6": {
+  "explanation": "AWS Security Token Service (AWS STS) provides temporary credentials, including for federated users, to access AWS resources.",
+  "optionNotes": {
+   "A": "GuardDuty detects threats and does not issue credentials.",
+   "B": "STS issues temporary security credentials for federated users to access AWS resources.",
+   "C": "Secrets Manager stores and rotates secrets and does not issue federated credentials.",
+   "D": "Certificate Manager manages TLS certificates and does not issue credentials."
+  }
+ },
+ "q_a6eacc5f1532": {
+  "explanation": "AWS Secrets Manager securely stores RDS database credentials and can automatically rotate them on a schedule.",
+  "optionNotes": {
+   "A": "S3 stores objects and has no built-in secret rotation.",
+   "B": "Parameter Store can store secrets but does not provide built-in automatic rotation of RDS passwords.",
+   "C": "Secrets Manager stores credentials securely and rotates RDS passwords automatically.",
+   "D": "CloudTrail logs API activity and does not store or rotate credentials."
+  }
+ },
+ "q_4e8868b196d8": {
+  "explanation": "AWS KMS creates and manages encryption keys and integrates with many AWS services to encrypt data at rest.",
+  "optionNotes": {
+   "A": "KMS integrates with services such as S3, EBS, and RDS to encrypt data at rest.",
+   "B": "ACM manages TLS certificates, which protect data in transit rather than data at rest.",
+   "C": "IAM manages access permissions and does not encrypt data.",
+   "D": "Security Hub aggregates security findings and does not encrypt data."
+  }
+ },
+ "q_6f495364c516": {
+  "explanation": "Access to the AWS DDoS Response Team (now called the Shield Response Team) requires AWS Shield Advanced plus a Business or Enterprise Support plan, which this company already has.",
+  "optionNotes": {
+   "A": "Shield Standard gives automatic baseline protection and does not include access to the DRT.",
+   "B": "The company already has a qualifying support plan; upgrading to Enterprise Support alone does not provide DRT access without Shield Advanced.",
+   "C": "AWS WAF filters web requests and does not provide access to the DRT.",
+   "D": "Shield Advanced, together with Business Support, gives access to the DDoS Response Team."
+  }
+ },
+ "q_2e4466fdf42e": {
+  "explanation": "Implementing MFA for IAM user accounts is part of customer security in the cloud. Patching infrastructure devices, physical security, and patching Lambda@Edge's underlying systems are AWS responsibilities.",
+  "optionNotes": {
+   "A": "Patching the infrastructure devices behind Amazon S3 is done by AWS.",
+   "B": "Physical security of AWS data centers is AWS responsibility.",
+   "C": "Lambda@Edge is a managed service, so AWS maintains the operating system and runtime environment.",
+   "D": "Enabling and enforcing MFA for IAM users is the customer's responsibility."
+  }
+ },
+ "q_7ab2521a3636": {
+  "explanation": "AWS IAM is provided at no additional charge; you pay only for the resources your users create.",
+  "optionNotes": {
+   "A": "Athena is charged based on the amount of data scanned by queries.",
+   "B": "IAM has no charge for use.",
+   "C": "Secrets Manager is charged per secret and per API call.",
+   "D": "ElastiCache is charged for the nodes and capacity you run."
+  }
+ },
+ "q_72bd82422368": {
+  "explanation": "AWS provides an Attestation of Compliance (AOC) report for PCI DSS covering specific AWS services, which customers can use for their own compliance. Customers remain responsible for the compliance of their own applications.",
+  "optionNotes": {
+   "A": "AWS does not allow customers to inspect data centers by appointment; it supplies third-party audit reports instead.",
+   "B": "AWS cannot certify customer applications; customers must validate their own applications.",
+   "C": "AWS provides a PCI DSS AOC report for specific services to help customers with compliance.",
+   "D": "Professional PCI compliance services are not what AWS provides here; it provides audit documentation."
+  }
+ },
+ "q_4e4a0821e5b7": {
+  "explanation": "Create an IAM user when you need long-term credentials for individual people and when you want to organize users in IAM groups. Applications on EC2, mobile apps, and federated corporate users should use roles.",
+  "optionNotes": {
+   "A": "Applications on EC2 should use an IAM role to get temporary credentials.",
+   "B": "IAM users are used to create long-term credentials for specific individuals.",
+   "C": "Mobile apps should use temporary credentials, for example through Cognito and roles, not IAM users.",
+   "D": "Groups contain IAM users, so users are needed to be added to IAM groups.",
+   "E": "Federated users already authenticated in the corporate network should assume a role instead of using an IAM user."
+  }
+ },
+ "q_928d52f4edf1": {
+  "explanation": "Amazon Inspector analyzes the AWS environment and discovers security vulnerabilities on Amazon EC2 instances.",
+  "optionNotes": {
+   "A": "Inspector scans EC2 instances for software vulnerabilities and unintended exposure.",
+   "B": "Macie discovers sensitive data in S3 and does not scan instances.",
+   "C": "Shield Standard protects against DDoS attacks and does not look for vulnerabilities.",
+   "D": "Security groups filter network traffic and do not analyze instances for vulnerabilities."
+  }
+ },
+ "q_dcccfb5659be": {
+  "explanation": "AWS WAF can inspect web requests and block SQL injection attacks.",
+  "optionNotes": {
+   "A": "AWS WAF can define rules that block SQL injection patterns.",
+   "B": "Network ACLs filter by IP and port and cannot inspect request content.",
+   "C": "Security groups filter by IP, port, and protocol and cannot inspect request content.",
+   "D": "Trusted Advisor provides best-practice checks and does not block attacks."
+  }
+ },
+ "q_dc629f7a2f57": {
+  "explanation": "AWS IAM manages permissions for AWS resources through policies.",
+  "optionNotes": {
+   "A": "Inspector scans for vulnerabilities and does not manage permissions.",
+   "B": "Detective investigates security findings and does not manage permissions.",
+   "C": "IAM uses policies to define who can do what on which resources.",
+   "D": "GuardDuty detects threats and does not manage permissions."
+  }
+ },
+ "q_1b91d151f190": {
+  "explanation": "AWS Secrets Manager can rotate database credentials automatically on a schedule, with little operational overhead.",
+  "optionNotes": {
+   "A": "Systems Manager offers many operations tools, but scheduled credential rotation is not its built-in function the way it is in Secrets Manager.",
+   "B": "Secrets Manager provides built-in scheduled rotation for database credentials.",
+   "C": "License Manager tracks software licenses and does not rotate credentials.",
+   "D": "AWS Managed Services operates infrastructure on your behalf and is not a credential rotation feature."
+  }
+ },
+ "q_1e37aa86c789": {
+  "explanation": "AWS KMS provides the encryption keys that Amazon EBS uses to encrypt volumes.",
+  "optionNotes": {
+   "A": "Certificate Manager handles TLS certificates, not volume encryption.",
+   "B": "Systems Manager manages operations and does not provide encryption for EBS.",
+   "C": "KMS provides the keys used for EBS encryption.",
+   "D": "AWS Config records configuration and does not encrypt data."
+  }
+ },
+ "q_50dfb9e464ef": {
+  "explanation": "AWS Artifact is the central resource for compliance-related information and reports about AWS.",
+  "optionNotes": {
+   "A": "Artifact provides on-demand access to AWS compliance reports and agreements.",
+   "B": "AWS Marketplace is a catalog for buying third-party software, not for compliance reports.",
+   "C": "Inspector scans for vulnerabilities and is not a source of compliance reports.",
+   "D": "AWS Support helps with technical and account issues, but reports are available self-service in Artifact."
+  }
+ },
+ "q_fefc1a28e39c": {
+  "explanation": "Granting only the access needed to perform a task is called the principle of least privilege.",
+  "optionNotes": {
+   "A": "Restricted access is not the recognized name for this IAM concept.",
+   "B": "As-needed access is not the recognized security principle name.",
+   "C": "Least privilege means granting only the permissions required to perform a task.",
+   "D": "Token access is not the name of this principle."
+  }
+ },
+ "q_9b86aa5dfd2d": {
+  "explanation": "An IAM role in the target account, which users from the other account can assume, grants cross-account access without sharing long-term credentials.",
+  "optionNotes": {
+   "A": "An IAM group collects users in a single account and does not provide cross-account access.",
+   "B": "A role can be assumed by users from another account to get temporary access to its resources.",
+   "C": "Tags label resources and do not grant access across accounts.",
+   "D": "Access Analyzer identifies shared resources and does not grant access."
+  }
+ },
+ "q_5330712da9b7": {
+  "explanation": "AWS is responsible for physical and environmental controls of its data centers. IAM permissions, security group rules, and EC2 OS patches are customer responsibilities.",
+  "optionNotes": {
+   "A": "Managing IAM user permissions is the customer's responsibility.",
+   "B": "Creating security group rules is the customer's responsibility.",
+   "C": "AWS maintains the physical and environmental controls of its facilities.",
+   "D": "On EC2 the customer patches the guest operating system."
+  }
+ },
+ "auth-iam-security-01": {
+  "explanation": "Amazon Macie uses machine learning and pattern matching to discover sensitive data, such as PII, in Amazon S3 buckets.",
+  "optionNotes": {
+   "A": "GuardDuty detects threats from activity logs and does not scan S3 for PII.",
+   "B": "Inspector scans workloads for software vulnerabilities, not for personal data.",
+   "C": "Macie discovers and classifies PII stored in S3 using machine learning and pattern matching.",
+   "D": "AWS Shield protects against DDoS attacks and does not inspect stored data."
+  }
+ },
+ "auth-iam-security-02": {
+  "explanation": "An IAM role attached to the EC2 instance provides temporary credentials that rotate automatically, so no long-term secrets are stored on the instance.",
+  "optionNotes": {
+   "A": "Access keys in a configuration file are long-term credentials that can leak and need manual rotation.",
+   "B": "An instance role gives the application temporary, automatically rotated credentials with only the permissions needed.",
+   "C": "Root user access keys are highly privileged and must never be embedded in applications.",
+   "D": "A gateway VPC endpoint provides private network connectivity to S3 but does not grant permissions."
+  }
+ },
+ "auth-iam-security-03": {
+  "explanation": "Closing the AWS account and fixing an S3 bucket policy that denies all principals require the root user. IAM identities with proper permissions can create groups, launch instances, and (when enabled) view billing.",
+  "optionNotes": {
+   "A": "Closing the account is a root-user-only task.",
+   "B": "An IAM identity with the right permissions can create IAM groups.",
+   "C": "Viewing billing can be delegated to IAM users once IAM access to billing is activated.",
+   "D": "Repairing a bucket policy that denies all principals requires the root user, because no IAM identity can access the bucket.",
+   "E": "IAM identities with the proper permissions can launch EC2 instances in any enabled Region."
+  }
+ },
+ "auth-iam-security-04": {
+  "explanation": "AWS evaluates all applicable policies together, and an explicit Deny in any policy overrides every Allow, so the delete request is denied.",
+  "optionNotes": {
+   "A": "Evaluation order does not matter; an explicit deny always wins over an allow.",
+   "B": "An explicit deny overrides any allow from other policies.",
+   "C": "MFA does not override an explicit deny.",
+   "D": "Policy creation date has no effect on the result; an explicit deny wins."
+  }
+ },
+ "auth-iam-security-05": {
+  "explanation": "AWS IAM Identity Center provides workforce single sign-on to multiple accounts in AWS Organizations and can connect to an existing corporate directory or identity provider.",
+  "optionNotes": {
+   "A": "Cognito is for customers of your own web and mobile apps, not for workforce access to AWS accounts.",
+   "B": "Secrets Manager stores and rotates secrets and does not provide sign-in.",
+   "C": "Separate IAM users in 40 accounts means many credentials and heavy management, with no single sign-on.",
+   "D": "IAM Identity Center provides single sign-on across accounts using existing directory credentials."
+  }
+ },
+ "auth-iam-security-06": {
+  "explanation": "Amazon Cognito user pools provide sign-up and sign-in for app users, including social identity providers such as Google.",
+  "optionNotes": {
+   "A": "Cognito handles consumer sign-up and sign-in, including federation with Google.",
+   "B": "IAM Identity Center is for workforce access to AWS accounts, not consumer app sign-in.",
+   "C": "IAM users are for people and workloads working with AWS, not for consumers of a mobile app.",
+   "D": "Directory Service provides managed directories such as Active Directory, not consumer sign-up for apps."
+  }
+ },
+ "auth-iam-security-07": {
+  "explanation": "AWS Secrets Manager stores secrets such as database passwords, lets the application retrieve them at runtime, and can rotate them automatically.",
+  "optionNotes": {
+   "A": "KMS manages encryption keys; it does not store and rotate database passwords.",
+   "B": "ACM manages TLS certificates and does not store database passwords.",
+   "C": "Secrets Manager stores the password outside the code and can rotate it on a schedule.",
+   "D": "CloudHSM provides hardware security modules for keys and is not a password store with rotation."
+  }
+ },
+ "auth-iam-security-08": {
+  "explanation": "AWS WAF blocks SQL injection in HTTP(S) requests, and AWS Shield Advanced adds expanded DDoS protection with access to the Shield Response Team.",
+  "optionNotes": {
+   "A": "GuardDuty detects threats but does not block SQL injection or provide DDoS response support.",
+   "B": "AWS WAF can block SQL injection attempts on an Application Load Balancer.",
+   "C": "Inspector scans for vulnerabilities and does not block attacks.",
+   "D": "Macie discovers sensitive data and does not protect a web application from attacks.",
+   "E": "Shield Advanced provides expanded DDoS protection and access to AWS DDoS response experts."
+  }
+ },
+ "auth-iam-security-09": {
+  "explanation": "Amazon GuardDuty analyzes CloudTrail events, VPC flow logs, and DNS logs with threat intelligence and machine learning to detect threats such as compromised credentials.",
+  "optionNotes": {
+   "A": "Inspector looks for software vulnerabilities in workloads, not threats in these logs.",
+   "B": "AWS Config records and evaluates resource configurations and does not detect threats in these logs.",
+   "C": "Macie discovers sensitive data in S3 and does not analyze these logs for threats.",
+   "D": "GuardDuty analyzes these log sources to detect compromised credentials and malicious communication."
+  }
+ },
+ "auth-iam-security-10": {
+  "explanation": "With customer managed KMS keys the customer defines the key policy, and AWS KMS automatically rotates AWS managed keys every year. Customers cannot delete AWS managed keys, customer managed keys carry a monthly charge, and AWS owned keys are not visible in the account.",
+  "optionNotes": {
+   "A": "Customer managed keys give the customer control over the key policy, rotation, and deletion.",
+   "B": "AWS managed keys are managed by AWS and cannot be scheduled for deletion by the customer.",
+   "C": "AWS managed keys are rotated automatically on a yearly schedule.",
+   "D": "Customer managed keys have a monthly charge per key in addition to usage fees.",
+   "E": "AWS owned keys are managed by AWS and do not appear in the customer's KMS console."
+  }
+ }
+}

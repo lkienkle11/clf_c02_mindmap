@@ -197,6 +197,7 @@ describe('submit', () => {
     expect(r.items).toHaveLength(10);
     expect(r.items[0]).toMatchObject({ selected: ['A'], correct: ['A'], isCorrect: true });
     expect(r.items[0].explanation).toMatch(/^why/);
+    expect(r.items.map((i) => i.optionOrder)).toEqual(s.questions.map((q) => [...q.optionOrder]));
     expect(s.submitted).toBe(true);
     expect(s.result).toBe(r);
     expect(await services.repos.attempts.findInProgress()).toBeNull();

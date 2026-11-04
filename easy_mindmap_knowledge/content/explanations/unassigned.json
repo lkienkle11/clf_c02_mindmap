@@ -1,0 +1,159 @@
+{
+ "q_75c69854f8f1": {
+  "explanation": "The Well-Architected design principles recommend loosely coupled, decoupled components, so breaking a workload into smaller segments avoids a monolith.",
+  "optionNotes": {
+   "A": "Tightly coupled components make a failure or change in one part affect the others; AWS recommends loose coupling instead.",
+   "B": "A single component doing everything is a monolith that is hard to scale and change independently.",
+   "C": "AWS recommends smaller, frequent, reversible changes because large changes carry more risk.",
+   "D": "Segmenting workloads into independent components avoids a monolith and matches the loose coupling principle."
+  }
+ },
+ "q_d2b0af3d9169": {
+  "explanation": "The customer is responsible for security of its own data, including protecting data in transit between S3 and an on-premises application. AWS secures the underlying infrastructure.",
+  "optionNotes": {
+   "A": "Securing and encrypting its own data, including data in transit, is the customer's responsibility under the shared responsibility model.",
+   "B": "AWS secures the infrastructure that runs S3, but it is not responsible for how the customer protects its data in transit.",
+   "C": "A firewall vendor is not part of the AWS shared responsibility model for this data.",
+   "D": "A Marketplace partner is not responsible for a customer's data unless the customer chooses its product, and the model does not assign it that role."
+  }
+ },
+ "q_5f9737aea692": {
+  "explanation": "Amazon CloudFront caches content at edge locations close to users worldwide, with the EC2 instances as the origin, which minimizes latency for a static website.",
+  "optionNotes": {
+   "A": "EC2 instances run in Regions and Availability Zones, not in edge locations.",
+   "B": "Availability Zones belong to a single Region, so instances cannot share the same AZ across different Regions.",
+   "C": "CloudFront serves cached content from edge locations near users, using EC2 as the origin, which reduces latency globally.",
+   "D": "Running instances in different accounts does not change where they are located or reduce latency for users."
+  }
+ },
+ "q_04a9f4df9512": {
+  "explanation": "The exam expects Amazon EC2 and Amazon SageMaker, which have long been covered by Savings Plans along with AWS Lambda and AWS Fargate. Newer Database Savings Plans also cover services such as RDS and DynamoDB, but Amazon Redshift uses reserved nodes.",
+  "optionNotes": {
+   "A": "EC2 usage is covered by Compute and EC2 Instance Savings Plans.",
+   "B": "Classic Savings Plans did not cover RDS, so the exam expects Reserved Instances here, although newer Database Savings Plans now also cover RDS.",
+   "C": "SageMaker has its own Savings Plans, so it is supported.",
+   "D": "Redshift discounts are offered through reserved nodes, and Redshift is not covered by Savings Plans.",
+   "E": "DynamoDB was traditionally discounted through reserved capacity, so the exam expects it as not covered, although newer Database Savings Plans now also cover DynamoDB."
+  }
+ },
+ "q_54edb01c38ac": {
+  "explanation": "After migrating, AWS owns the cost of the physical hardware, power and data center security. The company remains responsible for costs of its own application software licenses.",
+  "optionNotes": {
+   "A": "Licenses for the company's own application software are its direct responsibility.",
+   "B": "The hardware is owned and operated by AWS; the customer pays for usage of services rather than buying hardware.",
+   "C": "Power for AWS servers is an AWS operating cost, covered within service pricing.",
+   "D": "Physical security of AWS data centers is AWS's responsibility."
+  }
+ },
+ "q_1254a92cbe02": {
+  "explanation": "Best practice is to attach an IAM role to the EC2 instance so it receives temporary credentials, rather than storing long-term access keys.",
+  "optionNotes": {
+   "A": "Hard coding access keys exposes long-term credentials in the code and is a security anti-pattern.",
+   "B": "Storing keys in a text file on the instance risks leaking long-term credentials.",
+   "C": "An IAM role gives the instance temporary credentials with only the needed permissions, with no stored keys.",
+   "D": "Allowing any service to upload at any time removes access control and breaks least privilege."
+  }
+ },
+ "q_dc3bbf929881": {
+  "explanation": "The AWS Architecture Center provides reference architectures, diagrams and best practices for designing solutions on AWS.",
+  "optionNotes": {
+   "A": "AWS Marketplace is a catalog for finding and buying third-party software, not for design examples.",
+   "B": "Service Catalog lets organizations manage approved products for their users and does not provide solution design examples.",
+   "C": "The AWS Architecture Center offers reference architecture diagrams and guidance for AWS solutions.",
+   "D": "Trusted Advisor checks your account against best practices and does not provide solution designs."
+  }
+ },
+ "q_60a13be9d286": {
+  "explanation": "Loose coupling reduces dependencies between components, so a change or failure in one component has less effect on the others.",
+  "optionNotes": {
+   "A": "Scalability is the ability to handle changing load, not the reduction of interdependencies.",
+   "B": "Loose coupling means components interact with minimal dependencies, so they can change or fail independently.",
+   "C": "Automation reduces manual work and does not by itself reduce dependencies between components.",
+   "D": "Caching stores data for faster access and is not about component dependencies."
+  }
+ },
+ "q_106388ff97ca": {
+  "explanation": "With Lambda, the company writes its business logic and manages IAM permissions for access. AWS manages the infrastructure, operating system and language runtime.",
+  "optionNotes": {
+   "A": "AWS manages the underlying infrastructure for Lambda, since it is serverless.",
+   "B": "AWS manages and patches the operating system for Lambda functions.",
+   "C": "The business logic code is the customer's responsibility.",
+   "D": "AWS provides and maintains the managed language runtime for Python.",
+   "E": "Granting and managing IAM permissions for access to Lambda belongs to the customer."
+  }
+ },
+ "q_465dbd436e02": {
+  "explanation": "Linux EC2 instances are accessed securely over SSH using a key pair, where the private key proves the user's identity.",
+  "optionNotes": {
+   "A": "SSH with key pairs is the standard secure way to log in to Linux EC2 instances.",
+   "B": "A VPN secures network connections between networks but is not the login method for an instance.",
+   "C": "End-to-end encryption protects data in transit and does not itself authenticate a login to an instance.",
+   "D": "Route 53 is a DNS service and does not provide login access to instances."
+  }
+ },
+ "q_a9d4cd2d30b3": {
+  "explanation": "The AWS customer carbon footprint tool lets customers track, measure, review and forecast the carbon emissions from their AWS usage.",
+  "optionNotes": {
+   "A": "The AWS Health Dashboard reports on AWS service events and account health, not emissions.",
+   "B": "The customer carbon footprint tool reports and forecasts emissions from a company's AWS usage.",
+   "C": "Support Center is where support cases are managed, and it does not report emissions.",
+   "D": "QuickSight is a business intelligence service for dashboards and is not an emissions tracking tool."
+  }
+ },
+ "q_368f262368d2": {
+  "explanation": "A CloudWatch alarm can publish to an Amazon SNS topic, which sends alerts such as email or SMS to its subscribers.",
+  "optionNotes": {
+   "A": "CloudTrail records API activity for auditing and does not send CloudWatch alarm notifications.",
+   "B": "SNS is the notification service that CloudWatch alarms use to send alerts to subscribers.",
+   "C": "SQS queues messages for other applications to process and does not send alerts to people.",
+   "D": "EventBridge can also react to alarm state changes, but the exam expects SNS as the service that sends the alerts."
+  }
+ },
+ "q_e45f8fca1628": {
+  "explanation": "Auto Scaling policies automatically add capacity when demand rises, and pay-as-you-go pricing means the company pays only for what it uses, which keeps seasonal growth cost-effective.",
+  "optionNotes": {
+   "A": "Deploying across Regions improves availability and reach but does not automatically handle a load increase cost-effectively.",
+   "B": "Pay-as-you-go pricing means the company pays only for the capacity used during the peak.",
+   "C": "CloudTrail provides auditing of API activity and does not scale capacity.",
+   "D": "Auto Scaling policies add or remove resources automatically as demand changes.",
+   "E": "Centralized logging helps with monitoring and troubleshooting and does not handle scaling."
+  }
+ },
+ "q_a2e938359cdc": {
+  "explanation": "Moving to AWS gives greater global reach and agility and the ability to deploy globally in minutes. Security auditing, IT staff and resilience still need attention from the customer.",
+  "optionNotes": {
+   "A": "Customers still need to audit and monitor the security of their own workloads.",
+   "B": "AWS Regions around the world let a company reach more users and respond faster to change.",
+   "C": "Resources can be provisioned in multiple Regions within minutes, a core cloud advantage.",
+   "D": "A company still needs IT staff to design, operate and secure its workloads, although their focus can shift.",
+   "E": "Resilience is not automatic for all compute services; customers design for it, for example across Availability Zones."
+  }
+ },
+ "q_399aaedf5e09": {
+  "explanation": "AWS CloudShell is a browser-based shell that gives command line access to AWS tools and resources from the AWS Management Console.",
+  "optionNotes": {
+   "A": "CloudHSM provides dedicated hardware security modules for key storage, not a command line.",
+   "B": "CloudShell offers a pre-authenticated browser-based shell with the AWS CLI available.",
+   "C": "WorkSpaces provides managed virtual desktops, not a console-based command line for AWS tools.",
+   "D": "Cloud Map is a service discovery service and does not provide a command line."
+  }
+ },
+ "q_cbf4c7ce3a39": {
+  "explanation": "On-Demand Instances can be launched when needed, are not interrupted by AWS, and are billed per second for Linux instances, with no long-term commitment.",
+  "optionNotes": {
+   "A": "Reserved Instances require a one- or three-year commitment, which does not fit provisioning only when needed.",
+   "B": "Spot Instances can be interrupted by AWS with short notice, so they are not uninterruptible.",
+   "C": "On-Demand Instances start when needed, run without interruption, and are billed by the second.",
+   "D": "Dedicated Instances run on single-tenant hardware and carry extra charges, which the scenario does not call for."
+  }
+ },
+ "q_ecc1a999b1f1": {
+  "explanation": "AWS Outposts brings AWS infrastructure and services, including EC2, to the company's own data center, so the application can stay on premises for compliance.",
+  "optionNotes": {
+   "A": "Dedicated Instances run in AWS Regions on single-tenant hardware, so they are not on premises.",
+   "B": "CloudFront is a content delivery network and does not run EC2 instances in a customer's data center.",
+   "C": "Fargate is a serverless compute engine for containers running in AWS, not on premises.",
+   "D": "Outposts installs AWS-managed hardware at the customer's site, which lets EC2 run on premises."
+  }
+ }
+}

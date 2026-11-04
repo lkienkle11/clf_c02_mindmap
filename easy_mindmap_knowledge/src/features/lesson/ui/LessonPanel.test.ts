@@ -6,7 +6,10 @@ import { makeFakeServices } from '@/testing/fake-services';
 import { renderWithI18n } from '@/testing/render-with-i18n';
 import LessonPanel from './LessonPanel.svelte';
 
-async function mountPanel(lessonId: string, opts: { read?: string[]; body?: string; openExternal?: (u: string) => Promise<void> } = {}) {
+async function mountPanel(
+  lessonId: string,
+  opts: { read?: string[]; body?: string; openExternal?: (u: string) => Promise<void>; canPractice?: (topicId: string) => boolean } = {},
+) {
   const raw = makeTreeRawCatalog();
   if (opts.body !== undefined) {
     raw.lessons = raw.lessons.map((l) => (l.id === lessonId ? makeLesson({ ...l, body: { en: opts.body!, vi: opts.body! } }) : l));
@@ -14,7 +17,8 @@ async function mountPanel(lessonId: string, opts: { read?: string[]; body?: stri
   const fake = await makeFakeServices({ catalog: loadCatalog(raw), passedTopicIds: ['cloud-concepts', 'global-infrastructure'], readIds: opts.read ?? [] });
   const lesson = fake.services.catalog.lessons.find((l) => l.id === lessonId)!;
   const openExternal = opts.openExternal ?? vi.fn(async () => {});
-  const view = renderWithI18n(LessonPanel, { services: fake.services, appState: fake.appState, lesson, openExternal });
+  const canPractice = opts.canPractice ?? vi.fn(() => true);
+  const view = renderWithI18n(LessonPanel, { services: fake.services, appState: fake.appState, lesson, openExternal, canPractice });
   return { ...fake, ...view, openExternal };
 }
 
@@ -162,6 +166,40 @@ describe('LessonPanel', () => {
     expect(screen.getByRole('button', { name: /Previous lesson/ })).toBeDisabled();
     await fireEvent.click(screen.getByRole('button', { name: /Next lesson/ }));
     expect(appState.route).toEqual({ view: 'lesson', topicId: 'compute', lessonId: 'compute-lambda' });
+  });
+
+  it('a non-last lesson shows Next and no Practice button', async () => {
+    await mountPanel('compute-ec2');
+    expect(screen.getByRole('button', { name: /Next lesson/ })).toBeEnabled();
+    expect(screen.queryByRole('button', { name: 'Practice' })).not.toBeInTheDocument();
+  });
+
+  it('on the last lesson when the topic may be practised, Practice opens the topic practice route', async () => {
+    const canPractice = vi.fn(() => true);
+    const { appState } = await mountPanel('compute-video', { read: ['compute-ec2', 'compute-lambda'], canPractice });
+    expect(screen.queryByRole('button', { name: /Next lesson/ })).not.toBeInTheDocument();
+    const practice = screen.getByRole('button', { name: 'Practice' });
+    expect(practice).toBeEnabled();
+    expect(screen.queryByText('Read all required lessons first')).not.toBeInTheDocument();
+    expect(canPractice).toHaveBeenCalledWith('compute');
+    await fireEvent.click(practice);
+    expect(appState.route).toEqual({ view: 'practice', topicId: 'compute' });
+  });
+
+  it('on the last lesson when practice is locked, Practice is disabled, shows the reason as visible text and does not navigate', async () => {
+    const { appState } = await mountPanel('compute-video', { read: ['compute-ec2'], canPractice: () => false });
+    const practice = screen.getByRole('button', { name: 'Practice' });
+    expect(practice).toBeDisabled();
+    const reason = screen.getByText('Read all required lessons first');
+    expect(reason.tagName).toBe('P');
+    await fireEvent.click(practice);
+    expect(appState.route.view).not.toBe('practice');
+  });
+
+  it('a non-last lesson keeps Next and shows no practice reason, even when practice is locked', async () => {
+    await mountPanel('compute-ec2', { canPractice: () => false });
+    expect(screen.getByRole('button', { name: /Next lesson/ })).toBeEnabled();
+    expect(screen.queryByText('Read all required lessons first')).not.toBeInTheDocument();
   });
 
   it('back button returns to the tree', async () => {

@@ -1,0 +1,440 @@
+{
+ "q_592052939ca2": {
+  "explanation": "A Multi-AZ deployment keeps a synchronous standby in another Availability Zone and fails over to it automatically, typically within a minute or two, which fits the high availability and under-5-minute recovery goal.",
+  "optionNotes": {
+   "A": "A read replica scales reads using asynchronous replication and is not an automatic failover mechanism, so it does not give a dependable fast recovery.",
+   "B": "A CloudFormation template can recreate the instance, but rebuilding infrastructure and data takes far longer than 5 minutes and is not high availability.",
+   "C": "Restoring a snapshot creates a new DB instance and takes much longer than 5 minutes; snapshots are for backup, not for high availability.",
+   "D": "Multi-AZ maintains a standby in a second Availability Zone with automatic failover, meeting the high availability and fast recovery requirement."
+  }
+ },
+ "q_9def2fa1ebdf": {
+  "explanation": "Amazon DynamoDB is a fully managed, serverless NoSQL (nonrelational) database, so there is no hardware or database software for the user to manage.",
+  "optionNotes": {
+   "A": "Amazon RDS is a managed relational database service, not a nonrelational one.",
+   "B": "DynamoDB is a nonrelational key-value and document database that AWS fully manages, including hardware and software.",
+   "C": "Amazon Aurora is a relational database compatible with MySQL and PostgreSQL, so it is not nonrelational.",
+   "D": "Amazon Redshift is a relational data warehouse for analytics, not a nonrelational database."
+  }
+ },
+ "q_1745171776c5": {
+  "explanation": "Amazon RDS (which offers a PostgreSQL engine) and Amazon Aurora (PostgreSQL-compatible edition) are the managed AWS database services that support PostgreSQL.",
+  "optionNotes": {
+   "A": "Amazon Athena is a serverless query service for data in Amazon S3, not a managed PostgreSQL database.",
+   "B": "Amazon RDS supports PostgreSQL as a managed database engine, so it fits.",
+   "C": "Running PostgreSQL on Amazon EC2 works, but you manage the database yourself, so it is not a managed database service.",
+   "D": "Amazon DynamoDB is a NoSQL database and is not compatible with PostgreSQL.",
+   "E": "Amazon Aurora offers a PostgreSQL-compatible edition as a managed service, so it fits."
+  }
+ },
+ "q_8abc7139d568": {
+  "explanation": "AWS secures the virtualization layer (security of the cloud) and, for managed services such as Amazon RDS, patches the operating system. Customers manage guest OS patching on EC2, IAM password policies, and security group and network ACL configuration.",
+  "optionNotes": {
+   "A": "The hypervisor and virtualization layer are part of the AWS infrastructure, so AWS is responsible for securing it.",
+   "B": "On Amazon EC2 the guest operating system is the customer's responsibility to patch.",
+   "C": "Password policies for IAM users are configured by the customer, as part of security in the cloud.",
+   "D": "RDS is a managed service, so AWS patches the underlying operating system of the DB instances.",
+   "E": "Security groups and network ACLs are configured by the customer to control traffic to their resources."
+  }
+ },
+ "q_7b025a8943a2": {
+  "explanation": "Amazon Timestream is the purpose-built AWS time-series database for storing and analyzing very large volumes of time-stamped events such as IoT and operational data; the exam expects Timestream for this wording.",
+  "optionNotes": {
+   "A": "Amazon Neptune is a graph database for highly connected data, not a time-series database.",
+   "B": "Timestream is the AWS time-series database designed for trillions of events per day.",
+   "C": "Amazon Forecast is a machine learning forecasting service, not a database for storing events.",
+   "D": "Amazon DocumentDB is a document database compatible with MongoDB, not a time-series store."
+  }
+ },
+ "q_1bb922b3c20e": {
+  "explanation": "Amazon Neptune is the fully managed graph database service on AWS, built for storing and querying highly connected data.",
+  "optionNotes": {
+   "A": "Aurora is a relational database for MySQL and PostgreSQL workloads, not a graph database.",
+   "B": "Amazon FSx provides managed file systems, not a graph database.",
+   "C": "DynamoDB is a key-value and document NoSQL database, not a graph database.",
+   "D": "Neptune is the managed graph database service, optimized for relationships between data items."
+  }
+ },
+ "q_87abc8812308": {
+  "explanation": "Amazon RDS for MySQL is a managed relational database where AWS handles hardware, backups, replication, and failover, which matches a user without resources to manage those tasks.",
+  "optionNotes": {
+   "A": "Running MySQL on ECS means you still manage the database, its storage, resiliency, and replication yourself.",
+   "B": "MySQL on EC2 leaves hardware sizing, resiliency, and replication setup to the user, which is the burden they want to avoid.",
+   "C": "RDS for MySQL is managed by AWS, including provisioning, backups, and Multi-AZ replication and failover.",
+   "D": "ElastiCache for Redis is an in-memory cache, not a relational database."
+  }
+ },
+ "q_d93c97083814": {
+  "explanation": "Amazon Redshift is a fully managed, petabyte-scale data warehouse, so the company does not manage hardware or software for its analytics.",
+  "optionNotes": {
+   "A": "Amazon DocumentDB is a document database for operational workloads, not a petabyte-scale data warehouse.",
+   "B": "Redshift is the managed data warehouse built for petabyte-scale analytics.",
+   "C": "Neptune is a graph database for connected data, not a data warehouse.",
+   "D": "ElastiCache is an in-memory cache and data store, not a data warehouse."
+  }
+ },
+ "q_bd7ae8856112": {
+  "explanation": "Amazon DynamoDB is the AWS-managed NoSQL database service, available for hosting key-value and document data.",
+  "optionNotes": {
+   "A": "Aurora is a relational (SQL) database, not NoSQL.",
+   "B": "DynamoDB is AWS's fully managed NoSQL database service.",
+   "C": "Amazon RDS hosts relational engines such as MySQL and PostgreSQL, not NoSQL databases.",
+   "D": "Redshift is a relational data warehouse for analytics, not a NoSQL database."
+  }
+ },
+ "q_fd44765183ba": {
+  "explanation": "Amazon Aurora is a relational database engine that is compatible with both MySQL and PostgreSQL.",
+  "optionNotes": {
+   "A": "Redshift is an analytics data warehouse, not the general-purpose MySQL and PostgreSQL compatible relational database the question describes.",
+   "B": "DynamoDB is a NoSQL database and is not compatible with MySQL or PostgreSQL.",
+   "C": "Aurora offers MySQL-compatible and PostgreSQL-compatible editions, matching the requirement.",
+   "D": "Neptune is a graph database and has no MySQL or PostgreSQL compatibility."
+  }
+ },
+ "q_e903abcd5b35": {
+  "explanation": "RDS Multi-AZ deployments create a primary instance and synchronously replicate data to a standby in a different Availability Zone, with automatic failover.",
+  "optionNotes": {
+   "A": "Read replicas use asynchronous replication for read scaling and are not the automatic synchronous standby described.",
+   "B": "Blue/green deployments create a staging copy of the environment for safer updates, not a synchronous cross-AZ standby.",
+   "C": "Multi-AZ deployment provides the synchronous standby in another Availability Zone and automatic failover.",
+   "D": "Reserved Instances are a billing discount for committed usage and do not replicate data."
+  }
+ },
+ "q_acb80c2b7edb": {
+  "explanation": "Amazon DynamoDB is a durable NoSQL database that stores unstructured or semi-structured items without a fixed schema and lets you query them quickly by key.",
+  "optionNotes": {
+   "A": "RDS is a relational database that requires structured data with a defined schema, so it suits unstructured data poorly.",
+   "B": "Aurora is a relational database that expects structured, schema-based data.",
+   "C": "QuickSight is a business intelligence and visualization service, not a data store.",
+   "D": "DynamoDB stores schemaless items durably across multiple Availability Zones and supports fast queries."
+  }
+ },
+ "q_b6c4aa92dbdb": {
+  "explanation": "Amazon Aurora (PostgreSQL-compatible edition) and Amazon EC2 (where you install PostgreSQL yourself) can both host PostgreSQL databases.",
+  "optionNotes": {
+   "A": "Amazon S3 is object storage and cannot run a database engine.",
+   "B": "Aurora has a PostgreSQL-compatible edition, so it can host PostgreSQL databases.",
+   "C": "You can install and run PostgreSQL on an EC2 instance, so EC2 can host it, although you manage the database.",
+   "D": "OpenSearch Service is a search and analytics engine, not a PostgreSQL host.",
+   "E": "Amazon EFS is a shared file system and does not run database engines."
+  }
+ },
+ "q_73bad8e4869c": {
+  "explanation": "AWS Regions are the geographic locations where you deploy resources, so the company picks the Region nearest to its current location for its RDS databases.",
+  "optionNotes": {
+   "A": "Amazon Connect is a cloud contact center service and has nothing to do with choosing where RDS runs.",
+   "B": "AWS Wavelength embeds compute in telecom 5G networks and is not how you select an RDS deployment area.",
+   "C": "You choose an AWS Region to determine the geographic area where your RDS instances are deployed.",
+   "D": "Direct Connect is a dedicated network link to AWS; it does not select a deployment location."
+  }
+ },
+ "q_34dcddec45d7": {
+  "explanation": "Amazon Neptune is a graph database that lets you query relationships between entities such as users, addresses, and transactions, which suits fraud detection.",
+  "optionNotes": {
+   "A": "DocumentDB stores JSON-like documents and is not designed for graph relationship queries.",
+   "B": "Timestream stores time-series data and is not a graph database.",
+   "C": "DynamoDB is a key-value store that is not built for graph traversals across connected data.",
+   "D": "Neptune is built for graph queries over highly connected data, such as spotting fraud patterns."
+  }
+ },
+ "q_65de1a942430": {
+  "explanation": "Amazon Redshift is the AWS data warehouse service, designed for analyzing very large data sets with SQL.",
+  "optionNotes": {
+   "A": "RDS targets transactional relational workloads, not large-scale data warehousing.",
+   "B": "DynamoDB is a NoSQL operational database, not a data warehouse.",
+   "C": "Redshift is purpose-built as a managed data warehouse for large analytical workloads.",
+   "D": "Aurora is optimized for transactional (OLTP) workloads rather than data warehousing."
+  }
+ },
+ "q_f4f00538be9a": {
+  "explanation": "For a managed service like DynamoDB, AWS handles physical security and patching, while the customer controls who can access their tables through IAM permissions.",
+  "optionNotes": {
+   "A": "Physical security of AWS data centers is always AWS's responsibility.",
+   "B": "DynamoDB is serverless and AWS patches the underlying service, so the customer does not.",
+   "C": "Managing access to tables (IAM policies and permissions) is the customer's responsibility.",
+   "D": "DynamoDB encrypts data at rest by default as part of the managed service, so this is not the customer's duty to perform."
+  }
+ },
+ "q_48d7363fc761": {
+  "explanation": "Amazon RDS supports MariaDB as a managed engine, so AWS handles patching, backups, and hardware, giving the least operational overhead.",
+  "optionNotes": {
+   "A": "RDS offers a managed MariaDB engine, which removes most database administration work.",
+   "B": "Neptune is a graph database and does not host MariaDB.",
+   "C": "S3 is object storage and cannot host a relational MariaDB database.",
+   "D": "DynamoDB is a NoSQL database and is not compatible with MariaDB."
+  }
+ },
+ "q_b7001545285b": {
+  "explanation": "Amazon DynamoDB is a serverless NoSQL database that scales to handle millions of requests per second with consistent low latency.",
+  "optionNotes": {
+   "A": "DynamoDB scales horizontally to millions of requests per second, matching the requirement.",
+   "B": "AWS Cloud9 is a cloud-based IDE for writing code, not a data store.",
+   "C": "ElastiCache for Memcached is an in-memory cache that sits in front of a data store; it is not the durable primary database for the application.",
+   "D": "Neptune is a graph database for connected data, not a general data store designed to scale to millions of key-based queries per second."
+  }
+ },
+ "q_008b74ba0943": {
+  "explanation": "Running RDS across multiple Availability Zones (Multi-AZ) provides a standby copy and automatic failover, making the PostgreSQL database highly available and fault tolerant.",
+  "optionNotes": {
+   "A": "A single-AZ deployment has no standby, so an Availability Zone failure causes an outage.",
+   "B": "Snapshots are backups for restore and do not provide continuous availability or automatic failover.",
+   "C": "Multi-AZ keeps a synchronous standby in another AZ and fails over automatically.",
+   "D": "AWS DMS migrates data between databases and does not provide high availability for RDS."
+  }
+ },
+ "q_61a1c6b38011": {
+  "explanation": "Encryption of Aurora clusters and snapshots is configured by the customer, who chooses to enable it and manages the keys; AWS provides the encryption capability.",
+  "optionNotes": {
+   "A": "AWS supplies encryption features, but the customer is responsible for enabling and configuring encryption of their databases and snapshots.",
+   "B": "The company decides to turn on encryption and selects the KMS keys for its clusters and snapshots.",
+   "C": "AWS Marketplace partners are not part of the shared responsibility model for a company's Aurora encryption.",
+   "D": "Third-party partners are not responsible for encrypting the company's Aurora clusters under the shared responsibility model."
+  }
+ },
+ "q_e05fe2ec02d4": {
+  "explanation": "Amazon DynamoDB is a fully managed NoSQL database that can automatically scale throughput capacity (on-demand or auto scaling) to match workload demand.",
+  "optionNotes": {
+   "A": "Redshift is a data warehouse, not a NoSQL database.",
+   "B": "Aurora is a relational database, not NoSQL.",
+   "C": "DynamoDB is a fully managed NoSQL service that scales throughput automatically.",
+   "D": "RDS runs relational engines, not NoSQL databases."
+  }
+ },
+ "q_2dfc2294e5be": {
+  "explanation": "RDS Multi-AZ deployment keeps a standby copy in another Availability Zone and fails over automatically, which provides high availability.",
+  "optionNotes": {
+   "A": "Read replicas scale read traffic and are not an automatic high availability feature.",
+   "B": "Blue/green deployment helps with safer upgrades and changes, not high availability.",
+   "C": "Multi-AZ gives automatic failover to a standby in another Availability Zone.",
+   "D": "Reserved Instances reduce cost for committed usage and do not affect availability."
+  }
+ },
+ "q_4ded600d9f34": {
+  "explanation": "DynamoDB is a managed service, so AWS handles the operating system, hosts, and patching. The customer manages who can access the tables through permissions.",
+  "optionNotes": {
+   "A": "With DynamoDB there is no customer-visible operating system, and AWS handles patching.",
+   "B": "AWS provisions and manages the hosts that run DynamoDB.",
+   "C": "Managing access permissions (for example through IAM policies) is the customer's responsibility.",
+   "D": "Securing the underlying operating system is done by AWS because DynamoDB is a managed service."
+  }
+ },
+ "q_56b6188e1e08": {
+  "explanation": "Amazon RDS is a managed relational database service that installs the database engine and applies regular software updates and patches for you.",
+  "optionNotes": {
+   "A": "S3 is object storage and does not run relational databases.",
+   "B": "RDS is a managed relational database service that handles installation, patching, and backups.",
+   "C": "EBS provides block storage volumes for EC2 and does not install or update a database.",
+   "D": "DynamoDB is a NoSQL database, not a relational database service."
+  }
+ },
+ "q_ecc2000d454e": {
+  "explanation": "Amazon Neptune is the fully managed graph database designed for highly connected datasets.",
+  "optionNotes": {
+   "A": "DynamoDB is a key-value and document database, not a graph database.",
+   "B": "RDS runs relational engines and is not designed for graph data.",
+   "C": "Neptune is the managed graph database service for relationship-heavy data.",
+   "D": "Aurora is a relational database and not a graph database."
+  }
+ },
+ "q_b38b188bd752": {
+  "explanation": "RDS is a managed service, so performing automated backups of RDS instances is handled by AWS. Customers patch guest operating systems on EC2, monitor their own systems, and optimize their own costs.",
+  "optionNotes": {
+   "A": "Guest operating system patches on EC2 instances are the customer's responsibility.",
+   "B": "Monitoring the customer's own HRIM systems is the customer's concern, not an AWS duty.",
+   "C": "Automated backups of RDS instances are part of the managed service that AWS operates.",
+   "D": "Optimizing the cost of using AWS services is the customer's responsibility."
+  }
+ },
+ "q_7f5cf03e5185": {
+  "explanation": "Amazon DynamoDB is the AWS service designed for NoSQL workloads.",
+  "optionNotes": {
+   "A": "RDS hosts relational databases, not NoSQL.",
+   "B": "S3 is object storage, not a NoSQL database.",
+   "C": "Redshift is a relational data warehouse for analytics, not NoSQL.",
+   "D": "DynamoDB is a fully managed NoSQL key-value and document database."
+  }
+ },
+ "q_ed18b77845cb": {
+  "explanation": "Amazon Aurora is a fully managed relational database with a MySQL-compatible edition.",
+  "optionNotes": {
+   "A": "S3 is object storage, not a database.",
+   "B": "DynamoDB is a NoSQL database and is not MySQL-compatible.",
+   "C": "Redshift is a data warehouse and is not the MySQL-compatible managed database asked for.",
+   "D": "Aurora is a managed relational database compatible with MySQL."
+  }
+ },
+ "q_e44fe636aac2": {
+  "explanation": "Amazon RDS offers PostgreSQL as a managed engine suited to transactional (OLTP) workloads.",
+  "optionNotes": {
+   "A": "DynamoDB is NoSQL and does not run PostgreSQL.",
+   "B": "Athena queries data in S3 for analytics and does not host a PostgreSQL database for OLTP.",
+   "C": "RDS runs a managed PostgreSQL database that handles OLTP workloads.",
+   "D": "Amazon EMR is a big data processing platform, not a managed PostgreSQL service."
+  }
+ },
+ "q_65d7a063cbc7": {
+  "explanation": "Amazon DynamoDB is a key-value and document database that delivers single-digit millisecond performance at any scale, and DynamoDB Accelerator (DAX) can bring reads down to microseconds, which is why the exam expects it for sub-millisecond key-value access.",
+  "optionNotes": {
+   "A": "DynamoDB is the AWS key-value database built for very fast access at any scale, with DAX available for microsecond reads.",
+   "B": "Aurora is a relational database, not a key-value database.",
+   "C": "DocumentDB is a document database compatible with MongoDB, not a key-value database.",
+   "D": "Neptune is a graph database, not a key-value database."
+  }
+ },
+ "q_e5e6b32e6e3d": {
+  "explanation": "Amazon DynamoDB is AWS's fully managed NoSQL database service.",
+  "optionNotes": {
+   "A": "RDS provides managed relational databases, not NoSQL.",
+   "B": "Redshift is a data warehouse, not a NoSQL database.",
+   "C": "DynamoDB is the fully managed NoSQL database service.",
+   "D": "Aurora is a relational database, not NoSQL."
+  }
+ },
+ "q_0aae093d728b": {
+  "explanation": "Amazon RDS supports Microsoft SQL Server as a managed engine where AWS handles routine administration such as patching and backups.",
+  "optionNotes": {
+   "A": "SQL Server on EC2 leaves patching, backups, and administration to the company.",
+   "B": "DynamoDB is a NoSQL database and does not run SQL Server.",
+   "C": "RDS for SQL Server is managed by AWS, which handles day-to-day administration.",
+   "D": "Aurora is compatible with MySQL and PostgreSQL only, not SQL Server."
+  }
+ },
+ "q_4c8d1c8343ad": {
+  "explanation": "Amazon Neptune is a graph database that supports graph queries, making it suitable for detecting fraud patterns across related entities.",
+  "optionNotes": {
+   "A": "Neptune runs graph queries over relationships, which fits fraud pattern detection.",
+   "B": "DynamoDB is a key-value store and is not built for graph queries.",
+   "C": "Timestream stores time-series data, not graph relationships.",
+   "D": "Amazon Forecast is a machine learning forecasting service, not a graph database."
+  }
+ },
+ "q_11ec605045db": {
+  "explanation": "Amazon RDS is a managed relational database service, so migrating SQL databases there removes the need to run physical servers or administer the database hosts, giving the least operational overhead.",
+  "optionNotes": {
+   "A": "EC2 instances require the company to install, patch, back up, and manage the databases itself.",
+   "B": "RDS manages hardware, patching, and backups for SQL-based engines, minimizing operational work.",
+   "C": "DynamoDB is NoSQL, so SQL-based databases would need redesign rather than a straightforward migration.",
+   "D": "OpenSearch is a search and analytics engine, not a replacement for SQL database servers."
+  }
+ },
+ "q_c3297f375742": {
+  "explanation": "Amazon RDS supports MySQL as one of its managed database engines.",
+  "optionNotes": {
+   "A": "DynamoDB is a NoSQL database and does not support the MySQL engine.",
+   "B": "RDS offers MySQL as a managed engine.",
+   "C": "DocumentDB is compatible with MongoDB, not MySQL.",
+   "D": "ElastiCache is an in-memory cache and does not offer a MySQL engine."
+  }
+ },
+ "q_1e56cd875af4": {
+  "explanation": "Amazon RDS is a managed relational database service where AWS handles automated backups and database snapshots.",
+  "optionNotes": {
+   "A": "DocumentDB is a document database, not a relational database.",
+   "B": "RDS is a managed relational database service that provides automated backups and snapshots.",
+   "C": "EBS provides block storage and is not a relational database service.",
+   "D": "S3 is object storage and is not a relational database."
+  }
+ },
+ "q_f7d8d45db9d1": {
+  "explanation": "Amazon Redshift Serverless lets you run and scale a data warehouse for analytics without provisioning or managing infrastructure.",
+  "optionNotes": {
+   "A": "Aurora is a transactional relational database, not a data warehouse.",
+   "B": "Redshift Serverless is a data warehouse where AWS manages the infrastructure for you.",
+   "C": "Lambda runs code and is not a data warehouse.",
+   "D": "RDS is intended for transactional workloads and is not a data warehouse service."
+  }
+ },
+ "auth-databases-01": {
+  "explanation": "DynamoDB on-demand capacity mode is serverless and bills per read and write request, so it handles near-zero traffic cheaply and absorbs unpredictable tournament spikes. Fixed provisioned capacity or instance-based databases do not match that pattern.",
+  "optionNotes": {
+   "A": "RDS requires choosing and paying for a DB instance class regardless of traffic, and it is not billed per request.",
+   "B": "On-demand mode has no servers to provision and charges per request, matching the idle-then-spiky traffic.",
+   "C": "Provisioned mode with fixed capacity charges for the set capacity even when idle and can throttle during unexpected spikes.",
+   "D": "A provisioned Redshift cluster is a data warehouse billed for running nodes, not a per-request session store."
+  }
+ },
+ "auth-databases-02": {
+  "explanation": "A Multi-AZ deployment keeps a synchronous standby in another Availability Zone and fails over to it automatically if the primary AZ becomes unavailable.",
+  "optionNotes": {
+   "A": "A read replica in the same Availability Zone would fail together with the primary and is not an automatic failover target.",
+   "B": "A larger instance class adds capacity but does not protect against an Availability Zone failure.",
+   "C": "ElastiCache reduces read load but does not provide database failover across Availability Zones.",
+   "D": "Multi-AZ provides the standby and automatic failover needed to survive an Availability Zone outage."
+  }
+ },
+ "auth-databases-03": {
+  "explanation": "With Amazon RDS, AWS patches the operating system of the database host and takes automated backups with point-in-time restore. Schema design, query tuning, and database access control remain the customer's job.",
+  "optionNotes": {
+   "A": "RDS is managed, so AWS patches the underlying operating system, unlike a self-managed database on EC2.",
+   "B": "Designing the schema and indexes is application and data design work that stays with the customer.",
+   "C": "Tuning the application's slow SQL queries remains the customer's responsibility.",
+   "D": "RDS automated backups enable point-in-time restore and are handled by AWS.",
+   "E": "Deciding who may connect to the database is access control, which the customer manages."
+  }
+ },
+ "auth-databases-04": {
+  "explanation": "A read replica is a read-only copy of the database, so pointing the reporting queries at it takes read load off the primary with little application change.",
+  "optionNotes": {
+   "A": "The standby in a Multi-AZ DB instance deployment cannot serve read traffic; it exists only for failover.",
+   "B": "AWS DMS migrates and replicates data between databases and is not a way to run the reports.",
+   "C": "A read replica serves read-only queries such as reports, offloading the primary database.",
+   "D": "A longer backup retention period only keeps backups longer and does not reduce query load."
+  }
+ },
+ "auth-databases-05": {
+  "explanation": "Amazon Redshift is a managed data warehouse built for complex analytical SQL queries over large volumes of historical data from many sources.",
+  "optionNotes": {
+   "A": "Redshift is designed for analytics and business intelligence on large data sets.",
+   "B": "DynamoDB is a NoSQL database for fast key-based access and is not built for complex SQL analytics.",
+   "C": "ElastiCache is an in-memory cache and not a place to run analytics over years of data.",
+   "D": "DocumentDB is a document database for operational workloads, not a data warehouse."
+  }
+ },
+ "auth-databases-06": {
+  "explanation": "The AWS Schema Conversion Tool converts database schemas and code objects such as views and stored procedures from one engine to another, which is needed for an Oracle to Aurora PostgreSQL migration.",
+  "optionNotes": {
+   "A": "DataSync transfers files and objects between storage systems and does not convert database schemas.",
+   "B": "AWS Backup centralizes backups of AWS resources and does not convert schemas.",
+   "C": "RDS read replicas copy data within the same engine and cannot convert between engines.",
+   "D": "AWS SCT converts schemas and code objects from the source engine to the target engine."
+  }
+ },
+ "auth-databases-07": {
+  "explanation": "On-demand mode bills per request without capacity planning, and global tables replicate a table across multiple AWS Regions. DynamoDB has no maintenance windows, no SQL joins, and spans multiple Availability Zones.",
+  "optionNotes": {
+   "A": "DynamoDB is serverless, so there are no engine patching maintenance windows for customers to choose.",
+   "B": "On-demand capacity mode charges per read and write request and scales without capacity planning.",
+   "C": "DynamoDB is a NoSQL database and does not support SQL joins across tables the way relational databases do.",
+   "D": "DynamoDB tables are not limited to one Availability Zone; data is replicated across multiple AZs in a Region.",
+   "E": "Global tables replicate a table across the AWS Regions you choose."
+  }
+ },
+ "auth-databases-08": {
+  "explanation": "Amazon Neptune is a graph database made to store and traverse relationships, such as friends of friends who share interests.",
+  "optionNotes": {
+   "A": "Timestream stores time-series data such as sensor readings, not relationships between people.",
+   "B": "Neptune is built for highly connected data and fast relationship queries.",
+   "C": "Redshift is a data warehouse for analytics and is not optimized for traversing relationships.",
+   "D": "ElastiCache is an in-memory cache and is not a database for modeling connections."
+  }
+ },
+ "auth-databases-09": {
+  "explanation": "Amazon ElastiCache is a managed in-memory cache that serves frequently read data quickly and reduces load on the RDS database.",
+  "optionNotes": {
+   "A": "Redshift is a data warehouse for analytics and does not act as a cache in front of RDS.",
+   "B": "AWS DMS migrates and replicates data and does not cache frequently read data.",
+   "C": "ElastiCache keeps hot data in memory, lowering latency and database read load.",
+   "D": "DocumentDB is a document database and not a caching layer for RDS."
+  }
+ },
+ "auth-databases-10": {
+  "explanation": "Aurora is a managed relational database compatible with MySQL and PostgreSQL, and its cluster volume keeps copies of the data across three Availability Zones.",
+  "optionNotes": {
+   "A": "Aurora is a relational database, not a schemaless NoSQL key-value store.",
+   "B": "Aurora is a managed service run by AWS and does not require customer-managed EC2 instances.",
+   "C": "Aurora offers MySQL-compatible and PostgreSQL-compatible editions.",
+   "D": "Neptune, not Aurora, is the graph database for connected data.",
+   "E": "Aurora storage replicates data across three Availability Zones for durability."
+  }
+ }
+}

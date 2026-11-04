@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import { buildLessons, buildQuestions, bundledPaths, parseFrontMatter, parseJson } from './bundled';
+import { makeQuestion } from '@/testing/fixtures';
+import { applyExplanations, buildExplanations, buildLessons, buildQuestions, bundledPaths, parseFrontMatter, parseJson } from './bundled';
 
 const P = '/content/lessons/compute/02-ec2';
 const file = (fm: string, body = 'Body') => `---\n${fm}\n---\n${body}\n`;
@@ -103,5 +104,47 @@ describe('bundle', () => {
     expect(paths).toContain('/content/topics.json');
     expect(paths.some((p) => p.startsWith('/content/lessons/'))).toBe(true);
     expect(paths.filter((p) => p.startsWith('/content/review/'))).toEqual([]);
+  });
+});
+
+describe('applyExplanations', () => {
+  it('merges explanation and optionNotes, overlay winning over inline', () => {
+    const [q] = applyExplanations([makeQuestion({ id: 'q1', explanation: 'old' })], {
+      q1: { explanation: 'E', optionNotes: { A: 'a' } },
+    });
+    expect(q.explanation).toBe('E');
+    expect(q.optionNotes).toEqual({ A: 'a' });
+  });
+  it('leaves questions without an overlay entry untouched', () => {
+    const q = makeQuestion({ id: 'q2', explanation: 'keep' });
+    expect(applyExplanations([q], {})).toEqual([q]);
+  });
+  it('throws on an unknown question id', () => {
+    expect(() => applyExplanations([makeQuestion({ id: 'q1' })], { q9: { explanation: 'x' } })).toThrow(/unknown question/);
+  });
+});
+
+describe('buildExplanations', () => {
+  it('returns {} when there are no overlay files', () => {
+    expect(buildExplanations({ '/content/questions/a.json': '[]', '/content/lessons/x/01-a.en.md': 'x' })).toEqual({});
+  });
+  it('parses only /content/explanations/*.json and merges files', () => {
+    const r = buildExplanations({
+      '/content/questions/a.json': 'not json',
+      '/content/explanations/compute.json': '{"q1":{"explanation":"E"}}',
+      '/content/explanations/unassigned.json': '{"q2":{"optionNotes":{"A":"a"}}}',
+    });
+    expect(Object.keys(r).sort()).toEqual(['q1', 'q2']);
+  });
+  it('throws naming the path when a file is not an object', () => {
+    expect(() => buildExplanations({ '/content/explanations/bad.json': '[]' })).toThrow(/\/content\/explanations\/bad\.json/);
+  });
+  it('throws on a duplicate id across overlay files', () => {
+    expect(() =>
+      buildExplanations({
+        '/content/explanations/a.json': '{"q1":{}}',
+        '/content/explanations/b.json': '{"q1":{}}',
+      }),
+    ).toThrow(/duplicate.*q1/);
   });
 });

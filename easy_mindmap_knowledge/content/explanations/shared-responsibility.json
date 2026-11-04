@@ -1,0 +1,271 @@
+{
+ "q_81ec921ce159": {
+  "explanation": "Patch management is a shared control: AWS patches and fixes flaws in the infrastructure, while the customer patches its guest operating systems and applications.",
+  "optionNotes": {
+   "A": "Configuring the operating system of an EC2 instance is the customer's job, because the guest OS belongs to the customer.",
+   "B": "Encrypting data on the file systems of the customer's own application is a customer decision and configuration, not a shared control.",
+   "C": "Each side patches its own layer, so patch management is a shared control between AWS and the customer.",
+   "D": "Physical security of the infrastructure is entirely AWS's responsibility."
+  }
+ },
+ "q_341570b0e614": {
+  "explanation": "Customers are responsible for security in the cloud, which includes protecting their own application data. AWS handles the hardware and the physical data centers.",
+  "optionNotes": {
+   "A": "AWS maintains the hardware that underlies EC2 instances.",
+   "B": "The customer decides how its application data is classified, encrypted and accessed, so securing it is a customer responsibility.",
+   "C": "AWS provides physical security for its data centers, so this is not left to the customer.",
+   "D": "The exam expects this to be AWS's side: AWS maintains the network infrastructure underneath the VPC, while the customer only configures its own VPC settings (subnets, route tables, security groups)."
+  }
+ },
+ "q_b927dfd0a6af": {
+  "explanation": "On EC2 the guest operating system is owned by the customer, so the customer manages and patches it. AWS manages the host OS, virtualization, hardware and the Availability Zone infrastructure.",
+  "optionNotes": {
+   "A": "The guest operating system running on a customer's instance is managed by the customer.",
+   "B": "AWS configures and maintains the infrastructure devices (networking, servers) in its data centers.",
+   "C": "AWS manages the host operating system and the virtualization layer under customer instances.",
+   "D": "The software that powers Availability Zones is part of the AWS infrastructure that AWS operates."
+  }
+ },
+ "q_0bd876fc648f": {
+  "explanation": "Customer data is always the customer's responsibility, whatever services are used, including its classification, protection and access. Other items depend on the service or are partly covered by AWS.",
+  "optionNotes": {
+   "A": "Software licensing depends on the service and model (for example license-included versus bring-your-own), so it is not something the customer always manages alone.",
+   "B": "AWS runs the physical network, and the customer only configures the network settings it controls, so networking is split rather than always the customer's.",
+   "C": "The customer owns its data and is always responsible for deciding how it is classified, protected and accessed.",
+   "D": "Key handling depends on the service: with AWS-managed options such as SSE-S3 AWS manages the keys, so the exam expects customer data, not keys, as the item that is always the customer's."
+  }
+ },
+ "q_4b4b61775da2": {
+  "explanation": "Maintaining the physical hardware is part of security of the cloud, which AWS owns. Configuring IAM, encryption and security groups are customer tasks in the cloud.",
+  "optionNotes": {
+   "A": "Configuring IAM for applications is part of security in the cloud, which is the customer's job.",
+   "B": "The customer chooses and manages the encryption options for its stored data.",
+   "C": "Security groups are configured by the customer for its own EC2 instances.",
+   "D": "AWS owns, operates and maintains the physical hardware that makes up the AWS infrastructure."
+  }
+ },
+ "q_da1bb57090df": {
+  "explanation": "Configuration management is a shared control: AWS configures its infrastructure devices, while customers configure their own guest operating systems, databases and applications.",
+  "optionNotes": {
+   "A": "AWS maintains the configuration of its infrastructure devices and the customer maintains the configuration of its own OS, databases and applications, so both are involved.",
+   "B": "Physical and environmental controls are inherited by customers because AWS provides them entirely.",
+   "C": "AWS describes patch management, configuration management and awareness and training as the shared controls; protecting data integrity stays with the customer, so this is not one of them.",
+   "D": "IAM configuration and access management for customer resources are customer responsibilities, not a shared control."
+  }
+ },
+ "q_587ebd261839": {
+  "explanation": "The customer is responsible for configuring guest operating systems and applications and for deciding on encryption options. AWS maintains infrastructure devices and hardware.",
+  "optionNotes": {
+   "A": "AWS maintains the configuration of infrastructure devices as part of the global infrastructure.",
+   "B": "Patching and updates within the hardware infrastructure are done by AWS.",
+   "C": "Guest operating systems and applications belong to the customer, who must configure them securely.",
+   "D": "Customers choose whether and how to encrypt their data, so encryption decisions are theirs.",
+   "E": "AWS owns and maintains the infrastructure hardware."
+  }
+ },
+ "q_d185d25f405f": {
+  "explanation": "IAM access keys and secret keys are credentials the customer controls, so the customer must manage and rotate them. AWS does not rotate customer IAM user keys automatically.",
+  "optionNotes": {
+   "A": "Static long-term keys carry risk if they leak, so rotating them is a recommended security practice.",
+   "B": "Managing IAM users and rotating their access keys is part of security in the cloud, which is the customer's responsibility.",
+   "C": "AWS does not rotate customer IAM user access keys on its own.",
+   "D": "AWS Support does not rotate the customer's IAM keys; the customer manages them."
+  }
+ },
+ "q_d3b78e770134": {
+  "explanation": "Physical and environmental controls are entirely AWS's responsibility, because AWS operates the data centers. Training, IAM password policy and guest OS patching involve the customer.",
+  "optionNotes": {
+   "A": "Security awareness and training is a shared control; each party trains its own employees.",
+   "B": "An IAM password policy is defined by the customer for its own IAM users.",
+   "C": "Patching the guest operating system is the customer's part of patch management.",
+   "D": "AWS provides physical and environmental controls for its facilities, and customers inherit them."
+  }
+ },
+ "q_7dbf3cfd3482": {
+  "explanation": "Protecting the physical network infrastructure is part of security of the cloud, which AWS handles. Encryption, authentication and firewall configuration are the customer's tasks.",
+  "optionNotes": {
+   "A": "Encrypting application data is the customer's decision and responsibility.",
+   "B": "Authenticating the users of the customer's application is the customer's responsibility.",
+   "C": "AWS builds, operates and protects the physical network infrastructure of the AWS Cloud.",
+   "D": "Configuring firewalls such as security groups and network ACLs is done by the customer."
+  }
+ },
+ "q_4c55323b4835": {
+  "explanation": "For managed services AWS patches the underlying infrastructure. The customer remains responsible for its application data, access management and software it runs on EC2.",
+  "optionNotes": {
+   "A": "Securing application data is the customer's responsibility.",
+   "B": "Applications that run on EC2 instances are installed by the customer, so the customer patches them.",
+   "C": "With managed services such as RDS, AWS handles patching of the underlying infrastructure.",
+   "D": "Identity and access management for the customer's application is the customer's responsibility."
+  }
+ },
+ "q_144b9ff336bb": {
+  "explanation": "Security of the cloud means AWS protects the infrastructure (hardware, software, networking and facilities) that runs all AWS services.",
+  "optionNotes": {
+   "A": "Availability of services is a service level matter and not what the model means by security of the cloud.",
+   "B": "AWS is responsible for protecting the infrastructure that runs all of the AWS services, which is security of the cloud.",
+   "C": "Password policies for IAM users are set by the customer, so this is security in the cloud.",
+   "D": "Securing customer environments with firewall tools is the customer's task, so it falls under security in the cloud."
+  }
+ },
+ "q_3a768276cf29": {
+  "explanation": "AWS is responsible for the hardware and infrastructure of the cloud. Firewall configuration, client-side encryption and permissions are the customer's responsibility.",
+  "optionNotes": {
+   "A": "Network and firewall configuration of the customer's resources, such as security groups, is set by the customer.",
+   "B": "Client-side encryption takes place before data reaches AWS and is managed by the customer.",
+   "C": "Managing user permissions with IAM is the customer's responsibility.",
+   "D": "AWS owns and operates the hardware and infrastructure that run its services."
+  }
+ },
+ "q_ad57a1b70c1a": {
+  "explanation": "For EC2 the customer patches the guest operating system and encrypts its data at rest on the associated storage. AWS handles the hypervisor, hardware and physical security.",
+  "optionNotes": {
+   "A": "AWS installs and patches the hypervisor that runs the instances.",
+   "B": "The guest OS of an EC2 instance is owned by the customer, who must patch it.",
+   "C": "The customer decides about and configures encryption of data at rest, for example on its EBS volumes.",
+   "D": "AWS installs the physical hardware and cabling in its data centers.",
+   "E": "AWS provides the physical security of the data centers that host EC2."
+  }
+ },
+ "q_867955ccd39e": {
+  "explanation": "AWS is responsible for network infrastructure and virtualization and for the physical security of hardware. Application data, guest operating systems, and credentials and policies belong to the customer.",
+  "optionNotes": {
+   "A": "The network infrastructure and the virtualization layer are part of the infrastructure that AWS operates.",
+   "B": "The customer is responsible for securing its own application data.",
+   "C": "The guest operating system on an instance is managed by the customer.",
+   "D": "AWS secures the physical hardware and data centers.",
+   "E": "Credentials and IAM policies are managed by the customer."
+  }
+ },
+ "q_a227eb0c738c": {
+  "explanation": "AWS secures physical access to its facilities and performs infrastructure patching and maintenance. IAM, security groups and application patching are done by the customer.",
+  "optionNotes": {
+   "A": "Configuring IAM users, roles and policies is the customer's job.",
+   "B": "Security groups for EC2 instances are configured by the customer.",
+   "C": "AWS controls and secures physical access to its data centers.",
+   "D": "Applications on EC2 are installed by the customer, so the customer patches them.",
+   "E": "AWS patches and maintains the infrastructure that runs its services."
+  }
+ },
+ "q_27c19e01e8a3": {
+  "explanation": "Customers encrypt data and maintain its integrity and maintain identity and access management controls. AWS secures the virtualization layer and Availability Zones, and patches the RDS operating system.",
+  "optionNotes": {
+   "A": "The virtualization layer is part of the infrastructure that AWS secures.",
+   "B": "Protecting data through encryption and integrity checks is security in the cloud, which the customer owns.",
+   "C": "RDS is a managed service, so AWS patches its operating system.",
+   "D": "Defining who can access resources through IAM is a customer responsibility.",
+   "E": "Availability Zones are AWS data center infrastructure that AWS secures."
+  }
+ },
+ "q_8ed2db8565d8": {
+  "explanation": "The customer patches the guest operating system of its instances. Disk shredding, hypervisor-level traffic isolation and physical monitoring are AWS tasks.",
+  "optionNotes": {
+   "A": "AWS handles secure disposal of storage media before they leave its data centers.",
+   "B": "Isolating customers at the hypervisor level is part of the virtualization layer that AWS operates.",
+   "C": "The guest operating system belongs to the customer, who must keep it up to date with security patches.",
+   "D": "Physical monitoring systems in the data centers are maintained by AWS."
+  }
+ },
+ "q_7ac2e54391af": {
+  "explanation": "Configuring firewalls and networks for its resources, such as security groups and network ACLs, is the customer's responsibility. AWS handles the AWS Cloud infrastructure, RDS OS patching and physical controls.",
+  "optionNotes": {
+   "A": "Security of the AWS Cloud itself is the responsibility of AWS.",
+   "B": "Customers configure their own firewalls and network settings, which is security in the cloud.",
+   "C": "RDS is managed, so AWS patches the operating system of its instances.",
+   "D": "Physical and environmental controls are provided by AWS."
+  }
+ },
+ "auth-shared-responsibility-01": {
+  "explanation": "On Amazon EC2 the guest operating system belongs to the customer, so the customer must patch it (tools such as Systems Manager Patch Manager can help). AWS patches only the infrastructure it controls, such as the host operating system and the hypervisor.",
+  "optionNotes": {
+   "A": "Being an AWS service does not move OS patching to AWS; with EC2 the guest OS is the customer's responsibility.",
+   "B": "The customer owns the guest operating system on EC2, so it must apply the patches.",
+   "C": "AWS Support does not automatically patch customer instances.",
+   "D": "Hardware vendors are not involved; AWS owns the hardware and the customer owns the guest OS."
+  }
+ },
+ "auth-shared-responsibility-02": {
+  "explanation": "AWS patches the operating system and engine of RDS instances, and the customer controls the timing by choosing the weekly maintenance window. Customers do not install patches on the RDS host themselves.",
+  "optionNotes": {
+   "A": "RDS does not give customers SSH access to the underlying host, so manual patching is not possible.",
+   "B": "A support case is not needed; patch timing is controlled with a setting on the DB instance.",
+   "C": "AWS does patch RDS instances, because RDS is a managed service.",
+   "D": "The preferred maintenance window defines when AWS applies required patches, so work happens in the company's quiet hours."
+  }
+ },
+ "auth-shared-responsibility-03": {
+  "explanation": "With Lambda the customer owns the function code, the libraries it packages, and the IAM permissions the function uses. AWS operates and patches the servers, operating system, runtime and virtualization layer, and secures the data centers.",
+  "optionNotes": {
+   "A": "AWS manages and patches the servers and operating system that run Lambda functions.",
+   "B": "The code and the third-party libraries in the deployment package are written and chosen by the customer, who must keep them secure.",
+   "C": "Physical security of data centers is always AWS's responsibility.",
+   "D": "Granting least-privilege IAM permissions to the function is a customer task.",
+   "E": "The virtualization layer used by Lambda is part of the infrastructure AWS patches."
+  }
+ },
+ "auth-shared-responsibility-04": {
+  "explanation": "AWS Artifact lets customers review, accept and track agreements with AWS, such as the HIPAA BAA, for one account or a whole organization. Service control policies in AWS Organizations limit permissions; they are not a place to accept agreements with AWS.",
+  "optionNotes": {
+   "A": "AWS Config records and evaluates resource configurations; it does not host agreements.",
+   "B": "Trusted Advisor gives best-practice recommendations on cost, security and performance, not agreements.",
+   "C": "AWS Artifact is the portal for compliance reports and for reviewing and accepting agreements such as the BAA.",
+   "D": "Service control policies set permission limits for accounts and are not used to accept agreements."
+  }
+ },
+ "auth-shared-responsibility-05": {
+  "explanation": "Physical and environmental controls are inherited controls: AWS provides them entirely. Patch management and training are shared controls in which the customer must cover its own layer, and security group configuration is the customer's job.",
+  "optionNotes": {
+   "A": "Customers inherit the physical and environmental controls of the data centers because AWS operates them completely.",
+   "B": "Patch management is shared, and the customer must patch its guest operating systems.",
+   "C": "Training is a shared control; the company must still train its own employees.",
+   "D": "Security groups are configured by the customer, so this is not inherited."
+  }
+ },
+ "auth-shared-responsibility-06": {
+  "explanation": "Customers choose the AWS Regions where their content is stored, and AWS does not move or replicate that content outside those Regions except as legally required or needed to maintain the services. CloudFront edge locations cache content for delivery and do not decide where the data is stored.",
+  "optionNotes": {
+   "A": "CloudFront edge locations only cache content for delivery; they do not determine where the origin data is stored.",
+   "B": "Choosing EU Regions for storage keeps the data in the European Union, because content stays in the Regions the customer selects.",
+   "C": "AWS Artifact provides compliance reports and agreements; it does not provide a residency certificate that enforces where data lives.",
+   "D": "AWS Support does not monitor data placement for you; the customer controls it by selecting Regions."
+  }
+ },
+ "auth-shared-responsibility-07": {
+  "explanation": "For an abstracted service like S3, AWS runs and secures the infrastructure, including the storage devices and the operating systems of the S3 servers. Bucket policies, data classification and IAM permissions are always the customer's responsibility.",
+  "optionNotes": {
+   "A": "AWS maintains the physical storage devices that hold S3 objects.",
+   "B": "Bucket policies and public access settings are configured by the customer.",
+   "C": "Only the customer knows which of its data is sensitive, so classification is its job.",
+   "D": "S3 is a managed service, so AWS patches the operating systems of the servers behind it.",
+   "E": "Granting IAM users access to a bucket is part of the customer's access management."
+  }
+ },
+ "auth-shared-responsibility-08": {
+  "explanation": "AWS compliance programs cover the AWS infrastructure and in-scope services, but customers remain responsible for complying with the laws and standards that apply to their own workloads. Running in more Regions does not change who is responsible for application compliance.",
+  "optionNotes": {
+   "A": "AWS attestations cover its infrastructure, not the customer's application built on top of it.",
+   "B": "Using several Regions does not transfer application compliance duties to AWS.",
+   "C": "AWS is compliant for its part, and the company must still meet PCI DSS requirements for its own application and configuration.",
+   "D": "PCI DSS applies to payment workloads wherever they run, including on AWS."
+  }
+ },
+ "auth-shared-responsibility-09": {
+  "explanation": "In patch management, AWS patches and fixes flaws in its own infrastructure, while customers patch their guest operating systems and applications. Patching customer guest operating systems is the customer's part of the same shared control.",
+  "optionNotes": {
+   "A": "Guest operating systems of EC2 instances are patched by the customer, not by AWS.",
+   "B": "Applications installed by customers are patched by the customers.",
+   "C": "Training customer employees is not AWS's part of patch management; each party trains its own staff.",
+   "D": "AWS is responsible for patching and fixing flaws within the infrastructure it operates."
+  }
+ },
+ "auth-shared-responsibility-10": {
+  "explanation": "Data classification and access management through IAM always stay with the customer, even for fully managed services. Physical security, network hardware and the host operating system and hypervisor are always AWS's responsibility.",
+  "optionNotes": {
+   "A": "AWS is always responsible for physical security of its data centers.",
+   "B": "The host operating system and the hypervisor are managed and patched by AWS.",
+   "C": "The customer owns its data and must classify it and decide how sensitive it is, whatever service stores it.",
+   "D": "AWS maintains the network hardware inside its facilities.",
+   "E": "Controlling who can access resources with IAM is always the customer's responsibility."
+  }
+ }
+}

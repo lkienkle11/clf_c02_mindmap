@@ -7,9 +7,10 @@
     services: Services;
     appState: AppState;
     openExternal: (url: string) => Promise<void>;
+    canPractice: (topicId: string) => boolean;
   }
 
-  let { services, appState, openExternal }: Props = $props();
+  let { services, appState, openExternal, canPractice }: Props = $props();
 
   // Only unlocked topics (done or current) may open lessons; anything else goes back to the tree.
   const lesson = $derived.by(() => {
@@ -27,6 +28,6 @@
 
 {#if lesson}
   {#key lesson.id}
-    <LessonPanel {services} {appState} {lesson} {openExternal} />
+    <LessonPanel {services} {appState} {lesson} {openExternal} {canPractice} />
   {/key}
 {/if}

@@ -1,6 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { screen, within } from '@testing-library/svelte';
-import userEvent from '@testing-library/user-event';
+import { screen } from '@testing-library/svelte';
 import { renderWithI18n } from '@/testing/render-with-i18n';
 import type { ScorePoint } from '../index';
 import ScoreChart from './ScoreChart.svelte';
@@ -11,9 +10,8 @@ const points: ScorePoint[] = [
   { attemptId: 'a2', at: D + 1000, scorePct: 55, kind: 'practice', topicId: 'storage' },
   { attemptId: 'a3', at: D + 2000, scorePct: 70, kind: 'review', topicId: null },
 ];
-const topicName = (id: string | null) => id ?? 'Mixed review';
 
-const mount = (locale: 'en' | 'vi' = 'en') => renderWithI18n(ScoreChart, { points, topicName }, locale);
+const mount = (locale: 'en' | 'vi' = 'en') => renderWithI18n(ScoreChart, { points }, locale);
 
 describe('ScoreChart', () => {
   it('draws one marker per attempt, with a different shape for review', () => {
@@ -41,15 +39,15 @@ describe('ScoreChart', () => {
     expect(screen.getByRole('img', { name: /3 attempts.*latest 70%.*best 90%/ })).toBeInTheDocument();
   });
 
-  it('offers the same data as a table', async () => {
+  it('renders no data table and no table toggle', () => {
     mount();
     expect(screen.queryByRole('table')).not.toBeInTheDocument();
-    await userEvent.click(screen.getByRole('button', { name: 'Show as table' }));
-    const table = screen.getByRole('table');
-    expect(within(table).getAllByRole('row')).toHaveLength(4);
-    expect(within(table).getByText('55%')).toBeInTheDocument();
-    await userEvent.click(screen.getByRole('button', { name: 'Hide table' }));
-    expect(screen.queryByRole('table')).not.toBeInTheDocument();
+    expect(screen.queryByRole('button')).not.toBeInTheDocument();
+  });
+
+  it('points to the attempts table below for the full data', () => {
+    mount();
+    expect(screen.getByText('Full data is in the attempts table below')).toBeInTheDocument();
   });
 
   it('uses the current language', () => {

@@ -1,0 +1,637 @@
+{
+ "q_f13d366a2267": {
+  "explanation": "AWS CloudFormation provisions infrastructure from templates, and the same template can be deployed as stacks in multiple Regions (for example with StackSets), which fits IaC at scale.",
+  "optionNotes": {
+   "A": "CloudWatch monitors metrics, logs, and alarms; it does not deploy infrastructure from code.",
+   "B": "AWS Config records and evaluates resource configurations; it does not provision stacks.",
+   "C": "Trusted Advisor gives best-practice recommendations; it does not deploy infrastructure.",
+   "D": "CloudFormation is the IaC service that creates and manages resources from templates, including repeatable deployments across Regions."
+  }
+ },
+ "q_f6b170c8b3e8": {
+  "explanation": "AWS CloudTrail records API calls and account activity, including who made the call and when, so it fits tracking API activity against AWS resources.",
+  "optionNotes": {
+   "A": "CloudWatch collects performance metrics and logs, not a record of who made API calls.",
+   "B": "Amazon Inspector scans workloads for vulnerabilities; it does not track API activity.",
+   "C": "CloudTrail logs API calls made in the account, which is exactly the tracking requirement.",
+   "D": "IAM controls who can access what, but it is not the tool that records API call history."
+  }
+ },
+ "q_7311ce562ed6": {
+  "explanation": "AWS Service Catalog lets an organization create and govern catalogs of approved IaC templates and manage the IT services deployed from them.",
+  "optionNotes": {
+   "A": "Resource Explorer searches and discovers existing resources; it does not govern IaC templates.",
+   "B": "Service Catalog publishes approved templates as products and governs how deployed IT services are provisioned and managed.",
+   "C": "Organizations manages multiple accounts and policies; it does not manage a catalog of IaC templates.",
+   "D": "Systems Manager handles operational tasks on resources, not a governed catalog of IaC templates."
+  }
+ },
+ "q_c584da768fe8": {
+  "explanation": "Systems Manager Parameter Store can hold configuration data and secrets centrally, and standard parameters have no additional charge, making it the most cost-effective choice.",
+  "optionNotes": {
+   "A": "Parameter Store stores configuration values and passwords centrally, and standard parameters are free, so it is the cheapest fit.",
+   "B": "Secrets Manager also stores secrets and adds rotation, but it charges per secret, so it is less cost-effective here.",
+   "C": "AWS Config tracks resource configuration changes; it is not a store for application configuration data or passwords.",
+   "D": "Amazon S3 is object storage and is not designed as a managed, access-controlled store for passwords and configuration parameters."
+  }
+ },
+ "q_b1b3b59e4755": {
+  "explanation": "The AWS CLI is a unified tool that lets you interact with many AWS services through one consistent command-line interface.",
+  "optionNotes": {
+   "A": "The AWS CLI gives one consistent command-line method to manage and interact with AWS services.",
+   "B": "Amazon ECS runs and orchestrates containers; it is not a tool for interacting with AWS services in general.",
+   "C": "Cloud9 is a cloud-based IDE for writing code, not the unified interface to AWS services.",
+   "D": "AWS VPN provides encrypted network connectivity; it is not a tool for calling AWS services."
+  }
+ },
+ "q_d2f4ce962043": {
+  "explanation": "AWS CloudTrail records API activity in an AWS account, so users can audit who did what and when.",
+  "optionNotes": {
+   "A": "CloudTrail logs API calls and account activity, which is what auditing API activity requires.",
+   "B": "Inspector assesses workloads for vulnerabilities and does not audit API activity.",
+   "C": "AWS WAF filters web requests to protect applications; it does not log account API calls.",
+   "D": "AWS Config tracks resource configuration state and changes, not the API calls themselves."
+  }
+ },
+ "q_82371b515c4a": {
+  "explanation": "AWS Elastic Beanstalk takes an uploaded application and automatically provisions and manages the needed resources, so the developer does not create them manually.",
+  "optionNotes": {
+   "A": "EC2 provides virtual servers, but the developer would have to create and configure the surrounding resources manually.",
+   "B": "Elastic Beanstalk deploys the application and handles provisioning, load balancing, and scaling automatically.",
+   "C": "CodeBuild compiles and tests code; it does not deploy and run the application's resources.",
+   "D": "Amazon Personalize is a machine learning recommendation service, unrelated to deploying applications."
+  }
+ },
+ "q_65236cd6a3b3": {
+  "explanation": "The AWS Health Dashboard shows the availability and operational status of AWS services and events affecting your account.",
+  "optionNotes": {
+   "A": "EventBridge routes events between services; it is not a dashboard for AWS service availability.",
+   "B": "Service Catalog manages approved products for deployment, not service health information.",
+   "C": "Control Tower sets up and governs a multi-account environment, not service health reporting.",
+   "D": "The Health Dashboard reports AWS service availability, operational issues, and account-specific events."
+  }
+ },
+ "q_a1707d5ac158": {
+  "explanation": "AWS CloudFormation templates describe multiple AWS resources and can be reused to deploy the same resources repeatedly.",
+  "optionNotes": {
+   "A": "AWS Marketplace is a catalog for buying third-party software, not a tool for templating resources.",
+   "B": "An AMI is a template for a single EC2 instance's software, not for deploying multiple AWS resources.",
+   "C": "CloudFormation templates define many resources and can be reused to deploy them again and again.",
+   "D": "OpsWorks was a configuration management service using Chef or Puppet (now retired), not the template service for multiple AWS resources."
+  }
+ },
+ "q_689303d0d4ce": {
+  "explanation": "AWS CloudShell is a browser-based shell that is pre-authenticated with your console credentials and launches directly from the Management Console.",
+  "optionNotes": {
+   "A": "AWS API is the programmatic interface to services, not a browser-based service launched from the console.",
+   "B": "Lightsail is a simplified service for virtual servers and web apps, not a pre-authenticated shell.",
+   "C": "Cloud9 is a cloud-based IDE you set up and open, not a pre-authenticated shell launched from the console.",
+   "D": "CloudShell opens a browser-based command line already authenticated with the signed-in console user."
+  }
+ },
+ "q_d0bf546fb3f5": {
+  "explanation": "AWS CloudFormation lets you define and manage infrastructure as code using templates.",
+  "optionNotes": {
+   "A": "CodePipeline automates release pipelines; it does not define infrastructure as code.",
+   "B": "CodeDeploy automates application deployments to compute targets, not infrastructure definition.",
+   "C": "Direct Connect is a dedicated network connection to AWS, unrelated to IaC.",
+   "D": "CloudFormation provisions and manages infrastructure from templates, which is IaC."
+  }
+ },
+ "q_7dd6ff5be757": {
+  "explanation": "Elastic Beanstalk deploys and scales a Node.js application automatically from the uploaded code, so little AWS knowledge is needed.",
+  "optionNotes": {
+   "A": "CloudFormation needs you to author templates that define the resources, which requires more AWS knowledge.",
+   "B": "Elastic Beanstalk supports Node.js and handles provisioning, load balancing, and scaling for you.",
+   "C": "EC2 requires the user to set up and scale the servers themselves, which demands more knowledge.",
+   "D": "OpsWorks (now retired) needed configuration management setup with Chef or Puppet, which was more involved than Beanstalk."
+  }
+ },
+ "q_a178ab2a1f4e": {
+  "explanation": "The AWS CDK lets developers define cloud infrastructure in familiar languages such as TypeScript, Python, Java, and .NET.",
+  "optionNotes": {
+   "A": "CodeBuild compiles and tests code; it does not define infrastructure in programming languages.",
+   "B": "CloudFormation uses JSON or YAML templates rather than general-purpose programming languages.",
+   "C": "The AWS CLI runs commands from a shell; it is not a framework for defining infrastructure in code languages.",
+   "D": "The CDK supports TypeScript, Python, Java, and .NET and synthesizes the code into CloudFormation templates."
+  }
+ },
+ "q_5dacc5eb4e1c": {
+  "explanation": "In the AWS CAF platform perspective, data engineering and CI/CD are capabilities. The others belong to the operations and security perspectives.",
+  "optionNotes": {
+   "A": "Performance and capacity management is a capability of the operations perspective, not the platform perspective.",
+   "B": "Data engineering is a capability in the platform perspective.",
+   "C": "CI/CD is a capability in the platform perspective.",
+   "D": "Infrastructure protection is a capability of the security perspective.",
+   "E": "Change and release management is a capability of the operations perspective."
+  }
+ },
+ "q_ec9f2e45232c": {
+  "explanation": "AWS CloudTrail records API calls such as TerminateInstances, so it shows which action and which user made the EC2 instance inaccessible.",
+  "optionNotes": {
+   "A": "CloudWatch Logs holds log data from applications and systems; it does not record account API actions.",
+   "B": "Security Hub aggregates security findings and does not provide the history of API actions.",
+   "C": "Inspector assesses vulnerabilities and does not show what action changed an instance.",
+   "D": "CloudTrail logs the API calls on the account, revealing who or what stopped or terminated the instance."
+  }
+ },
+ "q_0925c9a0e4cc": {
+  "explanation": "The AWS CLI lets developers provision and manage AWS services through commands that can be put into scripts.",
+  "optionNotes": {
+   "A": "The AWS CLI runs commands that can be scripted to create and manage AWS services quickly.",
+   "B": "CodeBuild compiles and tests code, not a way to script provisioning of services.",
+   "C": "AWS CAF is guidance for cloud adoption, not a tool for provisioning.",
+   "D": "Session Manager gives shell access to instances; it is not an offering for scripting AWS service provisioning."
+  }
+ },
+ "q_ba0c5660dc42": {
+  "explanation": "AWS CloudFormation deploys the same template again and again, so multiple test environments can be created quickly and consistently.",
+  "optionNotes": {
+   "A": "EC2 provides servers, but building each environment by hand is neither fast nor repeatable.",
+   "B": "CloudFormation provisions whole environments from a template in a fast, repeatable way.",
+   "C": "QuickSight is a business intelligence service, unrelated to deploying environments.",
+   "D": "ECS runs containers, but it does not itself define and repeat full test environments."
+  }
+ },
+ "q_900fc170ef5e": {
+  "explanation": "The exam expects AWS CodeStar, the service that quickly set up an application project with a ready-made CI/CD toolchain; note that AWS has since ended CodeStar support, and AWS CodePipeline is the current CI/CD pipeline service.",
+  "optionNotes": {
+   "A": "AWS Config evaluates resource configuration and is not a CI/CD service.",
+   "B": "Cognito handles user sign-up and sign-in, not CI/CD.",
+   "C": "DataSync transfers data between storage systems, not a CI/CD pipeline.",
+   "D": "The exam expects CodeStar here, because it quickly set up a project with a CI/CD toolchain; it has since been discontinued, and CodePipeline is the current service for building a CI/CD pipeline."
+  }
+ },
+ "q_b3172b72379e": {
+  "explanation": "A CloudWatch alarm watches a metric such as CPU utilization and can trigger an Auto Scaling policy to add or remove instances.",
+  "optionNotes": {
+   "A": "SQS is a message queue and does not evaluate CPU utilization to trigger scaling.",
+   "B": "SNS sends notifications, but it does not itself monitor CPU and start the scaling action.",
+   "C": "Systems Manager manages operations tasks on instances, not metric-based scaling triggers.",
+   "D": "A CloudWatch alarm monitors CPU utilization and initiates the Auto Scaling policy when the threshold is crossed."
+  }
+ },
+ "q_912eae091ab2": {
+  "explanation": "Elastic Beanstalk lets the company deploy applications quickly while it handles provisioning and management of the underlying resources.",
+  "optionNotes": {
+   "A": "AWS Config tracks configuration compliance and does not deploy applications.",
+   "B": "Elastic Beanstalk deploys applications fast and reduces the complexity of managing resources.",
+   "C": "EC2 requires you to manage servers and related resources yourself, which adds complexity.",
+   "D": "Amazon Personalize is a recommendation service and has nothing to do with deployment."
+  }
+ },
+ "q_357cf9a4c7e9": {
+  "explanation": "An AWS SDK lets developers call AWS services from within application code in their chosen programming language.",
+  "optionNotes": {
+   "A": "AWS SDKs provide language libraries for accessing AWS services from application code.",
+   "B": "The Management Console is a web interface for people, not a mechanism for code.",
+   "C": "CodePipeline automates release workflows; it is not a library for application code.",
+   "D": "AWS Config tracks resource configurations and does not give code access to services."
+  }
+ },
+ "q_b447fe78db1e": {
+  "explanation": "The exam expects the AWS CLI, a programmatic interface for interacting with AWS services, though an AWS SDK is the more typical choice inside a web application's code.",
+  "optionNotes": {
+   "A": "CloudShell is a browser-based shell for people to run commands, not something a web application uses.",
+   "B": "AWS Marketplace is a catalog for buying software and does not let an application call AWS services.",
+   "C": "The Management Console is a manual web interface for users, not for application-to-service interaction.",
+   "D": "The exam expects the AWS CLI here, as a programmatic way to interact with AWS services (an SDK is the more usual choice inside application code)."
+  }
+ },
+ "q_e91a696a76e6": {
+  "explanation": "AWS CloudFormation creates infrastructure from code in the form of templates.",
+  "optionNotes": {
+   "A": "EKS runs managed Kubernetes; it is not the IaC service for creating infrastructure from code.",
+   "B": "Outposts brings AWS infrastructure on premises and is not an IaC tool.",
+   "C": "CodePipeline automates software release pipelines rather than creating infrastructure from code.",
+   "D": "CloudFormation provisions infrastructure from code through templates."
+  }
+ },
+ "q_7f35c0694d02": {
+  "explanation": "AWS Elastic Beanstalk deploys and manages applications in the AWS Cloud without the user handling the underlying infrastructure.",
+  "optionNotes": {
+   "A": "CodeGuru provides automated code reviews and performance recommendations, not application deployment.",
+   "B": "Fargate is a serverless compute engine for containers, not a service for deploying and managing applications in general.",
+   "C": "CodeCommit hosts Git repositories for source code, not deployment.",
+   "D": "Elastic Beanstalk deploys, scales, and manages applications on AWS."
+  }
+ },
+ "q_e51804383ea5": {
+  "explanation": "Loosely coupling components means a failure in one component does not cascade to the components that depend on it.",
+  "optionNotes": {
+   "A": "A monolithic design ties components together, so failures spread instead of being isolated.",
+   "B": "Designing for automation reduces manual effort but is not the principle about isolating failures between components.",
+   "C": "Designing for single points of failure is the opposite of good practice; you should avoid them.",
+   "D": "Loose coupling isolates failures between dependent components so one failing does not bring down the others."
+  }
+ },
+ "q_d122ff0c3e43": {
+  "explanation": "Amazon CloudWatch collects metrics and logs from applications and resources, making it easier to monitor and troubleshoot them.",
+  "optionNotes": {
+   "A": "EC2 provides compute capacity and is not a monitoring service.",
+   "B": "IAM manages access permissions and does not monitor logs or resources.",
+   "C": "CloudWatch gathers logs and metrics for monitoring and troubleshooting applications and resources.",
+   "D": "CloudTrail records API activity for auditing, not application logs and resource performance."
+  }
+ },
+ "q_2cd6d9907a47": {
+  "explanation": "Amazon CloudWatch monitors AWS resources and applications in real time through metrics, alarms, and logs.",
+  "optionNotes": {
+   "A": "Trusted Advisor gives best-practice checks and recommendations, not real-time resource monitoring.",
+   "B": "CloudWatch collects and tracks metrics and alarms for resources and applications in real time.",
+   "C": "CloudTrail records API calls for auditing and is not a real-time performance monitor.",
+   "D": "Cost Explorer analyzes cost and usage, not resource and application health."
+  }
+ },
+ "q_1ed4d1c36e49": {
+  "explanation": "Elastic Beanstalk accepts the Java application as is and automatically handles capacity provisioning, load balancing, scaling, and health monitoring.",
+  "optionNotes": {
+   "A": "ECS orchestrates containers, but the application is non-containerized, so it is not the best fit.",
+   "B": "Lambda runs functions in response to events and is not a managed platform for deploying a Java web application with load balancing.",
+   "C": "EKS runs Kubernetes for containerized workloads, which this application is not.",
+   "D": "Elastic Beanstalk deploys non-containerized Java apps and handles provisioning, load balancing, scaling, and health monitoring."
+  }
+ },
+ "q_8918b7b0b0a7": {
+  "explanation": "AWS SDKs let users connect to AWS and deploy and manage resources programmatically from code.",
+  "optionNotes": {
+   "A": "QuickSight is a business intelligence service, not a tool to deploy resources programmatically.",
+   "B": "PrivateLink provides private connectivity to services, not programmatic deployment.",
+   "C": "Direct Connect is a dedicated network link to AWS, not a programmatic access tool.",
+   "D": "AWS SDKs offer language-specific libraries to call AWS services and deploy resources from code."
+  }
+ },
+ "q_8c2426d61cbf": {
+  "explanation": "AWS CloudTrail records the API calls made in an AWS account so they can be audited.",
+  "optionNotes": {
+   "A": "CloudTrail logs API calls in the account, enabling audits of who did what.",
+   "B": "Trusted Advisor provides best-practice recommendations rather than API call logs.",
+   "C": "Inspector looks for vulnerabilities in workloads and does not audit API calls.",
+   "D": "X-Ray traces requests through an application for debugging, not account API calls."
+  }
+ },
+ "q_1d828c5383f1": {
+  "explanation": "Loose coupling lets components operate independently so the application stays available when one component fails.",
+  "optionNotes": {
+   "A": "Disposable resources means treating servers as replaceable, which does not address isolating component failures.",
+   "B": "Automation reduces manual work but does not by itself keep the application up when a component fails.",
+   "C": "Rightsizing matches resources to demand and is about cost and efficiency, not failure tolerance.",
+   "D": "Loose coupling isolates components so one failure does not take the application down."
+  }
+ },
+ "q_29fe750f6576": {
+  "explanation": "AWS CodeDeploy automates the release of application changes to compute targets.",
+  "optionNotes": {
+   "A": "AppFlow transfers data between SaaS applications and AWS, not application releases.",
+   "B": "CodeDeploy automates deployments of application changes to EC2, on-premises servers, Lambda, or ECS.",
+   "C": "PrivateLink offers private network access to services, not a release tool.",
+   "D": "EKS Distro is a Kubernetes distribution, not a service for automated releases."
+  }
+ },
+ "q_7596d83ffa02": {
+  "explanation": "CloudTrail records who called which API and when, so it identifies who accessed a service and what they did.",
+  "optionNotes": {
+   "A": "CloudWatch monitors metrics and logs, not the identity behind API actions.",
+   "B": "CloudTrail logs the caller identity, action, and time for activity in the account.",
+   "C": "Security Hub aggregates security findings and does not log individual API calls.",
+   "D": "Inspector scans for vulnerabilities and does not record user activity."
+  }
+ },
+ "q_144d82720e24": {
+  "explanation": "Elastic Beanstalk lets developers deploy their applications without provisioning the infrastructure themselves, because it creates and manages it.",
+  "optionNotes": {
+   "A": "CloudFormation requires developers to write templates that define the infrastructure.",
+   "B": "CodeBuild compiles and tests source code; it does not provision or deploy infrastructure.",
+   "C": "Elastic Beanstalk takes the application code and provisions the infrastructure automatically.",
+   "D": "CodeDeploy deploys application revisions to existing targets and does not provision infrastructure."
+  }
+ },
+ "q_a871f520588b": {
+  "explanation": "AWS Config records resource configurations and compliance over time, producing information that external auditors can use.",
+  "optionNotes": {
+   "A": "Cognito manages user identity and authentication, not audit information.",
+   "B": "FSx provides managed file systems and is not an audit service.",
+   "C": "AWS Config records configuration history and compliance evaluations that auditors can review.",
+   "D": "Inspector finds vulnerabilities, but it is not the service that records configuration and compliance history for auditors."
+  }
+ },
+ "q_3ed64d52376b": {
+  "explanation": "AWS CloudFormation deploys the same infrastructure configuration repeatedly from a template.",
+  "optionNotes": {
+   "A": "CloudFormation uses templates to deploy highly repeatable infrastructure configurations.",
+   "B": "CodeDeploy deploys application code, not infrastructure configurations.",
+   "C": "CodeBuild builds and tests source code and does not deploy infrastructure.",
+   "D": "Systems Manager handles operational tasks on resources, not repeatable infrastructure templates."
+  }
+ },
+ "q_4a3cba64b767": {
+  "explanation": "Amazon EventBridge receives events such as EC2 state changes and can route them to a target like a Lambda function.",
+  "optionNotes": {
+   "A": "EventBridge matches the EC2 instance state-change event with a rule and invokes the Lambda function.",
+   "B": "AWS Config tracks configuration changes and compliance, and is not the usual way to trigger a function on a state change.",
+   "C": "SNS delivers notifications to subscribers; it is not the service that detects the EC2 state-change event.",
+   "D": "CloudFormation provisions resources and does not react to EC2 state changes."
+  }
+ },
+ "q_97736b328a7f": {
+  "explanation": "AWS CloudTrail records account activity and API calls, supporting governance, compliance, and risk auditing.",
+  "optionNotes": {
+   "A": "MFA adds an extra sign-in factor and is not an auditing feature.",
+   "B": "Lambda runs code without servers and does not audit accounts.",
+   "C": "SNS sends notifications and does not record activity for auditing.",
+   "D": "CloudTrail logs account activity that supports governance, compliance, and risk auditing."
+  }
+ },
+ "q_626b0755738a": {
+  "explanation": "CloudTrail records actions taken in the account, which supports the design principle of activating traceability.",
+  "optionNotes": {
+   "A": "Activating traceability means logging and monitoring actions, which is what CloudTrail does.",
+   "B": "Using serverless compute architectures relates to services like Lambda, not CloudTrail.",
+   "C": "Performing operations as code relates to tools like CloudFormation, not logging activity.",
+   "D": "Going global in minutes relates to deploying in multiple Regions, not to CloudTrail."
+  }
+ },
+ "q_94032daa8514": {
+  "explanation": "The AWS CDK is a development framework for defining cloud resources in code and provisioning them through CloudFormation.",
+  "optionNotes": {
+   "A": "The AWS CLI runs commands to interact with services and is not a framework that generates CloudFormation.",
+   "B": "The AWS Developer Center is a resource site for developers, not a framework.",
+   "C": "The CDK lets you define resources in programming languages and deploys them through CloudFormation.",
+   "D": "CodeStar set up development projects and toolchains (and has since been discontinued), but it is not the framework for defining resources as code."
+  }
+ },
+ "q_566013175508": {
+  "explanation": "AWS Service Catalog lets organizations manage approved IaC templates as products, helping meet compliance requirements.",
+  "optionNotes": {
+   "A": "Artifact provides compliance reports and agreements, not management of IaC templates.",
+   "B": "Resource Explorer finds resources and does not manage IaC templates.",
+   "C": "License Manager tracks software licenses, not IaC templates.",
+   "D": "Service Catalog manages approved IaC templates so deployments follow compliance requirements."
+  }
+ },
+ "q_77dcf3d5cb74": {
+  "explanation": "Amazon CloudWatch collects EC2 metrics such as CPU utilization.",
+  "optionNotes": {
+   "A": "AWS Config tracks configuration changes, not performance metrics like CPU.",
+   "B": "Trusted Advisor provides best-practice recommendations, not detailed CPU utilization monitoring.",
+   "C": "CloudTrail records API activity and not resource performance.",
+   "D": "CloudWatch provides CPU utilization metrics for EC2 instances."
+  }
+ },
+ "q_a79a4b607893": {
+  "explanation": "AWS CloudFormation lets a company define and provision infrastructure as code with templates.",
+  "optionNotes": {
+   "A": "CodeDeploy deploys applications, not infrastructure defined as code.",
+   "B": "Elastic Beanstalk deploys applications and manages their environment, but it is not the service for treating infrastructure as code.",
+   "C": "API Gateway creates and publishes APIs and is unrelated to infrastructure as code.",
+   "D": "CloudFormation provisions infrastructure from templates, which is the IaC approach."
+  }
+ },
+ "q_98e137023d33": {
+  "explanation": "CloudTrail records who initiated an event and which actions were performed, which fits an audit of recent account activity.",
+  "optionNotes": {
+   "A": "AWS Config records resource configuration changes, not the identity and API actions behind an event.",
+   "B": "Rekognition analyzes images and video and has nothing to do with account auditing.",
+   "C": "CloudTrail records the user and the actions performed in the account.",
+   "D": "SNS sends notifications and does not log account activity."
+  }
+ },
+ "q_002a9372a1a1": {
+  "explanation": "The AWS Health Dashboard publishes service status that users can follow, including through RSS feeds, for AWS service issues.",
+  "optionNotes": {
+   "A": "SNS delivers messages to subscribers but is not the source of the RSS feeds about AWS service issues.",
+   "B": "The Health Dashboard shows AWS service issues and offers RSS feeds for updates.",
+   "C": "AWS Config records resource configuration and is unrelated to service issue feeds.",
+   "D": "CodeCommit hosts source code repositories, not service status feeds."
+  }
+ },
+ "q_29f0d437d9c8": {
+  "explanation": "AWS Control Tower sets up and governs a secure multi-account AWS environment based on best practices.",
+  "optionNotes": {
+   "A": "CloudFormation provisions resources from templates, but does not set up and govern a multi-account environment by itself.",
+   "B": "Control Tower automates setting up a multi-account landing zone with governance guardrails.",
+   "C": "AWS Config evaluates resource configurations and is not used to set up a multi-account environment.",
+   "D": "Amazon VPC provides a virtual network and does not set up a multi-account environment."
+  }
+ },
+ "q_68d76e247354": {
+  "explanation": "The AWS CDK supports Python and TypeScript among its languages, while Swift, Ruby, and PHP are not supported.",
+  "optionNotes": {
+   "A": "Python is a language supported by the AWS CDK.",
+   "B": "Swift is not a supported CDK language.",
+   "C": "TypeScript is a language supported by the AWS CDK.",
+   "D": "Ruby is not a supported CDK language.",
+   "E": "PHP is not a supported CDK language."
+  }
+ },
+ "q_8ffbed89e394": {
+  "explanation": "The AWS CDK lets users provision AWS infrastructure programmatically by defining it in code.",
+  "optionNotes": {
+   "A": "The CDK defines infrastructure in programming languages and provisions it through CloudFormation.",
+   "B": "CodeGuru gives code review and performance recommendations, not infrastructure provisioning.",
+   "C": "AWS Config assesses and records resource configuration; it does not provision infrastructure.",
+   "D": "CodeCommit stores source code in Git repositories and does not provision infrastructure."
+  }
+ },
+ "q_b08179beaa4e": {
+  "explanation": "CloudFormation templates automate resource creation, which reduces provisioning time and manual effort.",
+  "optionNotes": {
+   "A": "Templates automate provisioning of resources, which shortens the time to deploy.",
+   "B": "Templates do not transfer existing infrastructure to another company.",
+   "C": "Templates create AWS resources and do not reuse on-premises infrastructure in the cloud.",
+   "D": "Resources created from templates still incur normal AWS charges, so cost is not eliminated."
+  }
+ },
+ "q_8a83ad20c364": {
+  "explanation": "CloudTrail keeps an event history of API calls, including those that created resources.",
+  "optionNotes": {
+   "A": "CloudWatch collects metrics and logs but does not record an event history of resource creation.",
+   "B": "CloudTrail provides the event history of API activity, including resource creation.",
+   "C": "Amazon Aurora is a relational database service and not a source of account event history.",
+   "D": "EventBridge routes events to targets and is not the record of past resource creation."
+  }
+ },
+ "q_baa5e508c05c": {
+  "explanation": "CloudFormation can deploy the same template to multiple Regions (for example with StackSets), creating copies of resources across Regions.",
+  "optionNotes": {
+   "A": "ElastiCache provides in-memory caching and does not replicate resources across Regions in this sense.",
+   "B": "CloudFormation deploys the same template in multiple Regions to create copies of resources.",
+   "C": "CloudTrail logs API activity and does not create resources.",
+   "D": "Systems Manager manages operational tasks, not creating copies of resources across Regions."
+  }
+ },
+ "q_c3be02bc64cf": {
+  "explanation": "Amazon CloudWatch collects EC2 metrics such as disk write operations and can alarm on spikes.",
+  "optionNotes": {
+   "A": "CloudTrail logs API calls, not disk performance metrics.",
+   "B": "The Health Dashboard shows AWS service health, not performance of your own instance disks.",
+   "C": "Trusted Advisor gives best-practice recommendations and does not monitor disk write activity.",
+   "D": "CloudWatch monitors metrics like disk writes and can raise alarms when they spike."
+  }
+ },
+ "q_be5053cc8134": {
+  "explanation": "CloudTrail records the TerminateInstances API call, showing when an EC2 instance was terminated.",
+  "optionNotes": {
+   "A": "IAM manages permissions and does not keep a history of terminated instances.",
+   "B": "CloudTrail logs the API call that terminated the instance, including the time.",
+   "C": "Compute Optimizer recommends instance sizes and does not record terminations.",
+   "D": "EventBridge can react to events but is not the historical record of when it happened."
+  }
+ },
+ "q_b3802c5eaf59": {
+  "explanation": "AWS Config records configuration changes, evaluates them against rules, and can remediate noncompliant resources.",
+  "optionNotes": {
+   "A": "AWS Config records and evaluates configuration changes and supports remediation actions.",
+   "B": "Secrets Manager stores and rotates secrets and does not track configuration compliance.",
+   "C": "CloudTrail records API calls but does not evaluate configuration compliance or remediate.",
+   "D": "Trusted Advisor gives recommendations but does not record configuration history or remediate changes."
+  }
+ },
+ "q_41f4d02ba0bc": {
+  "explanation": "CloudFormation uses a standardized template to create copies of the same architecture for development, test, and production.",
+  "optionNotes": {
+   "A": "Cloud Map is a service discovery tool and does not create architecture from templates.",
+   "B": "CloudFormation creates consistent copies of an architecture from one template.",
+   "C": "CloudFront is a content delivery network and does not create environments.",
+   "D": "CloudTrail logs API calls and does not provision architecture."
+  }
+ },
+ "q_f6845f930a58": {
+  "explanation": "The AWS Management Console provides a graphical web interface for managing AWS services.",
+  "optionNotes": {
+   "A": "AWS Copilot is a command-line tool for containerized apps, not a graphical interface.",
+   "B": "The AWS CLI is command-line based, not graphical.",
+   "C": "The Management Console is the graphical web interface for managing AWS services.",
+   "D": "SDKs are libraries used in code, not a graphical interface."
+  }
+ },
+ "q_9945ee071a0a": {
+  "explanation": "CodeDeploy automates software deployments to EC2 instances and on-premises servers.",
+  "optionNotes": {
+   "A": "CodeCommit hosts source code repositories and does not deploy software.",
+   "B": "CodeBuild compiles and tests code and does not deploy it to instances.",
+   "C": "CodeDeploy automates deployments to both EC2 and on-premises instances.",
+   "D": "CodePipeline orchestrates the release workflow but relies on a service like CodeDeploy to do the deployment."
+  }
+ },
+ "q_9a47c2ac7d1e": {
+  "explanation": "CloudTrail logs deletion API calls with the identity of the user, so it shows who deleted the resources.",
+  "optionNotes": {
+   "A": "CloudTrail records API calls and the user who made them, identifying who deleted resources.",
+   "B": "Inspector scans for vulnerabilities and does not record deletions.",
+   "C": "GuardDuty detects threats and anomalies but is not the record of which user deleted resources.",
+   "D": "Trusted Advisor gives recommendations and does not show who deleted resources."
+  }
+ },
+ "q_df961a688edf": {
+  "explanation": "The AWS Management Console is the web interface for managing AWS resources.",
+  "optionNotes": {
+   "A": "The Management Console is the web-based interface for managing AWS resources.",
+   "B": "The AWS CLI is a command-line tool and not a web interface.",
+   "C": "SDKs are code libraries and not a web interface.",
+   "D": "Cloud9 is a cloud IDE for writing code, not the general web interface to manage resources."
+  }
+ },
+ "q_fda2759e876f": {
+  "explanation": "CloudFormation templates let a developer create and maintain development and production infrastructure repeatably.",
+  "optionNotes": {
+   "A": "Ground Station is for satellite communications and is unrelated to environments.",
+   "B": "AWS Shield protects against DDoS attacks and does not provision infrastructure.",
+   "C": "IoT Device Defender audits IoT device security and does not provision environments.",
+   "D": "CloudFormation builds the same infrastructure repeatedly from templates."
+  }
+ },
+ "auth-deploy-operate-01": {
+  "explanation": "By default CloudFormation rolls back the stack when a resource fails to create, deleting the resources it already created.",
+  "optionNotes": {
+   "A": "A failed creation does not leave the stack marked complete; the stack goes into rollback.",
+   "B": "Rollback on failure is the default behavior and it removes the resources created so far, returning to a clean state.",
+   "C": "CloudFormation does not retry a failed resource in another Region.",
+   "D": "CloudFormation does not convert templates into CDK code on failure."
+  }
+ },
+ "auth-deploy-operate-02": {
+  "explanation": "CloudTrail records the API call that changed the security group rule, including the IAM user and the time.",
+  "optionNotes": {
+   "A": "CloudWatch monitors metrics and logs, not the identity behind a configuration change.",
+   "B": "The Health Dashboard reports AWS service events, not who changed your resources.",
+   "C": "X-Ray traces application requests and does not record management API calls.",
+   "D": "CloudTrail logs the API call with the caller identity and timestamp."
+  }
+ },
+ "auth-deploy-operate-03": {
+  "explanation": "CloudWatch can trigger alarm actions such as stopping an idle EC2 instance, and it collects and searches logs with CloudWatch Logs.",
+  "optionNotes": {
+   "A": "A CloudWatch alarm on low CPU can perform an action that stops the instance.",
+   "B": "Identifying who called an API is done by CloudTrail, not CloudWatch.",
+   "C": "CloudWatch Logs collects and searches logs from applications and AWS services.",
+   "D": "Evaluating configuration compliance over time is a task for AWS Config.",
+   "E": "Accepting agreements such as a BAA is done in AWS Artifact."
+  }
+ },
+ "auth-deploy-operate-04": {
+  "explanation": "AWS Config continuously evaluates resources against rules such as encrypted volumes and keeps configuration history over time.",
+  "optionNotes": {
+   "A": "CodePipeline automates release pipelines and does not evaluate resource compliance.",
+   "B": "EventBridge Scheduler runs scheduled tasks and does not check configuration compliance or keep history.",
+   "C": "AWS Config checks resources against rules continuously and tracks configuration changes over time.",
+   "D": "CloudShell is a browser-based shell and not a compliance tool."
+  }
+ },
+ "auth-deploy-operate-05": {
+  "explanation": "Session Manager gives browser or CLI shell access to instances without inbound SSH ports, bastion hosts, or SSH keys.",
+  "optionNotes": {
+   "A": "Session Manager connects to instances without opening inbound ports, using bastions, or managing SSH keys.",
+   "B": "CloudFormation change sets preview stack updates and do not provide instance access.",
+   "C": "CloudWatch dashboards display metrics and do not provide shell access.",
+   "D": "CodeDeploy deploys software and does not provide administrative access to instances."
+  }
+ },
+ "auth-deploy-operate-06": {
+  "explanation": "Blue/green deployment keeps the old environment running while the new one is tested, allowing a quick switch back.",
+  "optionNotes": {
+   "A": "All at once in place updates every instance together and removes the old version, so a quick return is hard.",
+   "B": "Blue/green runs old and new environments side by side, allowing rapid rollback by switching traffic back.",
+   "C": "Rolling in place replaces instances gradually and does not keep the full old environment running.",
+   "D": "Redeploying from backups is slow and does not allow a switch back within seconds."
+  }
+ },
+ "auth-deploy-operate-07": {
+  "explanation": "Elastic Beanstalk provisions capacity, load balancing, and scaling for an uploaded application, and developers keep control over the underlying resources. There is no extra charge for Beanstalk itself.",
+  "optionNotes": {
+   "A": "Beanstalk handles provisioning, load balancing, and auto scaling for the application you upload.",
+   "B": "There is no additional charge for Beanstalk; you pay only for the underlying resources it uses.",
+   "C": "Beanstalk supports many platforms such as Java, .NET, Node.js, and Python, as well as Docker, not only containers.",
+   "D": "Developers retain control of the AWS resources that run the application and can adjust them.",
+   "E": "Recording API calls for auditing is the job of CloudTrail, not Beanstalk."
+  }
+ },
+ "auth-deploy-operate-08": {
+  "explanation": "The AWS Health Dashboard shows service events affecting your resources and scheduled maintenance such as instance retirements.",
+  "optionNotes": {
+   "A": "AWS Config tracks resource configuration and compliance, not AWS service issues or maintenance events.",
+   "B": "CloudWatch Logs stores log data and does not report AWS service events for your account.",
+   "C": "CodePipeline automates deployments and does not report service issues.",
+   "D": "The Health Dashboard reports ongoing service issues and scheduled maintenance affecting your account."
+  }
+ },
+ "auth-deploy-operate-09": {
+  "explanation": "AWS CodeBuild is a fully managed build service that compiles code and runs unit tests without managing build servers.",
+  "optionNotes": {
+   "A": "CodeDeploy deploys applications and does not compile or test code.",
+   "B": "Elastic Beanstalk deploys and runs applications, not managed builds.",
+   "C": "CodeBuild compiles source code and runs tests without servers to provision or patch.",
+   "D": "Patch Manager patches managed nodes and is not a build service."
+  }
+ },
+ "auth-deploy-operate-10": {
+  "explanation": "CloudFormation provisions the same infrastructure repeatably across Regions or accounts and manages related resources together as a stack.",
+  "optionNotes": {
+   "A": "Patching guest operating systems is done by tools like Systems Manager Patch Manager, not CloudFormation.",
+   "B": "The same template can be deployed repeatedly across Regions and accounts.",
+   "C": "Alerts on CPU thresholds come from CloudWatch alarms, not CloudFormation.",
+   "D": "Recording configuration history for compliance is the role of AWS Config.",
+   "E": "A stack groups related resources so they can be created or deleted as a unit."
+  }
+ }
+}

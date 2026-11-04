@@ -1,0 +1,440 @@
+{
+ "q_d5e1a0429d64": {
+  "explanation": "Moving to AWS removes the cost of building, powering, and maintaining your own data centers, because AWS owns and runs the facilities and hardware. You still have operating costs for what you use.",
+  "optionNotes": {
+   "A": "AWS runs the data centers, so the company no longer pays to build, power, cool, and maintain them.",
+   "B": "AWS pricing is not tied to hardware vendor discounts; AWS passes on savings from its own economies of scale instead.",
+   "C": "Under the shared responsibility model AWS manages only part of the controls; the customer still owns security in the cloud, such as access and data.",
+   "D": "Operational expenses do not disappear; the company still pays for the AWS resources it uses and for running its workloads."
+  }
+ },
+ "q_af6e9cc90e8e": {
+  "explanation": "Pay-as-you-go pricing is a core benefit of AWS: you pay only for the resources you consume, with no large upfront commitment.",
+  "optionNotes": {
+   "A": "The benefit is the reverse: the cloud trades fixed expense for variable expense, not variable for fixed.",
+   "B": "Pay-as-you-go pricing means you are billed only for what you use, which is a recognized benefit of AWS.",
+   "C": "The cloud increases speed and agility because resources can be provisioned in minutes.",
+   "D": "Not having to spend money running and maintaining data centers is the benefit; spending on them is what the cloud avoids."
+  }
+ },
+ "q_f5657223f923": {
+  "explanation": "Elasticity lets you add and remove capacity to match demand, so you do not keep idle CPU capacity running.",
+  "optionNotes": {
+   "A": "Agility is about provisioning resources and experimenting quickly, not about matching capacity to demand.",
+   "B": "Elasticity lets capacity grow and shrink with demand, which removes underutilized CPU capacity.",
+   "C": "Reliability is the ability of a workload to perform its function correctly and recover from failure, not to right-size capacity.",
+   "D": "Durability describes how well data is protected against loss, and has nothing to do with CPU utilization."
+  }
+ },
+ "q_b577ccb75dca": {
+  "explanation": "Resource elasticity is the ability to scale infrastructure up and down based on demand.",
+  "optionNotes": {
+   "A": "Speed of innovation is about trying new ideas quickly, not scaling capacity with demand.",
+   "B": "Resource elasticity means scaling infrastructure out and in as demand changes.",
+   "C": "Decoupled architecture reduces dependencies between components; it is a design approach rather than a way to scale on demand.",
+   "D": "Global deployment is about placing workloads close to users in many Regions, not about adjusting capacity to demand."
+  }
+ },
+ "q_527bd6867de8": {
+  "explanation": "Agility in AWS means resources can be provisioned and deprovisioned quickly with minimal effort, so teams can move and experiment fast.",
+  "optionNotes": {
+   "A": "Deploying to multiple Regions for high availability is about resilience and global reach, not agility.",
+   "B": "Pay-as-you-go is a pricing model and a cost benefit, not what defines agility.",
+   "C": "Offloading infrastructure management is a benefit of managed services, but agility is specifically about speed of provisioning.",
+   "D": "Quickly provisioning and deprovisioning resources with little effort is the definition of agility."
+  }
+ },
+ "q_69cd11986747": {
+  "explanation": "Replacing upfront fixed expenses with variable expenses by using on-demand services is pay-as-you-go pricing.",
+  "optionNotes": {
+   "A": "High availability is about keeping a workload running during failures, not about how you pay.",
+   "B": "Economies of scale lowers prices because AWS aggregates usage across many customers; it does not describe the shift from fixed to variable expense.",
+   "C": "Pay-as-you-go pricing lets you pay only for what you use instead of buying capacity upfront.",
+   "D": "Global reach is about deploying close to users worldwide, not about the payment model."
+  }
+ },
+ "q_8848520dc9d5": {
+  "explanation": "When Free Tier usage expires or a limit is exceeded, the account is billed at the standard pay-as-you-go rate only for the usage beyond the Free Tier. Nothing is charged retroactively for usage that was within the Free Tier.",
+  "optionNotes": {
+   "A": "Usage beyond the Free Tier limits, or after it expires, is billed at standard pay-as-you-go rates.",
+   "B": "AWS does not need Support to set up charges; billing for usage above the Free Tier happens automatically.",
+   "C": "Usage inside the Free Tier is not charged retroactively; only the excess or post-expiry usage is billed.",
+   "D": "On a standard paid account nothing is frozen; services keep running and the excess usage is simply billed (accounts on the newer Free plan are instead closed after the free period unless upgraded)."
+  }
+ },
+ "q_d11ce823a152": {
+  "explanation": "The correct options are high availability and economies of scale: AWS provides high availability through its Regions and Availability Zones, and economies of scale that lower costs. AWS does not train staff on every service, manage all security, or give free TAM support.",
+  "optionNotes": {
+   "A": "AWS offers training resources, but it does not train a company's staff on all services as an included benefit.",
+   "B": "Under the shared responsibility model AWS secures the cloud itself, while the customer remains responsible for security in the cloud.",
+   "C": "A designated technical account manager comes only with the paid higher-tier support plans (Enterprise level), not as a free benefit.",
+   "D": "AWS infrastructure is built across multiple Availability Zones and Regions, so workloads can be designed to be highly available.",
+   "E": "Because AWS aggregates usage from many customers, it achieves economies of scale and lower per-unit costs."
+  }
+ },
+ "q_01197647d2e7": {
+  "explanation": "Using multiple AWS Regions to serve users in different countries is the global reach advantage, going global in minutes.",
+  "optionNotes": {
+   "A": "Pay-as-you-go pricing concerns how usage is billed, not where workloads are deployed.",
+   "B": "Capacity forecasting is something the cloud removes the need for; it is not about serving users in different countries.",
+   "C": "Economies of scale is about lower prices from aggregated usage, not geographic distribution.",
+   "D": "Deploying in AWS Regions close to users in different countries is global reach."
+  }
+ },
+ "q_5cc22cde6273": {
+  "explanation": "Agility is the ability to provision compute, storage, and database resources in minutes instead of weeks, so teams can move quickly.",
+  "optionNotes": {
+   "A": "Elasticity is about scaling capacity up and down with demand, not about how quickly new resources are first provisioned.",
+   "B": "Cost savings is a financial benefit, not the speed of deploying resources.",
+   "C": "Agility describes quickly deploying cloud resources in minutes.",
+   "D": "Reliability is about performing correctly and recovering from failures, not provisioning speed."
+  }
+ },
+ "q_61d4fac920f1": {
+  "explanation": "The correct options are the speed at which resources are implemented and the ability to experiment quickly. Agility means resources can be implemented quickly and teams can experiment quickly, because trying an idea costs little and takes little time.",
+  "optionNotes": {
+   "A": "Agility includes how fast AWS resources can be implemented, in minutes rather than weeks.",
+   "B": "How quickly AWS builds new Regions is AWS's own expansion, not the agility that customers experience.",
+   "C": "Low-cost, fast provisioning lets teams experiment quickly, which is a core part of agility.",
+   "D": "Eliminating wasted capacity is elasticity and the benefit of not guessing capacity, not agility.",
+   "E": "Low cost of entry is a cost benefit of pay-as-you-go pricing, not the definition of agility."
+  }
+ },
+ "q_f1c7426de14f": {
+  "explanation": "Elasticity is the ability to acquire resources on demand and release them when they are no longer needed.",
+  "optionNotes": {
+   "A": "High availability is about keeping a workload running through failures, not about adding and removing resources.",
+   "B": "Decoupled architecture reduces dependency between components and does not describe provisioning on demand.",
+   "C": "Resilience is the ability to recover from disruptions, not to scale resources with demand.",
+   "D": "Elasticity means adding resources when needed and releasing them when they are not."
+  }
+ },
+ "q_886db8064c1c": {
+  "explanation": "The correct options are pay-as-you-go costs and economies of scale. The cloud lowers TCO by replacing upfront capital expenditures with pay-as-you-go costs and by passing on lower prices from AWS economies of scale.",
+  "optionNotes": {
+   "A": "Pay-as-you-go replaces large upfront capital expense with variable cost, lowering TCO.",
+   "B": "High availability improves resilience but does not eliminate downtime, and it is not the TCO argument.",
+   "C": "AWS reduces some infrastructure work, but customers still need IT staff to design, secure, and operate their workloads.",
+   "D": "AWS aggregates usage across customers and has repeatedly reduced prices as its scale grows.",
+   "E": "EC2 has several pricing models, such as On-Demand, Reserved, Savings Plans, and Spot, not a single one."
+  }
+ },
+ "q_f250f30b729a": {
+  "explanation": "The correct options are rightsizing resources as demand shifts and procuring resources easily when needed. Elasticity means resizing resources as demand shifts and being able to obtain resources easily whenever they are needed.",
+  "optionNotes": {
+   "A": "Restart time of an instance is a matter of instance operations, not elasticity.",
+   "B": "Elasticity includes rightsizing, scaling resources up or down as demand changes.",
+   "C": "The maximum RAM of an instance is a sizing limit of an instance type, not elasticity.",
+   "D": "Pay-as-you-go is a billing model that goes with elasticity, but it is not what elasticity itself refers to.",
+   "E": "Being able to procure resources easily when needed is part of elasticity."
+  }
+ },
+ "q_0adc2a367c54": {
+  "explanation": "The correct options are trading fixed for variable expenses and economies of scale: trading fixed expense for variable expense and benefiting from economies of scale are both about cost. Global deployment, speed and agility, and patching are benefits of other kinds.",
+  "optionNotes": {
+   "A": "Replacing fixed upfront costs with variable costs is a cost-effectiveness benefit.",
+   "B": "Deploying worldwide in minutes is global reach, not a cost benefit.",
+   "C": "Speed and agility is a different advantage of cloud computing, not a cost statement.",
+   "D": "Patching the underlying infrastructure is part of AWS's side of shared responsibility, and is not specifically about cost.",
+   "E": "AWS passes lower prices on to customers thanks to economies of scale."
+  }
+ },
+ "q_72464862a1de": {
+  "explanation": "Agility comes from being able to access a wide range of technologies and quickly experiment and innovate with them.",
+  "optionNotes": {
+   "A": "Avoiding over-provisioned capacity is the benefit of not guessing capacity, which is elasticity, not agility.",
+   "B": "Expanding into new Regions is global reach, a different cloud advantage.",
+   "C": "Easy access to many technologies lets companies experiment and innovate quickly, which is agility.",
+   "D": "Paying only for what you use is pay-as-you-go pricing, not agility."
+  }
+ },
+ "q_333be20217e5": {
+  "explanation": "The correct options are consumption-based pricing and economies of scale: consumption-based pricing and economies of scale are both economic benefits of the AWS Cloud.",
+  "optionNotes": {
+   "A": "Consumption-based pricing means you pay only for what you use, an economic benefit.",
+   "B": "Perpetual licenses are an on-premises, upfront-purchase model, not a cloud economic benefit.",
+   "C": "AWS achieves economies of scale by aggregating customer usage and lowers prices as a result.",
+   "D": "Enterprise Support is a paid plan; it is not offered at no additional cost.",
+   "E": "AWS owns and operates the hardware, so bring-your-own-hardware is not the AWS model."
+  }
+ },
+ "q_044699b3e6e2": {
+  "explanation": "Acquiring resources when needed and releasing them when they are no longer needed is elasticity.",
+  "optionNotes": {
+   "A": "Scalability is the ability to handle growth, but elasticity specifically captures acquiring and releasing capacity as demand changes.",
+   "B": "Sustainability is a Well-Architected pillar about reducing environmental impact, not about acquiring and releasing resources.",
+   "C": "Elasticity means resources are obtained on demand and released when not needed.",
+   "D": "Operational excellence is a Well-Architected pillar about running and improving workloads, not about scaling resources."
+  }
+ },
+ "q_e682e17f95bc": {
+  "explanation": "Economies of scale means AWS aggregates usage from many customers and achieves lower variable costs than a single company could on its own.",
+  "optionNotes": {
+   "A": "Trading variable expense for fixed expense is the reverse of the cloud advantage, which trades fixed for variable.",
+   "B": "Speed and agility is a separate cloud advantage, not a result of economies of scale.",
+   "C": "Aggregated usage across many customers gives AWS lower variable costs than customers would get on their own.",
+   "D": "Economies of scale reduce costs, they do not increase operational costs."
+  }
+ },
+ "q_32a06f6bcfc8": {
+  "explanation": "Lower usage costs from the aggregated usage of all AWS customers is the economies of scale benefit.",
+  "optionNotes": {
+   "A": "Not needing to guess capacity is about elasticity, not about price reductions from aggregated usage.",
+   "B": "Going global in minutes is about geographic reach, not lower prices.",
+   "C": "Because AWS aggregates usage of all customers, it achieves economies of scale and lower costs.",
+   "D": "Speed and agility is about quick provisioning and experimentation, not lower unit costs."
+  }
+ },
+ "q_e8073c1da080": {
+  "explanation": "The correct options are increased speed for new projects and flexibility to scale up in minutes. In the AWS Cloud the retail company can try new projects quickly and scale up in minutes as the app becomes popular. A large upfront expense, full physical control, and picking specific data centers are not cloud benefits.",
+  "optionNotes": {
+   "A": "The cloud avoids large upfront capital expense; it trades fixed expense for variable expense.",
+   "B": "Resources can be provisioned quickly, so the team can try out new projects with less delay and cost.",
+   "C": "AWS manages physical security of its data centers, so the customer does not have control over it.",
+   "D": "Elasticity allows scaling up in minutes when demand for the app grows.",
+   "E": "Customers choose Regions and Availability Zones, but not the specific AWS data centers hosting their servers."
+  }
+ },
+ "q_589e8709c56a": {
+  "explanation": "The correct options are elasticity and pay-as-you-go. For highly dynamic usage, elasticity lets capacity follow demand and pay-as-you-go pricing means the company pays only for the resources it uses.",
+  "optionNotes": {
+   "A": "Reliability matters for the workload, but it does not make a dynamic workload cost-effective.",
+   "B": "Security is important but is not the cost-effectiveness benefit for variable demand.",
+   "C": "Elasticity scales resources with changing demand, avoiding paying for idle capacity.",
+   "D": "Pay-as-you-go pricing charges only for consumed resources, which fits unpredictable usage.",
+   "E": "High availability improves uptime and is not the main cost benefit for dynamic usage."
+  }
+ },
+ "q_871c52a7def1": {
+  "explanation": "Stop guessing capacity: because resources can scale up and down with the load, you do not need to predict capacity in advance.",
+  "optionNotes": {
+   "A": "Go global in minutes is about deploying in many Regions, not scaling with load.",
+   "B": "Scaling resources up and down with application load means you can stop guessing capacity.",
+   "C": "Economies of scale lowers prices through aggregated usage; it does not scale resources with load.",
+   "D": "Trading fixed expense for variable expense is about payment model, not scaling with load."
+  }
+ },
+ "q_1c8b69987517": {
+  "explanation": "The correct options are automatically recovering from failure and stopping guessing capacity. The reliability pillar includes automatically recovering from failure and stopping guessing capacity. Designing for a single AZ or granting everyone quota increases goes against reliability practice.",
+  "optionNotes": {
+   "A": "Automatically recovering from failure is a design principle of the reliability pillar.",
+   "B": "Service quotas should be managed with care and not granted to everyone, so this contradicts the pillar.",
+   "C": "Stopping guessing capacity, by scaling with demand, is a reliability pillar design principle.",
+   "D": "Running in a single Availability Zone creates a single point of failure, which contradicts reliability.",
+   "E": "Raising quotas first in a secondary Region is not a reliability principle; quotas must be sufficient in every Region used for failover."
+  }
+ },
+ "q_e6e821f7cdf3": {
+  "explanation": "Deploying across multiple Availability Zones in one Region means the application keeps running if one AZ fails, giving a resilient, highly available architecture.",
+  "optionNotes": {
+   "A": "Improving performance for global customers needs multiple Regions or edge services, not several AZs in a single Region.",
+   "B": "Spreading the application across AZs removes a single point of failure and gives high availability.",
+   "C": "Using more AZs does not reduce storage costs; it can even add cost for data replication.",
+   "D": "Availability Zones are managed by AWS, so customers cannot shut down an AZ to save money."
+  }
+ },
+ "q_108495d1fb64": {
+  "explanation": "Paying for services on an as-needed basis is trading fixed expense for variable expense.",
+  "optionNotes": {
+   "A": "Not running data centers is a separate advantage and does not describe paying as needed.",
+   "B": "Speed and agility is about provisioning and experimenting quickly, not about how the company pays.",
+   "C": "Going global in minutes is about deploying worldwide, not about the payment model.",
+   "D": "Paying for what is consumed is the move from fixed to variable expense."
+  }
+ },
+ "q_68e46f310083": {
+  "explanation": "Trading fixed expense for variable expense lets the company avoid large upfront infrastructure purchases and pay only for what it uses.",
+  "optionNotes": {
+   "A": "Going global in minutes is about geographic reach, not upfront cost.",
+   "B": "Speed and agility is about how fast resources can be provisioned, not about reducing upfront costs.",
+   "C": "Economies of scale lowers unit prices over time but does not remove the upfront investment on its own.",
+   "D": "Pay-as-you-go replaces upfront capital expense with variable expense, reducing upfront costs."
+  }
+ },
+ "q_715eeefde2aa": {
+  "explanation": "Increase speed and agility is the advantage that lets teams set up infrastructure in minutes rather than weeks.",
+  "optionNotes": {
+   "A": "Trading fixed for variable expense is a cost advantage, not about speed of setup.",
+   "B": "Going global in minutes is about deploying across Regions, not about quickly setting up infrastructure for a new application.",
+   "C": "Provisioning infrastructure in minutes is exactly speed and agility.",
+   "D": "Stop guessing capacity is about scaling with demand, not about setup speed."
+  }
+ },
+ "q_a4b3ab4481bc": {
+  "explanation": "Automatically acquiring resources when needed and releasing them when not needed describes elasticity.",
+  "optionNotes": {
+   "A": "Availability is about a system being up and accessible, not about adding and removing resources.",
+   "B": "Elasticity means capacity can be acquired and released automatically as demand changes.",
+   "C": "Durability is about protecting data from loss, not adjusting resources.",
+   "D": "Reliability is about performing correctly and recovering from failure, not scaling resources."
+  }
+ },
+ "q_edf378c5d991": {
+  "explanation": "Economies of scale lets AWS aggregate usage from many customers and offer lower variable costs.",
+  "optionNotes": {
+   "A": "High availability improves uptime and does not minimize variable costs.",
+   "B": "Because AWS aggregates usage across all customers, its costs and variable prices are lower.",
+   "C": "Global reach is about deploying close to users, not minimizing cost.",
+   "D": "Agility is about speed of provisioning and experimentation, not about cost."
+  }
+ },
+ "q_a628ea9711ed": {
+  "explanation": "Acquiring resources when necessary and releasing them when no longer necessary is elasticity.",
+  "optionNotes": {
+   "A": "Elasticity is the ability to acquire and release resources as demand changes.",
+   "B": "Availability is about keeping a workload accessible, not scaling resources up and down.",
+   "C": "Reliability is about consistent correct operation and recovery, not acquiring and releasing capacity.",
+   "D": "Durability is about not losing data, not about adjusting resources."
+  }
+ },
+ "q_37eca218d73d": {
+  "explanation": "When demand cannot be predicted, the company needs infrastructure that can scale and perform well as usage grows, which is the scalable and high performance benefit.",
+  "optionNotes": {
+   "A": "Ease of use does not address unpredictable demand.",
+   "B": "Cost-effectiveness is helpful, but the stated problem is not knowing how much capacity the application will need.",
+   "C": "Security is not what the company is seeking in this scenario.",
+   "D": "Scalable, high-performance infrastructure can grow with unknown demand."
+  }
+ },
+ "q_126a5d00b638": {
+  "explanation": "Increase speed and agility lets the company provision the additional infrastructure in minutes instead of waiting to buy and install servers.",
+  "optionNotes": {
+   "A": "Economies of scale lowers prices but does not speed up provisioning.",
+   "B": "Agility allows new infrastructure to be provisioned as quickly as possible for the new line of business.",
+   "C": "Trading fixed for variable expense helps with cost, not provisioning speed.",
+   "D": "Going global in minutes is about deploying in many Regions, which the scenario does not need."
+  }
+ },
+ "q_89f476d1b31b": {
+  "explanation": "The correct options are high economies of scale and launching globally in minutes: high economies of scale and launching globally in minutes are advantages of the AWS Cloud. The others are the opposite of what the cloud offers.",
+  "optionNotes": {
+   "A": "The cloud trades capital expense for variable expense, not variable for capital.",
+   "B": "AWS aggregates usage across customers and reaches economies of scale that lower prices.",
+   "C": "Customers can deploy to multiple Regions around the world within minutes.",
+   "D": "The cloud lets customers stop managing hardware so they can focus on their business.",
+   "E": "Overprovisioning is what the cloud avoids, because capacity can be scaled to demand."
+  }
+ },
+ "q_1556e0fd0454": {
+  "explanation": "An architecture that withstands failures with minimal downtime demonstrates high availability.",
+  "optionNotes": {
+   "A": "Agility is about speed of provisioning and innovation, not surviving failures.",
+   "B": "Elasticity is about scaling capacity with demand, not tolerating failures.",
+   "C": "Scalability is about handling growth, not about withstanding failures.",
+   "D": "High availability means the system keeps running through failures with minimal downtime."
+  }
+ },
+ "q_25b6c4328b47": {
+  "explanation": "The correct options are the pay-as-you-go model and not guessing capacity: the pay-as-you-go model, and no longer having to guess the capacity you will need. Security is a shared responsibility and physical control belongs to AWS.",
+  "optionNotes": {
+   "A": "Security is a shared responsibility, so the customer cannot hand all of it to AWS.",
+   "B": "Paying only for what you use is a core advantage of moving to AWS.",
+   "C": "AWS owns and operates the physical infrastructure, so customers do not get full control over it.",
+   "D": "Capacity can be scaled up or down, so you do not have to predict future needs.",
+   "E": "Customers remain responsible for managing user access, for example with IAM."
+  }
+ },
+ "q_d02c09293d45": {
+  "explanation": "The correct options are on-demand capacity and avoiding data center costs: capacity can be adjusted on demand, and many of the costs of building and maintaining data centers go away.",
+  "optionNotes": {
+   "A": "AWS prices vary by Region, so they are not the same everywhere.",
+   "B": "Adjusting capacity on demand means you pay only for the capacity you need.",
+   "C": "AWS does not give discounts for idle EC2 instances; you still pay for them while they run.",
+   "D": "Data transferred out to the internet is charged, while data in is generally free.",
+   "E": "AWS owns and operates the facilities and hardware, removing many data center costs."
+  }
+ },
+ "auth-cloud-concepts-01": {
+  "explanation": "A hybrid deployment connects cloud resources with infrastructure that stays outside the cloud, such as an on-premises data center. It is not a cloud deployment, even one spread across several Regions, because the payroll system still runs in the company's own data center.",
+  "optionNotes": {
+   "A": "A cloud deployment runs entirely in the cloud, but the payroll system stays in the company's own data center.",
+   "B": "An on-premises deployment runs everything locally, while the website runs on AWS.",
+   "C": "Linking AWS-hosted resources with on-premises systems is a hybrid deployment.",
+   "D": "Using several Regions would still be an all-cloud deployment, and the scenario involves an on-premises system."
+  }
+ },
+ "auth-cloud-concepts-02": {
+  "explanation": "With PaaS the provider manages the hardware and operating systems so the customer can focus on deploying and managing its own application. SaaS would not fit because the startup is deploying its own code, not using a finished application.",
+  "optionNotes": {
+   "A": "With IaaS the customer still manages operating systems and patching, which the startup wants to avoid.",
+   "B": "SaaS delivers a finished application; the startup is deploying its own code.",
+   "C": "On-premises virtualization means the company still runs and maintains the servers.",
+   "D": "PaaS removes the need to manage servers, operating systems, and capacity so the team deploys only the application."
+  }
+ },
+ "auth-cloud-concepts-03": {
+  "explanation": "IaaS provides the basic building blocks (virtual servers, networking, storage) and gives the highest level of flexibility and management control. PaaS and SaaS hand more of that management to the provider, so the customer controls less.",
+  "optionNotes": {
+   "A": "IaaS gives the customer control over the operating system, networking, and storage configuration.",
+   "B": "SaaS gives the least control because the provider manages the whole application and its infrastructure.",
+   "C": "PaaS has the provider manage the operating system and underlying infrastructure, so customer control is lower than IaaS.",
+   "D": "FaaS runs functions without servers to manage, so the customer has little control over the operating system."
+  }
+ },
+ "auth-cloud-concepts-04": {
+  "explanation": "The correct options are electricity and cooling, and staff salaries. On-premises TCO includes more than hardware: power, cooling, space and the people who run the infrastructure all count. The other options are AWS charges, which belong on the cloud side of the comparison.",
+  "optionNotes": {
+   "A": "AWS Support plan fees are a cloud cost and belong on the AWS side of the comparison.",
+   "B": "Electricity and cooling are real on-premises running costs and belong in the TCO.",
+   "C": "Data transfer out from CloudFront is an AWS charge, so it is a cloud-side cost.",
+   "D": "Staff who install and maintain servers are an on-premises operating cost to include in the TCO.",
+   "E": "AWS Marketplace subscriptions are bought through AWS and so are a cloud-side cost."
+  }
+ },
+ "auth-cloud-concepts-05": {
+  "explanation": "The Sustainability pillar focuses on minimizing the environmental impact of cloud workloads, and maximizing utilization is one of its design principles. Performance Efficiency is about using resources efficiently to meet performance needs, not about environmental impact.",
+  "optionNotes": {
+   "A": "Performance Efficiency is about meeting performance needs efficiently, not reducing energy and environmental impact.",
+   "B": "Maximizing utilization and removing idle resources to reduce energy use belongs to Sustainability.",
+   "C": "Reliability is about recovering from failure and meeting demand, not about energy consumption.",
+   "D": "Operational Excellence is about running and improving workloads, not about reducing environmental impact."
+  }
+ },
+ "auth-cloud-concepts-06": {
+  "explanation": "Least-privilege access and maintaining traceability are design principles of the Security pillar, which focuses on protecting information and systems. Operational Excellence also uses monitoring, but its goal is running workloads well and improving procedures, not controlling access.",
+  "optionNotes": {
+   "A": "Operational Excellence involves monitoring and improving operations, but granting least-privilege access is not its focus.",
+   "B": "Reliability is about recovering from failure, not controlling permissions and auditing changes.",
+   "C": "Performance Efficiency is about using resources efficiently, not access control and auditing.",
+   "D": "Least privilege and auditing every change are core design principles of the Security pillar."
+  }
+ },
+ "auth-cloud-concepts-07": {
+  "explanation": "The correct options are running copies in multiple Availability Zones and automatically replacing failed instances. Designing for failure means assuming components will fail, so you avoid single points of failure by spreading copies across Availability Zones and recover automatically. A single large server is a single point of failure, and recovery should be tested before an outage, not after.",
+  "optionNotes": {
+   "A": "Running copies in multiple AZs removes a single point of failure.",
+   "B": "One large server is a single point of failure, which goes against designing for failure.",
+   "C": "Health checks detect failures, so turning them off prevents automatic recovery.",
+   "D": "Automatically replacing failed instances lets the application recover without manual steps.",
+   "E": "Recovery should be tested before an outage so you know it works when needed."
+  }
+ },
+ "auth-cloud-concepts-08": {
+  "explanation": "Loose coupling through a queue such as Amazon SQS lets the web tier accept orders without waiting, so a slow or failed component does not take down the others. Putting components on one larger or shared server makes them more tightly coupled, not less.",
+  "optionNotes": {
+   "A": "A larger single server does not remove the web tier's dependency on waiting for the payment component.",
+   "B": "Running both on one server keeps the same direct dependency and adds a shared point of failure.",
+   "C": "A message queue between the tiers decouples them, so a slow payment component does not block the web tier.",
+   "D": "Buying more capacity in advance does not change the direct, waiting dependency on the payment component."
+  }
+ },
+ "auth-cloud-concepts-09": {
+  "explanation": "AWS takes over the heavy lifting of racking, stacking, and powering servers, so the team can focus on projects that differentiate the business. Economies of scale is about lower prices from aggregated usage, not about where the team spends its time.",
+  "optionNotes": {
+   "A": "Going global in minutes is about Regions and reach, not about freeing the IT team from hardware work.",
+   "B": "Replacing disks and power supplies is data center upkeep, which AWS now handles.",
+   "C": "Economies of scale lowers prices, but it does not describe the team's change in work.",
+   "D": "Trading fixed for variable expense is about how the company pays, not about the team's time."
+  }
+ },
+ "auth-cloud-concepts-10": {
+  "explanation": "The correct options are stopping the instances outside office hours and right-sizing them. Paying only for what you use means stopping idle resources, and low utilization shows the instances are larger than needed, so they should be right-sized. Adding more or larger instances would increase cost without any benefit for this workload.",
+  "optionNotes": {
+   "A": "More instances add cost, while the existing ones are already barely used.",
+   "B": "A Region with more AZs does not reduce cost or fix low utilization.",
+   "C": "Stopping instances outside office hours avoids paying for idle compute.",
+   "D": "Larger instances would raise cost and keep utilization low.",
+   "E": "At a maximum of 15% CPU the instances are oversized, so smaller types reduce cost."
+  }
+ }
+}
