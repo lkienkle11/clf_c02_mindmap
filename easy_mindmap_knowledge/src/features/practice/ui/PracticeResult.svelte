@@ -1,9 +1,11 @@
 <script lang="ts">
   import type { Snippet } from 'svelte';
+  import type { Question } from '@/content/types';
   import type { Services } from '@/app/composition';
   import { getI18n } from '@/i18n/i18n.svelte';
   import Button from '@/ui/Button.svelte';
   import { cn } from '@/ui/cn';
+  import OptionReview from './OptionReview.svelte';
   import type { SubmitResult } from '../session.svelte';
 
   interface Props {
@@ -27,15 +29,8 @@
   const i18n = getI18n();
   const questions = $derived(new Map(services.catalog.questions.map((q) => [q.id, q])));
 
-  /** Answer texts in the question's own option order (not click order). */
-  function answerTexts(questionId: string, keys: string[]): string[] {
-    const options = questions.get(questionId)?.options ?? [];
-    const rank = (k: string): number => {
-      const at = options.findIndex((o) => o.key === k);
-      return at === -1 ? options.length : at;
-    };
-    return [...keys].sort((a, b) => rank(a) - rank(b)).map((k) => options.find((o) => o.key === k)?.text ?? k);
-  }
+  /** Item explanation is the fallback only when the catalog question lacks one. */
+  const explained = (q: Question, fallback?: string): Question => (q.explanation || fallback === undefined ? q : { ...q, explanation: fallback });
 
   // Screen readers land on the result when it appears.
   const focusOnMount = (node: HTMLElement) => node.focus();
@@ -71,28 +66,11 @@
           <p class={cn('font-semibold', item.isCorrect ? 'text-leaf-done-ink' : 'text-danger')}>
             {item.isCorrect ? `✓ ${i18n.t('practice.result.correct')}` : `✗ ${i18n.t('practice.result.incorrect')}`}
           </p>
-          <dl class="grid gap-1">
-            <div>
-              <dt class="text-sm text-muted-foreground">{i18n.t('practice.result.yourAnswer')}</dt>
-              <dd>
-                {#if item.selected.length === 0}
-                  {i18n.t('practice.result.noAnswer')}
-                {:else}
-                  <ul lang="en">{#each answerTexts(item.questionId, item.selected) as text (text)}<li>{text}</li>{/each}</ul>
-                {/if}
-              </dd>
-            </div>
-            <div>
-              <dt class="text-sm text-muted-foreground">{i18n.t('practice.result.correctAnswer')}</dt>
-              <dd><ul lang="en">{#each answerTexts(item.questionId, item.correct) as text (text)}<li>{text}</li>{/each}</ul></dd>
-            </div>
-            {#if item.explanation}
-              <div>
-                <dt class="text-sm text-muted-foreground">{i18n.t('practice.result.explanation')}</dt>
-                <dd lang="en">{item.explanation}</dd>
-              </div>
-            {/if}
-          </dl>
+          {#if q}
+            <OptionReview question={explained(q, item.explanation)} selected={item.selected} optionOrder={item.optionOrder} />
+          {:else}
+            <p class="text-sm text-muted-foreground">{item.explanation ?? ''}</p>
+          {/if}
         </li>
       {/each}
     </ol>

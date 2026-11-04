@@ -14,7 +14,7 @@ export interface SubmitResult {
   correct: number;
   total: number;
   passed: boolean;
-  items: { questionId: string; selected: string[]; correct: string[]; isCorrect: boolean; explanation?: string }[];
+  items: { questionId: string; selected: string[]; correct: string[]; isCorrect: boolean; explanation?: string; optionOrder?: string[] }[];
 }
 
 export interface SessionQuestion {
@@ -281,6 +281,7 @@ export class PracticeSession {
         selected: [...sq.selected],
         correct: [...correct],
         isCorrect: gradeQuestion(correct, sq.selected),
+        optionOrder: [...sq.optionOrder],
         ...(cq?.explanation !== undefined ? { explanation: cq.explanation } : {}),
       };
     });
