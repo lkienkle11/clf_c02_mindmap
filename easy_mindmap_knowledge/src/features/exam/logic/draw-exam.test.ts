@@ -17,6 +17,14 @@ const catalogOf = (questions: Question[]): Catalog =>
 
 const ids = (list: Question[]) => list.map((q) => q.id);
 
+/** `times` graded answers for one question. */
+const answers = (questionId: string, isCorrect: boolean, times = 1) =>
+  Array.from({ length: times }, () => ({ questionId, isCorrect }));
+
+/** Ids `prefix${from}` .. `prefix${to - 1}`, matching `qs`. */
+const range = (prefix: string, from: number, to: number): string[] =>
+  Array.from({ length: to - from }, (_, i) => `${prefix}${from + i}`);
+
 describe('historyOf', () => {
   it('marks every answered question seen and counts wrong answers as misses', () => {
     const h = historyOf([
@@ -67,6 +75,33 @@ describe('drawBucket', () => {
   it('returns [] for n = 0', () => {
     expect(drawBucket(qs('compute', 4, 's'), 0, historyOf([]), makeRng(1))).toEqual([]);
   });
+
+  it('mixes the tiers at n = 4: two unseen, then the seen-wrong one, then a seen-right one (the extra right is a candidate too)', () => {
+    const pool = ['u1', 'u2', 'w1', 'r1', 'r2'].map((id) => makeQuestion({ id, topicId: 'compute' }));
+    const history = historyOf([
+      ...answers('w1', false),
+      ...answers('r1', true),
+      ...answers('r2', true),
+    ]);
+    const drawn = ids(drawBucket(pool, 4, history, makeRng(13)));
+    expect(new Set(drawn.slice(0, 2))).toEqual(new Set(['u1', 'u2']));
+    expect(drawn[2]).toBe('w1');
+    expect(['r1', 'r2']).toContain(drawn[3]);
+  });
+
+  it('orders seen-wrong questions by miss count beyond n = 1, and keeps seen-right out while they last', () => {
+    const pool = ['wA', 'wB', 'wC', 'wD', 'rX'].map((id) => makeQuestion({ id, topicId: 'compute' }));
+    const history = historyOf([
+      ...answers('wA', false, 1),
+      ...answers('wB', false, 3),
+      ...answers('wC', false, 2),
+      ...answers('wD', false, 1),
+      ...answers('rX', true),
+    ]);
+    const drawn = ids(drawBucket(pool, 4, history, makeRng(17)));
+    expect(drawn.slice(0, 2)).toEqual(['wB', 'wC']);
+    expect(new Set(drawn.slice(2))).toEqual(new Set(['wA', 'wD']));
+  });
 });
 
 describe('drawCheckpoint', () => {
@@ -108,6 +143,26 @@ describe('drawCheckpoint', () => {
     const drawn = drawCheckpoint(catalog, group, historyOf([]), makeRng(6));
     expect(drawn).toHaveLength(40);
     expect(new Set(ids(drawn)).size).toBe(40);
+  });
+
+  it('with history, draws every unseen and seen-wrong question and leaves out the seen-right ones', () => {
+    // Pools 30/20/25 allocate 26/17/22 (see the split test), so the questions past each allocation are seen-right.
+    const catalog = groupCatalog([30, 20, 25]);
+    const seenRight = [...range('c', 26, 30), ...range('s', 17, 20), ...range('n', 22, 25)];
+    const seenWrong = ['c0', 's0', 'n0'];
+    const unseen = [...range('c', 0, 30), ...range('s', 0, 20), ...range('n', 0, 25)].filter(
+      (id) => !seenRight.includes(id) && !seenWrong.includes(id),
+    );
+    const history = historyOf([
+      ...seenRight.flatMap((id) => answers(id, true)),
+      ...seenWrong.flatMap((id) => answers(id, false)),
+    ]);
+    const drawnList = drawCheckpoint(catalog, group, history, makeRng(21));
+    const drawn = new Set(ids(drawnList));
+    expect(drawnList).toHaveLength(65);
+    expect(unseen.filter((id) => !drawn.has(id))).toEqual([]);
+    expect(seenWrong.filter((id) => !drawn.has(id))).toEqual([]);
+    expect(seenRight.filter((id) => drawn.has(id))).toEqual([]);
   });
 });
 
@@ -153,5 +208,33 @@ describe('drawCapstone', () => {
     const drawn = drawCapstone(loadBundledCatalog(), historyOf([]), makeRng(7));
     expect(drawn).toHaveLength(65);
     expect(new Set(ids(drawn)).size).toBe(65);
+  });
+
+  it('with history, per domain draws every unseen and seen-wrong question and leaves out the seen-right ones', () => {
+    // Domain pools of 30 allocate 16/19/22/8, so the questions past each allocation are seen-right.
+    const perDomain = [
+      { prefix: 'a', topic: domainTopic.concepts, count: 16 },
+      { prefix: 'b', topic: domainTopic.security, count: 19 },
+      { prefix: 'c', topic: domainTopic.technology, count: 22 },
+      { prefix: 'd', topic: domainTopic.billing, count: 8 },
+    ];
+    const catalog = catalogOf([
+      ...perDomain.flatMap(({ prefix, topic }) => qs(topic, 30, prefix)),
+      ...qs(null, 10, 'u'),
+    ]);
+    const seenRight = perDomain.flatMap(({ prefix, count }) => range(prefix, count, 30));
+    const seenWrong = perDomain.map(({ prefix }) => `${prefix}0`);
+    const expected = perDomain.flatMap(({ prefix, count }) => range(prefix, 0, count));
+    const history = historyOf([
+      ...seenRight.flatMap((id) => answers(id, true)),
+      ...seenWrong.flatMap((id) => answers(id, false)),
+    ]);
+    const drawn = drawCapstone(catalog, history, makeRng(19));
+    const drawnIds = new Set(ids(drawn));
+    expect(drawn).toHaveLength(65);
+    expect(drawn.every((q) => q.topicId !== null)).toBe(true);
+    expect(expected.filter((id) => !drawnIds.has(id))).toEqual([]);
+    expect(seenWrong.filter((id) => !drawnIds.has(id))).toEqual([]);
+    expect(seenRight.filter((id) => drawnIds.has(id))).toEqual([]);
   });
 });
