@@ -9,12 +9,13 @@ import TreeScreen from './TreeScreen.svelte';
 
 const PASSED = ['cloud-concepts', 'global-infrastructure']; // compute becomes current
 
-async function mountTree(opts: { passed?: string[]; read?: string[]; noComputeQuestions?: boolean; locale?: Locale } = {}) {
+async function mountTree(opts: { passed?: string[]; groups?: number[]; read?: string[]; noComputeQuestions?: boolean; locale?: Locale } = {}) {
   const raw = makeTreeRawCatalog();
   if (opts.noComputeQuestions) raw.questions = raw.questions.filter((q) => q.topicId !== 'compute');
   const fake = await makeFakeServices({
     catalog: loadCatalog(raw),
     passedTopicIds: opts.passed ?? PASSED,
+    passedGroupIndexes: opts.groups ?? [],
     readIds: opts.read ?? [],
   });
   const view = renderWithI18n(TreeScreen, { services: fake.services, appState: fake.appState }, opts.locale ?? 'en');
@@ -125,7 +126,7 @@ describe('TreeScreen topics without lessons (ruling R17)', () => {
 
   it('a current topic with questions but no lessons is practisable and says lessons come later', async () => {
     // storage has a question (q2) and no lessons; it becomes current after the first three topics.
-    const { appState } = await mountTree({ passed: [...PASSED, 'compute'] });
+    const { appState } = await mountTree({ passed: [...PASSED, 'compute'], groups: [1] });
     const p = practiceButton();
     expect(p).not.toHaveAttribute('aria-disabled', 'true');
     expect(screen.queryByText('Read all required lessons first')).not.toBeInTheDocument();
@@ -143,7 +144,7 @@ describe('TreeScreen topics without lessons (ruling R17)', () => {
   it('capstone has no own questions but is practisable with the pooled questions', async () => {
     const all = ['cloud-concepts', 'global-infrastructure', 'compute', 'storage', 'networking', 'databases', 'deploy-operate',
       'shared-responsibility', 'iam-security', 'pricing-billing', 'migration-caf', 'support-ai-other'];
-    const { appState } = await mountTree({ passed: all });
+    const { appState } = await mountTree({ passed: all, groups: [1, 2, 3, 4] });
     const p = practiceButton();
     expect(p).not.toHaveAttribute('aria-disabled', 'true');
     expect(screen.queryByText('No questions yet')).not.toBeInTheDocument();
@@ -152,7 +153,7 @@ describe('TreeScreen topics without lessons (ruling R17)', () => {
   });
 
   it('speaks Vietnamese', async () => {
-    await mountTree({ passed: [...PASSED, 'compute'], locale: 'vi' });
+    await mountTree({ passed: [...PASSED, 'compute'], groups: [1], locale: 'vi' });
     expect(screen.getByText('Bài học cho chủ đề này sẽ có trong bản cập nhật sau')).toBeInTheDocument();
   });
 });

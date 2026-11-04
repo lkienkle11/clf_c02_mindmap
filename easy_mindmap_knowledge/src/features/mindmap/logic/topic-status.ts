@@ -14,16 +14,24 @@ export function completedTopicIds(attempts: AttemptRow[]): Set<string> {
   return done;
 }
 
-/** done if completed; current = first not-done topic (by order); every other not-done topic is locked. */
-export function topicStatuses(topics: Topic[], completed: Set<string>): Map<string, TopicStatus> {
+/**
+ * done if completed; current = first not-done topic (by order) provided `gateOpen(topicId)` is true;
+ * every other not-done topic is locked. A closed gate leaves no current topic. The gate rule itself
+ * (checkpoint groups) lives outside this feature and is injected.
+ */
+export function topicStatuses(
+  topics: Topic[],
+  completed: Set<string>,
+  gateOpen: (topicId: string) => boolean,
+): Map<string, TopicStatus> {
   const result = new Map<string, TopicStatus>();
   let currentTaken = false;
   for (const t of [...topics].sort((a, b) => a.order - b.order)) {
     if (completed.has(t.id)) {
       result.set(t.id, 'done');
     } else if (!currentTaken) {
-      result.set(t.id, 'current');
       currentTaken = true;
+      result.set(t.id, gateOpen(t.id) ? 'current' : 'locked');
     } else {
       result.set(t.id, 'locked');
     }

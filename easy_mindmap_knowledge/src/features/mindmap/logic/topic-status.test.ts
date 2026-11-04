@@ -58,33 +58,69 @@ describe('completedTopicIds', () => {
   it('ignores attempts with null topicId', () => {
     expect(completedTopicIds([attempt({ topicId: null })]).size).toBe(0);
   });
+  it('ignores a passed checkpoint attempt', () => {
+    const cp = attempt({ kind: 'checkpoint', topicId: null, groupIndex: 1, plannedCount: 30 });
+    expect(completedTopicIds([cp]).size).toBe(0);
+    expect(completedTopicIds([attempt({ kind: 'checkpoint', topicId: 't1', groupIndex: 1 })]).size).toBe(0);
+  });
 });
 
 describe('topicStatuses', () => {
   it('no attempts: first current, rest locked', () => {
-    const m = topicStatuses(topics, new Set());
+    const m = topicStatuses(topics, new Set(), () => true);
     expect([m.get('t1'), m.get('t2'), m.get('t3')]).toEqual(['current', 'locked', 'locked']);
   });
   it('topic 1 done: t2 current', () => {
-    const m = topicStatuses(topics, completedTopicIds([attempt({})]));
+    const m = topicStatuses(topics, completedTopicIds([attempt({})]), () => true);
     expect([m.get('t1'), m.get('t2'), m.get('t3')]).toEqual(['done', 'current', 'locked']);
   });
   it('odd data: t2 done but t1 not => t1 current, t2 done', () => {
-    const m = topicStatuses(topics, new Set(['t2']));
+    const m = topicStatuses(topics, new Set(['t2']), () => true);
     expect([m.get('t1'), m.get('t2'), m.get('t3')]).toEqual(['current', 'done', 'locked']);
   });
   it('sorts topics by order', () => {
-    const m = topicStatuses([topics[2], topics[0], topics[1]], new Set(['t1']));
+    const m = topicStatuses([topics[2], topics[0], topics[1]], new Set(['t1']), () => true);
     expect([m.get('t1'), m.get('t2'), m.get('t3')]).toEqual(['done', 'current', 'locked']);
   });
   it('unknown topic ids in completed are ignored', () => {
-    const m = topicStatuses(topics, completedTopicIds([attempt({ topicId: 'zzz' })]));
+    const m = topicStatuses(topics, completedTopicIds([attempt({ topicId: 'zzz' })]), () => true);
     expect(m.size).toBe(3);
     expect(m.get('t1')).toBe('current');
   });
   it('all done: no current', () => {
-    const m = topicStatuses(topics, new Set(['t1', 't2', 't3']));
+    const m = topicStatuses(topics, new Set(['t1', 't2', 't3']), () => true);
     expect([...m.values()]).toEqual(['done', 'done', 'done']);
+  });
+});
+
+describe('topicStatuses injected gate', () => {
+  // t4 opens a new group and cap is the capstone; each is guarded by its own flag in the predicate.
+  const list = [topic('t1', 1), topic('t2', 2), topic('t3', 3), topic('t4', 4), topic('cap', 5)];
+  const gate = (open: { t4: boolean; cap: boolean }) => (id: string) =>
+    id === 't4' ? open.t4 : id === 'cap' ? open.cap : true;
+  const statuses = (m: Map<string, string>) => list.map((t) => m.get(t.id));
+
+  it('locks t4 and leaves no current topic while its gate is closed', () => {
+    const m = topicStatuses(list, new Set(['t1', 't2', 't3']), gate({ t4: false, cap: false }));
+    expect(statuses(m)).toEqual(['done', 'done', 'done', 'locked', 'locked']);
+    expect([...m.values()]).not.toContain('current');
+  });
+  it('makes t4 current once its gate opens', () => {
+    const m = topicStatuses(list, new Set(['t1', 't2', 't3']), gate({ t4: true, cap: false }));
+    expect(statuses(m)).toEqual(['done', 'done', 'done', 'current', 'locked']);
+  });
+  it('does not consult the gate for an open topic inside a group', () => {
+    const m = topicStatuses(list, new Set(['t1']), () => false);
+    expect(m.get('t2')).toBe('locked');
+    const open = topicStatuses(list, new Set(['t1']), gate({ t4: false, cap: false }));
+    expect(open.get('t2')).toBe('current');
+  });
+  it('keeps the capstone locked until its gate opens', () => {
+    const done = new Set(['t1', 't2', 't3', 't4']);
+    const closed = topicStatuses(list, done, gate({ t4: false, cap: false }));
+    expect(closed.get('cap')).toBe('locked');
+    expect([...closed.values()]).not.toContain('current');
+    expect(topicStatuses(list, done, gate({ t4: false, cap: true })).get('cap')).toBe('current');
   });
 });
 

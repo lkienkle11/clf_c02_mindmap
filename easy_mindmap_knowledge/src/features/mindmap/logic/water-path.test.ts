@@ -11,7 +11,7 @@ const lessons = (topicId: string, required: boolean[]) =>
   required.map((r, i) => makeLesson({ id: `${topicId}-l${i}`, topicId, order: i + 1, required: r }));
 
 function run(done: string[], expanded: string | null, stop: string | null) {
-  const statuses = topicStatuses(ts, new Set(done));
+  const statuses = topicStatuses(ts, new Set(done), () => true);
   const current = [...statuses].find(([, s]) => s === 'current')?.[0] ?? null;
   const layout = layoutTree(ts, { expandedTopicId: expanded });
   return { layout, ...waterPath(layout, { statuses, currentTopicId: current, stopLeafId: stop }) };

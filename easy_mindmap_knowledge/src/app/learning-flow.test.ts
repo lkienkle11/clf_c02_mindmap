@@ -73,6 +73,16 @@ async function passCurrentTopicViaUi(user: ReturnType<typeof userEvent.setup>): 
   await screen.findByRole('heading', { name: 'Mindmap' });
 }
 
+async function passCheckpoint(services: Services, appState: AppState, groupIndex: number): Promise<void> {
+  await services.repos.attempts.create({
+    id: `cp-${groupIndex}`, kind: 'checkpoint', topicId: null, status: 'submitted', startedAt: T0, submittedAt: T0 + 1,
+    submitReason: 'manual', reviewAllowed: true,
+    clock: { mode: 'freeze', limitMs: null, remainingMs: null, deadlineAt: null, onHidden: 'freeze' },
+    heartbeatAt: null, scorePct: 90, passed: true, groupIndex, plannedCount: 30,
+  }, []);
+  await appState.refresh();
+}
+
 async function passWithSession(services: Services, appState: AppState, topicId: string): Promise<void> {
   const s = await PracticeSession.start(services, topicId, { allowReview: false, limitMs: null, clockMode: 'freeze', onHidden: 'freeze', questionCount: 10 }, () => appState.refresh());
   const byId = new Map(services.catalog.questions.map((q) => [q.id, q]));
@@ -108,9 +118,17 @@ describe('learning flow (ruling R17: topics without lessons can be practised)', 
     expect(appState.statuses.get('global-infrastructure')).toBe('done');
 
     // Topics 3..12 the same way (service level; the UI path is proven above).
-    for (const topicId of TOPIC_IDS.slice(2, 12)) {
+    // After each group's last topic the next group stays locked until that group's checkpoint is passed.
+    for (const [i, topicId] of TOPIC_IDS.slice(2, 12).entries()) {
+      const position = i + 3;
       expect(appState.statuses.get(topicId)).toBe('current');
       await passWithSession(services, appState, topicId);
+      if (position % 3 === 0) {
+        const next = TOPIC_IDS[position];
+        expect(appState.statuses.get(next)).toBe('locked');
+        await passCheckpoint(services, appState, position / 3);
+        expect(appState.statuses.get(next)).toBe('current');
+      }
     }
 
     // Capstone: no own questions and no lessons, yet practisable with the pooled bank (32 -> 10 asked).

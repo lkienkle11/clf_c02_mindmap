@@ -73,6 +73,18 @@ describe('AppState', () => {
     expect(state.submittedAttempts).toHaveLength(1);
   });
 
+  it('refresh fills passedGroups from a submitted passed checkpoint only', async () => {
+    await state.load();
+    expect(state.passedGroups.size).toBe(0);
+    await services.repos.attempts.create(
+      attempt({ id: 'cp1', kind: 'checkpoint', topicId: null, groupIndex: 1, plannedCount: 30 }), []);
+    await services.repos.attempts.create(
+      attempt({ id: 'cp2', kind: 'checkpoint', topicId: null, groupIndex: 2, plannedCount: 30, passed: false, scorePct: 40 }), []);
+    await state.refresh();
+    expect([...state.passedGroups]).toEqual([1]);
+    expect(state.completed.size).toBe(0);
+  });
+
   it('hides the prompt when it was already shown today', async () => {
     await passTopic1Long();
     await services.repos.settings.set('review_prompt_last_shown_date', localDateString(NOW));

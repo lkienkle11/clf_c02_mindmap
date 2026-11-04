@@ -14,10 +14,17 @@ const passedAttempt = (topicId: string): AttemptRow => ({
   heartbeatAt: null, scorePct: 90, passed: true, groupIndex: null, plannedCount: null,
 });
 
+const passedCheckpoint = (groupIndex: number): AttemptRow => ({
+  ...passedAttempt(`group-${groupIndex}`), id: `cp-${groupIndex}`, kind: 'checkpoint', topicId: null,
+  groupIndex, plannedCount: 30,
+});
+
 export interface FakeSetup {
   catalog: Catalog;
   readIds?: string[];
   passedTopicIds?: string[];
+  /** Checkpoint groups (1-based) with a passed checkpoint exam. */
+  passedGroupIndexes?: number[];
   now?: number;
 }
 
@@ -34,7 +41,10 @@ export async function makeFakeServices(setup: FakeSetup): Promise<{
     markReadCalls.push({ lessonId, at });
     read.add(lessonId);
   };
-  const attempts = (setup.passedTopicIds ?? []).map(passedAttempt);
+  const attempts = [
+    ...(setup.passedTopicIds ?? []).map(passedAttempt),
+    ...(setup.passedGroupIndexes ?? []).map(passedCheckpoint),
+  ];
   const services: Services = {
     ...base,
     repos: {
