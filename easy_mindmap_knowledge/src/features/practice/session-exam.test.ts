@@ -5,13 +5,15 @@ import { buildServices } from '@/app/composition';
 import type { Services } from '@/app/composition';
 import { makeQuestion, makeRawCatalog } from '@/testing/fixtures';
 import { createNodeSqliteExecutor } from '@/testing/node-sqlite-executor';
-import { CorruptAttemptError, KnowledgeNotAllowedError, PracticeSession } from './index';
+import type { SqlExecutor } from '@/persistence';
+import { CorruptAttemptError, InvalidExamInputError, KnowledgeNotAllowedError, PracticeSession } from './index';
 import type { PlannedQuestion } from './index';
 
 const T0 = Date.UTC(2026, 5, 15, 12, 0, 0);
 const LIMIT = 60_000;
 let clock = T0;
 let services: Services;
+let executor: SqlExecutor;
 let idN = 0;
 const onSubmitted = vi.fn(async () => {});
 
@@ -32,8 +34,9 @@ beforeEach(async () => {
   const options = [{ key: 'A', text: 'a' }, { key: 'B', text: 'b' }, { key: 'C', text: 'c' }, { key: 'D', text: 'd' }, { key: 'E', text: 'e' }];
   raw.questions = Array.from({ length: 10 }, (_, i) =>
     makeQuestion({ id: `r${i}`, topicId: 'cloud-concepts', options, correct: ['A'] }));
+  executor = await createNodeSqliteExecutor();
   services = buildServices({
-    executor: await createNodeSqliteExecutor(), catalog: loadCatalog(raw), now: () => clock,
+    executor, catalog: loadCatalog(raw), now: () => clock,
     newId: () => `id-${++idN}`,
   });
 });
@@ -188,4 +191,20 @@ describe('PracticeSession.exit for exams', () => {
     expect(await services.repos.attempts.exists(s.attemptId)).toBe(false);
     expect(await services.repos.attempts.listSubmitted()).toEqual([]);
   });
+});
+
+describe('PracticeSession.startExam input validation', () => {
+  const cases: [string, Partial<Parameters<typeof PracticeSession.startExam>[1]>][] = [
+    ['checkpoint without a group index', { kind: 'checkpoint', topicId: null, groupIndex: null }],
+    ['practice with a group index', { kind: 'practice', topicId: 'capstone', groupIndex: 1 }],
+    ['practice without a topic', { kind: 'practice', topicId: null, groupIndex: null }],
+  ];
+  for (const [name, over] of cases) {
+    it(`rejects ${name} before writing anything`, async () => {
+      await expect(PracticeSession.startExam(services, input(over), onSubmitted)).rejects.toBeInstanceOf(InvalidExamInputError);
+      expect(await services.repos.attempts.findInProgress()).toBeNull();
+      const rows = await executor.select<{ n: number }>('SELECT COUNT(*) AS n FROM attempt_questions');
+      expect(Number(rows[0]!.n)).toBe(0);
+    });
+  }
 });

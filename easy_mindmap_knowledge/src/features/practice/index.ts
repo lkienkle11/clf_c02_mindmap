@@ -8,7 +8,7 @@ export { PracticeSession, FREEZE_MAX_TICK_MS } from './session.svelte';
 export type { SubmitResult, SessionQuestion } from './session.svelte';
 export { DEFAULT_PRACTICE_OPTIONS, loadLastOptions, saveLastOptions } from './options';
 export type { PracticeOptions } from './options';
-export { NoQuestionsError, CorruptAttemptError, InvalidQuestionCountError, KnowledgeNotAllowedError } from './errors';
+export { NoQuestionsError, CorruptAttemptError, InvalidExamInputError, InvalidQuestionCountError, KnowledgeNotAllowedError } from './errors';
 export { default as PracticeScreen } from './ui/PracticeScreen.svelte';
 export { default as ResumeGate } from './ui/ResumeGate.svelte';
 export { default as PracticeSessionView } from './ui/PracticeSessionView.svelte';

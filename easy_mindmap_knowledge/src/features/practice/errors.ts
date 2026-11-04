@@ -32,3 +32,11 @@ export class KnowledgeNotAllowedError extends Error {
     this.name = 'KnowledgeNotAllowedError';
   }
 }
+
+/** An exam start request mixes kind, topic and group in a way no attempt can be restored from. */
+export class InvalidExamInputError extends Error {
+  constructor(reason: string) {
+    super(`Invalid exam input: ${reason}`);
+    this.name = 'InvalidExamInputError';
+  }
+}

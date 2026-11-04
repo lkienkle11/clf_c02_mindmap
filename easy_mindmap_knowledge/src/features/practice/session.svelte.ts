@@ -7,7 +7,7 @@ import { buildPool, planAttempt } from './logic/pick-questions';
 import type { PlannedQuestion } from './logic/pick-questions';
 import { validateQuestionCount } from './logic/question-count';
 import { makeRng, shuffle } from '@/random/seeded-random';
-import { CorruptAttemptError, InvalidQuestionCountError, KnowledgeNotAllowedError, NoQuestionsError } from './errors';
+import { CorruptAttemptError, InvalidExamInputError, InvalidQuestionCountError, KnowledgeNotAllowedError, NoQuestionsError } from './errors';
 import { saveLastOptions } from './options';
 import type { PracticeOptions } from './options';
 
@@ -184,6 +184,10 @@ export class PracticeSession {
     },
     onSubmitted: () => Promise<void>,
   ): Promise<PracticeSession> {
+    // Reject combinations that cannot be stored or restored before anything is written.
+    if (input.kind === 'checkpoint' && input.groupIndex === null) throw new InvalidExamInputError('checkpoint without a group index');
+    if (input.kind === 'practice' && input.groupIndex !== null) throw new InvalidExamInputError('practice exam with a group index');
+    if (input.kind === 'practice' && input.topicId === null) throw new InvalidExamInputError('practice exam without a topic');
     if (input.plan.length === 0) throw new NoQuestionsError(input.topicId ?? input.kind);
     const now = services.now();
     const clock = startClock(input.limitMs, 'run', now, 'run');
