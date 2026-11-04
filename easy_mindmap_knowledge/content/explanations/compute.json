@@ -1,0 +1,731 @@
+{
+  "q_12e3a04c706c": {
+    "explanation": "EC2 Image Builder is the fully managed service that automates building, testing, and distributing custom EC2 (and container) images.",
+    "optionNotes": {
+      "A": "EC2 Image Builder automates creating, testing, patching, and distributing custom images, which is exactly the managed pipeline described.",
+      "B": "An AMI is the image template itself, not a service that builds, tests, or manages images.",
+      "C": "AWS Launch Wizard guides the sizing and deployment of specific enterprise applications such as SQL Server, not custom image creation.",
+      "D": "Elastic Beanstalk deploys and runs web applications on managed infrastructure; it does not build or test EC2 images."
+    }
+  },
+  "q_1a29d1e1d12b": {
+    "explanation": "A job that runs about 5 hours once a week fits Amazon EC2, which has no short execution limit and can be started only when needed. Lambda functions are limited to 15 minutes per invocation.",
+    "optionNotes": {
+      "A": "Lambda functions have a maximum run time of 15 minutes, so a 5-hour job cannot run in a single invocation.",
+      "B": "EC2 can run a long batch job for as many hours as required, and you pay only while the instance runs.",
+      "C": "CodeDeploy automates application deployments to compute resources; it is not a place to run a data processing job.",
+      "D": "Wavelength embeds AWS compute in 5G carrier networks for ultra-low-latency mobile apps, which is not needed for a weekly batch job."
+    }
+  },
+  "q_429ad5e33114": {
+    "explanation": "Running containers directly on Amazon EC2 instances gives the company full control of the underlying compute, including the instance type, OS, and patching.",
+    "optionNotes": {
+      "A": "EKS is a managed Kubernetes control plane; on its own it does not give full control of the compute unless you also run EC2 worker nodes.",
+      "B": "Fargate is serverless compute for containers, so AWS manages the compute and the customer has less control.",
+      "C": "With EC2 the company chooses and manages the instances that host the containers, giving full control of the compute resources.",
+      "D": "ECS is a container orchestrator; it can use EC2 or Fargate, so by itself it does not guarantee control of the compute."
+    }
+  },
+  "q_ed4aff43991b": {
+    "explanation": "A workload that runs only 24 hours a year and cannot be interrupted is best served by On-Demand Instances, because there is no commitment and no need to pay for idle time.",
+    "optionNotes": {
+      "A": "On-Demand charges only for the hours used with no commitment and cannot be interrupted, so it is cheapest for a once-a-year run.",
+      "B": "Reserved Instances require a 1- or 3-year commitment that would be paid for even though the workload runs only one day a year.",
+      "C": "Spot Instances can be interrupted by AWS, which the workload cannot tolerate.",
+      "D": "Dedicated Instances run on single-tenant hardware at extra cost and offer no benefit for a short, rare job."
+    }
+  },
+  "q_bc3ca1e94daa": {
+    "explanation": "Spot Instances use spare EC2 capacity, so AWS can reclaim them when capacity is needed elsewhere. The other models are not interrupted for capacity reasons.",
+    "optionNotes": {
+      "A": "On-Demand Instances keep running until you stop or terminate them and are not interrupted when capacity tightens.",
+      "B": "Standard Reserved Instances are a billing discount for steady usage; they do not cause running instances to be interrupted.",
+      "C": "Spot Instances run on spare capacity and can be interrupted when AWS needs the capacity back.",
+      "D": "Convertible Reserved Instances are a billing commitment that allows changing instance attributes; they are not interrupted."
+    }
+  },
+  "q_75c72b9700a7": {
+    "explanation": "EC2 Instance Savings Plans give a discounted hourly rate versus On-Demand in return for a 1- or 3-year commitment, which suits a workload running continuously for more than a year.",
+    "optionNotes": {
+      "A": "Graviton is an Arm-based processor family that can lower cost per performance, but it is not a discount program on the hourly rate.",
+      "B": "Dedicated Hosts provide a physical server for licensing or compliance and usually cost more, so they are not the discount option here.",
+      "C": "EC2 Instance Savings Plans offer a lower hourly rate than On-Demand for a committed 1- or 3-year term, fitting a continuous workload.",
+      "D": "EC2 Auto Scaling adds or removes instances with demand; it does not change the hourly price of an instance."
+    }
+  },
+  "q_da6d9a622bd5": {
+    "explanation": "Each Region is isolated in a separate geographic area, so running EC2 instances in multiple Regions keeps the application available even if a disaster affects one area.",
+    "optionNotes": {
+      "A": "Multiple Regions are geographically separate, so a natural disaster in one area does not take down instances in another Region.",
+      "B": "CloudFront locations are edge locations that cache content; you do not run EC2 instances in them.",
+      "C": "Edge locations serve cached content and are not a place to launch EC2 instances.",
+      "D": "Local Zones extend a Region close to a metro area and are tied to a parent Region, so they do not protect against a regional disaster."
+    }
+  },
+  "q_3e26a9ff95fe": {
+    "explanation": "Amazon EC2 Auto Scaling automatically launches and terminates EC2 instances in response to demand, which matches the requirement.",
+    "optionNotes": {
+      "A": "DynamoDB is a NoSQL database service and does not add or remove EC2 instances.",
+      "B": "Spot Instances are a purchasing option for discounted capacity; they do not adjust the instance count to workload changes.",
+      "C": "The Snow Family is a set of physical devices for moving data and edge computing, not for scaling EC2 fleets.",
+      "D": "EC2 Auto Scaling adds and removes instances automatically as the workload varies."
+    }
+  },
+  "q_3a5802016d25": {
+    "explanation": "Rightsizing means matching resources to actual need. Choosing EC2 instance types from past utilization (B) and moving infrequently used S3 objects to cheaper tiers (C) both align resources with real usage.",
+    "optionNotes": {
+      "A": "Switching database engines to fit a NoSQL data model is an architecture decision, not matching resource size to usage.",
+      "B": "Selecting instance types from past utilization patterns is a classic rightsizing action.",
+      "C": "S3 Lifecycle policies move infrequently accessed data to cheaper tiers, aligning the storage class with how the data is actually used.",
+      "D": "Multi-AZ for RDS improves availability and adds cost; it is not about matching capacity to usage.",
+      "E": "Replacing EC2 instances with Elastic Beanstalk changes how you deploy and manage the application and does not by itself resize resources."
+    }
+  },
+  "q_8593b30c29a4": {
+    "explanation": "Spot Instances use unused EC2 capacity at a large discount, and a stateless workload can tolerate an interruption, so they minimize cost.",
+    "optionNotes": {
+      "A": "Spot Instances offer the deepest discount, and stateless workloads can handle the possible interruption.",
+      "B": "Dedicated Instances run on single-tenant hardware at a higher price and do not help optimize cost.",
+      "C": "Reserved Instances require a commitment and the company does not use all its capacity, so it would pay for unused commitment.",
+      "D": "On-Demand has no discount and is not the cheapest for a workload that tolerates interruptions."
+    }
+  },
+  "q_c96d5ce8ebfc": {
+    "explanation": "Stateless services that scale for short-term use tolerate interruptions, so Spot Instances give the lowest cost.",
+    "optionNotes": {
+      "A": "Spot Instances provide the largest discount and suit stateless, short-term services that can be replaced if interrupted.",
+      "B": "On-Demand is flexible but priced higher than Spot, so it is not the most cost-efficient for interruptible work.",
+      "C": "Reserved Instances need a 1- or 3-year commitment, which does not fit short-term usage.",
+      "D": "Dedicated Hosts are physical servers priced at a premium and are meant for licensing or compliance needs."
+    }
+  },
+  "q_5ca7b74d193f": {
+    "explanation": "With serverless computing, AWS takes over provisioning, scaling, and maintaining the infrastructure, so the customer offloads infrastructure management.",
+    "optionNotes": {
+      "A": "You still deploy and manage your application code and configuration with serverless services.",
+      "B": "Security is shared; AWS secures the infrastructure but the customer remains responsible for code, data, and access control.",
+      "C": "Monitoring and logging are still needed in serverless apps, for example with CloudWatch.",
+      "D": "Serverless offloads infrastructure management such as servers, patching, and scaling to AWS."
+    }
+  },
+  "q_6f6a4271b1a3": {
+    "explanation": "Accelerated computing instances use hardware accelerators such as GPUs, which suit graphics-intensive and other compute-heavy GPU workloads.",
+    "optionNotes": {
+      "A": "Accelerated computing instances include GPUs and other accelerators for graphics and parallel processing.",
+      "B": "Compute optimized instances offer high-performance CPUs but do not provide GPUs.",
+      "C": "Storage optimized instances are built for high local disk throughput and IOPS, not GPU processing.",
+      "D": "General purpose instances balance CPU, memory, and networking and do not provide GPUs."
+    }
+  },
+  "q_fb99e9825af9": {
+    "explanation": "EC2 is infrastructure as a service, so the customer manages the guest operating system, including security updates and patches. AWS patches the managed services.",
+    "optionNotes": {
+      "A": "DynamoDB is a managed service, so AWS handles the underlying patching.",
+      "B": "For EC2 the customer is responsible for the guest OS, including applying security updates and patches.",
+      "C": "RDS is a managed database service where AWS patches the underlying OS and, by default, handles engine maintenance.",
+      "D": "S3 is a managed storage service, so AWS maintains and patches the underlying infrastructure."
+    }
+  },
+  "q_3979d8ab2d09": {
+    "explanation": "Amazon EC2 lets the company launch pre-configured instances from AMIs, including AMIs that come with application stacks, to run its workload.",
+    "optionNotes": {
+      "A": "Lightsail also ships preconfigured application-stack blueprints (for example LAMP and WordPress), so it is arguably a valid match; the answer key nevertheless names EC2 with pre-configured AMIs.",
+      "B": "Athena is a serverless query service for data in S3 and does not run application stacks on instances.",
+      "C": "Outposts places AWS infrastructure on premises; it is a deployment location, not a source of pre-configured instances.",
+      "D": "EC2 provides instances launched from pre-configured AMIs, which can include application stacks."
+    }
+  },
+  "q_f501e57e3c45": {
+    "explanation": "Stateless, fault-tolerant simulations that run for a few hours can tolerate interruptions, so Spot Instances give the lowest cost for the AWS Batch jobs.",
+    "optionNotes": {
+      "A": "Reserved Instances require a long-term commitment and are best for steady usage, not bursty simulation jobs.",
+      "B": "Spot Instances offer the largest discount, and the stateless, fault-tolerant jobs can recover from an interruption.",
+      "C": "On-Demand works but costs more than Spot for jobs that can tolerate interruption.",
+      "D": "Dedicated Instances use single-tenant hardware at a higher price with no benefit for these simulations."
+    }
+  },
+  "q_3b4235c31c39": {
+    "explanation": "A Linux instance can be reached through EC2 Instance Connect (A) or AWS Systems Manager Session Manager (D). RDP is for Windows, and Batch and Connect are unrelated services.",
+    "optionNotes": {
+      "A": "EC2 Instance Connect provides SSH access to Linux instances using temporary keys.",
+      "B": "RDP is the remote desktop protocol used for Windows instances, not Amazon Linux 2, which uses SSH.",
+      "C": "AWS Batch schedules and runs batch computing jobs and does not provide a way to log in to an instance.",
+      "D": "Session Manager gives browser or CLI shell access to managed instances without opening inbound ports.",
+      "E": "Amazon Connect is a cloud contact center service and has nothing to do with connecting to EC2 instances."
+    }
+  },
+  "q_2fbce2e85698": {
+    "explanation": "Spot Instances give the largest discount over On-Demand prices, and a workload that tolerates interruptions can accept the risk that AWS reclaims them.",
+    "optionNotes": {
+      "A": "Spot Instances offer discounts of up to about 90 percent versus On-Demand, the largest of the options, in exchange for possible interruption.",
+      "B": "Convertible Reserved Instances give a smaller discount than Spot and need a commitment.",
+      "C": "Standard Reserved Instances discount less than Spot and require a 1- or 3-year commitment.",
+      "D": "Dedicated Hosts are physical servers sold at a premium for licensing or compliance, not at the biggest discount."
+    }
+  },
+  "q_1bf40c0a46fd": {
+    "explanation": "Sustainability design principles include maximizing utilization of resources (A) so you need fewer of them, and reducing the need for users to upgrade or reinstall applications (E) to avoid wasted effort and hardware.",
+    "optionNotes": {
+      "A": "Higher utilization means fewer idle resources and less energy used for the same work.",
+      "B": "Minimizing utilization leaves resources idle, which wastes energy and works against sustainability.",
+      "C": "Managed services are generally recommended because AWS runs them efficiently at scale, so minimizing their use is not a sustainability principle.",
+      "D": "Forcing frequent reinstallations creates unnecessary resource use and is the opposite of the principle.",
+      "E": "Reducing the need for users to reinstall or upgrade applications limits the hardware and energy impact on end users."
+    }
+  },
+  "q_c72998048c8a": {
+    "explanation": "AWS Fargate and AWS Lambda are serverless because AWS manages the servers for you. EC2, EKS (with EC2 nodes), and Outposts require you to manage infrastructure.",
+    "optionNotes": {
+      "A": "Outposts is AWS infrastructure installed in the customer's data center, so it is not serverless.",
+      "B": "EC2 requires you to choose, patch, and manage instances, so it is not serverless.",
+      "C": "EKS runs Kubernetes and typically uses EC2 worker nodes the customer manages, so it is not serverless on its own.",
+      "D": "Fargate runs containers without you provisioning or managing servers.",
+      "E": "Lambda runs code on demand with no servers to manage."
+    }
+  },
+  "q_81f508e724e7": {
+    "explanation": "Dedicated Hosts give visibility of sockets and cores on a physical server, which allows reuse of existing per-socket, per-core, or per-VM software licenses.",
+    "optionNotes": {
+      "A": "Spot Instances are discounted interruptible capacity on shared hardware and do not expose sockets or cores for licensing.",
+      "B": "Dedicated Instances run on single-tenant hardware but do not give socket and core visibility or host affinity needed for license reporting.",
+      "C": "Dedicated Hosts provide a physical server with visibility into sockets and cores, supporting bring-your-own per-socket and per-core licenses.",
+      "D": "Reserved Instances are a billing discount and do not provide the physical server control needed for license terms."
+    }
+  },
+  "q_79ef863e1013": {
+    "explanation": "AWS Auto Scaling (EC2 Auto Scaling) monitors instance health and replaces impaired instances to keep the fleet at the desired size.",
+    "optionNotes": {
+      "A": "ECS orchestrates containers; it does not replace impaired EC2 instances in a general fleet.",
+      "B": "GuardDuty detects threats from logs and events; it does not replace instances.",
+      "C": "AWS Shield protects against DDoS attacks and does not maintain a fleet of instances.",
+      "D": "Auto Scaling detects unhealthy instances and launches replacements to maintain capacity."
+    }
+  },
+  "q_63c23e178263": {
+    "explanation": "AWS Compute Optimizer analyzes utilization metrics and recommends optimal resources; Amazon EC2 is the service whose instance types and sizes it recommends.",
+    "optionNotes": {
+      "A": "Compute Optimizer recommends EC2 instance types and sizes based on workload metrics.",
+      "B": "RDS is a managed database service; the expected answer is EC2, the classic Compute Optimizer target for instance sizing recommendations.",
+      "C": "Lightsail uses fixed bundles and is not a Compute Optimizer-supported resource type.",
+      "D": "Step Functions orchestrates workflows and has no instance sizing recommendations."
+    }
+  },
+  "q_a156df8180c7": {
+    "explanation": "Finding the right EC2 instance types and sizes to meet performance needs at the lowest cost is called rightsizing.",
+    "optionNotes": {
+      "A": "Auto Scaling changes the number of instances with demand; it does not choose the correct type and size.",
+      "B": "Storage tiering moves data between storage classes and is unrelated to choosing instance sizes.",
+      "C": "Rightsizing is matching instance type and size to performance and capacity needs at the lowest cost.",
+      "D": "Instance scheduling starts and stops instances at set times; it does not select the instance type or size."
+    }
+  },
+  "q_4583d0e8c8cd": {
+    "explanation": "AWS Compute Optimizer analyzes utilization data and recommends smaller or different instance types for underused EC2 instances.",
+    "optionNotes": {
+      "A": "AWS Config records resource configuration and compliance, not rightsizing recommendations.",
+      "B": "Cost Anomaly Detection alerts on unusual spend; it does not recommend instance sizes.",
+      "C": "AWS Budgets sets spend thresholds and alerts, and does not analyze utilization to rightsize.",
+      "D": "Compute Optimizer uses utilization metrics to recommend a more suitable instance size for low-usage instances."
+    }
+  },
+  "q_d6de63877389": {
+    "explanation": "With Lambda, AWS manages the infrastructure, OS, and runtime, while the customer is responsible for the code and its configuration and permissions.",
+    "optionNotes": {
+      "A": "The function code is the customer's responsibility.",
+      "B": "AWS is responsible for the hardware in its data centers.",
+      "C": "Lambda is serverless, so AWS patches the underlying operating system.",
+      "D": "Lambda charges only when code runs, so there is nothing to shut down, and this is not a defined customer responsibility."
+    }
+  },
+  "q_280b50714fb4": {
+    "explanation": "AWS WAF rules are deployed on supported resources such as an Application Load Balancer, which inspects HTTP and HTTPS requests.",
+    "optionNotes": {
+      "A": "EC2 instances are not a resource you attach AWS WAF to directly.",
+      "B": "An Application Load Balancer is a supported resource for associating a WAF web ACL.",
+      "C": "Trusted Advisor gives best-practice checks and does not host WAF rules.",
+      "D": "Network Load Balancers operate at layer 4 and are not supported for AWS WAF."
+    }
+  },
+  "q_638ac895dbe5": {
+    "explanation": "Dev and test servers that are not fully used and can tolerate occasional unavailability suit Spot Instances, which give the lowest price on spare capacity.",
+    "optionNotes": {
+      "A": "Reserved Instances require a commitment, which is wasteful for underused non-production servers.",
+      "B": "On-Demand is more expensive than Spot and the workload does not need guaranteed availability.",
+      "C": "Spot Instances are cheapest, and occasional interruption is acceptable for dev and test.",
+      "D": "Dedicated Hosts are costly single-tenant servers that are not justified for dev and test."
+    }
+  },
+  "q_e54cc0316cae": {
+    "explanation": "AWS Auto Scaling adds instances when demand spikes and removes them afterward, so the company pays only for the capacity it needs.",
+    "optionNotes": {
+      "A": "Auto Scaling responds to demand changes automatically and keeps cost low by scaling back in.",
+      "B": "Compute Optimizer recommends sizes but does not react to sudden demand increases.",
+      "C": "Cost Explorer analyzes spend; it does not change capacity.",
+      "D": "The Well-Architected Framework is guidance, not a service that scales the application."
+    }
+  },
+  "q_fba03957bb42": {
+    "explanation": "AWS Fargate runs containers without servers to manage, which avoids unplanned administration and operations cost and fits a serverless approach.",
+    "optionNotes": {
+      "A": "Amazon Connect is a cloud contact center, not a container platform.",
+      "B": "Fargate is serverless compute for containers, removing instance management.",
+      "C": "Lightsail provides simple virtual servers and is not a serverless container service.",
+      "D": "EC2 requires the company to manage instances, which adds administration and operations cost."
+    }
+  },
+  "q_440683aca8e2": {
+    "explanation": "An Application Load Balancer distributes incoming HTTP and HTTPS traffic across multiple targets such as EC2 instances.",
+    "optionNotes": {
+      "A": "EC2 Auto Scaling changes the number of instances; it does not distribute incoming requests.",
+      "B": "An Application Load Balancer operates at layer 7 and spreads HTTP traffic across healthy registered instances.",
+      "C": "A Gateway Load Balancer is for deploying and scaling third-party virtual network appliances, not for web traffic distribution.",
+      "D": "A Network Load Balancer works at layer 4 for TCP/UDP traffic; the Application Load Balancer is the one designed for HTTP routing."
+    }
+  },
+  "q_25e5d0ea9e90": {
+    "explanation": "Compute optimized instances are built for CPU-bound workloads that need high-performance processors.",
+    "optionNotes": {
+      "A": "General purpose instances balance CPU, memory, and network and are not specialized for CPU-heavy work.",
+      "B": "Compute optimized instances provide high-performance processors for CPU-intensive workloads.",
+      "C": "Memory optimized instances target workloads that process large datasets in memory.",
+      "D": "Storage optimized instances target high local disk throughput and IOPS."
+    }
+  },
+  "q_da9ec7453093": {
+    "explanation": "AWS Lambda is the serverless compute service: you run code without provisioning or managing servers.",
+    "optionNotes": {
+      "A": "Lambda runs code on demand and AWS manages all the servers.",
+      "B": "CloudFormation provisions resources from templates; it is infrastructure as code, not a compute service.",
+      "C": "Elastic Beanstalk deploys applications onto EC2 and other resources that run in your account, so it is not serverless compute.",
+      "D": "Elastic Load Balancing distributes traffic and does not run application code."
+    }
+  },
+  "q_03d12e4fb137": {
+    "explanation": "Auto Scaling groups automatically add or remove EC2 instances based on current load.",
+    "optionNotes": {
+      "A": "Dedicated Hosts are physical servers for licensing or compliance and do not adjust instance counts.",
+      "B": "Placement groups control how instances are positioned on hardware and do not scale the fleet.",
+      "C": "An Auto Scaling group changes the number of running instances in response to load.",
+      "D": "Reserved Instances are a billing discount and do not change capacity."
+    }
+  },
+  "q_f6b4e1761246": {
+    "explanation": "Amazon EC2 offers many instance types with different combinations of CPU, memory, storage, and networking, so each application can run on the configuration it needs.",
+    "optionNotes": {
+      "A": "Lambda does not let you pick instance types with specific CPU, memory, storage, and network configurations.",
+      "B": "Amazon Cognito handles user sign-up and authentication, not application hosting.",
+      "C": "Athena is a serverless query service for data in S3, not a place to run custom applications.",
+      "D": "EC2 offers a wide range of instance types and sizes, matching different resource profiles."
+    }
+  },
+  "q_93a03013a1f1": {
+    "explanation": "Running EC2 instances in multiple Regions keeps the workload available if a natural disaster hits one geographic area.",
+    "optionNotes": {
+      "A": "Regions are geographically separate, so a disaster in one does not affect the others.",
+      "B": "Edge locations cache content and cannot host EC2 instances.",
+      "C": "An Availability Zone belongs to exactly one Region, so the same AZ cannot exist in different Regions.",
+      "D": "CloudFront caches content at the edge but the EC2 origin would still sit in one place, so it is not a disaster-resilient design on its own."
+    }
+  },
+  "q_d85d0639dabc": {
+    "explanation": "Amazon ECS is a fully managed container orchestration service for running containers securely and reliably at scale.",
+    "optionNotes": {
+      "A": "ECS runs and manages containers at scale on EC2 or Fargate.",
+      "B": "Aurora is a relational database service, not a compute service for containers.",
+      "C": "Athena is a query service for data in S3 and does not run containers.",
+      "D": "Polly converts text to speech and has nothing to do with running containers."
+    }
+  },
+  "q_0829657d54e6": {
+    "explanation": "A fault-tolerant batch application that can handle interruptions is a good fit for EC2 Spot Instances, which cost much less than On-Demand.",
+    "optionNotes": {
+      "A": "Macie discovers sensitive data in S3 and is not a compute offering.",
+      "B": "Neptune is a graph database, not a way to run batch jobs.",
+      "C": "Spot Instances use spare capacity at a deep discount, which the interruption-tolerant batch jobs can use.",
+      "D": "On-Demand Instances cost more than Spot and the application does not need uninterrupted capacity."
+    }
+  },
+  "q_44074d105d77": {
+    "explanation": "On EC2 the customer manages the guest operating system, including updates. AWS manages the infrastructure behind its managed services.",
+    "optionNotes": {
+      "A": "AWS maintains the infrastructure that runs Lambda.",
+      "B": "DynamoDB is managed, so AWS handles operating system updates on its underlying servers.",
+      "C": "AWS maintains the S3 infrastructure.",
+      "D": "Updating the guest OS on EC2 instances is the customer's job under the shared responsibility model."
+    }
+  },
+  "q_0eec074ba7da": {
+    "explanation": "Changing the size and type of EC2 instances based on utilization is the rightsizing action itself and needs no new architecture, so it has the least operational overhead.",
+    "optionNotes": {
+      "A": "Adding instances in another Availability Zone improves availability and adds cost; it does not rightsize anything.",
+      "B": "Adjusting instance size and type to match actual utilization is rightsizing, done directly on the existing instances.",
+      "C": "Moving from On-Demand to Savings Plans changes the payment model, not the size or type of the instances.",
+      "D": "Reprovisioning with a larger type does the opposite of rightsizing for underused instances and adds effort."
+    }
+  },
+  "q_2b5b9ced71de": {
+    "explanation": "Interruptible batch workloads that can resume where they stopped fit Spot Instances, the cheapest EC2 purchasing option.",
+    "optionNotes": {
+      "A": "Reserved Instances need a long commitment, which does not fit short-period workloads.",
+      "B": "Spot Instances are the cheapest option and the workload can resume after an interruption.",
+      "C": "Dedicated Instances run on single-tenant hardware at a higher price with no benefit here.",
+      "D": "On-Demand costs more than Spot for interruption-tolerant work."
+    }
+  },
+  "q_43dc7228889f": {
+    "explanation": "Designing for automatic failover to healthy resources keeps a workload running when components fail, which is a reliability best practice.",
+    "optionNotes": {
+      "A": "Disaster recovery tests are useful, but testing quarterly does not itself keep the workload operating during a failure.",
+      "B": "Placing the main component in one Region creates a single point of failure.",
+      "C": "Automatic failover to healthy resources lets the workload continue operating when a component fails.",
+      "D": "Fitting everything on one instance creates a single point of failure."
+    }
+  },
+  "q_73b10ecd267e": {
+    "explanation": "Patching the guest operating system on an EC2 instance is the customer's responsibility; physical and host-level tasks belong to AWS.",
+    "optionNotes": {
+      "A": "The customer manages and patches the guest OS on EC2 instances.",
+      "B": "AWS controls physical access to its data centers.",
+      "C": "AWS controls access to the underlying hardware.",
+      "D": "S3 is managed by AWS, and customers have no host operating system to patch."
+    }
+  },
+  "q_7ddb6ab0326a": {
+    "explanation": "An Application Load Balancer distributes traffic across multiple EC2 instances hosting a website.",
+    "optionNotes": {
+      "A": "An Application Load Balancer spreads incoming web traffic across healthy EC2 targets.",
+      "B": "AWS WAF filters malicious web requests but does not distribute traffic between instances.",
+      "C": "CloudHSM provides hardware security modules for key storage, not traffic distribution.",
+      "D": "Direct Connect is a dedicated network link from on premises to AWS, not a load balancer."
+    }
+  },
+  "q_2eeced28f2f0": {
+    "explanation": "A temporary, variable workload that must not be stopped before finishing needs On-Demand Instances, which require no commitment and are not interrupted.",
+    "optionNotes": {
+      "A": "Spot Instances can be interrupted, and the work cannot stop before finishing.",
+      "B": "On-Demand has no commitment, scales with variable demand, and does not get interrupted.",
+      "C": "A Savings Plan requires a 1- or 3-year commitment, which does not suit a temporary workload.",
+      "D": "Reserved Instances need a long-term commitment and suit steady usage, not temporary variable work."
+    }
+  },
+  "q_4b607ac0cf9b": {
+    "explanation": "AWS Fargate is the serverless compute engine for containers, working with ECS and EKS so you do not manage servers.",
+    "optionNotes": {
+      "A": "SQS is a message queuing service, not compute.",
+      "B": "Fargate runs containers without provisioning or managing servers.",
+      "C": "Elastic Beanstalk deploys applications on managed infrastructure that you still own in your account, so it is not described as serverless container compute.",
+      "D": "SageMaker is a machine learning platform, not general serverless container compute."
+    }
+  },
+  "q_e2c5868e6ff6": {
+    "explanation": "Because usage varies by time of day, an Auto Scaling group adds instances at busy hours and removes them at quiet hours, which lowers cost.",
+    "optionNotes": {
+      "A": "Multiple Availability Zones improve availability but add capacity you pay for rather than reducing cost.",
+      "B": "An Auto Scaling group matches the number of instances to demand, so the company pays only for what it needs.",
+      "C": "Placement groups influence instance placement for performance or fault isolation, not cost.",
+      "D": "Private subnets control network exposure and do not reduce operational cost."
+    }
+  },
+  "q_4edaa663800e": {
+    "explanation": "Big data and parallel compute on test and development servers that tolerate downtime suit Spot Instances for the lowest cost.",
+    "optionNotes": {
+      "A": "On-Demand costs more than Spot and the workload does not need guaranteed availability.",
+      "B": "Spot Instances give the deepest discount and occasional downtime is acceptable.",
+      "C": "Reserved Instances require a commitment and are meant for steady, predictable usage.",
+      "D": "Savings Plans also require a commitment and are best for consistent usage rather than interruptible test work."
+    }
+  },
+  "q_e8f0123baccb": {
+    "explanation": "Testing that can be interrupted and does not run continuously fits Spot Instances, the lowest-cost purchasing option.",
+    "optionNotes": {
+      "A": "On-Demand is more expensive than Spot for work that can be interrupted.",
+      "B": "Dedicated Instances cost more because of single-tenant hardware that is not needed.",
+      "C": "Spot Instances are the cheapest and the tests can tolerate interruption.",
+      "D": "Reserved Instances need a commitment, which is wasteful for non-continuous testing."
+    }
+  },
+  "q_e8576e00ad1a": {
+    "explanation": "AWS Fargate runs containers without provisioning or managing servers and has no 15-minute limit, so it handles containers that run for 4 hours.",
+    "optionNotes": {
+      "A": "Lambda functions are limited to 15 minutes, so a 4-hour run does not fit, and the company wants container-based services.",
+      "B": "Fargate runs containers for as long as needed with no servers to manage.",
+      "C": "EC2 requires provisioning and managing instances, which the company wants to avoid.",
+      "D": "Elastic Beanstalk still provisions EC2 instances in the account, so server management is not fully removed."
+    }
+  },
+  "q_d7efea397158": {
+    "explanation": "Amazon Lightsail is designed for beginners, bundling compute, storage, and networking with preconfigured options, so it is a simple starting point for a first web application.",
+    "optionNotes": {
+      "A": "SageMaker is for building and training machine learning models, not simple web apps.",
+      "B": "Lambda requires understanding event-driven architecture and is not the simplest starting point for a beginner.",
+      "C": "Lightsail provides easy-to-use virtual servers and preset bundles aimed at users new to AWS.",
+      "D": "ECS needs container knowledge and cluster configuration, which is a steeper start."
+    }
+  },
+  "q_8aafe00b2b87": {
+    "explanation": "With Lambda, AWS runs the infrastructure and the customer is responsible for the code and libraries in the function.",
+    "optionNotes": {
+      "A": "AWS maintains the underlying hardware.",
+      "B": "AWS maintains the networking infrastructure behind Lambda.",
+      "C": "The customer writes and maintains the function code and the libraries it uses.",
+      "D": "AWS manages the server software that runs Lambda."
+    }
+  },
+  "q_7ebfaa2be391": {
+    "explanation": "Elastic Load Balancing distributes incoming traffic across multiple targets such as EC2 instances, containers, and IP addresses.",
+    "optionNotes": {
+      "A": "Scaling resources is the job of Auto Scaling, not the load balancer, which only distributes traffic.",
+      "B": "An ELB balances traffic across multiple compute resources, improving availability.",
+      "C": "A load balancer operates within a single Region and cannot span multiple Regions.",
+      "D": "ELB distributes traffic to targets in a VPC, not between internet gateways."
+    }
+  },
+  "q_1d5a2f3f7166": {
+    "explanation": "Interruptible applications that run for short periods are the best fit for Spot Instances, which give the lowest cost.",
+    "optionNotes": {
+      "A": "Spot Instances offer the biggest discount and the applications can tolerate interruption.",
+      "B": "On-Demand costs more than Spot for interruptible workloads.",
+      "C": "Reserved Instances need a commitment, which does not fit short time periods.",
+      "D": "Dedicated Instances are priced higher and single-tenant hardware is not needed."
+    }
+  },
+  "q_8add147cbbf7": {
+    "explanation": "AWS Fargate and Amazon S3 are serverless because AWS manages the underlying servers. MSK, EMR, and EC2 use clusters or instances that you configure.",
+    "optionNotes": {
+      "A": "Fargate runs containers without any servers to manage.",
+      "B": "Amazon MSK provisioned clusters run on brokers you size and configure, so it is not serverless in the classic sense (an MSK Serverless option exists but is not the intended answer here).",
+      "C": "Classic Amazon EMR runs on clusters of EC2 instances that you configure (EMR Serverless exists but is not the intended answer here).",
+      "D": "S3 is a serverless storage service with no servers to provision or manage.",
+      "E": "EC2 requires you to provision and manage instances."
+    }
+  },
+  "q_933e41841907": {
+    "explanation": "On-Demand Instances suit unpredictable workloads that need flexibility without any long-term commitment.",
+    "optionNotes": {
+      "A": "Steady-state workloads for long periods are better served by Reserved Instances or Savings Plans.",
+      "B": "Workloads that can be interrupted at the lowest cost belong on Spot Instances.",
+      "C": "On-Demand is pay-as-you-go with no commitment, fitting unpredictable workloads.",
+      "D": "Workloads expected to run longer than a year suit commitment-based discounts, not On-Demand."
+    }
+  },
+  "q_1e65e3d42550": {
+    "explanation": "An Application Load Balancer gives clients one DNS entry point and distributes traffic across multiple EC2 targets.",
+    "optionNotes": {
+      "A": "VPC endpoints privately connect a VPC to AWS services and do not distribute traffic to instances.",
+      "B": "An ALB provides a single point of contact and routes requests to multiple EC2 instance targets.",
+      "C": "A NAT gateway lets private instances reach the internet outbound and does not balance incoming traffic.",
+      "D": "An internet gateway provides VPC internet connectivity and does not distribute traffic across instances."
+    }
+  },
+  "q_f66321f8e3ea": {
+    "explanation": "High performance computing workloads depend on powerful processors, which compute optimized instances provide.",
+    "optionNotes": {
+      "A": "General purpose instances are balanced and not specialized for HPC.",
+      "B": "Compute optimized instances offer high-performance processors suited to HPC and batch processing.",
+      "C": "Memory optimized instances serve large in-memory datasets such as in-memory databases.",
+      "D": "Storage optimized instances focus on high local disk IOPS and throughput."
+    }
+  },
+  "q_87f390534132": {
+    "explanation": "ML jobs that need a lot of compute but have no fixed schedule can tolerate interruptions, so Spot Instances give the lowest cost.",
+    "optionNotes": {
+      "A": "On-Demand is more expensive than Spot for flexible jobs.",
+      "B": "Spot Instances offer the largest discount and suit jobs that can run at any time and be interrupted.",
+      "C": "Reserved Instances need a long-term commitment, while this project lasts several months.",
+      "D": "Dedicated Instances cost more and add nothing for this project."
+    }
+  },
+  "q_7e665a1faa9c": {
+    "explanation": "AWS App Runner builds container images from source code and deploys the containerized web application with little operational effort.",
+    "optionNotes": {
+      "A": "Elastic Beanstalk deploys applications to managed EC2 environments and is not described as building container images from source.",
+      "B": "ECS runs containers but expects you to supply container images and configure the cluster.",
+      "C": "App Runner can build from source code and deploy and run the containerized web application automatically.",
+      "D": "EC2 requires you to build images and manage the servers yourself."
+    }
+  },
+  "q_44e32e452c74": {
+    "explanation": "AMIs (B) and EBS snapshots (C) let you restore or recreate EC2 instances and their data in another location, which supports disaster recovery.",
+    "optionNotes": {
+      "A": "Reserved Instances are a billing discount and provide no recovery capability.",
+      "B": "AMIs capture an instance configuration so it can be relaunched elsewhere.",
+      "C": "EBS snapshots back up volume data that can be restored in the same or another Region.",
+      "D": "AWS Shield protects against DDoS attacks and does not recover instances.",
+      "E": "GuardDuty detects threats and does not provide backups or recovery."
+    }
+  },
+  "q_c8ff1f6dc2a1": {
+    "explanation": "AWS Compute Optimizer analyzes historical utilization metrics and recommends right-sized EC2 instances.",
+    "optionNotes": {
+      "A": "The Pricing Calculator estimates the cost of planned usage and does not analyze historical workload data.",
+      "B": "Compute Optimizer uses historical utilization data to recommend optimal instance types and sizes.",
+      "C": "App Runner deploys web apps and containers and gives no instance recommendations.",
+      "D": "Systems Manager handles operations tasks such as patching and remote access, not rightsizing recommendations."
+    }
+  },
+  "q_e5a37ed63b80": {
+    "explanation": "Spot Instances suit workloads that can be interrupted, because they use spare capacity at a large discount.",
+    "optionNotes": {
+      "A": "Steady-state workloads needing a fixed configuration for a long period fit Reserved Instances or Savings Plans.",
+      "B": "Interruptible workloads that want to control cost are the right use for Spot Instances.",
+      "C": "A steady-state workload with no commitment describes On-Demand, and Spot is for interruptible workloads.",
+      "D": "A workload that cannot be interrupted should not run on Spot, because AWS can reclaim the instances."
+    }
+  },
+  "q_4451cf4350e2": {
+    "explanation": "On-Demand Instances are most cost-effective for short, uncommitted use such as an instance running for one month of testing.",
+    "optionNotes": {
+      "A": "Restartable video transcoding can tolerate interruption, so Spot is cheaper.",
+      "B": "A month of continuous use is short term with no commitment, which is the On-Demand sweet spot.",
+      "C": "A web server running for a year is cheaper with Reserved Instances or Savings Plans.",
+      "D": "A database running for 3 years benefits most from a 3-year commitment discount."
+    }
+  },
+  "q_919d56c84955": {
+    "explanation": "AWS Fargate removes the need to manage the cluster size, scheduling, and instance maintenance for containers.",
+    "optionNotes": {
+      "A": "Lambda runs functions rather than managing a Docker container environment.",
+      "B": "RDS is a managed relational database service and does not run Docker containers.",
+      "C": "Fargate is a serverless compute engine for containers, handling infrastructure and scaling.",
+      "D": "Athena queries data in S3 and does not run containers."
+    }
+  },
+  "q_4c026ba7851a": {
+    "explanation": "AWS Lambda runs code without provisioning or managing servers.",
+    "optionNotes": {
+      "A": "AWS Glue is an ETL and data integration service, not a general code-running service.",
+      "B": "Lambda executes your code in response to events with no servers to manage.",
+      "C": "CodeDeploy automates deployments to existing compute and does not itself run code.",
+      "D": "CodeGuru reviews code and profiles applications; it does not run code."
+    }
+  },
+  "q_3bddc0977fd4": {
+    "explanation": "An application that runs under 5 minutes and is invoked only a few times a day suits Lambda, which charges only for the time code runs.",
+    "optionNotes": {
+      "A": "ECS needs a cluster and containers, which cost more to operate for a rarely used application.",
+      "B": "Lambda bills only for execution time and short runs well within its 15-minute limit are cheap.",
+      "C": "EKS has cluster management overhead and cost that are unnecessary for a rarely invoked app.",
+      "D": "An always-on EC2 instance would cost money while idle most of the day."
+    }
+  },
+  "q_7102a4bac729": {
+    "explanation": "Running a database on EC2 means the customer manages the OS, database, and security groups, while AWS maintains the physical infrastructure.",
+    "optionNotes": {
+      "A": "Updating the guest OS of EC2 instances is the customer's responsibility.",
+      "B": "High availability of a self-managed database layer is designed and maintained by the customer.",
+      "C": "AWS patches and maintains the physical infrastructure that hosts EC2 instances.",
+      "D": "Configuring security group firewall rules is the customer's responsibility."
+    }
+  },
+  "q_9e6c9d987920": {
+    "explanation": "The answer key assigns operating system patches (C) to AWS, while backups, database software patches, and OS installation are customer tasks; note that the customer normally patches the guest OS on EC2, so this key is doubtful.",
+    "optionNotes": {
+      "A": "Backing up the database is the customer's job when the database runs on EC2.",
+      "B": "Patching the database software is the customer's job on EC2.",
+      "C": "The answer key assigns this to AWS, although under the shared responsibility model the customer normally patches the guest OS on EC2, so this key is doubtful.",
+      "D": "Installing the operating system is something the customer chooses and does through the AMI it launches."
+    }
+  },
+  "q_c582cd897c65": {
+    "explanation": "The AWS SDK lets developers call AWS service features directly from application code.",
+    "optionNotes": {
+      "A": "The AWS SDK provides libraries for many languages to integrate AWS services into an application.",
+      "B": "CodeDeploy automates deployments and is not a library for calling services from code.",
+      "C": "Lambda runs code, but it is not the tool used to integrate AWS features into an app.",
+      "D": "AWS Batch runs batch computing jobs and is not an integration library."
+    }
+  },
+  "auth-compute-01": {
+    "explanation": "Memory optimized instances are designed to process large data sets held in memory, such as in-memory databases.",
+    "optionNotes": {
+      "A": "Compute optimized instances favor fast processors for CPU-bound work, not large in-memory data sets.",
+      "B": "Storage optimized instances target high local disk throughput and IOPS, not memory capacity.",
+      "C": "Memory optimized instances provide high memory per vCPU for in-memory databases and similar workloads.",
+      "D": "Accelerated computing instances add GPUs or other accelerators, which in-memory data processing does not need."
+    }
+  },
+  "auth-compute-02": {
+    "explanation": "A nightly job that saves progress and can resume after interruption suits Spot Instances, which give the lowest compute cost.",
+    "optionNotes": {
+      "A": "On-Demand Instances cost more than Spot, and the job does not need uninterrupted capacity.",
+      "B": "Spot Instances use spare capacity at a steep discount and the job can resume if an instance is reclaimed.",
+      "C": "Dedicated Hosts are single-tenant servers at a premium that the job does not need.",
+      "D": "Dedicated Instances add single-tenant cost without helping a flexible nightly job."
+    }
+  },
+  "auth-compute-03": {
+    "explanation": "For a steady three-year workload that cannot be interrupted, Compute Savings Plans (A) and Reserved Instances (D) lower the price in return for a commitment.",
+    "optionNotes": {
+      "A": "Compute Savings Plans discount usage in return for a 1- or 3-year commitment and fit steady workloads.",
+      "B": "Spot Instances can be reclaimed by AWS, which the uninterrupted application cannot tolerate.",
+      "C": "Dedicated Hosts give a physical server and cost more, so they are not a general discount option.",
+      "D": "Reserved Instances give a discount for a 1- or 3-year commitment on steady usage.",
+      "E": "On-Demand Capacity Reservations guarantee capacity but give no discount by themselves."
+    }
+  },
+  "auth-compute-04": {
+    "explanation": "A stopped EC2 instance is not billed for instance usage, but attached EBS volumes continue to incur storage charges.",
+    "optionNotes": {
+      "A": "Instance usage charges stop when the instance is stopped.",
+      "B": "A stopped instance transfers no data, so there is no data transfer charge for it.",
+      "C": "Charges do not stop completely, because EBS volumes still exist.",
+      "D": "EBS volumes remain provisioned while the instance is stopped, so storage is still billed."
+    }
+  },
+  "auth-compute-05": {
+    "explanation": "An AMI is a template with the operating system and software used to launch an EC2 instance.",
+    "optionNotes": {
+      "A": "An AMI contains the software configuration, including the OS, needed to launch instances.",
+      "B": "A block storage volume attached to an instance is Amazon EBS, not an AMI.",
+      "C": "A physical server dedicated to one customer is a Dedicated Host.",
+      "D": "A container image in Amazon ECR runs on container services, not as a template for booting EC2 instances."
+    }
+  },
+  "auth-compute-06": {
+    "explanation": "Auto Scaling replaces unhealthy instances to maintain the desired capacity of 4 (B) and keeps the group between its minimum 2 and maximum 8, so scaling out never exceeds 8 (E).",
+    "optionNotes": {
+      "A": "The minimum is 2, so the group cannot scale in to zero.",
+      "B": "Auto Scaling terminates instances that fail health checks and launches replacements to keep the desired capacity.",
+      "C": "Distributing requests across instances is done by Elastic Load Balancing, not Auto Scaling.",
+      "D": "There is no extra charge for Auto Scaling; you pay only for the resources it launches.",
+      "E": "Scaling policies can add instances only up to the configured maximum of 8."
+    }
+  },
+  "auth-compute-07": {
+    "explanation": "AWS Fargate is serverless compute for containers, so the team runs containers without provisioning, patching, or scaling EC2 instances.",
+    "optionNotes": {
+      "A": "ECR stores container images but does not run containers.",
+      "B": "EC2 Auto Scaling manages groups of EC2 instances that the team would still own.",
+      "C": "Fargate runs containers on infrastructure that AWS manages.",
+      "D": "Spot Instances are still EC2 instances that the team must manage."
+    }
+  },
+  "auth-compute-08": {
+    "explanation": "AWS Lambda runs code on an S3 upload event, scales automatically, and charges nothing while idle, giving the least operational overhead.",
+    "optionNotes": {
+      "A": "An always-on EC2 instance must be managed and costs money while idle.",
+      "B": "Lambda is triggered by S3 events, needs no servers, and costs nothing when no code runs.",
+      "C": "An EKS cluster requires management and has cost even without uploads.",
+      "D": "A Dedicated Host is an expensive physical server and adds overhead."
+    }
+  },
+  "auth-compute-09": {
+    "explanation": "Auto Scaling adjusts the number of instances, while ELB distributes incoming traffic across healthy targets.",
+    "optionNotes": {
+      "A": "This swaps the roles; Auto Scaling changes instance counts and ELB distributes requests.",
+      "B": "Neither service caches at edge locations or stores instance images; that describes CloudFront and AMIs.",
+      "C": "Neither service resizes a single instance to a larger type; that is vertical scaling done manually.",
+      "D": "Auto Scaling adjusts the number of instances and ELB spreads traffic across healthy targets."
+    }
+  },
+  "auth-compute-10": {
+    "explanation": "Elastic Beanstalk provisions the EC2 instances (B) and configures load balancing and auto scaling (C) for uploaded code. The developer still writes the logic and designs the data model.",
+    "optionNotes": {
+      "A": "The developer writes the application's business logic.",
+      "B": "Beanstalk provisions the EC2 instances that run the application.",
+      "C": "Beanstalk sets up load balancing and automatic scaling for the environment.",
+      "D": "Beanstalk does not buy Reserved Instances or other pricing commitments.",
+      "E": "The developer designs the database schema; Beanstalk does not do it."
+    }
+  }
+}
