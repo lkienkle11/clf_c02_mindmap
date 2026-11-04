@@ -1,0 +1,725 @@
+{
+ "q_eca8ecf722ac": {
+  "explanation": "Rightsizing means matching instance types and sizes to actual workload needs, so you do not pay for unused capacity; it is the practice most directly tied to cost-effective architecture.",
+  "optionNotes": {
+   "A": "Loose coupling decouples components to improve scalability and resilience; it is not primarily a cost-optimization practice.",
+   "B": "Rightsizing matches resource type and size to real demand, which removes wasted spend and gives the most cost-effective design.",
+   "C": "Caching improves performance and can reduce load, but it is not the practice that ensures the whole architecture is cost-effective.",
+   "D": "Redundancy improves availability by adding duplicate resources, which usually increases cost rather than minimizing it."
+  }
+ },
+ "q_9104643a05bd": {
+  "explanation": "AWS Budgets lets you plan usage, cost, and reservation coverage or utilization, and sends custom alerts when actual or forecasted values cross thresholds you set.",
+  "optionNotes": {
+   "A": "Cost Explorer visualizes and analyzes past spending and forecasts, but threshold alerting and budget planning are the job of AWS Budgets.",
+   "B": "AWS Budgets supports usage, cost, and reservation budgets with custom alerts when thresholds are exceeded, matching every part of the question.",
+   "C": "The Cost and Usage Report delivers detailed billing data files; it does not plan budgets or send alerts.",
+   "D": "Reserved Instance reporting shows reservation utilization and coverage, but it is not the tool for planning overall spend and setting alerts."
+  }
+ },
+ "q_9b799aa5492c": {
+  "explanation": "Consolidated billing in AWS Organizations combines usage from all accounts to reach volume pricing discounts, and it does not affect workload availability. Spot Instances can be interrupted, so they do not suit workloads that cannot be interrupted.",
+  "optionNotes": {
+   "A": "Resource tagging helps categorize and allocate costs but does not itself produce billing discounts.",
+   "B": "Consolidated billing aggregates usage across accounts so the company can reach volume discount tiers, without changing how workloads run.",
+   "C": "Pay-as-you-go pricing is the default model with no usage-based discount from combining accounts.",
+   "D": "Spot Instances can be reclaimed by AWS with short notice, so they are unsuitable for compute workloads that cannot be interrupted."
+  }
+ },
+ "q_21dcc39b6973": {
+  "explanation": "A steady, uninterruptible workload expected to grow for years fits a Savings Plan, which gives a discount for committing to a consistent hourly spend and also applies to growing usage.",
+  "optionNotes": {
+   "A": "Spot Instances can be interrupted at any time, which does not suit an application that cannot stop.",
+   "B": "On-Demand has no commitment discount, so it costs more than a plan for constant long-term usage.",
+   "C": "Savings Plans give lower prices in exchange for a commitment to a consistent spend over one or three years, which fits steady and growing usage.",
+   "D": "Dedicated Hosts are physical servers for licensing or compliance needs and are not the cheapest option for this workload."
+  }
+ },
+ "q_48c53ad0bd7a": {
+  "explanation": "AWS Organizations lets you create accounts, group them into organizational units, and apply service control policies to those groups.",
+  "optionNotes": {
+   "A": "IAM manages users, roles, and permissions inside an account; it does not create or group AWS accounts.",
+   "B": "Trusted Advisor gives best-practice checks and recommendations; it does not manage accounts or policies across them.",
+   "C": "CloudFormation provisions resources from templates; it is not used to organize accounts.",
+   "D": "Organizations creates accounts, groups them into organizational units, and applies policies such as service control policies to those groups."
+  }
+ },
+ "q_84e7ba16f896": {
+  "explanation": "Reserved Instances (B) and Savings Plans (D) both give discounts for committing to steady usage over one or three years, which is the cheapest way to run a steady, predictable, uninterruptible workload.",
+  "optionNotes": {
+   "A": "On-Demand has no commitment discount, so it costs more than commitment options for steady usage.",
+   "B": "Reserved Instances discount steady, predictable usage in exchange for a one or three year commitment, and capacity is not interrupted.",
+   "C": "Spot Instances can be interrupted, so they do not meet the uninterruptible requirement.",
+   "D": "Savings Plans give lower rates for a committed hourly spend over one or three years, which fits steady usage.",
+   "E": "Dedicated Hosts are for licensing or compliance needs and are not the most cost-effective choice for an ordinary steady workload."
+  }
+ },
+ "q_4bb450df3450": {
+  "explanation": "AWS Cost Explorer provides graphs and reports to visualize, understand, and manage costs and usage over time.",
+  "optionNotes": {
+   "A": "Organizations manages accounts and consolidated billing; it is not a spending visualization tool.",
+   "B": "Pricing Calculator estimates the cost of planned workloads and does not show actual spending over time.",
+   "C": "Cost Explorer visualizes historical costs and usage and can forecast, which is what the question asks.",
+   "D": "Service Catalog manages approved product portfolios and does not analyze spending."
+  }
+ },
+ "q_f7af7498b31e": {
+  "explanation": "Using multiple AWS accounts (E), one per department, separates workloads, and consolidated billing (B) gives a combined bill while still showing per-account charges for chargeback.",
+  "optionNotes": {
+   "A": "Placement groups influence instance placement for performance or availability and have no role in cost allocation.",
+   "B": "Consolidated billing combines accounts under one payer while showing each account's charges, which supports chargeback to departments.",
+   "C": "Edge locations cache content close to users and are not a billing separation mechanism.",
+   "D": "AWS Config records resource configuration and compliance; it does not separate costs by department.",
+   "E": "Separate accounts per department isolate workloads and their costs, making chargeback straightforward."
+  }
+ },
+ "q_c0592eb8ee8b": {
+  "explanation": "AWS Budgets lets you set custom cost or usage thresholds and sends alerts when they are, or are forecast to be, exceeded.",
+  "optionNotes": {
+   "A": "Budgets sends alerts when actual or forecasted spend crosses a threshold you define.",
+   "B": "Cost Explorer visualizes and analyzes spending but does not send threshold alerts.",
+   "C": "Cost allocation tags categorize costs; they do not send alerts.",
+   "D": "Organizations manages multiple accounts and consolidated billing but is not the alerting service."
+  }
+ },
+ "q_4380e326a705": {
+  "explanation": "A workload that runs only 12 hours and can be stopped is best served by On-Demand Instances, which have no commitment and bill only while the instance runs. Spot is cheaper but the instance can be interrupted, and a workload that must run continuously until stopped should not be interrupted.",
+  "optionNotes": {
+   "A": "On-Demand has no commitment and charges only for the time the instance runs, which suits a short, one-off continuous run.",
+   "B": "Reserved Instances require a one or three year commitment, which is wasteful for a 12 hour experiment.",
+   "C": "Spot Instances can be interrupted by AWS, which conflicts with the need to run continuously for the whole period.",
+   "D": "Dedicated Instances run on single-tenant hardware at extra cost and are not needed for an experimental workload."
+  }
+ },
+ "q_592394f48d4e": {
+  "explanation": "Two months a year with no tolerance for downtime fits On-Demand Instances: no long-term commitment is needed, and they are not interrupted, unlike Spot.",
+  "optionNotes": {
+   "A": "Reserved Instances need a one or three year commitment, so a full year of cost would be paid for only two months of use.",
+   "B": "Dedicated Hosts are costly physical servers meant for licensing or compliance needs, not short seasonal use.",
+   "C": "Spot Instances can be interrupted, which violates the no-downtime requirement.",
+   "D": "On-Demand is pay-per-use with no commitment and no interruption, so it is cheapest for two uninterrupted months a year."
+  }
+ },
+ "q_2c0f0593678d": {
+  "explanation": "Continuous usage for one year is a steady workload, so a one year Reserved Instance gives a significant discount over On-Demand.",
+  "optionNotes": {
+   "A": "Reserved Instances give a discount for a committed one year term, which matches continuous year-long use.",
+   "B": "Spot Instances can be interrupted and are not suited to an application needing continuous operation.",
+   "C": "On-Demand costs more than Reserved Instances for continuous year-long usage.",
+   "D": "Dedicated Hosts add cost for single-tenant hardware that the scenario does not require."
+  }
+ },
+ "q_6b5287e7e4ac": {
+  "explanation": "AWS Marketplace is a digital catalog where customers find, buy, and deploy third-party software that runs on AWS.",
+  "optionNotes": {
+   "A": "Resource Access Manager shares AWS resources between accounts; it does not sell software.",
+   "B": "AWS Managed Services provides operational management of AWS infrastructure, not a software store.",
+   "C": "License Manager helps track and manage software licenses you already own, rather than purchasing software.",
+   "D": "AWS Marketplace lets you purchase third-party software and have it billed through AWS."
+  }
+ },
+ "q_c8af8972e58a": {
+  "explanation": "Consistent, predictable traffic for one year with no tolerance for disruption fits Reserved Instances, which discount committed steady usage and are not interrupted.",
+  "optionNotes": {
+   "A": "On-Demand costs more than a reserved commitment for steady year-long use.",
+   "B": "Reserved Instances discount a one year commitment and the instances stay available without interruption.",
+   "C": "Spot Instances can be reclaimed by AWS, which breaks the no-disruption requirement.",
+   "D": "A Spot Fleet is a collection of Spot Instances and carries the same interruption risk."
+  }
+ },
+ "q_b10f0f7081a9": {
+  "explanation": "The AWS Cost and Usage Report provides the most detailed billing data, delivered to S3, and can be integrated with Amazon QuickSight to build dashboards.",
+  "optionNotes": {
+   "A": "Budgets tracks spend against thresholds; it is not the data source for QuickSight dashboards.",
+   "B": "Cost Explorer has its own built-in graphs and does not provide the raw data for building custom QuickSight dashboards.",
+   "C": "The Cost and Usage Report delivers detailed billing data to S3 on a regular schedule, which can be used by QuickSight for dashboards.",
+   "D": "Cost Anomaly Detection alerts on unusual spend and does not supply data for dashboards."
+  }
+ },
+ "q_6e8ab57387ca": {
+  "explanation": "Tagging resources by department, environment, and application, then activating those tags as cost allocation tags, lets AWS break costs down by those categories.",
+  "optionNotes": {
+   "A": "The Cost Management console and budgets do not by themselves categorize costs by department, environment, and application.",
+   "B": "Tags label resources, and activating them as cost allocation tags makes costs reportable by those labels.",
+   "C": "CloudWatch dashboards monitor operational metrics and are not the way to categorize AWS costs.",
+   "D": "The Billing and Cost Management dashboard shows spend but cannot group it by custom business categories without activated tags."
+  }
+ },
+ "q_a7fde46b6442": {
+  "explanation": "A fixed one year project with an always-on, right-sized server gets the biggest discount from Standard Reserved Instances, which give a larger discount than Convertible Reserved Instances when no changes are needed.",
+  "optionNotes": {
+   "A": "On-Demand has the highest price for always-on usage.",
+   "B": "Convertible Reserved Instances allow changing instance attributes but give a smaller discount than Standard, and no flexibility is needed here.",
+   "C": "Spot Instances can be interrupted, which is unsuitable for an always-up database server.",
+   "D": "Standard Reserved Instances offer the highest reservation discount for a fixed instance configuration."
+  }
+ },
+ "q_aa99a2e2895e": {
+  "explanation": "AWS Organizations provides consolidated billing so one management account receives and pays the bill for several member accounts.",
+  "optionNotes": {
+   "A": "Systems Manager manages and operates resources and has no billing role.",
+   "B": "Organizations offers consolidated billing across member accounts into a single bill.",
+   "C": "License Manager tracks software licenses and does not consolidate bills.",
+   "D": "Cost Explorer analyzes costs but does not combine accounts into one bill."
+  }
+ },
+ "q_3d80c01cc269": {
+  "explanation": "AWS Budgets sends alerts when actual or forecasted costs exceed thresholds, which is how a company monitors overall operating cost.",
+  "optionNotes": {
+   "A": "EventBridge routes events between services and is not a cost monitoring tool.",
+   "B": "Compute Savings Plans lower compute rates in return for a commitment; they do not send alerts.",
+   "C": "Budgets tracks overall cost against a budget and alerts when thresholds are crossed.",
+   "D": "Migration Evaluator builds business cases for moving on-premises workloads and does not monitor ongoing costs."
+  }
+ },
+ "q_6c20dd9f5a28": {
+  "explanation": "A three year, uninterrupted simulation is a steady long-term workload, and three year Reserved Instances give the largest discount over other options.",
+  "optionNotes": {
+   "A": "Spot Instances can be interrupted, so they are unsuitable for a simulation that must not be interrupted.",
+   "B": "Reserved Instances with a three year term give a big discount for long, steady usage.",
+   "C": "Dedicated Hosts cost more and are meant for licensing or compliance needs, not general steady workloads.",
+   "D": "On-Demand has the highest price for three years of continuous use."
+  }
+ },
+ "q_9de728d7d820": {
+  "explanation": "Savings Plans offer lower prices on services such as EC2, Fargate, and Lambda in exchange for a commitment to a consistent amount of usage over one or three years.",
+  "optionNotes": {
+   "A": "Amazon Detective investigates security findings and has nothing to do with discounts.",
+   "B": "Pricing Calculator estimates costs and does not provide discounts.",
+   "C": "Savings Plans give discounts in exchange for a committed spend measured in dollars per hour.",
+   "D": "Basic Support is the free support tier and does not give a spending discount."
+  }
+ },
+ "q_70242c55ea52": {
+  "explanation": "AWS Budgets (B) can notify when a cost threshold is reached, and Amazon CloudWatch (D) billing alarms can also alert when estimated charges exceed a threshold.",
+  "optionNotes": {
+   "A": "SQS is a message queue and does not monitor cost thresholds.",
+   "B": "Budgets sends notifications when actual or forecasted cost crosses a defined threshold.",
+   "C": "Cost Explorer analyzes and visualizes costs but does not send threshold notifications.",
+   "D": "CloudWatch can alarm on the estimated charges billing metric and send a notification when a threshold is reached.",
+   "E": "The Cost and Usage Report delivers detailed billing data and does not send alerts."
+  }
+ },
+ "q_1a4206a18676": {
+  "explanation": "A server that must run all the time for 12 months is steady usage, so a one year Reserved Instance is cheaper than On-Demand.",
+  "optionNotes": {
+   "A": "On-Demand costs more than reservations for always-on usage.",
+   "B": "Dedicated Hosts add cost for dedicated physical servers that the scenario does not call for.",
+   "C": "Spot Instances can be interrupted, which is unacceptable for a server that must stay active.",
+   "D": "Reserved Instances give a discount for committing to a year of steady usage."
+  }
+ },
+ "q_e9d079553b48": {
+  "explanation": "AWS Marketplace offers pre-configured third-party software, including firewall appliances, as AMIs that can be launched on EC2.",
+  "optionNotes": {
+   "A": "Network ACLs are AWS-managed subnet-level rules, not a pre-installed third-party firewall product.",
+   "B": "Security groups are AWS-managed instance-level firewalls, not a third-party firewall appliance.",
+   "C": "Marketplace sells third-party software such as firewall AMIs that are ready to launch on EC2.",
+   "D": "Trusted Advisor provides best-practice checks and does not deliver software."
+  }
+ },
+ "q_7617d530d235": {
+  "explanation": "AWS Cost Explorer includes EC2 rightsizing recommendations at no additional cost, based on resource utilization.",
+  "optionNotes": {
+   "A": "The Well-Architected Tool reviews workloads against best practices and does not give EC2 rightsizing recommendations.",
+   "B": "CloudWatch collects metrics; it does not provide rightsizing recommendations by itself.",
+   "C": "Cost Explorer offers rightsizing recommendations for EC2 at no extra charge.",
+   "D": "S3 analytics analyzes storage access patterns for S3 and has nothing to do with EC2 rightsizing."
+  }
+ },
+ "q_b9118ebfe041": {
+  "explanation": "AWS Pricing Calculator estimates the monthly cost of planned AWS resources such as EC2 instances and storage before anything is built.",
+  "optionNotes": {
+   "A": "Pricing Calculator lets you model EC2 and storage configurations to get a predicted monthly cost.",
+   "B": "Compute Optimizer recommends better sizes for existing resources and does not estimate costs for a future migration.",
+   "C": "Trusted Advisor provides checks on existing accounts and does not estimate future cost.",
+   "D": "Application Migration Service rehosts servers into AWS and is not a cost estimation tool."
+  }
+ },
+ "q_54f32b72d744": {
+  "explanation": "Compute Savings Plans lower the cost of EC2 (and other compute) in exchange for a one or three year usage commitment.",
+  "optionNotes": {
+   "A": "Compute Savings Plans give reduced rates for a committed hourly spend on compute.",
+   "B": "An Auto Scaling group adjusts capacity to demand and is not a commitment-based discount.",
+   "C": "On-Demand has no commitment and no discount.",
+   "D": "An instance store is temporary storage attached to the host and has no pricing discount role."
+  }
+ },
+ "q_8d9233b5eca9": {
+  "explanation": "Cost Explorer shows usage and spend so you can spot unused or oversized resources and match capacity to need, which is rightsizing.",
+  "optionNotes": {
+   "A": "Rightsizing is matching resources to need, and Cost Explorer provides usage data and recommendations that support it.",
+   "B": "Reliability is about recovering from failures and is not what Cost Explorer demonstrates.",
+   "C": "Resilience concerns withstanding disruption, which is unrelated to a cost analysis tool.",
+   "D": "Modernization refers to updating applications and architectures, not analyzing cost."
+  }
+ },
+ "q_790e2e344caf": {
+  "explanation": "Cost allocation tags label resources so costs can be categorized and tracked by business category such as project or department.",
+  "optionNotes": {
+   "A": "Activated cost allocation tags let billing reports group costs by business categories.",
+   "B": "Organizations manages accounts and consolidated billing but does not categorize costs by custom business categories within an account.",
+   "C": "Security Hub aggregates security findings and does not track costs.",
+   "D": "The Cost and Usage Report provides detailed data but depends on tags to categorize costs; tags are the feature that does the categorizing."
+  }
+ },
+ "q_ae97c2339564": {
+  "explanation": "AWS Organizations consolidated billing lets one management account pay for all member accounts.",
+  "optionNotes": {
+   "A": "Trusted Advisor gives recommendations and does not pay for other accounts.",
+   "B": "Organizations provides consolidated billing so one account pays on behalf of the others.",
+   "C": "Budgets tracks and alerts on spending but does not consolidate payment.",
+   "D": "Service Catalog distributes approved products and is not a billing tool."
+  }
+ },
+ "q_743f278c5cb9": {
+  "explanation": "AWS Budgets lets you set spending limits and sends notifications when actual or forecasted costs exceed them, which Cost Explorer and reports do not do.",
+  "optionNotes": {
+   "A": "The Cost and Usage Reports provide detailed billing data but do not set limits or notify.",
+   "B": "Budgets sets cost thresholds and notifies the team when they are, or are forecast to be, exceeded.",
+   "C": "Consolidated billing combines accounts on one bill but does not set limits or send alerts.",
+   "D": "Cost Explorer visualizes and forecasts spend but does not enforce limits or alert on thresholds."
+  }
+ },
+ "q_f8fbec243363": {
+  "explanation": "AWS Marketplace is where third-party security products, such as intrusion detection systems, can be found and launched from an AWS account.",
+  "optionNotes": {
+   "A": "Security Hub aggregates findings from security services and does not sell third-party appliances.",
+   "B": "Marketplace offers third-party intrusion detection software that can be deployed into the account.",
+   "C": "Quick Starts are reference deployments for AWS architectures, not a catalog of third-party security products.",
+   "D": "AWS Security Center is not an AWS service for procuring third-party security software."
+  }
+ },
+ "q_3c87bfb3302a": {
+  "explanation": "A job that runs only briefly once a week and at month end, and can be shut down in between, is cheapest on On-Demand Instances because you pay only while they run and make no commitment.",
+  "optionNotes": {
+   "A": "Standard Reserved Instances bill for the full term whether or not the instance is running, which wastes money on sporadic use.",
+   "B": "Convertible Reserved Instances also require a term commitment and are billed continuously, which is wasteful here.",
+   "C": "On-Demand Capacity Reservations reserve capacity and charge for it even when unused, which does not match an occasional workload.",
+   "D": "On-Demand charges only for running time with no commitment, which fits an intermittent workload."
+  }
+ },
+ "q_63070260ad11": {
+  "explanation": "AWS Organizations has no additional charge; you pay only for the resources used in member accounts.",
+  "optionNotes": {
+   "A": "SageMaker charges for notebook, training, and hosting usage.",
+   "B": "AWS Config charges for configuration items recorded and rule evaluations.",
+   "C": "Organizations, including consolidated billing, is offered at no additional cost.",
+   "D": "CloudWatch has a limited free tier but charges for metrics, logs, and alarms beyond it."
+  }
+ },
+ "q_9a1d47463819": {
+  "explanation": "Reserved Instances (C) and Savings Plans (D) both give lower prices in exchange for a commitment to a one or three year term for continued use.",
+  "optionNotes": {
+   "A": "Spot Instances require no commitment and can be interrupted, so they do not fit a committed production workload.",
+   "B": "On-Demand has no commitment and no discount.",
+   "C": "Reserved Instances reduce cost in exchange for a committed term.",
+   "D": "Savings Plans reduce cost in exchange for a committed hourly spend.",
+   "E": "Dedicated Hosts are for licensing or compliance and are not the lowest-cost commitment options for general production use."
+  }
+ },
+ "q_51813cd43a93": {
+  "explanation": "A stable production workload running for one year suits Reserved Instances, which discount committed steady usage and are not interrupted.",
+  "optionNotes": {
+   "A": "Dedicated Hosts cost more and are meant for licensing or compliance needs.",
+   "B": "Reserved Instances provide a discount for a one year commitment to steady usage.",
+   "C": "On-Demand costs more than reserved pricing for stable year-long use.",
+   "D": "Spot Instances can be interrupted, which is risky for a production workload."
+  }
+ },
+ "q_e3467a4fe093": {
+  "explanation": "AWS Pricing Calculator lets you model services and configurations to estimate costs before deploying them.",
+  "optionNotes": {
+   "A": "The Free Tier describes free usage allowances and does not estimate project costs.",
+   "B": "Pricing Calculator builds a cost estimate for planned architectures before anything is provisioned.",
+   "C": "Billing and Cost Management is the console for your actual bills, costs, and cost tools; the pre-deployment estimate comes from AWS Pricing Calculator.",
+   "D": "The Cost and Usage Report reports costs actually incurred, not future estimates."
+  }
+ },
+ "q_611a1733f2f1": {
+  "explanation": "Cost allocation tags let you label resources by department and project and then track costs by those labels.",
+  "optionNotes": {
+   "A": "Consolidated billing combines accounts on one bill but does not break costs down by department and project within accounts.",
+   "B": "Cost allocation tags attach business labels such as department and project to resources so costs can be broken down by them.",
+   "C": "AWS Marketplace is a software catalog and has no role in tracking costs.",
+   "D": "Budgets alerts on spending against thresholds; it relies on tags or filters for breakdowns and is not the tracking mechanism itself."
+  }
+ },
+ "q_e8b70b738a9b": {
+  "explanation": "AWS Pricing Calculator estimates the cost of running a defined infrastructure on AWS, which is what a pre-migration as-is estimate needs.",
+  "optionNotes": {
+   "A": "Pricing Calculator models an infrastructure's AWS services and configuration to estimate its cost.",
+   "B": "The Well-Architected Framework provides design best practices and does not estimate cost.",
+   "C": "The shared responsibility model divides security duties between AWS and the customer.",
+   "D": "The Cloud Adoption Framework guides organizational transformation and is not a cost estimation tool."
+  }
+ },
+ "q_52472f8c8cc8": {
+  "explanation": "AWS Marketplace lets independent software vendors list and sell their AMIs to AWS customers.",
+  "optionNotes": {
+   "A": "Marketplace lets sellers publish AMIs that customers can find, subscribe to, and launch.",
+   "B": "AWS Data Exchange is for subscribing to third-party data sets, not distributing AMIs.",
+   "C": "EC2 runs instances and can share AMIs privately but is not a marketplace for prospective customers.",
+   "D": "Organizations manages accounts and policies and does not distribute software."
+  }
+ },
+ "q_5b0dac58ac8d": {
+  "explanation": "The exam expects Convertible Reserved Instances: they are paid up front for a discount and can be exchanged for different instance configurations as the compute mix changes during a partial move to serverless. Current AWS guidance would also point to a Compute Savings Plan, which covers EC2, Fargate, and Lambda and can be paid up front.",
+  "optionNotes": {
+   "A": "Convertible Reserved Instances can be paid up front for a discount and exchanged for other instance configurations during the term, which is the answer the exam expects here.",
+   "B": "Spot Instances can be interrupted and give no committed, upfront-paid discount.",
+   "C": "EC2 Instance Savings Plans are tied to a specific instance family and Region, so they are less flexible when the workload is changing.",
+   "D": "Compute Savings Plans are also flexible across EC2, Fargate, and Lambda and can be paid up front, but the exam expects Convertible Reserved Instances for this scenario."
+  }
+ },
+ "q_2524db652449": {
+  "explanation": "AWS Pricing Calculator projects monthly costs for services and configurations you plan to use; it does not report past costs or bills.",
+  "optionNotes": {
+   "A": "Pricing Calculator estimates and projects monthly AWS costs for planned usage.",
+   "B": "Historical costs are shown by Cost Explorer or billing reports, not by Pricing Calculator.",
+   "C": "Pricing Calculator models configurations and does not teach pricing strategies in depth.",
+   "D": "Monthly bills are accessed in the Billing console, not through Pricing Calculator."
+  }
+ },
+ "q_82890c946888": {
+  "explanation": "An uninterruptible web server needed for at least a year suits Reserved Instances, and Partial Upfront gives a bigger discount than No Upfront.",
+  "optionNotes": {
+   "A": "On-Demand costs more than reserved pricing for a year of use.",
+   "B": "Partial Upfront Reserved Instances give a larger discount than No Upfront while keeping the instance uninterrupted.",
+   "C": "Spot Instances can be interrupted, which a web server cannot tolerate.",
+   "D": "No Upfront Reserved Instances are discounted, but less so than Partial Upfront."
+  }
+ },
+ "q_4f49c935f946": {
+  "explanation": "AWS Organizations consolidated billing gives the finance team one bill covering all member accounts.",
+  "optionNotes": {
+   "A": "Organizations combines multiple accounts into one consolidated bill.",
+   "B": "Trusted Advisor provides best-practice recommendations and does not produce a consolidated bill.",
+   "C": "Cost Explorer analyzes cost data but does not create a single bill.",
+   "D": "Budgets sets thresholds and alerts and does not consolidate billing."
+  }
+ },
+ "q_2666bda227dd": {
+  "explanation": "A continuous workload needed for three or more years gets the largest discount from Reserved Instances, using a three year term.",
+  "optionNotes": {
+   "A": "Reserved Instances discount long, steady use, with the best savings on a three year term.",
+   "B": "Spot Instances can be interrupted, which fails the continuous availability requirement.",
+   "C": "On-Demand has no discount for committed use.",
+   "D": "EC2 Fleet launches groups of instances across purchase options and is not itself a discount model."
+  }
+ },
+ "q_daa00567533a": {
+  "explanation": "Cost Explorer's rightsizing recommendations can identify idle or underused EC2 instances and suggest terminating or downsizing them.",
+  "optionNotes": {
+   "A": "Cost Explorer does not recommend database engines.",
+   "B": "Cost Explorer does not advise on programming languages.",
+   "C": "Cost Explorer does not recommend operating systems.",
+   "D": "Cost Explorer rightsizing recommendations can flag idle instances to terminate and underused ones to downsize."
+  }
+ },
+ "q_d0d30477da89": {
+  "explanation": "Reserved Instance terms are one or three years, and the three year term gives the largest discount.",
+  "optionNotes": {
+   "A": "A one year term is available, but it gives a smaller discount than three years.",
+   "B": "Two years is not a standard Reserved Instance term.",
+   "C": "The three year term gives the deepest discount.",
+   "D": "Five years is not an available Reserved Instance term."
+  }
+ },
+ "q_b18b765dcbcb": {
+  "explanation": "Three hours a week is very light usage that cannot be interrupted, so On-Demand, paying only for running time with no commitment, is cheapest.",
+  "optionNotes": {
+   "A": "A Compute Savings Plan commits to hourly spend around the clock, which wastes money for three hours a week.",
+   "B": "On-Demand charges only for running time and is not interrupted, which fits short weekly runs.",
+   "C": "Convertible Reserved Instances bill for the whole term, which is wasteful for three hours a week.",
+   "D": "Spot Instances can be interrupted, which the lab cannot allow."
+  }
+ },
+ "q_30d7208f1d9a": {
+  "explanation": "A predictable critical workload over three years fits Savings Plans, which discount committed hourly spend and are not interrupted.",
+  "optionNotes": {
+   "A": "Spot Instances can be interrupted, which is risky for a critical workload.",
+   "B": "Dedicated Hosts cost more and are mainly for licensing or compliance needs.",
+   "C": "Savings Plans give lower prices for a three year commitment to consistent usage.",
+   "D": "On-Demand costs the most for three years of predictable use."
+  }
+ },
+ "q_9494943bccb4": {
+  "explanation": "AWS Pricing Calculator estimates the cost of an architecture before migrating or building it.",
+  "optionNotes": {
+   "A": "Detective investigates security findings and has no cost function.",
+   "B": "Budgets tracks spending against thresholds; it does not model a proposed architecture.",
+   "C": "Resource Explorer searches resources across Regions and does not estimate costs.",
+   "D": "Pricing Calculator models planned services and configurations to produce a cost estimate."
+  }
+ },
+ "q_33d5a7381543": {
+  "explanation": "AWS Budgets lets the team set a monthly budget and notifies them when actual or forecasted spend exceeds it.",
+  "optionNotes": {
+   "A": "Budgets sends notifications when spend crosses the planned amount.",
+   "B": "Cost Explorer shows spend but does not notify when a planned amount is exceeded.",
+   "C": "Cost allocation tags categorize costs and do not alert.",
+   "D": "Cost categories group costs into custom rules for reporting and do not send alerts."
+  }
+ },
+ "q_c0b85a8eee89": {
+  "explanation": "Cost Explorer (B) offers EC2 rightsizing recommendations and AWS Compute Optimizer (D) analyzes utilization to recommend better instance types, both helping optimize existing EC2 resources.",
+  "optionNotes": {
+   "A": "Elastic Beanstalk deploys and manages applications and is not an optimization analysis tool.",
+   "B": "Cost Explorer provides rightsizing recommendations for EC2 instances.",
+   "C": "Detective is a security investigation service and does not optimize resources.",
+   "D": "Compute Optimizer uses utilization metrics to recommend optimal EC2 configurations.",
+   "E": "Billing Conductor customizes billing and pricing views for chargeback and does not optimize resources."
+  }
+ },
+ "q_b474299d25e7": {
+  "explanation": "Continuous use for more than a year fits Reserved Instances, which discount committed steady usage.",
+  "optionNotes": {
+   "A": "Dedicated Instances run on single-tenant hardware at higher cost and are not needed here.",
+   "B": "Spot Instances can be interrupted, which does not suit a continuously running application.",
+   "C": "Reserved Instances give a discount for committing to one or three years of steady use.",
+   "D": "On-Demand costs more than reserved pricing for long-running workloads."
+  }
+ },
+ "q_20754c8a6a32": {
+  "explanation": "For a one year, uninterruptible workload, All Upfront Reserved Instances give the largest discount among the payment options.",
+  "optionNotes": {
+   "A": "All Upfront payment gives the highest discount of the reserved payment options.",
+   "B": "Partial Upfront saves less than All Upfront.",
+   "C": "Dedicated Instances run on single-tenant hardware at extra cost and do not reduce price.",
+   "D": "On-Demand costs the most for continuous use."
+  }
+ },
+ "q_67141615c5b1": {
+  "explanation": "AWS Budgets can track cost and usage and filter to services such as EC2 or to a specific environment, alerting against monthly budgets.",
+  "optionNotes": {
+   "A": "Cost Anomaly Detection alerts on unusual spend patterns and does not track monthly cost against a budget.",
+   "B": "Budgets tracks cost and usage with filters, such as EC2 in a given environment, against monthly amounts.",
+   "C": "Compute Optimizer recommends resource sizing and does not track cost.",
+   "D": "Trusted Advisor provides best-practice checks and is not the tool for tracking monthly cost and usage."
+  }
+ },
+ "q_0dcd7640994a": {
+  "explanation": "Cost Explorer visualizes historical spending patterns and forecasts future costs.",
+  "optionNotes": {
+   "A": "The Cost and Usage Report delivers raw detailed data and does not itself visualize or forecast.",
+   "B": "Budgets tracks spending against planned thresholds rather than visualizing historical patterns.",
+   "C": "Cost Explorer charts past spend and projects future costs.",
+   "D": "CloudWatch monitors operational metrics and is not the cost visualization tool."
+  }
+ },
+ "q_7dd80314daeb": {
+  "explanation": "AWS Pricing Calculator (A) estimates AWS costs for planned resources and Migration Evaluator (B) builds a total cost of ownership comparison from existing on-premises servers.",
+  "optionNotes": {
+   "A": "Pricing Calculator estimates AWS costs, which feeds into a TCO comparison.",
+   "B": "Migration Evaluator analyzes on-premises server usage to build a business case and cost projection for AWS.",
+   "C": "AWS Support Center is for opening support cases and does not estimate TCO.",
+   "D": "Application Discovery Service collects on-premises server data for migration planning but does not itself compute AWS TCO.",
+   "E": "Database Migration Service migrates databases and does not estimate costs."
+  }
+ },
+ "q_b2b0c1d5a24c": {
+  "explanation": "AWS Budgets can track cost and usage and send scheduled budget reports automatically, which lets the finance team review past months' data each quarter.",
+  "optionNotes": {
+   "A": "Detective is a security investigation service and has no cost reporting.",
+   "B": "Pricing Calculator estimates future cost and does not report past cost and usage.",
+   "C": "Budgets can track cost and usage and send scheduled budget reports automatically.",
+   "D": "Savings Plans is a purchasing option and does not generate reports of past spending."
+  }
+ },
+ "q_f333d6e14569": {
+  "explanation": "Critical production systems running at least three years get the lowest cost from three year Reserved Instances without risk of interruption.",
+  "optionNotes": {
+   "A": "On-Demand costs more than a three year commitment.",
+   "B": "Reserved Instances with a three year term minimize cost for steady critical workloads.",
+   "C": "Spot Instances can be interrupted, which is not acceptable for critical systems.",
+   "D": "The Free Tier is a limited allowance and cannot run production systems for three years."
+  }
+ },
+ "q_f79117a86e9b": {
+  "explanation": "An application that must run without interruption is steady, and Standard Reserved Instances give a larger discount than Convertible ones when instance attributes will not change.",
+  "optionNotes": {
+   "A": "Standard Reserved Instances give the highest reservation discount for a fixed configuration.",
+   "B": "Convertible Reserved Instances add flexibility but a smaller discount, which is not needed here.",
+   "C": "On-Demand costs more than reserved pricing for continuous use.",
+   "D": "Spot Instances can be interrupted, which fails the requirement."
+  }
+ },
+ "q_551197cd3991": {
+  "explanation": "AWS Organizations provides consolidated billing across accounts and centralized governance through service control policies and integration with security and compliance services.",
+  "optionNotes": {
+   "A": "The Cost and Usage Report provides billing data but does not consolidate bills or manage security centrally.",
+   "B": "Organizations gives one consolidated bill and lets you centrally apply policies across accounts.",
+   "C": "AWS Config tracks resource configuration and compliance but does not consolidate bills.",
+   "D": "Security Hub aggregates security findings but does not consolidate bills."
+  }
+ },
+ "q_d9ea11123c6c": {
+  "explanation": "Cost Explorer lets you visualize, understand, and manage AWS costs and usage over a chosen period.",
+  "optionNotes": {
+   "A": "Cost Explorer provides graphs and filters for cost and usage over a selected time period.",
+   "B": "Consolidated billing combines accounts into one bill but does not visualize cost over time.",
+   "C": "Organizations manages accounts and policies and is not a cost visualization tool.",
+   "D": "Budgets sets thresholds and alerts rather than providing exploratory visualization."
+  }
+ },
+ "q_c52d32b669b5": {
+  "explanation": "Unneeded Standard Reserved Instances can be sold on the Amazon EC2 Reserved Instance Marketplace to other AWS customers.",
+  "optionNotes": {
+   "A": "AWS Support does not sell Reserved Instances on a customer's behalf.",
+   "B": "The EC2 Reserved Instance Marketplace is where customers list Standard Reserved Instances they no longer need.",
+   "C": "AWS Marketplace is for software and services, not for reselling Reserved Instances.",
+   "D": "Standard Reserved Instances cannot be converted into Savings Plans."
+  }
+ },
+ "q_87c976a54f88": {
+  "explanation": "For a fixed instance family and type running 24x7 for 12 months, Standard Reserved Instances (A) with All Upfront payment (E) give the lowest cost.",
+  "optionNotes": {
+   "A": "Standard Reserved Instances offer the highest reservation discount when the instance configuration will not change.",
+   "B": "Convertible Reserved Instances add flexibility that is not needed and give a smaller discount.",
+   "C": "A Compute Savings Plan is flexible across instance families but gives a smaller discount than a Standard Reserved Instance for a fixed configuration.",
+   "D": "Spot Instances can be interrupted, which is not allowed for an uninterruptible workload.",
+   "E": "All Upfront payment gives the largest discount among the payment options."
+  }
+ },
+ "q_54554f23a9e9": {
+  "explanation": "Scaling up and down as needed without long-term commitments lets a company try an application cheaply and stop paying when the test ends.",
+  "optionNotes": {
+   "A": "Long-term commitments in exchange for discounts suit steady workloads, not temporary tests.",
+   "B": "Elasticity with no long-term commitment allows the company to start and stop test resources and pay only for what it uses.",
+   "C": "Total control over infrastructure describes on-premises ownership and does not help a company try out an application quickly and cheaply.",
+   "D": "In the cloud AWS handles much of the infrastructure maintenance, and this is not the principle that makes testing low-risk."
+  }
+ },
+ "q_61cea7a24ea1": {
+  "explanation": "AWS Cost Explorer lets the company monitor ongoing costs of the website against its budget.",
+  "optionNotes": {
+   "A": "Cost Explorer visualizes and monitors ongoing costs for the website.",
+   "B": "SDKs are libraries for calling AWS APIs from code and do not monitor cost.",
+   "C": "EC2 Image Builder automates building AMIs and does not track cost.",
+   "D": "CloudFormation provisions infrastructure from templates and does not monitor cost."
+  }
+ },
+ "q_37189246f6ec": {
+  "explanation": "Consolidated billing combines usage across accounts to reach volume discounts (A) and gives one bill for multiple accounts (C).",
+  "optionNotes": {
+   "A": "Combined usage across accounts can reach volume pricing tiers, lowering unit prices.",
+   "B": "Consolidated billing has no additional fee.",
+   "C": "A single bill covers all member accounts.",
+   "D": "Installment payment options are not a feature of consolidated billing.",
+   "E": "Creating budgets is a feature of AWS Budgets, not a benefit of consolidated billing."
+  }
+ },
+ "q_9edf1b9e67a4": {
+  "explanation": "Cost Explorer (A) provides EC2 rightsizing recommendations and Compute Optimizer (E) analyzes utilization to identify oversized or idle EC2 instances.",
+  "optionNotes": {
+   "A": "Cost Explorer includes rightsizing recommendations for EC2.",
+   "B": "Billing Conductor customizes billing data for chargeback and does not identify rightsizing opportunities.",
+   "C": "CodeGuru reviews code and profiles application performance rather than EC2 sizing.",
+   "D": "SageMaker is a machine learning service and does not analyze instance sizing.",
+   "E": "Compute Optimizer uses utilization metrics to recommend better-sized EC2 instances."
+  }
+ },
+ "q_9838e1a47035": {
+  "explanation": "AWS Pricing Calculator creates cost estimates for planned AWS use cases before migration.",
+  "optionNotes": {
+   "A": "Pricing Calculator models planned services and configurations to produce estimates.",
+   "B": "CloudWatch monitors operational metrics and does not estimate future costs.",
+   "C": "Cost Explorer analyzes costs already incurred and does not model a future migration.",
+   "D": "Budgets tracks actual spending against thresholds and is not a pre-migration estimator."
+  }
+ },
+ "auth-pricing-billing-01": {
+  "explanation": "Committing to a consistent spend for one or three years in return for lower prices, as Savings Plans do, is the save when you commit principle.",
+  "optionNotes": {
+   "A": "Pay as you go means paying only for what you use, with no commitment and no commitment discount.",
+   "B": "Save when you commit means a usage commitment, such as a Savings Plan, earns a lower price than On-Demand.",
+   "C": "Pay less by using more refers to tiered volume pricing, not a time-based commitment.",
+   "D": "Trade fixed expense for variable expense is about replacing upfront infrastructure investment with pay-per-use costs."
+  }
+ },
+ "auth-pricing-billing-02": {
+  "explanation": "The company pays for the data stored in S3 (B) and for data transferred out to the internet when customers download (D); transfer into AWS from the internet is free.",
+  "optionNotes": {
+   "A": "IAM users have no charge.",
+   "B": "S3 storage is billed per GB for the data kept.",
+   "C": "Data transferred into AWS from the internet is not charged.",
+   "D": "Data transferred out from S3 to the internet is charged per GB.",
+   "E": "Consolidated billing in AWS Organizations has no fee."
+  }
+ },
+ "auth-pricing-billing-03": {
+  "explanation": "Consolidated billing in AWS Organizations gives one bill and aggregates usage across accounts to reach volume pricing tiers.",
+  "optionNotes": {
+   "A": "Cost Explorer analyzes costs but does not combine bills or usage tiers.",
+   "B": "Budgets tracks spending and sends alerts but does not consolidate payment.",
+   "C": "Pricing Calculator estimates future cost and does not combine accounts.",
+   "D": "Consolidated billing gives a single bill and combines usage across accounts for volume discounts."
+  }
+ },
+ "auth-pricing-billing-04": {
+  "explanation": "AWS Budgets can send email or SNS notifications when forecasted cost is expected to exceed the budgeted amount.",
+  "optionNotes": {
+   "A": "Cost Explorer shows forecasts but does not send alerts when a threshold is expected to be exceeded.",
+   "B": "The Cost and Usage Report delivers detailed data and does not send alerts.",
+   "C": "Budgets alerts on actual or forecasted cost crossing a threshold.",
+   "D": "Compute Optimizer recommends resource sizing and does not monitor budgets."
+  }
+ },
+ "auth-pricing-billing-05": {
+  "explanation": "AWS Pricing Calculator estimates the monthly cost of a planned architecture before anything is deployed.",
+  "optionNotes": {
+   "A": "Pricing Calculator lets you model EC2, load balancer, and database configurations to estimate monthly cost.",
+   "B": "Cost Explorer analyzes costs that have already been incurred.",
+   "C": "Budgets tracks actual or forecasted spending against thresholds and does not estimate a new design.",
+   "D": "Cost Anomaly Detection alerts on unusual spend in running accounts and does not estimate costs."
+  }
+ },
+ "auth-pricing-billing-06": {
+  "explanation": "The AWS Cost and Usage Report is the most detailed billing data available, with hourly granularity, delivered to S3 for tools such as Athena.",
+  "optionNotes": {
+   "A": "Budgets reports summarize spending against budgets and are not the most detailed line-item data.",
+   "B": "Cost Explorer provides graphs and filters rather than delivering raw line items to S3.",
+   "C": "Pricing Calculator estimates future cost and does not provide billing data.",
+   "D": "The Cost and Usage Report delivers the most granular line items, which can be queried with Athena."
+  }
+ },
+ "auth-pricing-billing-07": {
+  "explanation": "User-defined tags must be activated as cost allocation tags before they appear in Cost Explorer and cost reports.",
+  "optionNotes": {
+   "A": "CloudTrail records API activity and does not affect cost grouping by tags.",
+   "B": "Activating Project as a cost allocation tag makes it available for grouping costs.",
+   "C": "A Savings Plan changes pricing and has no effect on tag availability.",
+   "D": "Creating budgets does not make the tag available for grouping in Cost Explorer."
+  }
+ },
+ "auth-pricing-billing-08": {
+  "explanation": "Consolidated billing gives one bill for both accounts (A), and Reserved Instance discounts can apply to matching usage in other accounts of the organization (C).",
+  "optionNotes": {
+   "A": "The management account receives a single bill for all member accounts.",
+   "B": "Support plans are not provided free per account through consolidated billing.",
+   "C": "Reserved Instance discounts can be shared and applied to matching usage in other accounts of the organization.",
+   "D": "Data transfer between accounts is not made free by consolidated billing.",
+   "E": "Consolidated billing does not grant new Free Tier credits to member accounts."
+  }
+ },
+ "auth-pricing-billing-09": {
+  "explanation": "The Free account plan ends after six months or when credits are used up, whichever is first, and the account must be upgraded to the Paid plan to continue.",
+  "optionNotes": {
+   "A": "Free plan accounts are not automatically billed; usage ends until the account is upgraded.",
+   "B": "The Free plan does not renew with a new set of 12-month free offers.",
+   "C": "The Free plan ends at credit exhaustion or six months, and the account must be upgraded to the Paid plan to keep using AWS.",
+   "D": "AWS does not move running instances to Spot pricing automatically."
+  }
+ },
+ "auth-pricing-billing-10": {
+  "explanation": "Compute Optimizer (A) recommends smaller, right-sized instances from utilization data, and Cost Anomaly Detection (E) learns normal spending with machine learning and alerts on unusual spend without fixed thresholds.",
+  "optionNotes": {
+   "A": "Compute Optimizer analyzes utilization and recommends right-sized EC2 instances to cut cost.",
+   "B": "Pricing Calculator estimates future cost and does not analyze running instances.",
+   "C": "Migration Evaluator builds a business case for moving from on premises and does not optimize existing EC2.",
+   "D": "Budgets needs thresholds you set and maintain, which the company wants to avoid.",
+   "E": "Cost Anomaly Detection uses machine learning to detect unusual spending and alerts without manual thresholds."
+  }
+ }
+}
