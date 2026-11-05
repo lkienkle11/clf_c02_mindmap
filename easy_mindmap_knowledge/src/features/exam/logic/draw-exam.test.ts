@@ -5,7 +5,7 @@ import type { Catalog, Question } from '@/content/types';
 import { makeQuestion, makeTopics } from '@/testing/fixtures';
 import { makeRng } from '@/random/seeded-random';
 import { allocate } from './allocate';
-import { DOMAIN_OF_TOPIC } from './domains';
+import { CAPSTONE_QUESTION_DOMAIN, DOMAIN_OF_TOPIC } from './domains';
 import type { CheckpointGroup } from './groups';
 import { drawBucket, drawCapstone, drawCheckpoint, historyOf } from './draw-exam';
 
@@ -208,6 +208,44 @@ describe('drawCapstone', () => {
     const drawn = drawCapstone(loadBundledCatalog(), historyOf([]), makeRng(7));
     expect(drawn).toHaveLength(65);
     expect(new Set(ids(drawn)).size).toBe(65);
+  });
+
+  it('draws the authored Capstone questions on the real catalog when they are the only never-seen ones', () => {
+    const catalog = loadBundledCatalog();
+    const authored = catalog.questions.filter((q) => q.id.startsWith('auth-capstone-'));
+    expect(authored).toHaveLength(10);
+    const history = historyOf(
+      catalog.questions.filter((q) => !q.id.startsWith('auth-capstone-')).flatMap((q) => answers(q.id, true)),
+    );
+    const drawn = drawCapstone(catalog, history, makeRng(23));
+    expect(drawn).toHaveLength(65);
+    const drawnIds = new Set(ids(drawn));
+    expect(authored.filter((q) => !drawnIds.has(q.id)).map((q) => q.id)).toEqual([]);
+    const domainOf = (q: Question) => (q.topicId === null ? undefined : DOMAIN_OF_TOPIC[q.topicId] ?? CAPSTONE_QUESTION_DOMAIN[q.id]);
+    const perDomain = (d: string) => drawn.filter((q) => domainOf(q) === d).length;
+    expect([perDomain('concepts'), perDomain('security'), perDomain('technology'), perDomain('billing')]).toEqual([16, 19, 22, 8]);
+  });
+
+  it('keeps a Capstone-topic question without a mapped domain in the unassigned top-up only', () => {
+    const catalog = catalogOf([
+      ...qs(domainTopic.concepts, 15, 'a'),
+      ...qs(domainTopic.security, 15, 'b'),
+      ...qs(domainTopic.technology, 20, 'c'),
+      ...qs(domainTopic.billing, 10, 'd'),
+      ...qs(null, 10, 'u'),
+      makeQuestion({ id: 'cap-unmapped', topicId: 'capstone' }),
+    ]);
+    const drawn = drawCapstone(catalog, historyOf([]), makeRng(2));
+    expect(drawn).toHaveLength(65);
+    expect(drawn.filter((q) => q.topicId === null || q.id === 'cap-unmapped')).toHaveLength(5);
+    const shortCatalog = catalogOf([
+      ...qs(domainTopic.concepts, 100, 'a'),
+      ...qs(domainTopic.security, 100, 'b'),
+      ...qs(domainTopic.technology, 100, 'c'),
+      ...qs(domainTopic.billing, 100, 'd'),
+      makeQuestion({ id: 'cap-unmapped', topicId: 'capstone' }),
+    ]);
+    expect(ids(drawCapstone(shortCatalog, historyOf([]), makeRng(2)))).not.toContain('cap-unmapped');
   });
 
   it('with history, per domain draws every unseen and seen-wrong question and leaves out the seen-right ones', () => {

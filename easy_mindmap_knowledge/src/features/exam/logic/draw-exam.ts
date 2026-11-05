@@ -1,7 +1,7 @@
 import type { Catalog, Question } from '@/content/types';
 import { shuffle } from '@/random/seeded-random';
 import { allocate } from './allocate';
-import { DOMAIN_OF_TOPIC, DOMAIN_WEIGHTS } from './domains';
+import { CAPSTONE_QUESTION_DOMAIN, DOMAIN_OF_TOPIC, DOMAIN_WEIGHTS } from './domains';
 import type { DomainId } from './domains';
 import { EXAM_QUESTION_COUNT } from './exam-config';
 import type { CheckpointGroup } from './groups';
@@ -53,13 +53,13 @@ const DOMAINS = Object.keys(DOMAIN_WEIGHTS) as DomainId[];
 
 /**
  * Capstone exam: 65 questions split across the exam domains by weight. Questions without a domain
- * (no topic, or an unmapped one) are used only when the domains together cannot supply 65.
+ * (no topic, or an unmapped one that is not a known authored Capstone question) are used only when the domains together cannot supply 65.
  */
 export function drawCapstone(catalog: Catalog, history: AnswerHistory, rng: () => number): Question[] {
   const pools: Record<DomainId, Question[]> = { concepts: [], security: [], technology: [], billing: [] };
   const unassigned: Question[] = [];
   for (const q of catalog.questions) {
-    const domain: DomainId | undefined = q.topicId === null ? undefined : DOMAIN_OF_TOPIC[q.topicId];
+    const domain: DomainId | undefined = q.topicId === null ? undefined : (DOMAIN_OF_TOPIC[q.topicId] ?? CAPSTONE_QUESTION_DOMAIN[q.id]);
     if (domain === undefined) unassigned.push(q);
     else pools[domain].push(q);
   }
