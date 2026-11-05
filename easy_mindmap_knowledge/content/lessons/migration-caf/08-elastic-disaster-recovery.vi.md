@@ -34,7 +34,7 @@ AWS Elastic Disaster Recovery là dịch vụ hiện hành của AWS. **CloudEnd
 | --- | --- |
 | Khôi phục tệp, volume hoặc database về phiên bản cũ; giữ lịch sử | **AWS Backup** hoặc snapshot (chủ đề lưu trữ) |
 | Đưa cả ứng dụng chạy trên máy chủ lên AWS nhanh sau sự cố | **AWS Elastic Disaster Recovery** |
-| Chuyển vĩnh viễn máy chủ lên AWS | **AWS Application Migration Service** (bài tiếp theo) |
+| Chuyển vĩnh viễn máy chủ lên AWS | **AWS Application Migration Service** (bài trước) |
 | Giữ bản thu nhỏ của mọi thứ đang chạy ở Region khác | Warm standby tự xây bằng các dịch vụ khác |
 
 Sao lưu và DR bổ trợ cho nhau. Sao lưu giữ các bản lịch sử để lấy lại dữ liệu bị mất hoặc hỏng; DR khôi phục khả năng truy cập ứng dụng sau sự cố.

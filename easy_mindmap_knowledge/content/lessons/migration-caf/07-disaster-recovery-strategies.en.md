@@ -17,7 +17,7 @@ Remember the pair as **T**ime to be back up and **P**oint in time of the data yo
 
 ## Multi-AZ first, multi-Region when needed
 
-A highly available workload spread across several **Availability Zones** in one Region already survives the loss of a data center, because each zone is isolated from faults in the others. For extra assurance, copy data and configuration to **another Region**, which keeps the DR plan down to backup and restore. Move to the multi-Region strategies below when the disaster you must survive is the loss of a whole Region, or when regulation requires it. The same strategies can also be built with Availability Zones when a country has only one Region.
+A highly available workload spread across several **Availability Zones** in one Region already survives the loss of a data center, because each zone is isolated from faults in the others. For extra assurance, copy data and configuration to **another Region**, which keeps the DR plan down to backup and restore. That already covers the loss of a Region, so cross-Region protection is not exclusive to the later strategies. Move to the faster strategies below when the disaster you must survive is the loss of a whole Region, or when regulation requires it. The same strategies can also be built with Availability Zones when a country has only one Region.
 
 ## The four strategies
 

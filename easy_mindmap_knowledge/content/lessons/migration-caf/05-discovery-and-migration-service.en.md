@@ -16,11 +16,11 @@ It offers three ways to collect data:
 
 | Method | How it works | What it sees |
 | --- | --- | --- |
-| **Agentless Collector** | A virtual appliance deployed in VMware vCenter | Hostnames, IP and MAC addresses, disk allocation, average and peak CPU, RAM and disk I/O; database engine details |
-| **Discovery Agent** | Installed on each Windows or Linux server, virtual or physical | The above plus detailed performance over time, running processes and network connections |
+| **Agentless Collector** | A virtual appliance deployed in VMware vCenter | Hostnames, IP and MAC addresses, disk allocation, average and peak CPU, RAM and disk I/O; database engine details; limited network data (TCP connections) |
+| **Discovery Agent** | Installed on each Windows or Linux server, virtual or physical | The above plus detailed performance over time, running processes and fuller network connection data |
 | **File-based import** | Upload an inventory file | Whatever the file contains |
 
-The trade-off is breadth against depth. The collector covers many VMs without touching each one, but it cannot look inside a VM for running processes. The agent shows processes and dependencies, which helps you decide which servers must move together. Discovered data is stored in the **Migration Hub home Region**, and can be exported to estimate AWS costs.
+The trade-off is breadth against depth. The collector covers many VMs without touching each one, but it cannot look inside a VM for running processes and gives only limited network data. The agent shows processes and dependencies, which helps you decide which servers must move together. Discovered data is stored in the **Migration Hub home Region**, and can be exported to estimate AWS costs.
 
 **Status:** AWS closed Application Discovery Service to new customers on November 7, 2025. Existing customers can keep using it, and AWS recommends **AWS Transform** for new discovery projects. Exam questions may still list it as the answer for inventory and dependency discovery.
 
@@ -41,7 +41,7 @@ Pricing: each source server has a free replication period of 90 days (2,160 hour
 
 ## Older names to recognize
 
-- **CloudEndure Migration** and **AWS Server Migration Service (AWS SMS)** were earlier tools for the same job. AWS SMS was discontinued on March 31, 2022, and AWS recommends Application Migration Service as the primary lift-and-shift service.
+- **CloudEndure Migration** and **AWS Server Migration Service (AWS SMS)** were earlier tools for the same job. AWS lists AWS SMS among services in full shutdown, with end of support on April 1, 2023, and AWS recommends Application Migration Service as the primary lift-and-shift service.
 - In some exam stems the service is also called by its abbreviation **MGN**.
 
 ## Which service for which question
@@ -66,7 +66,7 @@ Pricing: each source server has a free replication period of 90 days (2,160 hour
 - Application Discovery Service = inventory, utilization and dependency data via Agentless Collector or Discovery Agent; closed to new customers since November 7, 2025.
 - Application Migration Service (now AWS Transform MGN) = continuous replication, test launches, short cutover.
 - First 90 days of replication per server are free.
-- Predecessors: CloudEndure Migration and AWS SMS (discontinued March 31, 2022).
+- Predecessors: CloudEndure Migration and AWS SMS (retired; end of support April 1, 2023).
 
 ## Sources
 

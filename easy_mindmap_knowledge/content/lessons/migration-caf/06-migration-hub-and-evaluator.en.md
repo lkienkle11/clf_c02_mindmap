@@ -20,7 +20,7 @@ The flow:
 
 It matches exam wording like "baseline of what the company runs on premises and the projected cost in AWS", or "complimentary tool that creates data-driven business cases".
 
-Do not confuse it with other cost tools. **AWS Pricing Calculator** estimates new workloads you describe by hand; **AWS Cost Explorer** and **AWS Budgets** analyze costs you already have in AWS; **Migration Evaluator** starts from what is running on premises.
+Do not confuse it with other cost tools. **AWS Pricing Calculator** estimates new workloads you describe by hand; **AWS Cost Explorer** and **AWS Budgets** analyze or track cost and usage you already have in AWS (Budgets against thresholds you set); **Migration Evaluator** starts from what is running on premises.
 
 ## AWS Migration Hub
 
@@ -72,4 +72,4 @@ Disaster recovery (Elastic Disaster Recovery) is a separate, ongoing need rather
 
 - [What is AWS Migration Hub?](https://docs.aws.amazon.com/migrationhub/latest/ug/whatishub.html)
 - [Introducing Migration Evaluator, AWS announcement](https://aws.amazon.com/about-aws/whats-new/2020/07/introducing-migration-evaluator-fast-track-business-case-aws)
-- [AWS Migration Evaluator pricing](https://aws.amazon.com/migration-evaluator/pricing)
+- [AWS Migration Evaluator FAQ, Quick Insights and agentless collector](https://aws.amazon.com/migration-evaluator/faqs/)

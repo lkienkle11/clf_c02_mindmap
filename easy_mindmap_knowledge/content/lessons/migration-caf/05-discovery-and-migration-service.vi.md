@@ -15,11 +15,11 @@ Có ba cách thu thập dữ liệu:
 
 | Phương pháp | Cách hoạt động | Thấy được gì |
 | --- | --- | --- |
-| **Agentless Collector** | Thiết bị ảo triển khai trong VMware vCenter | Hostname, địa chỉ IP và MAC, dung lượng đĩa, CPU, RAM, disk I/O trung bình và đỉnh; thông tin engine database |
-| **Discovery Agent** | Cài trên từng máy chủ Windows hoặc Linux, ảo hay vật lý | Như trên cộng hiệu năng chi tiết theo thời gian, tiến trình đang chạy và kết nối mạng |
+| **Agentless Collector** | Thiết bị ảo triển khai trong VMware vCenter | Hostname, địa chỉ IP và MAC, dung lượng đĩa, CPU, RAM, disk I/O trung bình và đỉnh; thông tin engine database; dữ liệu mạng hạn chế (kết nối TCP) |
+| **Discovery Agent** | Cài trên từng máy chủ Windows hoặc Linux, ảo hay vật lý | Như trên cộng hiệu năng chi tiết theo thời gian, tiến trình đang chạy và dữ liệu kết nối mạng đầy đủ hơn |
 | **File-based import** | Tải lên tệp kiểm kê | Những gì có trong tệp |
 
-Đây là sự đánh đổi giữa độ rộng và độ sâu. Collector bao quát nhiều VM mà không cần đụng vào từng máy, nhưng không nhìn được bên trong VM để biết tiến trình đang chạy. Agent cho thấy tiến trình và quan hệ phụ thuộc, giúp bạn quyết định máy chủ nào phải chuyển cùng nhau. Dữ liệu khám phá được lưu ở **home Region của Migration Hub** và có thể xuất ra để ước tính chi phí AWS.
+Đây là sự đánh đổi giữa độ rộng và độ sâu. Collector bao quát nhiều VM mà không cần đụng vào từng máy, nhưng không nhìn được bên trong VM để biết tiến trình đang chạy và chỉ có dữ liệu mạng hạn chế. Agent cho thấy tiến trình và quan hệ phụ thuộc, giúp bạn quyết định máy chủ nào phải chuyển cùng nhau. Dữ liệu khám phá được lưu ở **home Region của Migration Hub** và có thể xuất ra để ước tính chi phí AWS.
 
 **Trạng thái:** AWS đã đóng Application Discovery Service với khách hàng mới từ ngày 7/11/2025. Khách hàng hiện tại vẫn dùng tiếp được, và AWS khuyên dùng **AWS Transform** cho các dự án khám phá mới. Câu hỏi thi vẫn có thể xem nó là đáp án cho kiểm kê và khám phá phụ thuộc.
 
@@ -40,7 +40,7 @@ Giá: mỗi máy chủ nguồn được miễn phí sao chép 90 ngày (2.160 gi
 
 ## Các tên cũ cần nhận ra
 
-- **CloudEndure Migration** và **AWS Server Migration Service (AWS SMS)** là các công cụ trước đây cho cùng mục đích. AWS SMS đã ngừng hoạt động ngày 31/3/2022, và AWS khuyên dùng Application Migration Service làm dịch vụ lift-and-shift chính.
+- **CloudEndure Migration** và **AWS Server Migration Service (AWS SMS)** là các công cụ trước đây cho cùng mục đích. AWS liệt kê AWS SMS trong nhóm dịch vụ đã ngừng hoàn toàn (full shutdown), với ngày hết hỗ trợ là 1/4/2023, và AWS khuyên dùng Application Migration Service làm dịch vụ lift-and-shift chính.
 - Trong một số đề thi, dịch vụ còn được gọi bằng tên viết tắt **MGN**.
 
 ## Dịch vụ nào cho câu hỏi nào
@@ -65,7 +65,7 @@ Giá: mỗi máy chủ nguồn được miễn phí sao chép 90 ngày (2.160 gi
 - Application Discovery Service = kiểm kê, mức sử dụng và phụ thuộc qua Agentless Collector hoặc Discovery Agent; đóng với khách hàng mới từ 7/11/2025.
 - Application Migration Service (nay là AWS Transform MGN) = sao chép liên tục, khởi chạy thử, cutover ngắn.
 - 90 ngày sao chép đầu tiên của mỗi máy chủ là miễn phí.
-- Tiền thân: CloudEndure Migration và AWS SMS (ngừng ngày 31/3/2022).
+- Tiền thân: CloudEndure Migration và AWS SMS (đã ngừng; hết hỗ trợ ngày 1/4/2023).
 
 ## Nguồn
 

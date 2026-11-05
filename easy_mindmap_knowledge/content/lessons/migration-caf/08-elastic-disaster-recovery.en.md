@@ -35,7 +35,7 @@ AWS Elastic Disaster Recovery is the current AWS service. **CloudEndure Disaster
 | --- | --- |
 | Restore files, volumes or databases to an earlier version; keep history | **AWS Backup** or snapshots (storage topic) |
 | Bring a whole server-based application up quickly in AWS after an outage | **AWS Elastic Disaster Recovery** |
-| Permanently move servers to AWS | **AWS Application Migration Service** (next lesson) |
+| Permanently move servers to AWS | **AWS Application Migration Service** (earlier lesson) |
 | Keep a scaled-down copy of everything running in another Region | Warm standby built with your own services |
 
 Backups and DR are complementary. Backups keep historical copies for recovering lost or damaged data; DR restores access to the application after an outage.

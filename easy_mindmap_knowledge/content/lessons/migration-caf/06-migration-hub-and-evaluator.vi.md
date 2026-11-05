@@ -19,7 +19,7 @@ Quy trình:
 
 Nó khớp với các câu hỏi như "đường cơ sở về những gì công ty đang chạy on-premises và chi phí dự kiến trên AWS", hoặc "công cụ miễn phí tạo business case dựa trên dữ liệu".
 
-Đừng nhầm với các công cụ chi phí khác. **AWS Pricing Calculator** ước tính workload mới mà bạn tự mô tả; **AWS Cost Explorer** và **AWS Budgets** phân tích chi phí đã phát sinh trên AWS; **Migration Evaluator** bắt đầu từ những gì đang chạy on-premises.
+Đừng nhầm với các công cụ chi phí khác. **AWS Pricing Calculator** ước tính workload mới mà bạn tự mô tả; **AWS Cost Explorer** và **AWS Budgets** phân tích hoặc theo dõi chi phí và mức sử dụng đã có trên AWS (Budgets theo ngưỡng bạn đặt); **Migration Evaluator** bắt đầu từ những gì đang chạy on-premises.
 
 ## AWS Migration Hub
 
@@ -71,4 +71,4 @@ Khôi phục thảm họa (Elastic Disaster Recovery) là nhu cầu riêng, liê
 
 - [What is AWS Migration Hub?](https://docs.aws.amazon.com/migrationhub/latest/ug/whatishub.html)
 - [Introducing Migration Evaluator, AWS announcement](https://aws.amazon.com/about-aws/whats-new/2020/07/introducing-migration-evaluator-fast-track-business-case-aws)
-- [AWS Migration Evaluator pricing](https://aws.amazon.com/migration-evaluator/pricing)
+- [AWS Migration Evaluator FAQ, Quick Insights and agentless collector](https://aws.amazon.com/migration-evaluator/faqs/)

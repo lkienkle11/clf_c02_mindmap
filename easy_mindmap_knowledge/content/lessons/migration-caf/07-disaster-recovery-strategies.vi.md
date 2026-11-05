@@ -16,7 +16,7 @@ Hãy nhớ: RTO là **thời gian** để chạy lại, RPO là **thời điểm
 
 ## Multi-AZ trước, multi-Region khi cần
 
-Workload sẵn sàng cao trải trên nhiều **Availability Zone** trong một Region đã chịu được việc mất một trung tâm dữ liệu, vì mỗi zone được cô lập khỏi lỗi của các zone khác. Để yên tâm hơn, hãy sao chép dữ liệu và cấu hình sang **Region khác**; khi đó kế hoạch DR chỉ còn là sao lưu và khôi phục. Hãy chuyển sang các chiến lược multi-Region bên dưới khi thảm họa cần chịu được là mất cả một Region, hoặc khi quy định pháp lý yêu cầu. Các chiến lược này cũng có thể xây bằng Availability Zone khi một quốc gia chỉ có một Region.
+Workload sẵn sàng cao trải trên nhiều **Availability Zone** trong một Region đã chịu được việc mất một trung tâm dữ liệu, vì mỗi zone được cô lập khỏi lỗi của các zone khác. Để yên tâm hơn, hãy sao chép dữ liệu và cấu hình sang **Region khác**; khi đó kế hoạch DR chỉ còn là sao lưu và khôi phục. Cách này đã bảo vệ được trước việc mất cả Region, nên bảo vệ liên Region không chỉ có ở các chiến lược sau. Hãy chuyển sang các chiến lược nhanh hơn bên dưới khi thảm họa cần chịu được là mất cả một Region, hoặc khi quy định pháp lý yêu cầu. Các chiến lược này cũng có thể xây bằng Availability Zone khi một quốc gia chỉ có một Region.
 
 ## Bốn chiến lược
 
