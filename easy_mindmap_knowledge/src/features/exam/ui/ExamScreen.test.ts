@@ -4,6 +4,8 @@ import userEvent from '@testing-library/user-event';
 import { renderWithI18n } from '@/testing/render-with-i18n';
 import { makeExamEnv } from '@/testing/exam-env';
 import type { AttemptRow } from '@/persistence';
+import { makeQuestion, makeRawCatalog, makeTopics } from '@/testing/fixtures';
+import { checkpointGroups } from '../logic/groups';
 import { startCheckpoint } from '../start-exam';
 import ExamScreen from './ExamScreen.svelte';
 
@@ -88,6 +90,22 @@ describe('ExamScreen', () => {
     renderWithI18n(ExamScreen, { services: env.services, appState: env.appState, groupIndex: 1, initialSession: s });
     await s.submit('manual');
     expect(await screen.findByText('Passed!')).toBeInTheDocument();
+    expect(screen.queryByText('Next group unlocked')).not.toBeInTheDocument();
+  });
+
+  it('the last group\'s first pass says the Capstone exam is unlocked, not the next group', async () => {
+    const last = checkpointGroups(makeTopics()).at(-1)!;
+    expect(last.index).toBe(4);
+    const rawCatalog = makeRawCatalog();
+    rawCatalog.questions = Array.from({ length: 15 }, (_, i) => makeQuestion({ id: `l${i}`, topicId: last.topicIds[i % last.topicIds.length] }));
+    const env = await makeExamEnv(last.topicIds, { rawCatalog });
+    const s = await startCheckpoint(env.services, last.index, { extraTime: false }, () => env.appState.refresh());
+    const byId = new Map(env.services.catalog.questions.map((q) => [q.id, q]));
+    for (const q of s.questions) await s.select(q.position, byId.get(q.questionId)!.correct);
+    renderWithI18n(ExamScreen, { services: env.services, appState: env.appState, groupIndex: last.index, initialSession: s });
+    await s.submit('manual');
+    expect(await screen.findByText('Passed!')).toBeInTheDocument();
+    expect(screen.getByRole('status')).toHaveTextContent('Capstone exam unlocked');
     expect(screen.queryByText('Next group unlocked')).not.toBeInTheDocument();
   });
 });

@@ -7,6 +7,7 @@
   import type { PracticeSession } from '@/features/practice';
   import ExamBreakdown from './ExamBreakdown.svelte';
   import ExamSetup from './ExamSetup.svelte';
+  import { checkpointGroups } from '../logic/groups';
 
   interface Props {
     services: Services;
@@ -29,8 +30,12 @@
   // Whether the group already had a passed exam when the CURRENT session began: only a first pass unlocks the next group.
   const passedGroupBefore = (): boolean => groupIndex !== null && appState.passedGroups.has(groupIndex);
   let passedBefore = $state(untrack(passedGroupBefore));
+  // Passing the last group opens the Capstone exam rather than a next group.
+  const opensCapstone = $derived(groupIndex !== null && groupIndex === checkpointGroups(services.catalog.topics).length);
   const notice = $derived(
-    groupIndex !== null && session?.result?.passed === true && !passedBefore ? i18n.t('exam.result.groupUnlocked') : undefined,
+    groupIndex !== null && session?.result?.passed === true && !passedBefore
+      ? i18n.t(opensCapstone ? 'exam.result.capstoneUnlocked' : 'exam.result.groupUnlocked')
+      : undefined,
   );
 
   function started(s: PracticeSession): void {

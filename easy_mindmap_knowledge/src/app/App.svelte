@@ -57,6 +57,12 @@
     return checkpointGroups(services.catalog.topics).find((g) => g.topicIds.at(-1) === topicId)?.index ?? null;
   }
 
+  /** True when the checkpoint closing this topic is the last group, which opens the Capstone exam. */
+  function checkpointOpensCapstone(topicId: string): boolean {
+    const after = checkpointAfter(topicId);
+    return after !== null && after === checkpointGroups(services.catalog.topics).length;
+  }
+
   function onresumed(session: PracticeSession): void {
     if (session.kind === 'review') {
       appState.reviewRun = ReviewRun.adoptSingle(session);
@@ -91,7 +97,7 @@
     <ExamScreen {services} {appState} groupIndex={null} initialSession={resumed} />
   {:else if appState.route.view === 'practice'}
     {#key appState.route.topicId}
-      <PracticeScreen {services} {appState} topicId={appState.route.topicId} checkpointAfter={checkpointAfter(appState.route.topicId)} initialSession={resumed} />
+      <PracticeScreen {services} {appState} topicId={appState.route.topicId} checkpointAfter={checkpointAfter(appState.route.topicId)} checkpointOpensCapstone={checkpointOpensCapstone(appState.route.topicId)} initialSession={resumed} />
     {/key}
   {:else if appState.view === 'review'}
     <ReviewScreen {services} {appState} />

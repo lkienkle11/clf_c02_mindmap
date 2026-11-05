@@ -16,9 +16,11 @@
     initialSession?: PracticeSession | null;
     /** The checkpoint group (1-based) this topic closes, when it is the group's last topic; null otherwise. */
     checkpointAfter?: number | null;
+    /** True when that checkpoint is the last group, so passing it opens the Capstone exam instead of more topics. */
+    checkpointOpensCapstone?: boolean;
   }
 
-  let { services, appState, topicId, initialSession = null, checkpointAfter = null }: Props = $props();
+  let { services, appState, topicId, initialSession = null, checkpointAfter = null, checkpointOpensCapstone = false }: Props = $props();
 
   const i18n = getI18n();
 
@@ -36,7 +38,9 @@
   const unlocked = $derived(!doneBefore && !isLastTopic && checkpointAfter === null);
   const firstPass = $derived(!doneBefore && session?.result?.passed === true);
   const notice = $derived(
-    checkpointAfter !== null && firstPass ? i18n.t('practice.result.checkpointNext', { group: checkpointAfter }) : undefined,
+    checkpointAfter !== null && firstPass
+      ? i18n.t(checkpointOpensCapstone ? 'practice.result.checkpointNextCapstone' : 'practice.result.checkpointNext', { group: checkpointAfter })
+      : undefined,
   );
 
   function started(s: PracticeSession): void {

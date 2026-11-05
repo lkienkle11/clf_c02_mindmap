@@ -7,7 +7,7 @@ import { loadCatalog } from '@/content/load-catalog';
 import type { Catalog } from '@/content/types';
 import { makeQuestion, makeRawCatalog } from '@/testing/fixtures';
 import { createNodeSqliteExecutor } from '@/testing/node-sqlite-executor';
-import { DOMAIN_OF_TOPIC, examLimitMs, ExamNotAvailableError, loadExamOptions, startCapstoneExam, startCheckpoint } from './index';
+import { CAPSTONE_QUESTION_DOMAIN, DOMAIN_OF_TOPIC, examLimitMs, ExamNotAvailableError, loadExamOptions, startCapstoneExam, startCheckpoint } from './index';
 
 let n = 0;
 async function env(catalog: Catalog): Promise<Services> {
@@ -90,7 +90,8 @@ describe('startCapstoneExam', () => {
     const byId = new Map(catalog.questions.map((q) => [q.id, q]));
     const counts: Record<string, number> = {};
     for (const row of found.questions) {
-      const d = DOMAIN_OF_TOPIC[byId.get(row.questionId)!.topicId!];
+      const q = byId.get(row.questionId)!;
+      const d = DOMAIN_OF_TOPIC[q.topicId!] ?? CAPSTONE_QUESTION_DOMAIN[q.id];
       counts[d] = (counts[d] ?? 0) + 1;
     }
     expect(counts).toEqual({ concepts: 16, security: 19, technology: 22, billing: 8 });

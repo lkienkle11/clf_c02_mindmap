@@ -219,10 +219,10 @@ describe('PracticeSetup question count', () => {
 
   it('quick button 20 sets the input and the header; All sets the pool size', async () => {
     await mount('compute', null, computeCatalog(26));
-    await userEvent.click(screen.getByRole('button', { name: '20' }));
+    await userEvent.click(screen.getByRole('button', { name: '20 questions' }));
     expect(countInput()).toHaveValue(20);
     expect(screen.getByText('20 questions')).toBeInTheDocument();
-    await userEvent.click(screen.getByRole('button', { name: 'All' }));
+    await userEvent.click(screen.getByRole('button', { name: 'All questions' }));
     expect(countInput()).toHaveValue(26);
     expect(screen.getByText('26 questions')).toBeInTheDocument();
   });
@@ -255,7 +255,7 @@ describe('PracticeSetup question count', () => {
     expect(screen.getByText('3 questions')).toBeInTheDocument();
     expect(screen.queryByRole('spinbutton', { name: 'Number of questions' })).not.toBeInTheDocument();
     expect(screen.queryByRole('alert')).not.toBeInTheDocument();
-    expect(screen.queryByRole('button', { name: 'All' })).not.toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: 'All questions' })).not.toBeInTheDocument();
     await userEvent.click(start());
     await waitFor(() => expect(onstarted).toHaveBeenCalledTimes(1));
     expect((onstarted.mock.calls[0][0] as PracticeSession).questions).toHaveLength(3);

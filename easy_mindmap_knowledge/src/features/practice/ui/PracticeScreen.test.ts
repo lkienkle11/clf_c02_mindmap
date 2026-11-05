@@ -101,6 +101,17 @@ describe('PracticeScreen', () => {
     expect(screen.queryByText('Next topic unlocked')).not.toBeInTheDocument();
   });
 
+  it('the hint for the last checkpoint group names the Capstone exam', async () => {
+    const env = await makePracticeEnv();
+    const s = await passedSession(env.services, 'compute', () => env.appState.refresh());
+    env.appState.open({ view: 'practice', topicId: 'compute' });
+    renderWithI18n(PracticeScreen, { services: env.services, appState: env.appState, topicId: 'compute', checkpointAfter: 4, checkpointOpensCapstone: true, initialSession: s });
+    await s.submit('manual');
+    expect(await screen.findByText('Passed!')).toBeInTheDocument();
+    expect(screen.getByText('Complete checkpoint 4 to unlock the Capstone exam')).toBeInTheDocument();
+    expect(screen.queryByText(/next topics/)).not.toBeInTheDocument();
+  });
+
   it('a redo of a group\'s last topic shows neither the hint nor the unlock line', async () => {
     const env = await makePracticeEnv({ submitted: [passedAttempt('compute')] });
     const s = await passedSession(env.services, 'compute', () => env.appState.refresh());

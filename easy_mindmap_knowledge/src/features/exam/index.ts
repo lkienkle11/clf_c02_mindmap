@@ -8,7 +8,7 @@ export {
 } from './logic/exam-config';
 export { CHECKPOINT_GROUP_SIZE, checkpointGroups, gateBefore } from './logic/groups';
 export type { CheckpointGroup } from './logic/groups';
-export { DOMAIN_OF_TOPIC, DOMAIN_WEIGHTS } from './logic/domains';
+export { CAPSTONE_QUESTION_DOMAIN, DOMAIN_OF_TOPIC, DOMAIN_WEIGHTS } from './logic/domains';
 export type { DomainId } from './logic/domains';
 export { allocate } from './logic/allocate';
 export { drawBucket, drawCapstone, drawCheckpoint, historyOf } from './logic/draw-exam';

@@ -152,7 +152,11 @@
       </label>
       <div role="group" aria-label={i18n.t('practice.setup.countQuick')} class="flex flex-wrap gap-2">
         {#each quickCounts(poolSize) as option (option)}
-          <Button variant="secondary" onclick={() => pick(option)}>
+          <Button
+            variant="secondary"
+            aria-label={option === 'all' ? i18n.t('practice.setup.countAllLabel') : i18n.t('practice.questionCount', { count: option })}
+            onclick={() => pick(option)}
+          >
             {option === 'all' ? i18n.t('practice.setup.countAll') : option}
           </Button>
         {/each}

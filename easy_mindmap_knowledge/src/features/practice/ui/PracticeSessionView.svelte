@@ -30,8 +30,15 @@
   const question = $derived(current ? questionsById.get(current.questionId) : undefined);
   const unanswered = $derived(session.questions.filter((q) => q.selected.length === 0).length);
   const isReview = $derived(session.kind === 'review');
+  // A checkpoint exam has no topic; it is named by its group. The Capstone exam is titled by the Capstone topic.
   const title = $derived(
-    isReview ? i18n.t('nav.review') : session.topicId === null ? i18n.t('nav.practice') : services.catalog.topic(session.topicId).title[i18n.locale],
+    isReview
+      ? i18n.t('nav.review')
+      : session.kind === 'checkpoint' && session.groupIndex !== null
+        ? i18n.t('exam.setup.checkpointTitle', { n: session.groupIndex })
+        : session.topicId === null
+          ? i18n.t('nav.practice')
+          : services.catalog.topic(session.topicId).title[i18n.locale],
   );
   // A review mixes topics, so "Review knowledge" follows the question on screen.
   const knowledgeTopicId = $derived(isReview ? (question?.topicId ?? null) : session.topicId);

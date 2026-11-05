@@ -91,6 +91,33 @@ describe('PracticeSessionView', () => {
     expect(screen.getByText('3/3')).toBeInTheDocument();
   });
 
+  it.each([
+    ['en', 'Checkpoint 2'],
+    ['vi', 'Bài kiểm tra mốc 2'],
+  ] as const)('titles a checkpoint exam by its group (%s)', async (locale, heading) => {
+    const env = await makePracticeEnv();
+    const plan = [{ questionId: 'q1', optionOrder: ['A', 'B', 'C', 'D'] }];
+    const session = await PracticeSession.startExam(
+      env.services,
+      { kind: 'checkpoint', topicId: null, groupIndex: 2, plan, limitMs: 60_000 },
+      () => env.appState.refresh(),
+    );
+    renderWithI18n(PracticeSessionView, { services: env.services, appState: env.appState, session, hideKnowledge: true }, locale);
+    expect(screen.getByRole('heading', { level: 1, name: heading })).toBeInTheDocument();
+  });
+
+  it('titles the Capstone exam with the Capstone topic', async () => {
+    const env = await makePracticeEnv();
+    const plan = [{ questionId: 'q1', optionOrder: ['A', 'B', 'C', 'D'] }];
+    const session = await PracticeSession.startExam(
+      env.services,
+      { kind: 'practice', topicId: 'capstone', groupIndex: null, plan, limitMs: 60_000 },
+      () => env.appState.refresh(),
+    );
+    renderWithI18n(PracticeSessionView, { services: env.services, appState: env.appState, session, hideKnowledge: true });
+    expect(screen.getByRole('heading', { level: 1, name: env.services.catalog.topic('capstone').title.en })).toBeInTheDocument();
+  });
+
   it('disables Review knowledge with a visible reason when it is not allowed', async () => {
     await mount({ allowReview: false });
     const btn = screen.getByRole('button', { name: /Review knowledge/ });
