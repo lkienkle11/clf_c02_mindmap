@@ -8,6 +8,7 @@ import type { Lesson, Question } from '@/content/types';
 import { createI18n } from '@/i18n/i18n.svelte';
 import { makeLesson, makeRawCatalog, TOPIC_IDS } from '@/testing/fixtures';
 import { createNodeSqliteExecutor } from '@/testing/node-sqlite-executor';
+import { startCheckpoint } from '@/features/exam';
 import { PracticeSession } from '@/features/practice';
 import { AppState } from './app-state.svelte';
 import { buildServices } from './composition';
@@ -227,4 +228,41 @@ describe('checkpoint hints on the result screen', () => {
     expect(screen.getByText('Complete checkpoint 1 to unlock the next topics')).toBeInTheDocument();
     expect(screen.queryByText('Next topic unlocked')).not.toBeInTheDocument();
   }, 30_000);
+});
+
+describe('checkpoint flow (a real checkpoint attempt through PracticeSession)', () => {
+  /** Topics 1-3 completed by real practice attempts; topic 4 is locked behind checkpoint 1. */
+  async function groupOneDone() {
+    const env = await makeEnv();
+    for (const topicId of TOPIC_IDS.slice(0, 3)) await passWithSession(env.services, env.appState, topicId);
+    expect(env.appState.passedGroups.size).toBe(0);
+    expect(env.appState.statuses.get(TOPIC_IDS[2])).toBe('done');
+    expect(env.appState.statuses.get(TOPIC_IDS[3])).toBe('locked');
+    return env;
+  }
+
+  async function sitCheckpoint(env: Awaited<ReturnType<typeof makeEnv>>, answerRight: boolean) {
+    const session = await startCheckpoint(env.services, 1, { extraTime: false }, () => env.appState.refresh());
+    const byId = new Map(env.services.catalog.questions.map((q) => [q.id, q]));
+    for (const q of session.questions) await session.select(q.position, answerRight ? byId.get(q.questionId)!.correct : ['B']);
+    return session.submit('manual');
+  }
+
+  it('passing checkpoint 1 records the group and opens topic 4', async () => {
+    const env = await groupOneDone();
+    const result = await sitCheckpoint(env, true);
+    expect(result.passed).toBe(true);
+    await env.appState.refresh();
+    expect(env.appState.passedGroups.has(1)).toBe(true);
+    expect(env.appState.statuses.get(TOPIC_IDS[3])).toBe('current');
+  });
+
+  it('failing checkpoint 1 leaves topic 4 locked', async () => {
+    const env = await groupOneDone();
+    const result = await sitCheckpoint(env, false);
+    expect(result.passed).toBe(false);
+    await env.appState.refresh();
+    expect(env.appState.passedGroups.has(1)).toBe(false);
+    expect(env.appState.statuses.get(TOPIC_IDS[3])).toBe('locked');
+  });
 });

@@ -100,6 +100,34 @@ describe('migrations', () => {
     it('rejects an unknown kind', () => {
       expect(() => insert(upTo(4), 'bogus', null)).toThrow(/CHECK/i);
     });
+
+    it('keeps the 16 original columns exactly as version 3 defined them (name, type, notnull, default, pk)', () => {
+      const info = (db: DatabaseSync) =>
+        (db.prepare('PRAGMA table_info(attempts)').all() as { name: string; type: string; notnull: number; dflt_value: unknown; pk: number }[])
+          .map(({ name, type, notnull, dflt_value, pk }) => ({ name, type, notnull, dflt_value, pk }));
+      const before = info(upTo(3));
+      expect(before).toHaveLength(16);
+      const after = info(upTo(4));
+      expect(after.filter((c) => before.some((b) => b.name === c.name))).toEqual(before);
+      expect(after.map((c) => c.name).slice(16)).toEqual(['group_index', 'planned_count']);
+    });
+
+    it('still enforces the other CHECK constraints on the rebuilt table', () => {
+      const bad = (column: string, value: string) => {
+        const db = upTo(4);
+        const cols = { status: "'in_progress'", clock_mode: "'freeze'", clock_on_hidden: "'freeze'", submit_reason: 'NULL' } as Record<string, string>;
+        cols[column] = `'${value}'`;
+        return () =>
+          db.exec(
+            `INSERT INTO attempts (id, kind, status, started_at, clock_mode, clock_on_hidden, submit_reason) VALUES ('x', 'practice', ${cols.status}, 1, ${cols.clock_mode}, ${cols.clock_on_hidden}, ${cols.submit_reason})`,
+          );
+      };
+      expect(bad('status', 'bogus')).toThrow(/CHECK/i);
+      expect(bad('clock_mode', 'bogus')).toThrow(/CHECK/i);
+      expect(bad('clock_on_hidden', 'bogus')).toThrow(/CHECK/i);
+      expect(bad('submit_reason', 'bogus')).toThrow(/CHECK/i);
+      expect(bad('submit_reason', 'timeout')).not.toThrow();
+    });
   });
 
   it('lib.rs registers every migration file once, with version = file number, in order', () => {
