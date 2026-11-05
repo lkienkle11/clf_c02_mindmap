@@ -11,7 +11,7 @@ Một gói support cho bạn quyền nhờ kỹ sư AWS. Nhiều thắc mắc kh
 
 **AWS re:Post** là trang hỏi đáp của cộng đồng, nơi khách hàng, đối tác và nhân viên AWS trả lời nhau. AWS ra mắt nó vào tháng 12 năm 2021 để thay thế **AWS Forums** cũ (câu hỏi thi có thể vẫn ghi "AWS Developer Forums"). re:Post miễn phí và mở cho bất kỳ ai có tài khoản AWS.
 
-**AWS Knowledge Center** gồm các bài viết và video trả lời những câu hỏi kỹ thuật thường gặp. Từ tháng 3 năm 2023 chúng nằm trong re:Post, gắn huy hiệu **AWS Official**. Bạn không cần gói support để đọc.
+**AWS Knowledge Center** gồm các bài viết và video trả lời những câu hỏi kỹ thuật thường gặp. Từ tháng 3 năm 2023 chúng nằm trong re:Post, gắn huy hiệu **AWS Official**.
 
 **AWS re:Post Private** là phiên bản riêng của re:Post dành cho công ty dùng Enterprise Support hoặc Enterprise On-Ramp Support, với không gian chỉ nhân viên của bạn tham gia được. AWS đã thông báo sẽ ngừng hỗ trợ dịch vụ này vào **ngày 30 tháng 6 năm 2027**, nên bạn chỉ gặp nó trong tài liệu cũ.
 
@@ -23,7 +23,7 @@ Một gói support cho bạn quyền nhờ kỹ sư AWS. Nhiều thắc mắc kh
 
 **AWS Partner Network (APN)** là cộng đồng toàn cầu các công ty xây dựng giải pháp và dịch vụ trên AWS. Đối tác gồm **nhà cung cấp phần mềm độc lập (ISV)**, **nhà cung cấp dữ liệu** và **đối tác tư vấn** thực hiện việc di chuyển, xây dựng hoặc vận hành workload cho khách hàng. Đối tác đăng ký và quản lý tư cách thành viên trong **AWS Partner Central**, và bán sản phẩm qua AWS Marketplace.
 
-Một số đối tác còn tự cung cấp hỗ trợ. Với **AWS Partner-Led Support**, một đối tác được chứng nhận hỗ trợ bạn bằng công cụ chẩn đoán và kiến thức từ AWS Support. Với vấn đề thanh toán và tài khoản theo hình thức hỗ trợ bán lại (resold support), bạn liên hệ đối tác chứ không phải AWS.
+Một số đối tác còn tự cung cấp hỗ trợ. Với **AWS Partner-Led Support**, một đối tác được chứng nhận hỗ trợ bạn bằng công cụ chẩn đoán và kiến thức từ AWS Support. **AWS Resold Support** là một mô hình khác: bạn giữ quan hệ kỹ thuật trực tiếp với AWS Support, còn một AWS Solution Provider hoặc Distributor lo thanh toán và trả lời các câu hỏi phi kỹ thuật như thanh toán và tài khoản.
 
 **AWS Marketplace** là danh mục nơi bạn mua phần mềm và dịch vụ của bên thứ ba và trả trên hóa đơn AWS; chủ đề giá và thanh toán trình bày chi tiết.
 

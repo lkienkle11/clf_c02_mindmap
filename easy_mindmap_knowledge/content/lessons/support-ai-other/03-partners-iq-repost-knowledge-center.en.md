@@ -12,7 +12,7 @@ A support plan gives you AWS engineers. Many questions never need one. AWS also 
 
 **AWS re:Post** is a community question-and-answer site where customers, partners and AWS staff answer each other. AWS introduced it in December 2021 to replace the older **AWS Forums** (exam questions may still say "AWS Developer Forums"). It is free and open to anyone with an AWS account.
 
-The **AWS Knowledge Center** holds articles and videos that answer common technical questions. Since March 2023 they live inside re:Post, marked with an **AWS Official** badge. You do not need a support plan to read them.
+The **AWS Knowledge Center** holds articles and videos that answer common technical questions. Since March 2023 they live inside re:Post, marked with an **AWS Official** badge.
 
 **AWS re:Post Private** is a private version of re:Post for companies with Enterprise Support or Enterprise On-Ramp Support, with spaces only your staff can join. AWS has announced that it will end support for it on **June 30, 2027**, so expect it only in older material.
 
@@ -24,7 +24,7 @@ The **AWS Knowledge Center** holds articles and videos that answer common techni
 
 The **AWS Partner Network (APN)** is a global community of companies that build solutions and services on AWS. Partners include **independent software vendors (ISVs)**, **data providers** and **consulting partners** that migrate, build or run workloads for customers. Partners register and manage their membership in **AWS Partner Central**, and they sell through AWS Marketplace.
 
-Some partners also deliver support themselves. With **AWS Partner-Led Support**, a certified partner supports you using AWS diagnostic tools and knowledge from AWS Support. For billing and account issues under resold support, you contact the partner, not AWS.
+Some partners also deliver support themselves. With **AWS Partner-Led Support**, a certified partner supports you using AWS diagnostic tools and knowledge from AWS Support. **AWS Resold Support** is a different model: you keep a direct technical relationship with AWS Support, while an AWS Solution Provider or Distributor handles your billing and answers non-technical questions such as billing and account issues.
 
 **AWS Marketplace** is the catalog where you buy third-party software and services on your AWS bill; the pricing and billing topic covers it in detail.
 

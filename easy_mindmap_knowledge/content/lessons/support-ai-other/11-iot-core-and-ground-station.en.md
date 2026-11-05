@@ -6,7 +6,7 @@ videoQuery: AWS IoT Core Ground Station Amazon Pinpoint end of support explained
 ---
 ## Optional: specialized services
 
-This lesson is optional. These services are named in exam wording from time to time, but each one is easy to recognize from a single clue.
+This lesson is optional. Each service here is easy to recognize from a single clue. The CLF-C02 exam guide lists AWS IoT Core as in scope, but its out-of-scope list includes AWS Ground Station, Amazon Personalize, AWS Device Farm, AWS IQ and AWS Managed Services. Prioritize the in-scope services, and expect that exam-style questions may still mention some of the others.
 
 ## AWS IoT Core: connect devices
 

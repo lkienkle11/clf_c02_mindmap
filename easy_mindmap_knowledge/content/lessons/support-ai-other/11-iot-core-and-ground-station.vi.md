@@ -5,7 +5,7 @@ required: false
 ---
 ## Tùy chọn: các dịch vụ chuyên biệt
 
-Bài này không bắt buộc. Những dịch vụ này thỉnh thoảng được nhắc đến trong đề thi, nhưng mỗi dịch vụ đều dễ nhận ra chỉ từ một gợi ý.
+Bài này không bắt buộc. Mỗi dịch vụ ở đây đều dễ nhận ra chỉ từ một gợi ý. Hướng dẫn kỳ thi CLF-C02 liệt kê AWS IoT Core là trong phạm vi, nhưng danh sách ngoài phạm vi có AWS Ground Station, Amazon Personalize, AWS Device Farm, AWS IQ và AWS Managed Services. Hãy ưu tiên các dịch vụ trong phạm vi, và vẫn nên biết rằng câu hỏi kiểu thi có thể nhắc đến một số dịch vụ còn lại.
 
 ## AWS IoT Core: kết nối thiết bị
 
