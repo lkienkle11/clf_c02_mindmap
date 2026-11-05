@@ -6,7 +6,7 @@ videoQuery: AWS Cloud Practitioner AI ML services and application integration SQ
 ---
 ## Optional: go deeper
 
-This lesson is optional. Use it when you want more examples of the AI services and integration services, or to review before practice.
+This lesson is optional. Use it when you want more examples of the AI services and integration services, or to review before the exam.
 
 ## Suggested watching
 

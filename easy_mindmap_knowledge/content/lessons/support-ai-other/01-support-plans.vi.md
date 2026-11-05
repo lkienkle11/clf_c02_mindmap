@@ -5,12 +5,12 @@ required: true
 ---
 ## Bốn gói hiện nay
 
-AWS hiện liệt kê bốn gói AWS Support. Mọi tài khoản đều có **Basic Support**; ba gói còn lại là gói trả phí, tính tiền theo tháng, không cần hợp đồng dài hạn.
+AWS hiện liệt kê bốn gói AWS Support. Mọi tài khoản đều có **AWS Basic Support**; ba gói còn lại là gói trả phí, tính tiền theo tháng, không cần hợp đồng dài hạn.
 
 - **Basic Support** (có sẵn, không tốn thêm phí): dịch vụ khách hàng 24/7 cho **câu hỏi về tài khoản và thanh toán** và **yêu cầu tăng service quota**, tài liệu, whitepaper và AWS re:Post, AWS Health Dashboard, và các check **cốt lõi (core)** của AWS Trusted Advisor. Basic **không** có case hỗ trợ kỹ thuật với kỹ sư.
-- **AWS Business Support+**: AWS gọi đây là gói tối thiểu được khuyên dùng cho **workload production**. Gói này thêm **truy cập 24/7 qua điện thoại, web và chat tới Cloud Support Engineer**, trợ giúp bằng AI hiểu ngữ cảnh, **toàn bộ** check của Trusted Advisor, **AWS Support API** và AWS Health API, hỗ trợ các phần mềm bên thứ ba phổ biến trên EC2, và số case không giới hạn do bất kỳ người dùng nào có quyền mở.
-- **AWS Enterprise Support**: mọi thứ của Business Support+, cộng thêm một **Technical Account Manager (TAM) được chỉ định riêng**, phản hồi nhanh hơn cho case ảnh hưởng nghiêm trọng tới production, buổi đánh giá chiến lược kinh doanh, quyền dùng AWS Security Incident Response, Trusted Advisor Priority và hỗ trợ AWS Countdown cho các sự kiện quan trọng như ra mắt sản phẩm.
-- **AWS Unified Operations**: mức cao nhất, có TAM được chỉ định và **Domain Specialist Engineer**, hướng dẫn kiến trúc ứng dụng, quản lý sự kiện hạ tầng và đánh giá workload quan trọng.
+- **AWS Business Support+**: AWS gọi đây là gói tối thiểu được khuyên dùng cho **workload production**. Gói này thêm **truy cập 24/7 qua điện thoại, web và chat tới Cloud Support Engineer**, trợ giúp bằng AI hiểu ngữ cảnh, **toàn bộ** check của Trusted Advisor, **AWS Support API** và AWS Health API, hỗ trợ các phần mềm bên thứ ba phổ biến trên EC2, và số case không giới hạn do bất kỳ người dùng nào có quyền mở. Giá bắt đầu từ **29 USD mỗi tháng** cho mỗi tài khoản.
+- **AWS Enterprise Support**: mọi thứ của Business Support+, cộng thêm một **Technical Account Manager (TAM) được chỉ định riêng**, phản hồi nhanh hơn cho case nghiêm trọng với production, buổi đánh giá chiến lược kinh doanh, quyền dùng AWS Security Incident Response, Trusted Advisor Priority và hỗ trợ AWS Countdown cho các sự kiện quan trọng như ra mắt sản phẩm. Mức tối thiểu là **5.000 USD mỗi tháng**.
+- **AWS Unified Operations**: mức cao nhất, có TAM được chỉ định và **Domain Specialist Engineer**, hướng dẫn kiến trúc ứng dụng, quản lý sự kiện hạ tầng và đánh giá workload quan trọng. Mức tối thiểu là 50.000 USD mỗi tháng, cam kết 90 ngày.
 
 ## So sánh các gói
 
@@ -21,11 +21,35 @@ AWS hiện liệt kê bốn gói AWS Support. Mọi tài khoản đều có **Ba
 | TAM được chỉ định riêng và đánh giá chiến lược | Enterprise Support |
 | Chuyên gia theo lĩnh vực cho ứng dụng trọng yếu | Unified Operations |
 
-Mục tiêu thời gian phản hồi phụ thuộc vào **mức độ nghiêm trọng (severity)** bạn chọn khi mở case, từ hướng dẫn chung đến hệ thống kinh doanh trọng yếu bị ngừng. AWS ghi rằng Business Support+ phản hồi dưới 30 phút cho case trọng yếu với kinh doanh, và Enterprise Support phản hồi trong tối đa 15 phút cho case nghiêm trọng với production.
+## Mục tiêu thời gian phản hồi
+
+Bạn chọn **mức độ nghiêm trọng (severity)** khi mở case trong **AWS Support Center**. AWS mô tả thời gian phản hồi đầu tiên là mục tiêu mà họ nỗ lực hợp lý để đạt được.
+
+| Severity | Phản hồi đầu tiên |
+| --- | --- |
+| General guidance (hướng dẫn chung) | 24 giờ |
+| System impaired | 12 giờ |
+| Production system impaired | 4 giờ |
+| Production system down | 1 giờ |
+| Business-critical system down | Business Support+ dưới 30 phút; Enterprise Support dưới 15 phút; Unified Operations 5 phút từ một Incident Management Engineer |
 
 ## Tên gói cũ
 
-Nhiều câu hỏi luyện tập dùng các gói trước đây: **Developer**, **Business**, **Enterprise On-Ramp** và **Enterprise**. AWS ngừng Developer, Business và Enterprise On-Ramp vào **ngày 1 tháng 1 năm 2027** (chúng vẫn có ở AWS GovCloud (US)). Khách hàng Developer và Business có thể chuyển sang Business Support+, còn khách hàng Enterprise On-Ramp đang được chuyển sang Enterprise Support trong năm 2026. Khi một câu hỏi cũ hỏi "gói rẻ nhất có toàn bộ check Trusted Advisor", đáp án khi đó là Business; ngày nay gói tương ứng là Business Support+.
+Nhiều câu hỏi thi dùng các gói trước đây: **Developer**, **Business**, **Enterprise On-Ramp** và **Enterprise**. AWS ngừng Developer, Business và Enterprise On-Ramp vào **ngày 1 tháng 1 năm 2027** (chúng vẫn có ở AWS GovCloud (US)). Khách hàng Developer và Business có thể chuyển sang Business Support+, còn khách hàng Enterprise On-Ramp đang được chuyển sang Enterprise Support trong năm 2026.
+
+| Gói cũ | AWS ghi gì | Ngày nay |
+| --- | --- | --- |
+| AWS Developer Support | Truy cập qua email trong giờ làm việc tới Cloud Support engineer | Business Support+ |
+| Business | Phản hồi trong 1 giờ cho production system down; toàn bộ check Trusted Advisor | Business Support+ |
+| AWS Enterprise On-Ramp Support | Có TAM, phản hồi dưới 30 phút cho case trọng yếu, một lần AWS Countdown mỗi năm | Enterprise Support |
+| Enterprise | TAM được chỉ định riêng, phản hồi dưới 15 phút | Enterprise Support |
+
+Khi một câu hỏi cũ hỏi "gói rẻ nhất có toàn bộ check Trusted Advisor", đáp án khi đó là Business; ngày nay gói tương ứng là Business Support+. Câu hỏi "những gói nào có **TAM**" mong đợi Enterprise On-Ramp và Enterprise.
+
+## Khi cách ra đề và tài liệu AWS khác nhau
+
+- Một số câu hỏi cũ chọn **Developer** cho việc quản lý case bằng chương trình. Trang về Support API của AWS nói cần gói Business Support+, Enterprise Support hoặc Unified Operations, nên hãy coi đáp án cũ là cách ra đề, không phải sự thật hiện nay.
+- "Developer Forums luôn miễn phí với mọi gói" nói về các diễn đàn cộng đồng mà **AWS re:Post** đã thay thế.
 
 ## Bẫy thường gặp
 
@@ -37,7 +61,7 @@ Nhiều câu hỏi luyện tập dùng các gói trước đây: **Developer**, 
 
 - Basic miễn phí cho mọi người; Business Support+ là điểm khởi đầu được khuyên dùng cho production.
 - Enterprise Support thêm TAM được chỉ định; Unified Operations thêm chuyên gia theo lĩnh vực.
-- Developer, Business và Enterprise On-Ramp kết thúc vào ngày 1 tháng 1 năm 2027.
+- Developer, Business và Enterprise On-Ramp kết thúc vào ngày 1 tháng 1 năm 2027; đề thi vẫn có thể dùng các tên này.
 
 ## Nguồn
 

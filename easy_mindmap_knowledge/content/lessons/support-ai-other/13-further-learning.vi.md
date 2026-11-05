@@ -5,7 +5,7 @@ required: false
 ---
 ## Tùy chọn: học sâu hơn
 
-Bài này không bắt buộc. Hãy dùng nó khi bạn muốn xem thêm ví dụ về các dịch vụ AI và dịch vụ tích hợp, hoặc muốn ôn lại trước khi luyện tập.
+Bài này không bắt buộc. Hãy dùng nó khi bạn muốn xem thêm ví dụ về các dịch vụ AI và dịch vụ tích hợp, hoặc muốn ôn lại trước kỳ thi.
 
 ## Gợi ý xem video
 
