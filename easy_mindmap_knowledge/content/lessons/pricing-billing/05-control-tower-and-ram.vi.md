@@ -22,14 +22,14 @@ Các thành phần chính:
 | **Detective** | Phát hiện và báo cáo vi phạm | Quy tắc AWS Config |
 | **Proactive** | Chặn tài nguyên không tuân thủ trước khi được tạo | AWS CloudFormation hooks |
 
-Controls còn được xếp mức **mandatory** (luôn bật), **strongly recommended** (rất nên bật) hoặc **elective** (tùy chọn).
+Controls còn có mức hướng dẫn: **mandatory** (các control nền tảng bảo vệ tài nguyên do Control Tower triển khai; từ landing zone phiên bản 4.0 chúng không còn được áp dụng mặc định), **strongly recommended** (rất nên bật) hoặc **elective** (tùy chọn).
 
-- **Account Factory**: một mẫu cấu hình được để chuẩn hóa việc tạo tài khoản mới với các thiết lập đã được phê duyệt, giúp các nhóm có tài khoản nhanh chóng.
+- **Account Factory**: một mẫu cấu hình giúp chuẩn hóa việc tạo tài khoản mới với các thiết lập đã được phê duyệt, nhờ đó các nhóm có tài khoản mới nhanh chóng.
 - **Dashboard**: một màn hình xem các tài khoản đã cấp, controls đang bật và tài nguyên không tuân thủ.
 
 ### Khác gì các dịch vụ trông giống nhau
 
-- **Organizations** cung cấp cấu trúc tài khoản, SCP và consolidated billing. **Control Tower** nằm bên trên và tự động hóa một cách thiết lập được khuyến nghị cùng các controls dựng sẵn. Chỉ Organizations là đáp án đúng cho "tạo tài khoản, gom nhóm, áp dụng chính sách" hoặc "hợp nhất hóa đơn".
+- **Organizations** cung cấp cấu trúc tài khoản, SCP và consolidated billing. **Control Tower** nằm bên trên và tự động hóa một cách thiết lập được khuyến nghị cùng các controls dựng sẵn. Nếu đề chỉ hỏi về "tạo tài khoản, gom nhóm, áp dụng chính sách" hoặc "hợp nhất hóa đơn" thì đáp án là Organizations.
 - **CloudFormation** triển khai tài nguyên từ template; riêng nó không thiết lập một môi trường nhiều tài khoản.
 - Cách diễn đạt điển hình trong đề: "thiết lập **môi trường nhiều tài khoản mới** theo thực hành tốt nhất", "landing zone", "guardrails cho nhiều tài khoản". Tất cả đều trỏ về Control Tower.
 

@@ -18,11 +18,11 @@ The earlier lessons gave the principle: commit to save, or stay flexible and pay
 | **Standard Reserved Instances** | A specific instance configuration, 1 or 3 years | Up to 72% | Lowest; can be sold on the Reserved Instance Marketplace |
 | **Convertible Reserved Instances** | A configuration, 1 or 3 years | Up to 66% | Can be exchanged for other Convertible RIs of equal or greater value |
 | **Spot Instances** | Nothing | Up to 90% | AWS can take the capacity back |
-| **Dedicated Hosts** | A whole physical server | Billed On-Demand or covered by Savings Plans | Chosen for licensing and compliance, not for price |
+| **Dedicated Hosts** | A whole physical server | Billed On-Demand, through Dedicated Host Reservations, or covered by Savings Plans | Chosen for licensing and compliance, not for price |
 
 ## Savings Plans
 
-A **Savings Plan** commits you to a steady amount of compute spend measured in **dollars per hour**. Usage up to the commitment gets the lower price; usage above it is billed at On-Demand rates. You can pay **All Upfront, Partial Upfront or No Upfront**, and the plan **cannot be cancelled** during its term. A Savings Plan gives no capacity reservation, and it does not apply to Spot usage. AWS also sells SageMaker AI Savings Plans and, more recently, Database Savings Plans for several managed database services; the exam focus is Compute and EC2 Instance plans.
+A **Savings Plan** commits you to a steady amount of compute spend measured in **dollars per hour**. Usage up to the commitment gets the lower price; usage above it is billed at On-Demand rates. You can pay **All Upfront, Partial Upfront or No Upfront**, and the plan **cannot be cancelled** during its term. The one exception is a purchase mistake: a plan with a commitment of $100 per hour or less can be **returned within 7 days of purchase and in the same calendar month**. A Savings Plan gives no capacity reservation, and it does not apply to Spot usage. AWS also sells SageMaker AI Savings Plans and, more recently, Database Savings Plans for several managed database services; the exam focus is Compute and EC2 Instance plans.
 
 ## Reserved Instances
 
@@ -34,7 +34,7 @@ If a **Standard** RI no longer fits (say you moved to a different instance famil
 
 - Short, unpredictable, seasonal (a couple of months a year) or "a few hours a week", and must not be interrupted: **On-Demand**.
 - Steady for 1 to 3 years, uninterruptible, known configuration: **Reserved Instances or Savings Plans**, with Standard RIs or EC2 Instance Savings Plans for the deepest discount and **All Upfront** for the most saving.
-- "Dollars per hour" or a mix of EC2, Fargate and Lambda: **Compute Savings Plans**. "Reserve", "exchange" or paying for reserved instances up front while keeping the freedom to change the configuration later points at **Convertible Reserved Instances**.
+- A **dollars-per-hour** commitment, or usage that spans EC2, Fargate and Lambda: **Compute Savings Plans**. AWS documents them as the more flexible choice, because they apply automatically without exchanges. Exam trap: when an item talks about **reserving** instances, paying **up front** and possibly **exchanging** later, and lists both Convertible RIs and Compute Savings Plans, the expected answer has been **Convertible Reserved Instances**. Choose Compute Savings Plans when the clue is the hourly spend commitment or Lambda/Fargate usage without reservation wording.
 - Interruptible, fault-tolerant batch work: **Spot**. Server-bound software licenses: **Dedicated Hosts**.
 - Several accounts: the discounts are shared across the organization (next lessons).
 

@@ -34,7 +34,7 @@ Older material lists **five** categories (cost optimization, performance, securi
 
 How to read results: each check shows **action recommended** (red), **investigation recommended** (yellow) or **no problems detected** (green). If you use AWS Organizations, the **organizational view** reports across member accounts.
 
-Access depends on your AWS Support plan. With the free **Basic** plan you can open Trusted Advisor and see all **service limits** checks plus a selected set of **security** and **fault tolerance** checks. The **full** set of checks, with automatic weekly refresh, comes with the higher paid support plans. The plans themselves are described in the support topic.
+Which checks you see depends on your AWS Support plan (see the support topic).
 
 Trusted Advisor gives **broad advice across the account**, not a deep analysis of one resource type. Do not confuse it with:
 
@@ -72,7 +72,7 @@ If both Compute Optimizer and Cost Explorer appear as answers for "identify righ
 ## Key points
 
 - Pricing Calculator: free forward-looking estimates; no history or bills.
-- Trusted Advisor: best-practice checks in six categories; Basic Support includes service limit checks and selected security and fault tolerance checks.
+- Trusted Advisor: best-practice checks in six categories; the checks you see depend on your AWS Support plan.
 - Compute Optimizer: opt-in, no extra charge, utilization-based rightsizing for EC2, Auto Scaling, EBS, Lambda and more.
 - Cost Explorer also offers EC2 rightsizing recommendations.
 

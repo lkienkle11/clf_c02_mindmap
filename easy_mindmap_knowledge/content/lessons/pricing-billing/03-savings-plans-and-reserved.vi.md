@@ -17,11 +17,11 @@ Các bài trước đã nêu nguyên tắc: cam kết để tiết kiệm, hoặ
 | **Standard Reserved Instances** | Một cấu hình instance cụ thể, 1 hoặc 3 năm | Tối đa 72% | Thấp nhất; có thể bán trên Reserved Instance Marketplace |
 | **Convertible Reserved Instances** | Một cấu hình, 1 hoặc 3 năm | Tối đa 66% | Có thể đổi sang Convertible RI khác có giá trị bằng hoặc cao hơn |
 | **Spot Instances** | Không gì cả | Tối đa 90% | AWS có thể thu hồi công suất |
-| **Dedicated Hosts** | Cả một máy chủ vật lý | Tính theo On-Demand hoặc được Savings Plans bao phủ | Chọn vì giấy phép và tuân thủ, không phải vì giá |
+| **Dedicated Hosts** | Cả một máy chủ vật lý | Tính theo On-Demand, qua Dedicated Host Reservations, hoặc được Savings Plans bao phủ | Chọn vì giấy phép và tuân thủ, không phải vì giá |
 
 ## Savings Plans
 
-**Savings Plan** là cam kết chi một lượng tiền tính toán đều đặn, đo bằng **đô la mỗi giờ**. Phần dùng trong mức cam kết được hưởng giá thấp; phần vượt mức tính theo giá On-Demand. Bạn có thể trả **All Upfront, Partial Upfront hoặc No Upfront**, và plan **không thể hủy** trong suốt thời hạn. Savings Plan không đặt trước công suất và không áp dụng cho mức dùng Spot. AWS còn bán SageMaker AI Savings Plans và gần đây là Database Savings Plans cho một số dịch vụ cơ sở dữ liệu được quản lý; trọng tâm của kỳ thi là plan Compute và EC2 Instance.
+**Savings Plan** là cam kết chi một lượng tiền tính toán đều đặn, đo bằng **đô la mỗi giờ**. Phần dùng trong mức cam kết được hưởng giá thấp; phần vượt mức tính theo giá On-Demand. Bạn có thể trả **All Upfront, Partial Upfront hoặc No Upfront**, và plan **không thể hủy** trong suốt thời hạn. Ngoại lệ duy nhất là khi mua nhầm: plan có mức cam kết từ 100 đô la mỗi giờ trở xuống có thể được **trả lại trong vòng 7 ngày kể từ khi mua và trong cùng tháng dương lịch**. Savings Plan không đặt trước công suất và không áp dụng cho mức dùng Spot. AWS còn bán SageMaker AI Savings Plans và gần đây là Database Savings Plans cho một số dịch vụ cơ sở dữ liệu được quản lý; trọng tâm của kỳ thi là plan Compute và EC2 Instance.
 
 ## Reserved Instances
 
@@ -33,7 +33,7 @@ Nếu một RI **Standard** không còn phù hợp (ví dụ bạn chuyển sang
 
 - Ngắn hạn, khó đoán, theo mùa (vài tháng mỗi năm) hoặc "vài giờ mỗi tuần", và không được gián đoạn: **On-Demand**.
 - Ổn định 1 đến 3 năm, không được gián đoạn, cấu hình đã biết: **Reserved Instances hoặc Savings Plans**; RI Standard hoặc EC2 Instance Savings Plans cho mức giảm sâu nhất, và **All Upfront** cho mức tiết kiệm lớn nhất.
-- "Đô la mỗi giờ" hoặc kết hợp EC2, Fargate và Lambda: **Compute Savings Plans**. Các từ như "reserve" (đặt trước), "exchange" (đổi) hoặc trả trước cho reserved instance nhưng vẫn muốn đổi cấu hình về sau hướng về **Convertible Reserved Instances**.
+- Cam kết **đô la mỗi giờ**, hoặc mức dùng trải trên EC2, Fargate và Lambda: **Compute Savings Plans**. Tài liệu AWS mô tả đây là lựa chọn linh hoạt hơn, vì chúng tự động áp dụng mà không cần đổi (exchange). Cái bẫy trong đề: khi câu hỏi nói về việc **đặt trước (reserve)** instance, **trả trước** và có thể **đổi** về sau, đồng thời liệt kê cả Convertible RI lẫn Compute Savings Plans, thì đáp án mong đợi từ trước đến nay là **Convertible Reserved Instances**. Hãy chọn Compute Savings Plans khi gợi ý là cam kết chi tiêu theo giờ hoặc mức dùng Lambda/Fargate mà không có từ ngữ về đặt trước.
 - Công việc batch chịu lỗi, có thể bị ngắt: **Spot**. Phần mềm có giấy phép gắn với máy chủ: **Dedicated Hosts**.
 - Nhiều tài khoản: mức giảm được chia sẻ trong toàn tổ chức (các bài sau).
 

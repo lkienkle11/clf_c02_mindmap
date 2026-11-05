@@ -33,7 +33,7 @@ Tài liệu cũ liệt kê **năm** nhóm (cost optimization, performance, secur
 
 Cách đọc kết quả: mỗi kiểm tra hiển thị **action recommended** (đỏ), **investigation recommended** (vàng) hoặc **no problems detected** (xanh). Nếu dùng AWS Organizations, **organizational view** báo cáo trên các tài khoản thành viên.
 
-Quyền truy cập phụ thuộc vào gói AWS Support. Với gói **Basic** miễn phí, bạn mở được Trusted Advisor và thấy mọi kiểm tra **service limits** cùng một số kiểm tra chọn lọc về **security** và **fault tolerance**. **Toàn bộ** các kiểm tra, kèm tự động làm mới hằng tuần, đi cùng các gói hỗ trợ trả phí cao hơn. Bản thân các gói được mô tả trong chủ đề hỗ trợ.
+Những kiểm tra bạn thấy phụ thuộc vào gói AWS Support của bạn (xem chủ đề hỗ trợ).
 
 Trusted Advisor đưa ra **lời khuyên rộng trên toàn tài khoản**, không phân tích sâu một loại tài nguyên. Đừng nhầm với:
 
@@ -71,7 +71,7 @@ Nếu cả Compute Optimizer và Cost Explorer đều xuất hiện trong đáp 
 ## Ý chính
 
 - Pricing Calculator: ước tính hướng về tương lai, miễn phí; không có lịch sử hay hóa đơn.
-- Trusted Advisor: kiểm tra thực hành tốt nhất trong sáu nhóm; gói Basic Support gồm kiểm tra service limits và một số kiểm tra security, fault tolerance.
+- Trusted Advisor: kiểm tra thực hành tốt nhất trong sáu nhóm; các kiểm tra bạn thấy phụ thuộc vào gói AWS Support.
 - Compute Optimizer: cần opt in, không tính thêm phí, rightsizing dựa trên chỉ số sử dụng cho EC2, Auto Scaling, EBS, Lambda và nhiều hơn.
 - Cost Explorer cũng đưa ra khuyến nghị rightsizing cho EC2.
 
