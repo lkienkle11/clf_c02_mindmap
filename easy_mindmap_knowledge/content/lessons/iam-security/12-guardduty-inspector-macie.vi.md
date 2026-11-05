@@ -26,7 +26,7 @@ Câu hỏi nói "liên tục giám sát tài khoản, workload và S3 bucket đ�
 - Mỗi finding có **Inspector risk score** được điều chỉnh theo môi trường của bạn, kèm hướng dẫn khắc phục; finding đã được sửa sẽ tự đóng.
 - Việc quét EC2 dùng AWS Systems Manager Agent hoặc phương pháp không cần agent; cũng có quét kho mã nguồn.
 
-**Trạng thái và cách gọi cũ:** **Amazon Inspector Classic** ban đầu, vốn chạy các **assessment template** dựa trên agent, đã hết hỗ trợ vào ngày 20/5/2026. Dịch vụ hiện nay đơn giản gọi là Amazon Inspector. Các câu hỏi thi về "assessment template" hay "đánh giá EC2 về lỗ hổng" vẫn có đáp án là Inspector. Khi yêu cầu đầu tiên của một kịch bản là đánh giá lỗ hổng cho EC2, đáp án là Inspector dù câu chữ có nhắc thêm tới thực hành tốt nhất (best practices).
+**Trạng thái và cách gọi cũ:** **Amazon Inspector Classic** ban đầu, vốn chạy các **assessment template** dựa trên agent, đã hết hỗ trợ vào ngày 20/5/2026. Dịch vụ hiện nay đơn giản gọi là Amazon Inspector. Các câu hỏi thi về "assessment template" hay "đánh giá EC2 về lỗ hổng" vẫn có đáp án là Inspector. Khi một kịch bản yêu cầu đánh giá lỗ hổng cho EC2 và Inspector nằm trong các lựa chọn, đó nhiều khả năng là đáp án; Trusted Advisor hoặc AWS Config phù hợp với việc kiểm tra thực hành tốt nhất hay cấu hình thuần túy.
 
 ## Amazon Macie: dữ liệu nhạy cảm trong S3
 

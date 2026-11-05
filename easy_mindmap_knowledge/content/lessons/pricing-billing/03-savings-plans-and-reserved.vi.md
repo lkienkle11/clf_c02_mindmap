@@ -44,7 +44,7 @@ Data transfer là một chủ đề giá riêng:
 - **Vào AWS từ internet: miễn phí**, với mọi dịch vụ ở mọi Region.
 - **Ra internet: tính phí** theo GB, có một mức miễn phí nhỏ mỗi tháng và bậc giá rẻ hơn khi khối lượng lớn.
 - **Giữa các Region: tính phí.**
-- **Giữa các Availability Zone trong một Region: tính phí.** Trong **cùng** một Availability Zone thì miễn phí.
+- **Giữa các Availability Zone trong một Region: tính phí.** Trong **cùng** một Availability Zone thì lưu lượng qua IP riêng miễn phí.
 - Dữ liệu từ S3 bucket sang các dịch vụ AWS khác trong **cùng Region**, và từ S3 sang CloudFront, là miễn phí.
 - Lưu lượng đi qua **NAT gateway** bị tính thêm phí xử lý theo GB; VPC gateway endpoint cho S3 và DynamoDB không tính phí data transfer trong cùng Region.
 

@@ -36,7 +36,7 @@ The root user has complete access to the account, and you cannot restrict it wit
 
 - Turn on MFA, **do not create access keys**, and do not share it.
 - There is one root user per account. Create an IAM Identity Center or IAM administrator for daily work.
-- Only the account owner manages the root user's access keys.
+- In a standalone account, only the account owner manages the root user's access keys (AWS Organizations can remove member-account root credentials centrally).
 - In AWS Organizations, you can remove root credentials from member accounts centrally.
 
 Tasks that require root credentials include:
@@ -57,7 +57,7 @@ Tasks that require root credentials include:
 | **IAM Access Advisor** (last accessed information) | For a user, group, role or policy: which services (and some actions) were last used, so you can remove unused permissions |
 | **IAM Access Analyzer** | Findings for resources shared with an external entity or made public, such as S3 buckets, IAM roles and KMS keys; also unused access, policy validation and policy generation |
 
-Exam wording varies: "AWS IAM Access Analyzer" and "AWS Identity and Access Management Access Analyzer" are the same feature. Its external-access analysis is free, but unused-access analysis and custom policy checks are charged. It works per Region, so enable an analyzer in each Region you use.
+Exam wording varies: "AWS IAM Access Analyzer" and "AWS Identity and Access Management Access Analyzer" are the same feature. Its external-access analysis is free, but unused-access analysis and custom policy checks are charged. Its external-access analysis works per Region, so enable that analyzer in each Region you use.
 
 **AWS Trusted Advisor** also has security checks, for example IAM access keys not rotated in 90 days, MFA on the root user, the IAM password policy and exposed access keys.
 

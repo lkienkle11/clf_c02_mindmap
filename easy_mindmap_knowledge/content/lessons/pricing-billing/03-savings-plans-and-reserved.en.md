@@ -45,7 +45,7 @@ Data transfer is a pricing topic of its own:
 - **Into AWS from the internet: free**, for all services in all Regions.
 - **Out to the internet: charged** per GB, with a small monthly free allowance and cheaper tiers at higher volume.
 - **Between Regions: charged.**
-- **Between Availability Zones in a Region: charged.** Within the **same** Availability Zone, traffic is free.
+- **Between Availability Zones in a Region: charged.** Within the **same** Availability Zone, traffic over private IPs is free.
 - Data from an S3 bucket to other AWS services in the **same Region**, and from S3 to CloudFront, is free.
 - Traffic through a **NAT gateway** adds a per-GB processing charge; VPC gateway endpoints for S3 and DynamoDB add no data transfer charge in the same Region.
 

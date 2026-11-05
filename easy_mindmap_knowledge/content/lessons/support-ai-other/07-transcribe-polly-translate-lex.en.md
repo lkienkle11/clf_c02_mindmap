@@ -45,7 +45,7 @@ A common chain is: call recording, then **Transcribe**, then **Comprehend** for 
 
 ## One look-alike that is not AI
 
-**Amazon Elastic Transcoder** converted video and audio files to formats that play on phones. It appears in older questions, where a request to convert media files so they play on smartphones is keyed to it. AWS lists it as shut down on November 13, 2025 and recommends AWS Elemental MediaConvert. It never did speech work, so do not confuse it with Transcribe.
+**Amazon Elastic Transcoder** converted video and audio files into formats for the devices you want to support. It appears in older questions, where a request to convert media files for different devices is keyed to it. AWS lists it as shut down on November 13, 2025 and recommends AWS Elemental MediaConvert. It never did speech work, so do not confuse it with Transcribe.
 
 ## Exam traps
 

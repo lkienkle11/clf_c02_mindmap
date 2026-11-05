@@ -14,7 +14,7 @@ required: true
 - KMS key được bảo vệ bằng các module bảo mật phần cứng (HSM) được xác nhận ở **FIPS 140-3 Security Level 3**, và chúng không bao giờ rời KMS ở dạng chưa mã hóa.
 - Nhiều dịch vụ dùng KMS để mã hóa dữ liệu khi lưu trữ, gồm **Amazon S3, Amazon EBS và Amazon RDS**. "Dịch vụ nào tích hợp với các dịch vụ khác để mã hóa dữ liệu khi lưu trữ" hoặc "mã hóa cho một EBS volume" là KMS.
 - Quyền truy cập được kiểm soát bằng **key policy**, cùng với IAM policy và grant. Policy của customer managed key chỉ do bạn kiểm soát.
-- Mỗi lần dùng khóa đều có thể được ghi vào **AWS CloudTrail**, nên bạn kiểm toán được ai đã dùng nó.
+- Mỗi lần dùng khóa customer managed hoặc AWS managed đều có thể được ghi vào **AWS CloudTrail**, nên bạn kiểm toán được ai đã dùng nó. Việc dùng khóa AWS owned thì bạn không thấy được.
 
 ## Các loại khóa
 

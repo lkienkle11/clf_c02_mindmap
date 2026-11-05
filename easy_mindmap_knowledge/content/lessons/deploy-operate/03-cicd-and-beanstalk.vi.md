@@ -16,7 +16,7 @@ required: true
 
 - **CodeBuild** được quản lý hoàn toàn: không có máy chủ build nào phải quản lý, và bạn trả tiền theo số phút build đã dùng.
 - **CodePipeline** nối các giai đoạn lại: lấy mã từ CodeCommit hoặc một nhà cung cấp Git khác, build bằng CodeBuild, triển khai bằng CodeDeploy, Elastic Beanstalk hoặc CloudFormation.
-- **CodeCommit** từng ngừng nhận khách hàng mới vào năm 2024, rồi được mở lại cho mọi khách hàng (general availability) vào tháng 11 năm 2025.
+- **CodeCommit**: tháng 7/2024 AWS thông báo giảm trọng tâm vào nó, rồi đưa nó trở lại general availability ngày 24/11/2025, việc đăng ký của khách hàng mới được mở lại.
 
 ## AWS Elastic Beanstalk
 
@@ -31,7 +31,7 @@ required: true
 | Blue/green | Chạy phiên bản mới (green) bên cạnh phiên bản cũ (blue), rồi chuyển lưu lượng | Rollback nhanh và an toàn bằng cách chuyển ngược lại; tốn thêm tài nguyên trong một thời gian |
 | Canary | Gửi một phần nhỏ lưu lượng tới phiên bản mới trước, rồi mới tới phần còn lại | Sự cố chỉ ảnh hưởng tới ít người dùng |
 
-CodeDeploy hỗ trợ triển khai tại chỗ (từng đợt một hoặc tất cả cùng lúc, tùy deployment configuration) và blue/green; với Lambda và ECS, nó có thể chuyển lưu lượng theo kiểu **canary**, **linear** hoặc **all at once**. Elastic Beanstalk có các chính sách như all at once, rolling, immutable và **traffic splitting** (một cách triển khai canary).
+CodeDeploy hỗ trợ triển khai tại chỗ (từng đợt một hoặc tất cả cùng lúc, tùy deployment configuration) và blue/green (chỉ EC2); với Lambda và ECS, nó có thể chuyển lưu lượng theo kiểu **canary**, **linear** hoặc **all at once**. Elastic Beanstalk có các chính sách như all at once, rolling, immutable và **traffic splitting** (một cách triển khai canary).
 
 ## Bẫy thường gặp
 

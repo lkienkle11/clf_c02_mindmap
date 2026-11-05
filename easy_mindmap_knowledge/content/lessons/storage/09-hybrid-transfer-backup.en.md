@@ -24,7 +24,7 @@ These services connect on-premises data to AWS, move it, or protect it.
 
 ## AWS Snow Family: offline transfer and edge devices
 
-The **AWS Snow Family** (for example **AWS Snowball Edge**) is a set of rugged devices that AWS ships to you. You load data locally and ship the device back, which suits very large datasets or sites with poor connectivity. Note: [Snowball Edge is no longer available to new customers](https://docs.aws.amazon.com/snowball/latest/developer-guide/snowball-edge-availability-change.html) (since November 2025), and AWS has announced end of support for Snowball devices in commercial Regions on December 31, 2026. AWS points new customers to DataSync, the AWS Data Transfer Terminal or AWS Partner solutions. Exam questions may still mention Snowball Edge.
+The **AWS Snow Family** (for example **AWS Snowball Edge**) is a set of rugged devices that AWS ships to you. You load data locally and ship the device back, which suits very large datasets or sites with poor connectivity. Note: [Snowball Edge is no longer available to new customers](https://docs.aws.amazon.com/snowball/latest/developer-guide/snowball-edge-availability-change.html) (since November 2025), and AWS pages give different end-of-support dates (see the Snow Family lesson). AWS points new customers to DataSync, the AWS Data Transfer Terminal or AWS Partner solutions. Exam questions may still mention Snowball Edge.
 
 ## AWS Backup: one place for backup policy
 
@@ -47,7 +47,7 @@ The **AWS Snow Family** (for example **AWS Snowball Edge**) is a set of rugged d
 
 - Storage Gateway links on-premises apps to AWS storage using standard protocols.
 - DataSync is the online way to move large amounts of data into AWS.
-- Snowball Edge is offline transfer; closed to new customers, support ends December 31, 2026.
+- Snowball Edge is offline transfer; closed to new customers; AWS pages give different end-of-support dates.
 - AWS Backup centralizes and automates backups.
 
 ## Sources

@@ -10,7 +10,7 @@ A large migration raises two planning questions. "Is it worth it, and what will 
 
 ## AWS Migration Evaluator
 
-**Migration Evaluator** (formerly **TSO Logic**) helps you build a data-driven business case for moving to AWS. It is a **complimentary** service: requesting an assessment or business case and using its collector cost nothing, although you pay for any AWS resources later.
+**Migration Evaluator** (formerly **TSO Logic**) helps you build a data-driven business case for moving to AWS. It is a **complimentary** service ([pricing page](https://aws.amazon.com/migration-evaluator/pricing/)): requesting an assessment or business case and using its collector cost nothing, although you pay for any AWS resources later.
 
 The flow:
 

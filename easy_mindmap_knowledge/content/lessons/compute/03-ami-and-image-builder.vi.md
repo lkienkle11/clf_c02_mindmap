@@ -31,7 +31,7 @@ AMI gắn với một **Region**, một hệ điều hành, một kiến trúc b
 
 Để dùng một AMI ở Region khác, hãy **copy** nó sang đó. Bản sao là một AMI riêng trong Region đích và dựa trên các snapshot mới. Launch permission và quyền bucket **không** được sao chép, và chỉ các tag do người dùng tự đặt của bạn được chép theo. Bản thân việc copy miễn phí, nhưng bạn trả phí lưu trữ chuẩn cho các snapshot phát sinh thêm. Bạn cũng có thể chia sẻ AMI cho tài khoản AWS khác mà không cần copy.
 
-AMI và snapshot còn hỗ trợ **khôi phục sau thảm họa** cho EC2. AMI dựng lại được cả một máy chủ cùng cấu hình, còn EBS snapshot chứa mọi thứ cần để khôi phục dữ liệu của volume. Vì AMI có thể copy sang Region thứ hai, bạn có thể khởi chạy lại máy chủ ở đó nếu Region đầu gặp sự cố. Hướng dẫn khôi phục sau thảm họa của AWS liệt kê cả hai là thành phần của sao lưu và khôi phục cho EC2: EBS snapshot cho bản sao lưu dữ liệu volume tại một thời điểm, còn AMI, được tạo từ các snapshot của volume trên instance, có thể copy trong cùng Region hoặc sang Region khác để khởi chạy lại một phiên bản đã khôi phục của máy chủ. AWS không tự động sao lưu EBS volume của bạn; tạo snapshot là trách nhiệm của bạn.
+AMI và snapshot còn hỗ trợ **khôi phục sau thảm họa** cho EC2. AMI dựng lại được cả một máy chủ cùng cấu hình, còn EBS snapshot chứa mọi thứ cần để khôi phục dữ liệu của volume. Vì AMI có thể copy sang Region thứ hai, bạn có thể khởi chạy lại máy chủ ở đó nếu Region đầu gặp sự cố. Trong cách tiếp cận sao lưu và khôi phục, hướng dẫn khôi phục sau thảm họa của AWS nêu EBS snapshot là bản sao lưu dữ liệu volume tại một thời điểm và cho phép sao lưu EC2 instance thành AMI, được tạo từ các snapshot của volume trên instance và có thể copy trong cùng Region hoặc sang Region khác để khởi chạy lại một phiên bản đã khôi phục của máy chủ. AWS không tự động sao lưu EBS volume của bạn; tạo snapshot là trách nhiệm của bạn.
 
 Một điểm tinh tế: **user data là thiết lập của instance, không nằm trong AMI**. Instance mới tạo từ AMI của bạn không thừa hưởng user data của instance cũ.
 
@@ -73,5 +73,5 @@ Bản thân Image Builder không tính phí. Bạn trả cho các tài nguyên n
 ## Nguồn
 
 - [Amazon Machine Images in Amazon EC2](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/AMIs.html)
-- [Disaster Recovery of Workloads on AWS](https://docs.aws.amazon.com/whitepapers/latest/disaster-recovery-workloads-on-aws/)
+- [Disaster Recovery of Workloads on AWS](https://docs.aws.amazon.com/whitepapers/latest/disaster-recovery-workloads-on-aws/disaster-recovery-options-in-the-cloud.html)
 - [What is EC2 Image Builder?](https://docs.aws.amazon.com/imagebuilder/latest/userguide/what-is-image-builder.html)

@@ -22,7 +22,7 @@ Gợi ý khi thi: "ghi thông tin về lưu lượng vào và ra trên network i
 
 ## Traffic Mirroring
 
-**Traffic Mirroring** sao chép lưu lượng mạng từ một network interface tới các thiết bị bảo mật và giám sát nằm ngoài luồng chính để kiểm tra nội dung, theo dõi mối đe dọa và xử lý sự cố. Flow Logs cho metadata về luồng; mirroring đưa chính các gói tin cho công cụ của bạn. Bạn trả tiền theo giờ của mỗi phiên mirror đang hoạt động. Hiếm khi là đáp án đúng, nhưng có xuất hiện trong lựa chọn của một số câu hỏi.
+**Traffic Mirroring** sao chép lưu lượng mạng từ một network interface tới các thiết bị bảo mật và giám sát nằm ngoài luồng chính để kiểm tra nội dung, theo dõi mối đe dọa và xử lý sự cố. Flow Logs cho metadata về luồng; mirroring đưa chính các gói tin cho công cụ của bạn. Về giá, xem trang giá của Amazon VPC. Hiếm khi là đáp án đúng, nhưng có xuất hiện trong lựa chọn của một số câu hỏi.
 
 ## AWS Network Firewall
 

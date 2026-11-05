@@ -23,7 +23,7 @@ Các dịch vụ sau kết nối dữ liệu tại chỗ (on-premises) với AWS
 
 ## AWS Snow Family: chuyển dữ liệu ngoại tuyến và thiết bị biên
 
-**AWS Snow Family** (ví dụ **AWS Snowball Edge**) là bộ thiết bị chắc chắn mà AWS gửi tới bạn. Bạn chép dữ liệu vào tại chỗ rồi gửi thiết bị trả lại, phù hợp với tập dữ liệu rất lớn hoặc nơi có kết nối mạng kém. Lưu ý: [Snowball Edge không còn mở cho khách hàng mới](https://docs.aws.amazon.com/snowball/latest/developer-guide/snowball-edge-availability-change.html) (từ tháng 11 năm 2025), và AWS đã thông báo ngừng hỗ trợ thiết bị Snowball ở các Region thương mại vào ngày 31 tháng 12 năm 2026. AWS hướng khách hàng mới sang DataSync, AWS Data Transfer Terminal hoặc giải pháp của AWS Partner. Câu hỏi thi có thể vẫn nhắc tới Snowball Edge.
+**AWS Snow Family** (ví dụ **AWS Snowball Edge**) là bộ thiết bị chắc chắn mà AWS gửi tới bạn. Bạn chép dữ liệu vào tại chỗ rồi gửi thiết bị trả lại, phù hợp với tập dữ liệu rất lớn hoặc nơi có kết nối mạng kém. Lưu ý: [Snowball Edge không còn mở cho khách hàng mới](https://docs.aws.amazon.com/snowball/latest/developer-guide/snowball-edge-availability-change.html) (từ tháng 11 năm 2025), và các trang của AWS nêu ngày hết hỗ trợ khác nhau (xem bài Snow Family). AWS hướng khách hàng mới sang DataSync, AWS Data Transfer Terminal hoặc giải pháp của AWS Partner. Câu hỏi thi có thể vẫn nhắc tới Snowball Edge.
 
 ## AWS Backup: một nơi cho chính sách sao lưu
 
@@ -46,7 +46,7 @@ Các dịch vụ sau kết nối dữ liệu tại chỗ (on-premises) với AWS
 
 - Storage Gateway nối ứng dụng tại chỗ với lưu trữ AWS bằng các giao thức chuẩn.
 - DataSync là cách trực tuyến để chuyển lượng lớn dữ liệu lên AWS.
-- Snowball Edge dùng để chuyển dữ liệu ngoại tuyến; đã đóng với khách hàng mới, ngừng hỗ trợ ngày 31 tháng 12 năm 2026.
+- Snowball Edge dùng để chuyển dữ liệu ngoại tuyến; đã đóng với khách hàng mới; các trang của AWS nêu ngày hết hỗ trợ khác nhau.
 - AWS Backup tập trung hóa và tự động hóa việc sao lưu.
 
 ## Nguồn

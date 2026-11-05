@@ -47,7 +47,7 @@ Also recall that a **CloudWatch alarm** can notify through an SNS topic, and tha
 
 - **Amazon Kinesis Data Streams** captures and stores streaming data for custom applications that process it.
 - **Amazon Data Firehose** (formerly Kinesis Data Firehose) delivers streams to destinations such as Amazon S3, Amazon Redshift and Amazon OpenSearch Service.
-- **Amazon Managed Service for Apache Flink** (formerly Kinesis Data Analytics) analyzes streams.
+- **Amazon Managed Service for Apache Flink** (formerly Kinesis Data Analytics for Apache Flink) analyzes streams. The separate Kinesis Data Analytics for SQL is [in full shutdown](https://docs.aws.amazon.com/general/latest/gr/full_shutdown_services.html).
 
 Kinesis is covered here only at overview level. Remember that a stream is for a continuous flow of records, while a queue hands out discrete tasks.
 

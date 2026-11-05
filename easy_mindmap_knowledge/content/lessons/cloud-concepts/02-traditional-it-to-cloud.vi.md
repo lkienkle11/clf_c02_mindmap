@@ -18,7 +18,7 @@ Mô hình này có ba vấn đề quen thuộc. **Mua sắm mất vài tuần đ
 
 **Điện toán đám mây** là việc cung cấp tài nguyên CNTT theo nhu cầu qua internet, với giá trả theo mức dùng. **AWS Cloud** có một bộ dịch vụ rất rộng, từ điện toán, lưu trữ, cơ sở dữ liệu đến phân tích và học máy, truy cập qua AWS Management Console, dòng lệnh (AWS CLI) hoặc API.
 
-Các đặc điểm thường dùng để mô tả điện toán đám mây:
+Các đặc điểm thường dùng để mô tả điện toán đám mây (mô tả chung của ngành, không phải danh sách của AWS; các danh sách riêng của AWS, như sáu lợi thế bên dưới, khác với nó):
 
 - **Tự phục vụ theo nhu cầu (on-demand self-service)**: bạn tự tạo tài nguyên trong vài phút, không cần gửi yêu cầu cho nhà cung cấp phần cứng.
 - **Truy cập qua mạng rộng rãi**: tài nguyên dùng được qua internet từ nhiều loại thiết bị.

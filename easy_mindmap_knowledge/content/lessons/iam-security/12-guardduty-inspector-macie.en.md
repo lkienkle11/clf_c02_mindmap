@@ -27,7 +27,7 @@ Questions that say "continuously monitor accounts, workloads and S3 buckets for 
 - Each finding has an **Inspector risk score** adjusted for your environment, plus remediation advice; fixed findings close automatically.
 - EC2 scanning uses the AWS Systems Manager Agent or an agentless method; scanning of source code repositories is also offered.
 
-**Status and old wording:** the original **Amazon Inspector Classic**, which ran agent-based **assessment templates**, reached end of support on May 20, 2026. The current service is simply called Amazon Inspector. Exam questions about "assessment templates" or "assess EC2 for vulnerabilities" still have Inspector as the answer. When the first requirement of a scenario is a vulnerability assessment of EC2, Inspector is the answer even if the wording also mentions best practices.
+**Status and old wording:** the original **Amazon Inspector Classic**, which ran agent-based **assessment templates**, reached end of support on May 20, 2026. The current service is simply called Amazon Inspector. Exam questions about "assessment templates" or "assess EC2 for vulnerabilities" still have Inspector as the answer. When a scenario asks for a vulnerability assessment of EC2 and Inspector is among the options, it is the likely answer; Trusted Advisor or AWS Config fit pure best-practice or configuration checks.
 
 ## Amazon Macie: sensitive data in S3
 

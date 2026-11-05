@@ -9,7 +9,7 @@ Một cuộc di chuyển lớn đặt ra hai câu hỏi lập kế hoạch. "Có
 
 ## AWS Migration Evaluator
 
-**Migration Evaluator** (trước đây là **TSO Logic**) giúp bạn xây dựng business case dựa trên dữ liệu cho việc chuyển lên AWS. Đây là dịch vụ **miễn phí (complimentary)**: yêu cầu đánh giá hoặc business case và dùng collector không mất phí, dù sau này bạn vẫn trả tiền cho tài nguyên AWS.
+**Migration Evaluator** (trước đây là **TSO Logic**) giúp bạn xây dựng business case dựa trên dữ liệu cho việc chuyển lên AWS. Đây là dịch vụ **miễn phí (complimentary)** ([trang giá](https://aws.amazon.com/migration-evaluator/pricing/)): yêu cầu đánh giá hoặc business case và dùng collector không mất phí, dù sau này bạn vẫn trả tiền cho tài nguyên AWS.
 
 Quy trình:
 

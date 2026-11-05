@@ -14,7 +14,7 @@ A **metric** is a time-ordered set of data points, such as the CPU utilization o
 
 - Many AWS services publish metrics at no charge, for example EC2, EBS and RDS.
 - Metrics exist only in the Region where they are created and are kept for up to **15 months**; older data points are aggregated to coarser periods over time.
-- AWS services publish at **standard resolution** (one-minute granularity). Your own **custom metrics** can be high resolution, down to one second.
+- AWS services publish at **standard resolution** (one-minute granularity; EC2 basic monitoring is the exception, see below). Your own **custom metrics** can be high resolution, down to one second.
 
 ### Default versus detailed monitoring for EC2
 

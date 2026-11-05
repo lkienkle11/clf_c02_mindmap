@@ -24,9 +24,9 @@ Cách truyền thống này cần một **quy tắc inbound** cho phép địa c
 | Ứng dụng SSH | Linux | Có | Key pair | Truyền thống, bạn tự quản lý khóa |
 | Ứng dụng RDP | Windows | Có | Key pair giải mã mật khẩu | Truyền thống cho Windows |
 | **EC2 Instance Connect** | Linux | Có | Quyền IAM | Không cần phát key pair |
-| **Session Manager** | Linux, Windows | **Không** | Quyền IAM | Có log, không cần bastion host |
+| **Session Manager** | Linux, Windows, macOS | **Không** | Quyền IAM | Có log, không cần bastion host |
 
-**EC2 Instance Connect** để chính sách IAM quyết định ai được kết nối. Khi bạn kết nối, một public key dùng một lần được đẩy lên instance và chỉ có hiệu lực 60 giây, nên bạn không cần key pair dùng lâu dài. Kết nối vẫn đi tới instance qua cổng mạng thông thường.
+**EC2 Instance Connect** để chính sách IAM quyết định ai được kết nối. Khi bạn kết nối, một public key dùng một lần được đẩy lên instance và chỉ có hiệu lực 60 giây, nên bạn không cần key pair dùng lâu dài. Kết nối vẫn đi tới instance qua cổng mạng thông thường. **EC2 Instance Connect Endpoint** bổ sung đường vào cho instance chỉ có địa chỉ IP riêng, không cần bastion host và không cần internet gateway.
 
 **AWS Systems Manager Session Manager** cho bạn một shell trên trình duyệt hoặc CLI mà **không phải mở cổng inbound nào**, không cần khóa SSH và không cần bastion host (máy trung chuyển). IAM kiểm soát quyền truy cập, và hoạt động của phiên có thể được ghi vào AWS CloudTrail, Amazon S3 hoặc Amazon CloudWatch Logs. Nó cần SSM Agent trên instance (chỉ cài sẵn trên một số AMI) và một IAM role cho instance. Session Manager còn kết nối được tới instance không có địa chỉ IP công khai.
 

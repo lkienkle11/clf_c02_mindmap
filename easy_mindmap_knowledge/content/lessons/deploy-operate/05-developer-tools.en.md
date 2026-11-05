@@ -15,7 +15,7 @@ Git repo    CodeBuild           CodeDeploy, Elastic Beanstalk or CloudFormation
             all stages ordered and automated by CodePipeline
 ```
 
-A pipeline is made of **stages**, and each stage contains **actions** of type source, build, test, deploy, approval or invoke. A new commit can start the pipeline, so the release runs without manual steps. Some tools in this lesson have a changed availability status, so read the status column.
+A pipeline is made of **stages**, and each stage contains **actions** of type source, build, test, deploy, approval or invoke. A new commit can start the pipeline, so the release runs without manual steps. Some tools in this lesson have a changed availability status, so read the availability notes below the table.
 
 | Service | One-line purpose | Exam clue |
 | --- | --- | --- |
@@ -31,7 +31,7 @@ A pipeline is made of **stages**, and each stage contains **actions** of type so
 ## The core three
 
 - **CodeBuild** has no servers for you to provision, patch or scale. It scales on demand and you pay only for the **build minutes** you use.
-- **CodeDeploy** deploys application content from S3 or Git repositories. On EC2 and on-premises servers it supports **in-place** and **blue/green** deployments, with an agent on each server. For Lambda and Amazon ECS, traffic shifts as **canary**, **linear** or **all at once**. It can stop and roll back on errors.
+- **CodeDeploy** deploys application content from S3 or Git repositories. On EC2 instances it supports **in-place** and **blue/green** deployments, on-premises servers support in-place only, and each server runs an agent. For Lambda and Amazon ECS, traffic shifts as **canary**, **linear** or **all at once**. It can stop and roll back on errors.
 - **CodePipeline** does not compile or deploy by itself. It calls CodeBuild, CodeDeploy, Elastic Beanstalk, CloudFormation and other providers, and can include a manual approval action.
 
 ## CodeArtifact
@@ -42,7 +42,7 @@ A pipeline is made of **stages**, and each stage contains **actions** of type so
 
 AWS has changed the availability of several developer tools. Exam questions may still treat them as normal, so know both the purpose and the status.
 
-- **AWS CodeCommit:** AWS stopped onboarding new customers in 2024. On November 24, 2025 it announced that CodeCommit returned to general availability, with new customer sign-ups open again.
+- **AWS CodeCommit:** In July 2024 AWS announced it was de-emphasizing CodeCommit. On November 24, 2025 it announced that CodeCommit returned to general availability, with new customer sign-ups open again.
 - **AWS CodeStar:** AWS lists CodeStar in the "Services in Full Shutdown" table with an end-of-support date of July 25, 2024. It was the service that created a project with a ready-made repository, build and deploy pipeline. A comparable chain can be built by hand from CodePipeline, CodeBuild and CodeDeploy. A question about "quickly implementing CI/CD" may still key CodeStar, so recognize the name.
 - **AWS Cloud9:** AWS lists it as a service in maintenance and no longer available to new customers; existing customers can keep using it. AWS's migration guidance points to the AWS IDE Toolkits or AWS CloudShell.
 - **Amazon CodeGuru Reviewer:** the service is in maintenance too. Since November 7, 2025 you cannot create new repository associations, and AWS points to Amazon Q Developer and Amazon Inspector for similar code analysis. **CodeGuru Profiler** collects runtime data from live applications and suggests where to reduce CPU use and cost; it does not appear on the maintenance list.

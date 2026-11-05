@@ -10,7 +10,7 @@ Bài trước đã giới thiệu **Amazon RDS**. Bài này đi vào các quyế
 
 - **Engine**: IBM Db2, MariaDB, Microsoft SQL Server, MySQL, Oracle Database hoặc PostgreSQL.
 - **Instance class**: năng lực tính toán và bộ nhớ (general purpose, memory optimized, compute optimized hoặc burstable). Bạn có thể đổi sau này khi nhu cầu thay đổi.
-- **Lưu trữ**: **General Purpose SSD** cho hầu hết workload, hoặc **Provisioned IOPS** cho cơ sở dữ liệu production nặng về I/O. Lưu trữ Magnetic đã bị deprecated.
+- **Lưu trữ**: **General Purpose SSD** cho nhiều workload thông thường, hoặc **Provisioned IOPS** cho cơ sở dữ liệu production nặng về I/O. Lưu trữ Magnetic đã bị deprecated.
 - **Mạng**: DB instance chạy trong **VPC** của bạn, và security group quyết định ai được kết nối tới nó.
 
 ## Ai quản lý gì

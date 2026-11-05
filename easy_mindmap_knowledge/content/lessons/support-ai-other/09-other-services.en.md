@@ -30,7 +30,7 @@ In a **decoupled** (loosely coupled) design, parts of an application talk throug
 
 ## Business, IoT and frontend services
 
-- **Amazon Connect**: cloud **contact center**.
+- **Amazon Connect** (now named Amazon Connect Customer): cloud **contact center**.
 - **Amazon SES**: send **marketing, notification and transactional email**.
 - **AWS IoT Core**: connect **IoT devices** and route their messages to AWS services.
 - **AWS Amplify**: build, deploy and host **web and mobile apps**.

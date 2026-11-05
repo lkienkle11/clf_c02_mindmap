@@ -44,7 +44,7 @@ Một chuỗi phổ biến: bản ghi cuộc gọi, rồi **Transcribe**, rồi 
 
 ## Một dịch vụ trông giống nhưng không phải AI
 
-**Amazon Elastic Transcoder** từng chuyển đổi tệp video và âm thanh sang định dạng phát được trên điện thoại. Nó xuất hiện trong các câu hỏi cũ, nơi yêu cầu chuyển tệp media sang định dạng phát được trên điện thoại có đáp án là nó. AWS liệt kê nó đã ngừng hoạt động từ ngày 13 tháng 11 năm 2025 và khuyên dùng AWS Elemental MediaConvert. Nó chưa bao giờ xử lý giọng nói, nên đừng nhầm với Transcribe.
+**Amazon Elastic Transcoder** từng chuyển đổi tệp video và âm thanh sang các định dạng dành cho những thiết bị bạn muốn hỗ trợ. Nó xuất hiện trong các câu hỏi cũ, nơi yêu cầu chuyển tệp media cho nhiều loại thiết bị có đáp án là nó. AWS liệt kê nó đã ngừng hoạt động từ ngày 13 tháng 11 năm 2025 và khuyên dùng AWS Elemental MediaConvert. Nó chưa bao giờ xử lý giọng nói, nên đừng nhầm với Transcribe.
 
 ## Bẫy khi thi
 

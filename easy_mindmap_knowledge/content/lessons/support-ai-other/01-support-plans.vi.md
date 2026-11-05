@@ -23,7 +23,7 @@ AWS hiện liệt kê bốn gói AWS Support. Mọi tài khoản đều có **AW
 
 ### Hướng dẫn kiến trúc theo gói
 
-| Gói | Cách AWS ghi trong bảng so sánh gói |
+| Gói | Hướng dẫn kiến trúc (diễn giải từ thông tin gói của AWS) |
 | --- | --- |
 | Business Support+ | Hướng dẫn theo ngữ cảnh các trường hợp sử dụng của bạn |
 | Enterprise Support | Đánh giá và hướng dẫn tư vấn dựa trên ứng dụng của bạn, kèm Well-Architected Review do TAM dẫn dắt |

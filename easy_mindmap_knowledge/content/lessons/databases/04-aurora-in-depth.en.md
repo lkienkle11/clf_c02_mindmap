@@ -29,7 +29,7 @@ Choose it for **variable or unpredictable** workloads, new applications whose si
 
 ## Aurora Global Database
 
-An **Aurora global database** spans several Regions: one **primary Region** takes all writes, and up to **10 read-only secondary Regions** receive the data through the storage layer, with replication latency typically under a second. Use it for:
+An **Aurora global database** spans several Regions: one **primary Region** takes all writes, and up to **10 read-only secondary Regions** receive the data through the storage layer, with replication latency typically under a second. Secondary clusters can optionally forward write statements to the primary (write forwarding). Use it for:
 
 - **Local reads** for users around the world.
 - **Disaster recovery**: if the primary Region has an outage, you can fail over to a secondary Region quickly.

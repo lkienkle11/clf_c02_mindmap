@@ -62,7 +62,7 @@ IPv6 addresses are public, so IPv6 instances would be reachable from the interne
 
 - VPC = Region; subnet = one AZ.
 - Public subnet means a route to an internet gateway.
-- NAT gateway: managed, sits in a public subnet, outbound only, one per AZ for resilience; prefer it to a NAT instance.
+- NAT gateway: managed, a zonal public one sits in a public subnet (a regional one needs none), outbound only, one per AZ for resilience; prefer it to a NAT instance.
 - Egress-only internet gateway = outbound-only IPv6.
 - Elastic IP = static public IPv4 owned by your account.
 

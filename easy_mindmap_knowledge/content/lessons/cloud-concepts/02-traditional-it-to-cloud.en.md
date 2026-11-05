@@ -19,7 +19,7 @@ This model has three well-known problems. **Procurement takes weeks or months**,
 
 **Cloud computing** is the on-demand delivery of IT resources over the internet with pay-as-you-go pricing. The **AWS Cloud** offers a broad set of services, from compute, storage and databases to analytics and machine learning, that you reach through the AWS Management Console, the command line (AWS CLI) or APIs.
 
-Characteristics commonly used to describe cloud computing:
+Characteristics commonly used to describe cloud computing (a general industry description, not an AWS list; AWS's own lists, such as the six advantages below, differ):
 
 - **On-demand self-service**: you provision resources yourself, in minutes, without filing a ticket with a hardware vendor.
 - **Broad network access**: resources are available over the internet from many kinds of devices.

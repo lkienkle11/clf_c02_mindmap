@@ -7,7 +7,7 @@ videoQuery: AWS Shield WAF GuardDuty Inspector Macie Security Hub differences ex
 ## Protecting the front door
 
 - **AWS Shield Standard** protects **every AWS customer automatically at no additional charge** against the most common network and transport layer **DDoS** attacks.
-- **AWS Shield Advanced** is a **paid subscription** with expanded DDoS protection for resources you choose, such as EC2 Elastic IP addresses, load balancers, CloudFront, Global Accelerator and Route 53. It adds 24/7 access to the **Shield Response Team** (with a Business or Enterprise support plan) and **cost protection** for scaling charges caused by an attack.
+- **AWS Shield Advanced** is a **paid subscription** with expanded DDoS protection for resources you choose, such as EC2 Elastic IP addresses, load balancers, CloudFront, Global Accelerator and Route 53. It adds 24/7 access to the **Shield Response Team** (with a Business or Enterprise support plan; plan names are changing, see the support plans lesson) and **cost protection** for scaling charges caused by an attack.
 - **AWS WAF** is a **web application firewall** for HTTP(S) requests. You attach a **web ACL** of rules to CloudFront, an Application Load Balancer, API Gateway and other supported resources. Rules can block **SQL injection**, **cross-site scripting**, specific IP addresses or countries, and floods of requests from one source.
 
 ## Finding problems inside the account

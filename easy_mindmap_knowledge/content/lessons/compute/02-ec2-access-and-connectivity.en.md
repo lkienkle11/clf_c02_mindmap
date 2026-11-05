@@ -25,9 +25,9 @@ A **security group** is a virtual firewall around your instances. You add rules 
 | SSH client | Linux | Yes | Key pair | Classic, you manage keys |
 | RDP client | Windows | Yes | Key pair decrypts password | Classic for Windows |
 | **EC2 Instance Connect** | Linux | Yes | IAM permission | No key pair to distribute |
-| **Session Manager** | Linux, Windows | **No** | IAM permission | Logged, no bastion host |
+| **Session Manager** | Linux, Windows, macOS | **No** | IAM permission | Logged, no bastion host |
 
-**EC2 Instance Connect** lets IAM policies decide who may connect. When you connect, a one-time public key is pushed to the instance and stays valid for only 60 seconds, so you need no long-lived key pair. The connection still reaches the instance through its normal network port.
+**EC2 Instance Connect** lets IAM policies decide who may connect. When you connect, a one-time public key is pushed to the instance and stays valid for only 60 seconds, so you need no long-lived key pair. The connection still reaches the instance through its normal network port. An **EC2 Instance Connect Endpoint** adds a way in for instances that have only private IP addresses, with no bastion host and no internet gateway needed.
 
 **AWS Systems Manager Session Manager** gives a browser-based or CLI shell with **no inbound ports open**, no SSH keys and no bastion (jump) host. Access is controlled by IAM, and session activity can be logged to AWS CloudTrail, Amazon S3 or Amazon CloudWatch Logs. It needs the SSM Agent on the instance, which is pre-installed only on certain AMIs, and an IAM role for the instance. It also reaches instances that have no public IP address.
 

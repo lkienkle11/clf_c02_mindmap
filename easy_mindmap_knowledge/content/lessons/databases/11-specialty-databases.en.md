@@ -38,7 +38,7 @@ Relational joins over deep relationships get slow and complicated; a graph datab
 
 **Amazon QLDB** is a **ledger database**: a fully managed, serverless database whose **transaction log (journal) is immutable and cryptographically verifiable**, so records cannot be silently changed or deleted. It was designed for systems of record that need a complete, trustworthy history of every change.
 
-- Status: AWS documentation states that existing customers could use QLDB only [until end of support on July 31, 2025](https://docs.aws.amazon.com/prescriptive-guidance/latest/modern-data-centric-use-cases/data-preparation-cleaning.html), and AWS published guidance for migrating a QLDB ledger to **Amazon Aurora PostgreSQL**. That date has passed, so do not plan new designs around QLDB. Exam questions may still describe a "ledger database" or "immutable, verifiable history" and expect QLDB as the concept.
+- Status: The AWS General Reference lists QLDB in [Services in Full Shutdown](https://docs.aws.amazon.com/general/latest/gr/full_shutdown_services.html) with end of support on July 31, 2025, and AWS published guidance for migrating a QLDB ledger to **Amazon Aurora PostgreSQL**. That date has passed, so do not plan new designs around QLDB. Exam questions may still describe a "ledger database" or "immutable, verifiable history" and expect QLDB as the concept.
 
 ## Which database for which workload?
 

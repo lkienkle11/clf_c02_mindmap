@@ -12,18 +12,18 @@ The **AWS Snow Family** is a group of physical devices that AWS ships to you. Yo
 
 | Device | What it is | Status |
 | --- | --- | --- |
-| **AWS Snowcone** | The smallest, portable edge device (8 TB HDD or 14 TB SSD usable) for small datasets and edge computing | Discontinued on November 12, 2024 |
-| **AWS Snowball Edge Storage Optimized** | Large local storage (the current model is 210 TB) for data transfer and local storage | No longer available to new customers |
+| **AWS Snowcone** | The smallest, portable edge device for small datasets and edge computing | Discontinued on November 12, 2024 |
+| **AWS Snowball Edge Storage Optimized** | Large local storage for data transfer and local storage | No longer available to new customers |
 | **AWS Snowball Edge Compute Optimized** | Compute power for edge workloads, such as running EC2-compatible instances on the device | No longer available to new customers |
-| **AWS Snowmobile** | A shipping container pulled by a truck: up to about 100 PB per unit, for exabyte-scale moves with several units | In full shutdown since March 14, 2024 |
+| **AWS Snowmobile** | A shipping container pulled by a truck, for the largest moves | In full shutdown (end of support March 14, 2024) |
 
 Status matters for real use, but the exam questions still describe these services, so know what each one was for:
 
-- **Snowcone**: small, rugged and portable; edge use with limited space. It runs select EC2 instances, and AWS DataSync comes preinstalled for online transfer.
-- **Snowball Edge**: the workhorse. **Storage Optimized** (about 210 TB usable per device, clusterable) for moving terabytes up to a few petabytes, **Compute Optimized** for processing data at the edge before it is sent to AWS.
-- **Snowmobile**: up to about 100 PB per unit, for tens of petabytes up to exabytes (with multiple units). Exam clue: "tens of petabytes or more", "exabytes", "data center migration", "truck".
+- **Snowcone**: small, rugged and portable; edge use with limited space.
+- **Snowball Edge**: the workhorse. **Storage Optimized** for moving terabytes up to a few petabytes, **Compute Optimized** for processing data at the edge before it is sent to AWS.
+- **Snowmobile**: for tens of petabytes up to exabytes. Exam clue: "tens of petabytes or more", "exabytes", "data center migration", "truck".
 
-Snowball Edge devices encrypt data at rest and in transit, can be clustered (3 to 16 devices) for local storage, and can run EC2-compatible instances and AWS Lambda functions on the device. AWS has announced end of support for Snowball devices in commercial AWS Regions on December 31, 2026. Dates differ by device model and Region, so check the official pages (including the AWS General Reference list of services in full shutdown) for the current date.
+**Current status.** Snowcone was discontinued on November 12, 2024 ([AWS Storage Blog](https://aws.amazon.com/blogs/storage/aws-snow-device-updates/)). The availability-change page says Snowball Edge is no longer available to new customers and AWS no longer offers any Snow Family device to new customers; existing customers are not affected. The Snowball product page says support for Snowball devices in AWS commercial Regions ends on December 31, 2026 (GovCloud and ADC Region customers with active jobs are not affected), while the AWS General Reference full-shutdown list shows Snowball Edge with November 12, 2025. AWS pages give different dates; check the availability-change page.
 
 ## How a Snow job works
 
@@ -58,11 +58,11 @@ Whatever the current status, an exam question about moving large data offline ex
 
 - Snow Family = physical devices for offline transfer and edge compute: Snowcone, Snowball Edge (Storage and Compute Optimized), Snowmobile.
 - Use Snow when the network is too slow, expensive or absent; use DataSync or Direct Connect when connectivity is good.
-- Snowcone and Snowmobile are retired; Snowball Edge is closed to new customers and support ends December 31, 2026.
+- Snowcone and Snowmobile are retired; Snowball Edge is closed to new customers, and AWS pages give different end-of-support dates.
 - Alternatives: DataSync, Data Transfer Terminal, Partner solutions, Outposts.
 
 ## Sources
 
 - [AWS Snowball Edge availability change](https://docs.aws.amazon.com/snowball/latest/developer-guide/snowball-edge-availability-change.html)
-- [AWS Snowball Edge device hardware information](https://docs.aws.amazon.com/snowball/latest/developer-guide/device-differences.html)
-- [Move exabyte-scale data sets with AWS Snowmobile](https://aws.amazon.com/about-aws/whats-new/2016/11/move-exabyte-scale-data-sets-with-aws-snowmobile/)
+- [AWS Snowball (product page, end-of-support notice)](https://aws.amazon.com/snowball/)
+- [Services in Full Shutdown (AWS General Reference)](https://docs.aws.amazon.com/general/latest/gr/full_shutdown_services.html)

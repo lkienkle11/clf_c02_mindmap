@@ -15,11 +15,11 @@ Có ba cách thu thập dữ liệu:
 
 | Phương pháp | Cách hoạt động | Thấy được gì |
 | --- | --- | --- |
-| **Agentless Collector** | Thiết bị ảo triển khai trong VMware vCenter | Hostname, địa chỉ IP và MAC, dung lượng đĩa, CPU, RAM, disk I/O trung bình và đỉnh; thông tin engine database; dữ liệu mạng hạn chế (kết nối TCP) |
-| **Discovery Agent** | Cài trên từng máy chủ Windows hoặc Linux, ảo hay vật lý | Như trên cộng hiệu năng chi tiết theo thời gian, tiến trình đang chạy và dữ liệu kết nối mạng đầy đủ hơn |
+| **Agentless Collector** | Thiết bị ảo triển khai trong VMware vCenter | Hostname, địa chỉ IP và MAC, dung lượng đĩa, CPU, RAM, disk I/O trung bình và đỉnh; thông tin engine database; không có tiến trình đang chạy, và dữ liệu kết nối mạng rất ít hoặc không có (các trang AWS không thống nhất) |
+| **Discovery Agent** | Cài trên từng máy chủ Windows hoặc Linux, ảo hay vật lý | Như trên cộng hiệu năng chi tiết theo thời gian, tiến trình đang chạy và các kết nối mạng đến và đi |
 | **File-based import** | Tải lên tệp kiểm kê | Những gì có trong tệp |
 
-Đây là sự đánh đổi giữa độ rộng và độ sâu. Collector bao quát nhiều VM mà không cần đụng vào từng máy, nhưng không nhìn được bên trong VM để biết tiến trình đang chạy và chỉ có dữ liệu mạng hạn chế. Agent cho thấy tiến trình và quan hệ phụ thuộc, giúp bạn quyết định máy chủ nào phải chuyển cùng nhau. Dữ liệu khám phá được lưu ở **home Region của Migration Hub** và có thể xuất ra để ước tính chi phí AWS.
+Đây là sự đánh đổi giữa độ rộng và độ sâu. Collector bao quát nhiều VM mà không cần đụng vào từng máy, nhưng không nhìn được bên trong VM để biết tiến trình đang chạy hoặc xác định chắc chắn các kết nối mạng của nó. Agent cho thấy tiến trình và quan hệ phụ thuộc, giúp bạn quyết định máy chủ nào phải chuyển cùng nhau. Dữ liệu khám phá được lưu ở **home Region của Migration Hub** và có thể xuất ra để ước tính chi phí AWS.
 
 **Trạng thái:** AWS đã đóng Application Discovery Service với khách hàng mới từ ngày 7/11/2025. Khách hàng hiện tại vẫn dùng tiếp được, và AWS khuyên dùng **AWS Transform** cho các dự án khám phá mới. Câu hỏi thi vẫn có thể xem nó là đáp án cho kiểm kê và khám phá phụ thuộc.
 

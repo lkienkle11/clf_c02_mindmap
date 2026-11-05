@@ -15,7 +15,7 @@ Quy tắc dễ nhớ: phạm vi càng nhỏ thì bạn càng phải tự lên k�
 | Phạm vi | Ý nghĩa | Ví dụ |
 | --- | --- | --- |
 | Global | Không gắn với một Region; bạn quản lý mà không cần chọn Region | **AWS Identity and Access Management (IAM)**, **Amazon Route 53**, **Amazon CloudFront**, **AWS WAF** cho CloudFront, **AWS Global Accelerator** |
-| Theo Region | Bạn chọn một Region; tài nguyên được trải trên các zone của Region đó | **Amazon VPC**, **Amazon S3** (dữ liệu của bucket), Elastic Load Balancing, Amazon DynamoDB, AWS Lambda |
+| Theo Region | Bạn chọn một Region; tài nguyên thường được trải trên các zone của Region đó (các lớp S3 One Zone cố ý chỉ dùng một zone) | **Amazon VPC**, **Amazon S3** (dữ liệu của bucket), Elastic Load Balancing, Amazon DynamoDB, AWS Lambda |
 | Theo Availability Zone | Tài nguyên nằm trong một zone | Instance **Amazon EC2**, volume **Amazon EBS**, **subnet**, database instance đơn AZ |
 
 Một vài chi tiết hay gây nhầm:
@@ -26,7 +26,6 @@ Một vài chi tiết hay gây nhầm:
 - Tên bucket **Amazon S3** phải duy nhất trên toàn AWS, nhưng bucket và đối tượng được lưu ở đúng một Region bạn chọn. "Tên duy nhất toàn cầu" không có nghĩa là "dữ liệu lưu khắp thế giới".
 - **VPC** thuộc về một Region và trải trên mọi Availability Zone của Region đó, còn mỗi **subnet** phải nằm trong đúng một Availability Zone. Vì thế sẵn sàng cao nghĩa là tạo subnet ở nhiều zone.
 - **Volume EBS** chỉ gắn được vào instance EC2 trong cùng Availability Zone. Để chuyển dữ liệu sang zone khác, hãy tạo snapshot rồi khôi phục từ đó.
-- **AWS Shield Standard** tự động bảo vệ tài nguyên AWS mà không tính thêm phí. **AWS Shield Advanced** là gói tùy chọn có phí. Cả hai đều không phải thứ bạn cài đặt trong một Availability Zone.
 
 ## Chúng xuất hiện trong đề thế nào
 
@@ -53,4 +52,4 @@ Một vài chi tiết hay gây nhầm:
 
 - [Global services, AWS Fault Isolation Boundaries](https://docs.aws.amazon.com/whitepapers/latest/aws-fault-isolation-boundaries/global-services.html)
 - [What is Amazon VPC?](https://docs.aws.amazon.com/vpc/latest/userguide/what-is-amazon-vpc.html)
-- [AWS Regional Services List](https://aws.amazon.com/about-aws/global-infrastructure/regional-product-services/)
+- [What is AWS WAF? (protected resource types)](https://docs.aws.amazon.com/waf/latest/developerguide/waf-chapter.html)

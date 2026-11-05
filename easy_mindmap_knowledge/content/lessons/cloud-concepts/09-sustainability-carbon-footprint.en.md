@@ -27,7 +27,7 @@ The infrastructure behind a Region is shared by many customers, which keeps util
 
 ## AWS Customer Carbon Footprint Tool
 
-The **AWS Customer Carbon Footprint Tool** lets you see estimated carbon emissions from your AWS usage. Today it lives in the AWS Sustainability console, which builds on the earlier tool and also adds water data and reporting. You can:
+The **AWS Customer Carbon Footprint Tool** lets you see estimated carbon emissions from your AWS usage. Today it lives in the AWS Sustainability console, which builds on the earlier tool and also adds water data and reporting. Exam wording may still use the older name "Customer Carbon Footprint Tool". You can:
 
 - view emissions over time and break them down by scope, AWS Region and service;
 - create reports or exports to analyze the data in bulk;

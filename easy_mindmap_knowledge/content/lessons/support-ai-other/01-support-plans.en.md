@@ -24,7 +24,7 @@ AWS currently lists four AWS Support plans. Every account has **AWS Basic Suppor
 
 ### Architecture guidance by plan
 
-| Plan | Wording on AWS's plan comparison |
+| Plan | Architecture guidance (paraphrased from AWS's plan information) |
 | --- | --- |
 | Business Support+ | Guidance contextual to your use cases |
 | Enterprise Support | Consultative reviews and guidance based on your applications, with TAM-led Well-Architected Reviews |

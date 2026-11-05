@@ -50,7 +50,7 @@ A deployment strategy is the way a new version replaces the old one. The first l
 
 - **All at once** is the fastest policy and suits cases where a short loss of service is acceptable. **Rolling** avoids downtime. **Rolling with an additional batch** keeps full bandwidth. **Immutable** works in load-balanced and single-instance environments; **traffic splitting** needs an Application Load Balancer.
 - **Blue/green** in Beanstalk means launching a second environment with the new version, testing it, and then using **Swap environment URLs**, which swaps the CNAME records of the two environments. It is the way to avoid the short unavailability of in-place updates, and it is required for an incompatible platform update. Keep the database outside the environment, otherwise the swap does not carry it over.
-- **CodeDeploy** also supports in-place and blue/green deployments for EC2 and on-premises servers, and canary, linear and all-at-once traffic shifting for Lambda and Amazon ECS.
+- **CodeDeploy** also supports in-place and blue/green deployments for EC2 (on-premises servers: in-place only), and canary, linear and all-at-once traffic shifting for Lambda and Amazon ECS.
 
 ### When to choose each
 

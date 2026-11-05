@@ -47,7 +47,7 @@ Cũng nhớ rằng **CloudWatch alarm** có thể thông báo qua một topic SN
 
 - **Amazon Kinesis Data Streams** thu nhận và lưu dữ liệu streaming cho các ứng dụng tùy biến xử lý nó.
 - **Amazon Data Firehose** (trước đây là Kinesis Data Firehose) chuyển stream tới các đích như Amazon S3, Amazon Redshift và Amazon OpenSearch Service.
-- **Amazon Managed Service for Apache Flink** (trước đây là Kinesis Data Analytics) phân tích stream.
+- **Amazon Managed Service for Apache Flink** (trước đây là Kinesis Data Analytics for Apache Flink) phân tích stream. Kinesis Data Analytics for SQL riêng biệt đã [ngừng hoàn toàn](https://docs.aws.amazon.com/general/latest/gr/full_shutdown_services.html).
 
 Ở đây Kinesis chỉ được nói ở mức tổng quan. Hãy nhớ rằng stream dành cho dòng bản ghi liên tục, còn hàng đợi trao từng tác vụ rời rạc.
 

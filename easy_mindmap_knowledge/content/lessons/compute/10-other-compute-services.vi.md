@@ -17,7 +17,7 @@ Bài này là tùy chọn. Nó nói về các dịch vụ nhỏ hơn liên quan 
 
 ## AWS App Runner
 
-**AWS App Runner** triển khai ứng dụng web hoặc API trực tiếp từ mã nguồn hoặc container image. Nó build, chạy, cân bằng tải và mở rộng dịch vụ giúp bạn, không cần thiết kế hạ tầng. Một câu hỏi kiểu đề thi về dịch vụ được quản lý có thể build và triển khai container từ mã nguồn sẽ hướng tới App Runner. Lưu ý rằng AWS đã **đóng App Runner với khách hàng mới**. Khách hàng hiện tại vẫn tiếp tục dùng được, còn với người khác AWS khuyên dùng Amazon ECS Express Mode. Hãy nắm khái niệm để thi, nhưng đừng lập dự án mới trên nó.
+**AWS App Runner** triển khai ứng dụng web hoặc API trực tiếp từ mã nguồn hoặc container image. Nó build, chạy, cân bằng tải và mở rộng dịch vụ giúp bạn, không cần thiết kế hạ tầng. Một câu hỏi kiểu đề thi về dịch vụ được quản lý có thể build và triển khai container từ mã nguồn sẽ hướng tới App Runner. Lưu ý rằng AWS đã **đóng App Runner với khách hàng mới**. Theo trang availability change của AWS, khách hàng hiện tại vẫn dùng bình thường, kể cả tạo tài nguyên mới, nhưng không có kế hoạch thêm tính năng mới, và AWS khuyên dùng Amazon ECS Express Mode cho người khác. AWS General Reference [xếp nó vào giai đoạn maintenance](https://docs.aws.amazon.com/general/latest/gr/maintenance_services.html) (công bố ngày 31/3/2026), còn release notes của App Runner nêu ngày 30/4/2026 là mốc ngừng nhận khách hàng mới. Hãy nắm khái niệm để thi, nhưng đừng lập dự án mới trên nó.
 
 ## AWS Cloud Map
 

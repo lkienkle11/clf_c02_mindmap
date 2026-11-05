@@ -26,7 +26,7 @@ Hạ tầng phía sau một Region được nhiều khách hàng dùng chung, gi
 
 ## AWS Customer Carbon Footprint Tool
 
-**AWS Customer Carbon Footprint Tool** cho bạn xem lượng phát thải carbon ước tính từ việc dùng AWS. Hiện nay nó nằm trong AWS Sustainability console, vốn xây dựng trên công cụ trước đó và bổ sung thêm dữ liệu nước và báo cáo. Bạn có thể:
+**AWS Customer Carbon Footprint Tool** cho bạn xem lượng phát thải carbon ước tính từ việc dùng AWS. Hiện nay nó nằm trong AWS Sustainability console, vốn xây dựng trên công cụ trước đó và bổ sung thêm dữ liệu nước và báo cáo. Đề thi vẫn có thể dùng tên cũ "Customer Carbon Footprint Tool". Bạn có thể:
 
 - xem phát thải theo thời gian và chia theo phạm vi (scope), AWS Region và dịch vụ;
 - tạo báo cáo hoặc xuất dữ liệu để phân tích hàng loạt;

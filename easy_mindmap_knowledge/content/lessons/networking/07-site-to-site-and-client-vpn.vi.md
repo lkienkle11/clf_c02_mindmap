@@ -9,7 +9,7 @@ Bài kết nối hybrid đã giới thiệu Site-to-Site VPN và Direct Connect.
 
 ## AWS Site-to-Site VPN
 
-**AWS Site-to-Site VPN** (đề thi đôi khi gọi là **AWS VPN**, còn tài liệu cũ gọi là AWS Managed VPN) tạo kết nối IPsec được mã hóa giữa mạng của bạn và VPC.
+**AWS Site-to-Site VPN** (đề thi đôi khi gọi là **AWS VPN**, vốn cũng là tên chung của Site-to-Site VPN và Client VPN, còn tài liệu cũ gọi là AWS Managed VPN) tạo kết nối IPsec được mã hóa giữa mạng của bạn và VPC.
 
 - Mỗi kết nối VPN có **hai VPN tunnel** có thể dùng đồng thời để đạt tính sẵn sàng cao.
 - Phía AWS, nó kết thúc ở **virtual private gateway** (gắn với một VPC) hoặc **transit gateway** (dùng chung cho nhiều VPC). Phía bạn là **customer gateway device**, có thể là thiết bị vật lý hoặc phần mềm.
@@ -33,7 +33,7 @@ Hãy nhớ: Client VPN là "con người", Site-to-Site VPN là "địa điểm"
 **AWS Direct Connect** là **kết nối mạng riêng chuyên dụng** từ địa điểm của bạn tới AWS qua một Direct Connect location, không đi qua các nhà cung cấp dịch vụ internet.
 
 - Cho hiệu năng mạng **ổn định** hơn so với đường truyền qua internet.
-- **Không mã hóa mặc định**. Có các cách thêm mã hóa; ví dụ MACsec mã hóa lưu lượng giữa mạng của bạn và điểm kết nối của AWS trên các kết nối chuyên dụng tốc độ cao được hỗ trợ.
+- **Không mã hóa mặc định**. Có các cách thêm mã hóa; ví dụ chạy IPsec VPN trên đó, hoặc dùng MACsec để mã hóa lưu lượng giữa mạng của bạn và điểm kết nối của AWS trên các kết nối chuyên dụng tốc độ cao được hỗ trợ.
 - Bạn cần có mặt tại, hoặc làm việc với đối tác tới được, một Direct Connect location, và phải sắp xếp một đường cross-connect vật lý. Thường mất nhiều thời gian bắt đầu hơn VPN.
 - Bạn trả tiền theo giờ cổng (port hour) và dữ liệu truyền ra.
 - Site-to-Site VPN có thể làm đường dự phòng: nếu bạn cấu hình, lưu lượng tự chuyển sang VPN khi Direct Connect hỏng.

@@ -59,7 +59,7 @@ Cache thường nằm **cạnh** một cơ sở dữ liệu. Nếu câu hỏi c�
 
 ## Amazon MemoryDB
 
-**Amazon MemoryDB** là cơ sở dữ liệu in-memory bền vững, tương thích Valkey và Redis OSS. Nó lưu toàn bộ dữ liệu trong bộ nhớ để đọc ở mức micro giây và ghi ở mức một chữ số mili giây, đồng thời lưu dữ liệu bền vững trên nhiều AZ bằng transactional log Multi-AZ. Chính độ bền này khiến nó có thể là **cơ sở dữ liệu chính** mà không cần quản lý riêng một cache và một cơ sở dữ liệu. Nếu câu hỏi nói "bền vững" và "chính", đó là MemoryDB; nếu nói "cache", đó là ElastiCache.
+**Amazon MemoryDB** là cơ sở dữ liệu in-memory bền vững, tương thích Valkey và Redis OSS. Nó lưu toàn bộ dữ liệu trong bộ nhớ để đọc ở mức micro giây và ghi ở mức một chữ số mili giây, đồng thời lưu dữ liệu bền vững trên nhiều AZ bằng transactional log Multi-AZ. Chính độ bền này khiến nó có thể là **cơ sở dữ liệu chính** mà không cần quản lý riêng một cache và một cơ sở dữ liệu. Nếu câu hỏi nói "bền vững" và "chính", đó là MemoryDB; nếu nói "cache", đó là ElastiCache. (ElastiCache for Valkey 9.0 trở lên dạng node-based có thể tùy chọn bật [durability](https://docs.aws.amazon.com/AmazonElastiCache/latest/dg/Durability.Options.html) với transactional log Multi-AZ, nhưng quy tắc khi thi vẫn không đổi.)
 
 ## Bẫy thường gặp
 

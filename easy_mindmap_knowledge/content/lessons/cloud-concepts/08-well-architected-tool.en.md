@@ -11,7 +11,7 @@ The **AWS Well-Architected Tool** is a service in the AWS Management Console tha
 ## Key concepts
 
 - **Workload**: a collection of resources and code that delivers business value, such as a customer-facing application. It can span several accounts.
-- **Lens**: a set of questions and best practices. The default is the Well-Architected Framework lens (six pillars). Other lenses, for example for serverless or SaaS workloads, and custom lenses you write, focus on specific domains.
+- **Lens**: a set of questions and best practices. The default is the Well-Architected Framework lens (six pillars). The **Lens Catalog** holds official AWS lenses for specific domains, for example serverless or SaaS workloads, and you can also write custom lenses.
 - **Review**: answering the lens questions for your workload.
 - **Risks**: gaps are reported as **high risk issues (HRIs)** or **medium risk issues (MRIs)**, which help you prioritize.
 - **Improvement plan**: guidance with links to resources for each issue found.
@@ -40,6 +40,6 @@ There is no additional charge for the tool. You pay only for the underlying AWS 
 
 ## Sources
 
-- [AWS Well-Architected Tool](https://aws.amazon.com/well-architected-tool/)
+- [Using lenses in the AWS Well-Architected Tool](https://docs.aws.amazon.com/wellarchitected/latest/userguide/lenses.html)
 - [Workloads, AWS Well-Architected Tool User Guide](https://docs.aws.amazon.com/wellarchitected/latest/userguide/workloads.html)
 - [AWS Well-Architected Tool pricing](https://aws.amazon.com/well-architected-tool/pricing/)

@@ -11,18 +11,18 @@ required: true
 
 | Thiết bị | Là gì | Tình trạng |
 | --- | --- | --- |
-| **AWS Snowcone** | Thiết bị biên nhỏ nhất, di động (8 TB HDD hoặc 14 TB SSD khả dụng), cho bộ dữ liệu nhỏ và điện toán biên | Ngừng cung cấp từ 12/11/2024 |
-| **AWS Snowball Edge Storage Optimized** | Dung lượng cục bộ lớn (mẫu hiện tại là 210 TB) để chuyển và lưu dữ liệu | Không còn mở cho khách hàng mới |
+| **AWS Snowcone** | Thiết bị biên nhỏ nhất, di động, cho bộ dữ liệu nhỏ và điện toán biên | Ngừng cung cấp từ 12/11/2024 |
+| **AWS Snowball Edge Storage Optimized** | Dung lượng cục bộ lớn để chuyển và lưu dữ liệu | Không còn mở cho khách hàng mới |
 | **AWS Snowball Edge Compute Optimized** | Sức mạnh tính toán cho workload biên, như chạy instance tương thích EC2 ngay trên thiết bị | Không còn mở cho khách hàng mới |
-| **AWS Snowmobile** | Container do xe đầu kéo chở: tối đa khoảng 100 PB mỗi đơn vị, dùng nhiều đơn vị cho quy mô exabyte | Đã ngừng hoàn toàn từ 14/3/2024 |
+| **AWS Snowmobile** | Container do xe đầu kéo chở, cho các đợt chuyển dữ liệu lớn nhất | Đã ngừng hoàn toàn (hết hỗ trợ 14/3/2024) |
 
 Tình trạng quan trọng khi dùng thực tế, nhưng đề thi vẫn mô tả các dịch vụ này nên bạn cần biết từng loại dùng để làm gì:
 
-- **Snowcone**: nhỏ, bền chắc, di động; dùng ở biên khi ít không gian. Chạy được một số EC2 instance, và AWS DataSync được cài sẵn để truyền trực tuyến.
-- **Snowball Edge**: "con ngựa thồ". **Storage Optimized** (khoảng 210 TB khả dụng mỗi thiết bị, có thể gom cụm) để chuyển từ terabyte đến vài petabyte, **Compute Optimized** để xử lý dữ liệu ở biên trước khi gửi lên AWS.
-- **Snowmobile**: tối đa khoảng 100 PB mỗi đơn vị, cho từ hàng chục petabyte đến exabyte (dùng nhiều đơn vị). Mẹo thi: "hàng chục petabyte trở lên", "exabyte", "di chuyển trung tâm dữ liệu", "xe tải".
+- **Snowcone**: nhỏ, bền chắc, di động; dùng ở biên khi ít không gian.
+- **Snowball Edge**: "con ngựa thồ". **Storage Optimized** để chuyển từ terabyte đến vài petabyte, **Compute Optimized** để xử lý dữ liệu ở biên trước khi gửi lên AWS.
+- **Snowmobile**: cho từ hàng chục petabyte đến exabyte. Mẹo thi: "hàng chục petabyte trở lên", "exabyte", "di chuyển trung tâm dữ liệu", "xe tải".
 
-Thiết bị Snowball Edge mã hóa dữ liệu khi lưu và khi vận chuyển, có thể gom cụm (3 đến 16 thiết bị) để lưu trữ cục bộ, và chạy được instance tương thích EC2 cùng hàm AWS Lambda ngay trên thiết bị. AWS đã công bố chấm dứt hỗ trợ thiết bị Snowball tại các Region thương mại của AWS vào ngày 31/12/2026. Ngày cụ thể khác nhau theo model thiết bị và Region, nên hãy kiểm tra các trang chính thức (gồm danh sách dịch vụ ngừng hoàn toàn trong AWS General Reference) để biết ngày hiện hành.
+**Tình trạng hiện tại.** Snowcone đã ngừng cung cấp từ 12/11/2024 ([AWS Storage Blog](https://aws.amazon.com/blogs/storage/aws-snow-device-updates/)). Trang availability change nêu Snowball Edge không còn dành cho khách hàng mới và AWS không còn cung cấp thiết bị Snow Family nào cho khách hàng mới; khách hàng hiện tại không bị ảnh hưởng. Trang sản phẩm Snowball nêu hỗ trợ thiết bị Snowball tại các Region thương mại của AWS kết thúc ngày 31/12/2026 (khách hàng GovCloud và ADC Region có job đang hoạt động không bị ảnh hưởng), trong khi danh sách dịch vụ ngừng hoàn toàn của AWS General Reference ghi Snowball Edge với ngày 12/11/2025. Các trang của AWS nêu ngày khác nhau; hãy kiểm tra trang availability change.
 
 ## Một job Snow hoạt động thế nào
 
@@ -57,11 +57,11 @@ Dù tình trạng hiện tại ra sao, câu hỏi thi về chuyển dữ liệu 
 
 - Snow Family = thiết bị vật lý cho truyền offline và điện toán biên: Snowcone, Snowball Edge (Storage và Compute Optimized), Snowmobile.
 - Dùng Snow khi mạng quá chậm, đắt hoặc không có; dùng DataSync hoặc Direct Connect khi kết nối tốt.
-- Snowcone và Snowmobile đã ngừng; Snowball Edge đóng với khách hàng mới và hết hỗ trợ ngày 31/12/2026.
+- Snowcone và Snowmobile đã ngừng; Snowball Edge đóng với khách hàng mới, và các trang của AWS nêu ngày hết hỗ trợ khác nhau.
 - Lựa chọn thay thế: DataSync, Data Transfer Terminal, giải pháp Partner, Outposts.
 
 ## Nguồn
 
 - [AWS Snowball Edge availability change](https://docs.aws.amazon.com/snowball/latest/developer-guide/snowball-edge-availability-change.html)
-- [AWS Snowball Edge device hardware information](https://docs.aws.amazon.com/snowball/latest/developer-guide/device-differences.html)
-- [Move exabyte-scale data sets with AWS Snowmobile](https://aws.amazon.com/about-aws/whats-new/2016/11/move-exabyte-scale-data-sets-with-aws-snowmobile/)
+- [AWS Snowball (product page, end-of-support notice)](https://aws.amazon.com/snowball/)
+- [Services in Full Shutdown (AWS General Reference)](https://docs.aws.amazon.com/general/latest/gr/full_shutdown_services.html)

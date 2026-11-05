@@ -18,7 +18,7 @@ This lesson is optional. It covers smaller compute-related services that show up
 
 ## AWS App Runner
 
-**AWS App Runner** deploys a web application or API straight from source code or a container image. It builds, runs, load balances and scales the service for you, with no infrastructure to design. An exam-style question about a managed service that builds and deploys a container from source code points to App Runner. Be aware that AWS has **closed App Runner to new customers**. Existing customers can continue to use it, and AWS recommends Amazon ECS Express Mode as the path for others. Learn the concept for the exam, but do not plan new projects on it.
+**AWS App Runner** deploys a web application or API straight from source code or a container image. It builds, runs, load balances and scales the service for you, with no infrastructure to design. An exam-style question about a managed service that builds and deploys a container from source code points to App Runner. Be aware that AWS has **closed App Runner to new customers**. Per AWS's availability-change page, existing customers can continue to use it as normal, including creating new resources, but no new features are planned, and AWS recommends Amazon ECS Express Mode as the path for others. The AWS General Reference [lists it in the maintenance stage](https://docs.aws.amazon.com/general/latest/gr/maintenance_services.html) (announced March 31, 2026), and the App Runner release notes give April 30, 2026 as the date it stopped accepting new customers. Learn the concept for the exam, but do not plan new projects on it.
 
 ## AWS Cloud Map
 

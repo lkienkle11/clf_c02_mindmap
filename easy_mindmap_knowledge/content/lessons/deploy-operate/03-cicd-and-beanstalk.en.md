@@ -17,7 +17,7 @@ videoQuery: AWS CodePipeline CodeBuild CodeDeploy Elastic Beanstalk blue green d
 
 - **CodeBuild** is fully managed: no build servers to manage, and you pay for the build minutes you use.
 - **CodePipeline** connects the stages: source from CodeCommit or another Git provider, build with CodeBuild, deploy with CodeDeploy, Elastic Beanstalk or CloudFormation.
-- **CodeCommit** was closed to new customers in 2024, then returned to general availability in November 2025.
+- **CodeCommit**: AWS announced in July 2024 that it was de-emphasizing it, then returned it to general availability on 24 November 2025, with new-customer sign-ups open again.
 
 ## AWS Elastic Beanstalk
 
@@ -32,7 +32,7 @@ videoQuery: AWS CodePipeline CodeBuild CodeDeploy Elastic Beanstalk blue green d
 | Blue/green | Run the new version (green) next to the old one (blue), then switch traffic | Fast, safe rollback by switching back; costs extra resources for a while |
 | Canary | Send a small share of traffic to the new version first, then the rest | Problems affect only a few users |
 
-CodeDeploy supports in-place (one batch at a time or all at once, depending on the deployment configuration) and blue/green deployments; for Lambda and ECS it can shift traffic as **canary**, **linear** or **all at once**. Elastic Beanstalk offers policies such as all at once, rolling, immutable and **traffic splitting** (a canary method).
+CodeDeploy supports in-place (one batch at a time or all at once, depending on the deployment configuration) and blue/green (EC2 only) deployments; for Lambda and ECS it can shift traffic as **canary**, **linear** or **all at once**. Elastic Beanstalk offers policies such as all at once, rolling, immutable and **traffic splitting** (a canary method).
 
 ## Common traps
 

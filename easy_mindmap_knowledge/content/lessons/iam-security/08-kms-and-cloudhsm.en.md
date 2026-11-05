@@ -15,7 +15,7 @@ videoQuery: AWS KMS customer managed vs AWS managed keys vs CloudHSM explained
 - KMS keys are protected by hardware security modules validated at **FIPS 140-3 Security Level 3**, and they never leave KMS unencrypted.
 - Many services use KMS to encrypt data at rest, including **Amazon S3, Amazon EBS and Amazon RDS**. "Which service integrates with other services to encrypt data at rest" or "encryption for an EBS volume" means KMS.
 - Access is controlled by the **key policy**, together with IAM policies and grants. A customer managed key's policy is controlled only by you.
-- Every use of a key can be recorded in **AWS CloudTrail**, so you can audit who used it.
+- Every use of a customer managed or AWS managed key can be recorded in **AWS CloudTrail**, so you can audit who used it. Use of AWS owned keys is not visible to you.
 
 ## Key types
 

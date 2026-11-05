@@ -16,11 +16,11 @@ It offers three ways to collect data:
 
 | Method | How it works | What it sees |
 | --- | --- | --- |
-| **Agentless Collector** | A virtual appliance deployed in VMware vCenter | Hostnames, IP and MAC addresses, disk allocation, average and peak CPU, RAM and disk I/O; database engine details; limited network data (TCP connections) |
-| **Discovery Agent** | Installed on each Windows or Linux server, virtual or physical | The above plus detailed performance over time, running processes and fuller network connection data |
+| **Agentless Collector** | A virtual appliance deployed in VMware vCenter | Hostnames, IP and MAC addresses, disk allocation, average and peak CPU, RAM and disk I/O; database engine details; no running processes, and little or no network-connection data (AWS pages differ) |
+| **Discovery Agent** | Installed on each Windows or Linux server, virtual or physical | The above plus detailed performance over time, running processes and inbound and outbound network connections |
 | **File-based import** | Upload an inventory file | Whatever the file contains |
 
-The trade-off is breadth against depth. The collector covers many VMs without touching each one, but it cannot look inside a VM for running processes and gives only limited network data. The agent shows processes and dependencies, which helps you decide which servers must move together. Discovered data is stored in the **Migration Hub home Region**, and can be exported to estimate AWS costs.
+The trade-off is breadth against depth. The collector covers many VMs without touching each one, but it cannot look inside a VM for running processes or reliably see its network connections. The agent shows processes and dependencies, which helps you decide which servers must move together. Discovered data is stored in the **Migration Hub home Region**, and can be exported to estimate AWS costs.
 
 **Status:** AWS closed Application Discovery Service to new customers on November 7, 2025. Existing customers can keep using it, and AWS recommends **AWS Transform** for new discovery projects. Exam questions may still list it as the answer for inventory and dependency discovery.
 

@@ -10,7 +10,7 @@ The hybrid lesson introduced Site-to-Site VPN and Direct Connect. This lesson ad
 
 ## AWS Site-to-Site VPN
 
-**AWS Site-to-Site VPN** (called **AWS VPN** in some exam wording, and AWS Managed VPN in older material) creates an encrypted IPsec connection between your network and your VPC.
+**AWS Site-to-Site VPN** (called **AWS VPN** in some exam wording, which is also the umbrella name for Site-to-Site VPN and Client VPN, and AWS Managed VPN in older material) creates an encrypted IPsec connection between your network and your VPC.
 
 - Each VPN connection has **two VPN tunnels** that you can use at the same time for high availability.
 - On the AWS side it ends at a **virtual private gateway** (attached to a single VPC) or at a **transit gateway** (shared by many VPCs). On your side it ends at a **customer gateway device**, which can be a physical appliance or software.
@@ -34,7 +34,7 @@ Think "people" for Client VPN and "sites" for Site-to-Site VPN.
 **AWS Direct Connect** is a **dedicated private network connection** from your location to AWS through a Direct Connect location. It bypasses internet service providers in the path.
 
 - It gives more **consistent network performance** than internet-based links.
-- It is **not encrypted by default**. Options exist to add encryption; for example MACsec encrypts traffic between your network and the AWS connection point on supported high-speed dedicated connections.
+- It is **not encrypted by default**. Options exist to add encryption; for example run an IPsec VPN over it, or use MACsec between your network and the AWS connection point on supported high-speed dedicated connections.
 - You need to be in, or work with a partner who reaches, a Direct Connect location, and a physical cross-connect has to be arranged. It usually takes longer to get started than a VPN.
 - You pay for port hours and outbound data transfer.
 - A Site-to-Site VPN can serve as a backup: if you configure one, traffic fails over to the VPN when Direct Connect is down.

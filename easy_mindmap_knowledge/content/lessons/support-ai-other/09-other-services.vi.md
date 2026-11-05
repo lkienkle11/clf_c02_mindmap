@@ -29,7 +29,7 @@ Trong thiết kế **tách rời (decoupled, loosely coupled)**, các phần c�
 
 ## Dịch vụ doanh nghiệp, IoT và frontend
 
-- **Amazon Connect**: **trung tâm liên lạc (contact center)** trên đám mây.
+- **Amazon Connect** (nay tên là Amazon Connect Customer): **trung tâm liên lạc (contact center)** trên đám mây.
 - **Amazon SES**: gửi **email marketing, thông báo và giao dịch**.
 - **AWS IoT Core**: kết nối **thiết bị IoT** và chuyển thông điệp của chúng tới các dịch vụ AWS.
 - **AWS Amplify**: xây dựng, triển khai và host **ứng dụng web và mobile**.

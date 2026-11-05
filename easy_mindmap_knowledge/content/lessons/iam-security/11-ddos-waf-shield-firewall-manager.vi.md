@@ -22,7 +22,7 @@ Tấn công DDoS cố làm ngập một mục tiêu để người dùng hợp l
 - Amazon CloudFront distribution, Route 53 hosted zone, Global Accelerator standard accelerator, Elastic IP address của EC2, cùng Application Load Balancer và Classic Load Balancer.
 - Bảo vệ mở rộng trước tấn công ở tầng mạng, tầng giao vận và **tầng ứng dụng**, kèm giảm thiểu tự động ở tầng ứng dụng có dùng AWS WAF.
 - **Số liệu và báo cáo thời gian thực** về các cuộc tấn công, qua console, API và CloudWatch.
-- **Shield Response Team (SRT)**, liên hệ được bất cứ lúc nào khi đang bị tấn công, nếu bạn còn có gói hỗ trợ Business hoặc Enterprise. Đề thi có thể gọi là "DDoS response team" hoặc "DRT".
+- **Shield Response Team (SRT)**, liên hệ được bất cứ lúc nào khi đang bị tấn công, nếu bạn còn có gói hỗ trợ Business hoặc Enterprise (tên các gói đang thay đổi; xem bài về các gói hỗ trợ). Đề thi có thể gọi là "DDoS response team" hoặc "DRT".
 - **Bảo vệ chi phí (cost protection)** trước khoản hóa đơn tăng vọt do tấn công, dưới dạng tín dụng dịch vụ Shield Advanced.
 - Phí AWS WAF tiêu chuẩn được chi trả cho các tài nguyên nó bảo vệ, và policy Shield Advanced của Firewall Manager không tính thêm phí.
 

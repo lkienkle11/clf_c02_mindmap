@@ -35,7 +35,7 @@ Root user có toàn quyền với tài khoản, và bạn không thể giới h�
 
 - Bật MFA, **không tạo access key**, và không chia sẻ nó.
 - Mỗi tài khoản chỉ có một root user. Hãy tạo quản trị viên IAM Identity Center hoặc IAM cho công việc hằng ngày.
-- Chỉ chủ tài khoản quản lý access key của root user.
+- Với tài khoản độc lập, chỉ chủ tài khoản quản lý access key của root user (AWS Organizations có thể xóa tập trung thông tin xác thực root của tài khoản thành viên).
 - Trong AWS Organizations, bạn có thể gỡ thông tin đăng nhập root khỏi các tài khoản thành viên một cách tập trung.
 
 Những tác vụ cần thông tin đăng nhập root gồm:
@@ -56,7 +56,7 @@ Những tác vụ cần thông tin đăng nhập root gồm:
 | **IAM Access Advisor** (thông tin truy cập gần nhất) | Với một user, group, role hoặc policy: dịch vụ (và một số hành động) nào được dùng lần cuối, để bạn gỡ quyền không dùng |
 | **IAM Access Analyzer** | Phát hiện (finding) về tài nguyên được chia sẻ cho thực thể bên ngoài hoặc công khai, như S3 bucket, IAM role và KMS key; còn có phân tích quyền không dùng, kiểm tra policy và tạo policy |
 
-Đề thi viết nhiều kiểu: "AWS IAM Access Analyzer" và "AWS Identity and Access Management Access Analyzer" là cùng một tính năng. Phân tích truy cập bên ngoài của nó miễn phí, nhưng phân tích quyền không dùng và kiểm tra policy tùy chỉnh thì tính phí. Nó hoạt động theo từng Region, nên hãy bật một analyzer ở mỗi Region bạn dùng.
+Đề thi viết nhiều kiểu: "AWS IAM Access Analyzer" và "AWS Identity and Access Management Access Analyzer" là cùng một tính năng. Phân tích truy cập bên ngoài của nó miễn phí, nhưng phân tích quyền không dùng và kiểm tra policy tùy chỉnh thì tính phí. Phân tích truy cập bên ngoài hoạt động theo từng Region, nên hãy bật analyzer đó ở mỗi Region bạn dùng.
 
 **AWS Trusted Advisor** cũng có các kiểm tra bảo mật, ví dụ IAM access key chưa xoay vòng trong 90 ngày, MFA cho root user, IAM password policy và access key bị lộ.
 

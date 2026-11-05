@@ -15,7 +15,7 @@ Git repo    CodeBuild           CodeDeploy, Elastic Beanstalk hoặc CloudFormat
             mọi giai đoạn được CodePipeline sắp thứ tự và tự động hóa
 ```
 
-Một pipeline gồm các **stage**, mỗi stage chứa các **action** thuộc loại source, build, test, deploy, approval hoặc invoke. Một commit mới có thể kích hoạt pipeline, nên việc phát hành chạy mà không cần thao tác thủ công. Một số công cụ trong bài này đã đổi trạng thái khả dụng, hãy đọc kỹ phần trạng thái.
+Một pipeline gồm các **stage**, mỗi stage chứa các **action** thuộc loại source, build, test, deploy, approval hoặc invoke. Một commit mới có thể kích hoạt pipeline, nên việc phát hành chạy mà không cần thao tác thủ công. Một số công cụ trong bài này đã đổi trạng thái khả dụng, hãy đọc kỹ phần ghi chú về trạng thái bên dưới bảng.
 
 | Dịch vụ | Mục đích một dòng | Gợi ý trong đề thi |
 | --- | --- | --- |
@@ -31,7 +31,7 @@ Một pipeline gồm các **stage**, mỗi stage chứa các **action** thuộc 
 ## Bộ ba cốt lõi
 
 - **CodeBuild** không có máy chủ nào để bạn cấp phát, vá hay co giãn. Nó tự co giãn theo nhu cầu và bạn chỉ trả tiền theo **số phút build** đã dùng.
-- **CodeDeploy** triển khai nội dung ứng dụng lấy từ S3 hoặc kho Git. Với EC2 và máy chủ tại chỗ, nó hỗ trợ triển khai **in-place** và **blue/green**, có agent chạy trên từng máy chủ. Với Lambda và Amazon ECS, lưu lượng được chuyển theo kiểu **canary**, **linear** hoặc **all at once**. Nó có thể dừng và rollback khi gặp lỗi.
+- **CodeDeploy** triển khai nội dung ứng dụng lấy từ S3 hoặc kho Git. Với EC2 instance, nó hỗ trợ triển khai **in-place** và **blue/green**, còn máy chủ tại chỗ chỉ hỗ trợ in-place, và mỗi máy chủ chạy một agent. Với Lambda và Amazon ECS, lưu lượng được chuyển theo kiểu **canary**, **linear** hoặc **all at once**. Nó có thể dừng và rollback khi gặp lỗi.
 - **CodePipeline** tự nó không biên dịch hay triển khai. Nó gọi CodeBuild, CodeDeploy, Elastic Beanstalk, CloudFormation và các nhà cung cấp khác, và có thể chèn một action phê duyệt thủ công.
 
 ## CodeArtifact
@@ -42,7 +42,7 @@ Một pipeline gồm các **stage**, mỗi stage chứa các **action** thuộc 
 
 AWS đã thay đổi tình trạng khả dụng của một vài công cụ lập trình viên. Đề thi có thể vẫn coi chúng như bình thường, nên hãy biết cả mục đích lẫn trạng thái.
 
-- **AWS CodeCommit:** AWS đã ngừng nhận khách hàng mới vào năm 2024. Ngày 24/11/2025, AWS thông báo CodeCommit trở lại trạng thái general availability, việc đăng ký của khách hàng mới được mở lại.
+- **AWS CodeCommit:** Tháng 7/2024 AWS thông báo giảm trọng tâm vào CodeCommit. Ngày 24/11/2025, AWS thông báo CodeCommit trở lại trạng thái general availability, việc đăng ký của khách hàng mới được mở lại.
 - **AWS CodeStar:** AWS liệt kê CodeStar trong bảng "Services in Full Shutdown" với ngày kết thúc hỗ trợ là 25/7/2024. Đây là dịch vụ tạo ra một dự án có sẵn kho mã, build và pipeline triển khai. Có thể tự dựng một chuỗi tương đương từ CodePipeline, CodeBuild và CodeDeploy. Câu hỏi về "triển khai nhanh CI/CD" vẫn có thể lấy CodeStar làm đáp án, nên hãy nhận ra cái tên này.
 - **AWS Cloud9:** AWS xếp nó vào nhóm dịch vụ ở chế độ maintenance và không còn mở cho khách hàng mới; khách hàng hiện tại vẫn dùng tiếp được. Hướng dẫn di chuyển của AWS trỏ tới AWS IDE Toolkits hoặc AWS CloudShell.
 - **Amazon CodeGuru Reviewer:** dịch vụ này cũng ở chế độ maintenance. Từ 7/11/2025 bạn không thể tạo thêm repository association mới, và AWS gợi ý Amazon Q Developer cùng Amazon Inspector cho việc phân tích mã tương tự. **CodeGuru Profiler** thu thập dữ liệu lúc chạy từ ứng dụng đang hoạt động và gợi ý nơi giảm mức dùng CPU và chi phí; nó không nằm trong danh sách maintenance.

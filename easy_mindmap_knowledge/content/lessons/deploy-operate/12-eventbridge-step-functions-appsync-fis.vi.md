@@ -10,7 +10,7 @@ Bài về nhắn tin đã nói về hàng đợi và topic. Bài này nói về 
 
 ## Amazon EventBridge
 
-**Amazon EventBridge** là dịch vụ serverless kết nối các thành phần ứng dụng thông qua **event**. Nó là bước phát triển tiếp theo của **Amazon CloudWatch Events**: tài liệu AWS mô tả hai tên này là cùng một dịch vụ và cùng một API bên dưới, EventBridge chỉ thêm nhiều tính năng hơn, nên tài liệu cũ có thể vẫn ghi CloudWatch Events.
+**Amazon EventBridge** là dịch vụ serverless kết nối các thành phần ứng dụng thông qua **event**. Nó là bước phát triển tiếp theo của **Amazon CloudWatch Events**: [tài liệu AWS](https://docs.aws.amazon.com/eventbridge/latest/userguide/eb-cwe-now-eb.html) mô tả hai tên này là cùng một dịch vụ và cùng một API bên dưới, EventBridge chỉ thêm nhiều tính năng hơn, nên tài liệu cũ có thể vẫn ghi CloudWatch Events.
 
 - Một **event bus** nhận event từ dịch vụ AWS, ứng dụng của bạn và đối tác SaaS. **Rule** so khớp event và gửi tới các **target**, như hàm Lambda, hàng đợi SQS hay topic SNS.
 - **EventBridge Pipes** nối một nguồn với một đích, kèm tùy chọn biến đổi và làm giàu dữ liệu.
@@ -25,7 +25,7 @@ Ví dụ điển hình: khi một EC2 instance chuyển sang trạng thái "stop
 | Loại workflow | Chạy tối đa | Thực thi | Phù hợp với |
 | --- | --- | --- | --- |
 | Standard | Tới một năm | Mỗi bước đúng một lần | Workflow chạy lâu, cần kiểm toán |
-| Express | Tới năm phút | Ít nhất một lần | Xử lý event tốc độ cao, như dữ liệu streaming và thu nhận IoT |
+| Express | Tới năm phút | Ít nhất một lần nếu bất đồng bộ, tối đa một lần nếu đồng bộ | Xử lý event tốc độ cao, như dữ liệu streaming và thu nhận IoT |
 
 Chọn Step Functions để **điều phối** nhiều dịch vụ theo thứ tự, có xử lý lỗi và rẽ nhánh, thay vì nối chúng bằng mã tự viết. Workflow Standard tính tiền theo số lần chuyển state; Express tính theo số lần và thời lượng thực thi.
 
@@ -62,7 +62,7 @@ Chọn Step Functions để **điều phối** nhiều dịch vụ theo thứ t�
 ## Ý chính
 
 - EventBridge định tuyến event từ nguồn tới target bằng rule và lên lịch tác vụ; trước đây nó là CloudWatch Events.
-- Step Functions phối hợp workflow: Standard (tới một năm, đúng một lần) và Express (tới năm phút, ít nhất một lần).
+- Step Functions phối hợp workflow: Standard (tới một năm, đúng một lần) và Express (tới năm phút, ít nhất một lần khi bất đồng bộ).
 - AppSync là GraphQL được quản lý với subscription thời gian thực.
 - AWS Fault Injection Service chạy thí nghiệm chèn lỗi với stop condition là CloudWatch alarm.
 

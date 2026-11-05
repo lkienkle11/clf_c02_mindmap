@@ -23,7 +23,7 @@ Exam pointer: "log information about inbound and outbound traffic on network int
 
 ## Traffic Mirroring
 
-**Traffic Mirroring** copies network traffic from a network interface to out-of-band security and monitoring appliances for content inspection, threat monitoring and troubleshooting. Flow Logs show metadata about flows; mirroring gives the packets themselves to your tools. You pay per active mirror session hour. It is rarely the answer, but it appears among the options in some questions.
+**Traffic Mirroring** copies network traffic from a network interface to out-of-band security and monitoring appliances for content inspection, threat monitoring and troubleshooting. Flow Logs show metadata about flows; mirroring gives the packets themselves to your tools. For pricing, see the Amazon VPC pricing page. It is rarely the answer, but it appears among the options in some questions.
 
 ## AWS Network Firewall
 

@@ -6,7 +6,7 @@ required: true
 ## Bảo vệ cửa trước
 
 - **AWS Shield Standard** tự động bảo vệ **mọi khách hàng AWS, không tính thêm phí**, trước các cuộc tấn công **DDoS** phổ biến nhất ở tầng mạng và tầng giao vận.
-- **AWS Shield Advanced** là **gói đăng ký trả phí**, bảo vệ DDoS mở rộng cho các tài nguyên bạn chọn, như Elastic IP address của EC2, load balancer, CloudFront, Global Accelerator và Route 53. Nó bổ sung quyền liên hệ 24/7 với **Shield Response Team** (khi có gói hỗ trợ Business hoặc Enterprise) và **bảo vệ chi phí (cost protection)** cho các khoản phí mở rộng quy mô do tấn công gây ra.
+- **AWS Shield Advanced** là **gói đăng ký trả phí**, bảo vệ DDoS mở rộng cho các tài nguyên bạn chọn, như Elastic IP address của EC2, load balancer, CloudFront, Global Accelerator và Route 53. Nó bổ sung quyền liên hệ 24/7 với **Shield Response Team** (khi có gói hỗ trợ Business hoặc Enterprise; tên các gói đang thay đổi, xem bài về các gói hỗ trợ) và **bảo vệ chi phí (cost protection)** cho các khoản phí mở rộng quy mô do tấn công gây ra.
 - **AWS WAF** là **tường lửa ứng dụng web** cho các yêu cầu HTTP(S). Bạn gắn một **web ACL** gồm các rule vào CloudFront, Application Load Balancer, API Gateway và các tài nguyên được hỗ trợ khác. Rule có thể chặn **SQL injection**, **cross-site scripting**, các địa chỉ IP hoặc quốc gia cụ thể, và lượng yêu cầu dồn dập từ một nguồn.
 
 ## Tìm vấn đề bên trong tài khoản

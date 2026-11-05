@@ -42,7 +42,7 @@ Root user cần được nhắc riêng. Đây là danh tính đầu tiên của 
 | **IAM role** gắn vào instance và quyền của chúng | Khách hàng |
 | Dữ liệu trên instance và các lựa chọn mã hóa | Khách hàng |
 
-Tài liệu EC2 của AWS liệt kê trực tiếp các việc của khách hàng: kiểm soát truy cập mạng bằng VPC và security group, quản lý thông tin xác thực kết nối, quản lý hệ điều hành guest cùng phần mềm trên đó (gồm bản vá), và cấu hình IAM role gắn vào instance.
+Trang shared responsibility của AWS liệt kê các việc chính của khách hàng với EC2: quản lý hệ điều hành guest gồm cập nhật và bản vá bảo mật, phần mềm bạn cài, firewall security group trên từng instance, và quyền IAM.
 
 ## Đọc bảng này khi làm bài thi
 

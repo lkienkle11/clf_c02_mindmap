@@ -17,7 +17,7 @@ Application Migration Service sao chép cả máy chủ. Tệp và database có 
 - Dùng cho di chuyển một lần hàng triệu tệp, sao chép định kỳ và lưu trữ dữ liệu lạnh.
 - Giá: tính theo gigabyte dữ liệu được sao chép, cộng phí thông thường cho phần lưu trữ bạn dùng.
 
-**Lựa chọn ngoại tuyến:** khi mạng quá chậm hoặc không có, các thiết bị vật lý của họ AWS Snow được gửi đến tận nơi để chuyển dữ liệu offline. Trạng thái hiện tại của Snow nằm trong chủ đề lưu trữ.
+**Lựa chọn ngoại tuyến:** khi mạng quá chậm hoặc không có, các thiết bị vật lý của họ AWS Snow được gửi đến tận nơi để chuyển dữ liệu offline. Snowball Edge không còn dành cho khách hàng mới, và AWS hướng khách hàng mới đến DataSync hoặc AWS Data Transfer Terminal; các trang của AWS nêu ngày hết hỗ trợ khác nhau, nên hãy xem bài Snow Family trong chủ đề lưu trữ.
 
 ## AWS Database Migration Service (AWS DMS)
 

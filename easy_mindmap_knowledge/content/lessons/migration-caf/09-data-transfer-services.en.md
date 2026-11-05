@@ -18,7 +18,7 @@ Application Migration Service copies whole servers. Files and databases have the
 - Use it for one-time migrations of millions of files, recurring replication, and archiving cold data.
 - Pricing: a per-gigabyte charge for data copied, plus normal charges for the storage you use.
 
-**Offline alternative:** when the network is too slow or unavailable, shipped devices from the AWS Snow family move data physically. Snow's current status is covered in the storage topic.
+**Offline alternative:** when the network is too slow or unavailable, shipped devices from the AWS Snow family move data physically. Snowball Edge is closed to new customers, and AWS points new customers to DataSync or AWS Data Transfer Terminal; AWS pages give different end-of-support dates, so see the Snow Family lesson in the storage topic.
 
 ## AWS Database Migration Service (AWS DMS)
 

@@ -14,7 +14,7 @@ videoQuery: Amazon CloudWatch metrics alarms logs dashboards CloudWatch agent ex
 
 - Nhiều dịch vụ AWS gửi metric miễn phí, ví dụ EC2, EBS và RDS.
 - Metric chỉ tồn tại trong Region nơi chúng được tạo và được giữ tối đa **15 tháng**; dữ liệu cũ dần được gộp thành chu kỳ thô hơn.
-- Dịch vụ AWS gửi ở **độ phân giải chuẩn** (mỗi phút một điểm). **Custom metric** của bạn có thể có độ phân giải cao, xuống tới một giây.
+- Dịch vụ AWS gửi ở **độ phân giải chuẩn** (mỗi phút một điểm; giám sát cơ bản của EC2 là ngoại lệ, xem bên dưới). **Custom metric** của bạn có thể có độ phân giải cao, xuống tới một giây.
 
 ### Giám sát mặc định và giám sát chi tiết cho EC2
 

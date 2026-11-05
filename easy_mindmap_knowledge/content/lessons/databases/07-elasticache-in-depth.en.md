@@ -59,7 +59,7 @@ A cache usually sits **next to** a database. If a question asks for the *data st
 
 ## Amazon MemoryDB
 
-**Amazon MemoryDB** is a durable, in-memory database compatible with Valkey and Redis OSS. It stores all data in memory for microsecond reads and single-digit millisecond writes, and it keeps data durably across several AZs with a Multi-AZ transactional log. That durability is why it can be a **primary database** with no separate cache and database to manage. If the question says "durable" and "primary", it is MemoryDB; if it says "cache", it is ElastiCache.
+**Amazon MemoryDB** is a durable, in-memory database compatible with Valkey and Redis OSS. It stores all data in memory for microsecond reads and single-digit millisecond writes, and it keeps data durably across several AZs with a Multi-AZ transactional log. That durability is why it can be a **primary database** with no separate cache and database to manage. If the question says "durable" and "primary", it is MemoryDB; if it says "cache", it is ElastiCache. (Node-based ElastiCache for Valkey 9.0 and later can optionally enable [durability](https://docs.aws.amazon.com/AmazonElastiCache/latest/dg/Durability.Options.html) with a Multi-AZ transactional log, but the exam rule stays the same.)
 
 ## Common traps
 

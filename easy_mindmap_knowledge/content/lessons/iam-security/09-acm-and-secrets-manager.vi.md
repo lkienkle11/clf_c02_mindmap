@@ -13,7 +13,7 @@ required: true
 
 - Bạn có thể để ACM **cấp (issue)** một chứng chỉ, hoặc **nhập (import)** chứng chỉ từ bên thứ ba. Chứng chỉ công khai được xác thực bằng cách chứng minh bạn kiểm soát tên miền, ví dụ qua một bản ghi DNS.
 - Chứng chỉ từ ACM triển khai thẳng tới các **dịch vụ tích hợp**: **Elastic Load Balancing**, **Amazon CloudFront**, **Amazon API Gateway**, AWS Elastic Beanstalk và nhiều dịch vụ khác. Đó là đáp án cho "cấp chứng chỉ cho load balancer".
-- **Việc gia hạn được quản lý** với chứng chỉ do ACM cấp, nên website không ngừng hoạt động vì chứng chỉ hết hạn. Chứng chỉ nhập vào thì không được gia hạn giúp bạn.
+- **Việc gia hạn được quản lý** với chứng chỉ công khai do ACM cấp và xác thực bằng DNS, nên website không ngừng hoạt động vì chứng chỉ hết hạn. Chứng chỉ nhập vào và chứng chỉ cấp qua API IssueCertificate của AWS Private CA thì ACM không gia hạn.
 - **Giá:** chứng chỉ công khai dùng với các dịch vụ tích hợp không tính phí chứng chỉ; bạn chỉ trả cho các tài nguyên chạy ứng dụng. Chứng chỉ riêng tư đến từ **AWS Private CA**, có bảng giá riêng.
 - Chứng chỉ ACM mang tính **theo Region**: chứng chỉ cho load balancer ở một Region không tồn tại ở Region khác, và chứng chỉ cho CloudFront phải được yêu cầu ở US East (N. Virginia).
 

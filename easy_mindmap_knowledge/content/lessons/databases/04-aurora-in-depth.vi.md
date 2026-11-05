@@ -29,7 +29,7 @@ Hãy chọn nó cho workload **biến động hoặc khó đoán**, ứng dụng
 
 ## Aurora Global Database
 
-Một **Aurora global database** trải trên nhiều Region: một **Region chính** nhận mọi thao tác ghi, và tối đa **10 Region phụ chỉ đọc** nhận dữ liệu qua lớp lưu trữ, với độ trễ sao chép thường dưới một giây. Dùng nó cho:
+Một **Aurora global database** trải trên nhiều Region: một **Region chính** nhận mọi thao tác ghi, và tối đa **10 Region phụ chỉ đọc** nhận dữ liệu qua lớp lưu trữ, với độ trễ sao chép thường dưới một giây. Cụm phụ có thể tùy chọn chuyển tiếp các câu lệnh ghi lên cụm chính (write forwarding). Dùng nó cho:
 
 - **Đọc tại chỗ** cho người dùng khắp thế giới.
 - **Khôi phục thảm họa**: nếu Region chính gặp sự cố, bạn có thể nhanh chóng failover sang một Region phụ.

@@ -14,7 +14,7 @@ A **TLS certificate** proves a website's identity and enables HTTPS (encryption 
 
 - You can have ACM **issue** a certificate, or **import** one from a third party. Public certificates are validated by proving you control the domain, for example through a DNS record.
 - Certificates from ACM deploy directly to **integrated services**: **Elastic Load Balancing**, **Amazon CloudFront**, **Amazon API Gateway**, AWS Elastic Beanstalk and others. That is the "provision a certificate for the load balancer" answer.
-- **Renewal is managed** for certificates ACM issues, so a site does not go down because a certificate expired. Imported certificates are not renewed for you.
+- **Renewal is managed** for public certificates ACM issues with DNS validation, so a site does not go down because a certificate expired. Imported certificates and certificates issued through the AWS Private CA IssueCertificate API are not renewed by ACM.
 - **Price:** public certificates used with integrated services have no certificate charge; you pay only for the resources that run your application. Private certificates come from **AWS Private CA**, which has its own pricing.
 - ACM certificates are **Regional**: a certificate for a load balancer in one Region does not exist in another, and a certificate for CloudFront must be requested in US East (N. Virginia).
 

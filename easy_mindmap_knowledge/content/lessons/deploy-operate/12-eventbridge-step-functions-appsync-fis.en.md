@@ -10,7 +10,7 @@ The messaging lesson covered queues and topics. This lesson covers four other se
 
 ## Amazon EventBridge
 
-**Amazon EventBridge** is a serverless service that connects application components through **events**. It is the evolution of **Amazon CloudWatch Events**: AWS documentation describes them as the same underlying service and API, with EventBridge adding more features, so older material may still say CloudWatch Events.
+**Amazon EventBridge** is a serverless service that connects application components through **events**. It is the evolution of **Amazon CloudWatch Events**: [AWS documentation](https://docs.aws.amazon.com/eventbridge/latest/userguide/eb-cwe-now-eb.html) describes them as the same underlying service and API, with EventBridge adding more features, so older material may still say CloudWatch Events.
 
 - An **event bus** receives events from AWS services, your own applications and SaaS partners. **Rules** match events and send them to **targets**, such as a Lambda function, an SQS queue or an SNS topic.
 - **EventBridge Pipes** connect one source to one target, with optional transformation and enrichment.
@@ -25,7 +25,7 @@ Typical example: when an EC2 instance enters the "stopping" state, an EventBridg
 | Workflow type | Runs for | Execution | Good for |
 | --- | --- | --- | --- |
 | Standard | Up to one year | Each step exactly once | Long-running, auditable workflows |
-| Express | Up to five minutes | At least once | High-rate event processing, such as streaming data and IoT ingestion |
+| Express | Up to five minutes | At least once if asynchronous, at most once if synchronous | High-rate event processing, such as streaming data and IoT ingestion |
 
 Choose Step Functions to **orchestrate** several services in order, with error handling and branching, instead of chaining them with custom code. Standard workflows are priced by state transitions; Express workflows by number and duration of executions.
 
@@ -62,7 +62,7 @@ Choose Step Functions to **orchestrate** several services in order, with error h
 ## Key points
 
 - EventBridge routes events from sources to targets by rules, and schedules tasks; it was CloudWatch Events.
-- Step Functions coordinates workflows: Standard (up to one year, exactly once) and Express (up to five minutes, at least once).
+- Step Functions coordinates workflows: Standard (up to one year, exactly once) and Express (up to five minutes, at least once when asynchronous).
 - AppSync is managed GraphQL with real-time subscriptions.
 - AWS Fault Injection Service runs fault experiments with CloudWatch-alarm stop conditions.
 

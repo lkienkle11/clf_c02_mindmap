@@ -43,7 +43,7 @@ The root user deserves special mention. It is the first identity of an AWS accou
 | **IAM roles** attached to the instance and their permissions | Customer |
 | Your data on the instance and its encryption choices | Customer |
 
-The AWS documentation for EC2 lists these customer tasks directly: controlling network access with VPC and security groups, managing the connection credentials, managing the guest operating system and its software including patches, and configuring the IAM roles attached to the instance.
+The AWS shared responsibility page lists the main customer tasks for EC2: managing the guest operating system including updates and security patches, the software you install, the security group firewall on each instance, and IAM permissions.
 
 ## Reading the table in an exam
 

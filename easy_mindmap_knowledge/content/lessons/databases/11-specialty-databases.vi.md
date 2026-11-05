@@ -38,7 +38,7 @@ Join quan hệ qua các mối quan hệ sâu thì chậm và phức tạp; cơ s
 
 **Amazon QLDB** là **cơ sở dữ liệu sổ cái (ledger)**: cơ sở dữ liệu serverless, được quản lý hoàn toàn, có **nhật ký giao dịch (journal) bất biến và xác minh được bằng mật mã**, nên bản ghi không thể bị âm thầm sửa hoặc xóa. Nó được thiết kế cho các hệ thống ghi nhận gốc cần một lịch sử đầy đủ, đáng tin cậy về mọi thay đổi.
 
-- Trạng thái: tài liệu AWS nêu rằng khách hàng hiện có chỉ dùng được QLDB [đến khi hết hỗ trợ vào ngày 31/07/2025](https://docs.aws.amazon.com/prescriptive-guidance/latest/modern-data-centric-use-cases/data-preparation-cleaning.html), và AWS đã công bố hướng dẫn di chuyển một ledger QLDB sang **Amazon Aurora PostgreSQL**. Mốc đó đã qua, nên đừng lên kế hoạch thiết kế mới dựa trên QLDB. Câu hỏi thi vẫn có thể mô tả "cơ sở dữ liệu ledger" hoặc "lịch sử bất biến, xác minh được" và mong đợi khái niệm QLDB.
+- Trạng thái: AWS General Reference liệt kê QLDB trong [Services in Full Shutdown](https://docs.aws.amazon.com/general/latest/gr/full_shutdown_services.html) với ngày hết hỗ trợ 31/07/2025, và AWS đã công bố hướng dẫn di chuyển một ledger QLDB sang **Amazon Aurora PostgreSQL**. Mốc đó đã qua, nên đừng lên kế hoạch thiết kế mới dựa trên QLDB. Câu hỏi thi vẫn có thể mô tả "cơ sở dữ liệu ledger" hoặc "lịch sử bất biến, xác minh được" và mong đợi khái niệm QLDB.
 
 ## Cơ sở dữ liệu nào cho workload nào?
 

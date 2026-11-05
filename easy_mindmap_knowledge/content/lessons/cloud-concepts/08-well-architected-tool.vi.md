@@ -10,7 +10,7 @@ required: false
 ## Khái niệm chính
 
 - **Workload**: tập hợp tài nguyên và mã nguồn tạo ra giá trị kinh doanh, ví dụ một ứng dụng hướng đến khách hàng. Nó có thể trải trên nhiều tài khoản.
-- **Lens**: một bộ câu hỏi và thực hành tốt nhất. Mặc định là lens Well-Architected Framework (sáu trụ cột). Các lens khác, ví dụ cho workload serverless hoặc SaaS, và lens tùy chỉnh do bạn viết, tập trung vào từng lĩnh vực cụ thể.
+- **Lens**: một bộ câu hỏi và thực hành tốt nhất. Mặc định là lens Well-Architected Framework (sáu trụ cột). **Lens Catalog** chứa các lens chính thức của AWS cho từng lĩnh vực cụ thể, ví dụ workload serverless hoặc SaaS, và bạn cũng có thể tự viết lens tùy chỉnh.
 - **Review**: trả lời các câu hỏi của lens cho workload của bạn.
 - **Rủi ro**: các khoảng trống được báo là **high risk issues (HRI)** hoặc **medium risk issues (MRI)**, giúp bạn xếp thứ tự ưu tiên.
 - **Improvement plan (kế hoạch cải tiến)**: hướng dẫn kèm liên kết tài liệu cho từng vấn đề tìm thấy.
@@ -39,6 +39,6 @@ Công cụ không tính thêm phí. Bạn chỉ trả cho các tài nguyên AWS 
 
 ## Nguồn
 
-- [AWS Well-Architected Tool](https://aws.amazon.com/well-architected-tool/)
+- [Using lenses in the AWS Well-Architected Tool](https://docs.aws.amazon.com/wellarchitected/latest/userguide/lenses.html)
 - [Workloads, AWS Well-Architected Tool User Guide](https://docs.aws.amazon.com/wellarchitected/latest/userguide/workloads.html)
 - [AWS Well-Architected Tool pricing](https://aws.amazon.com/well-architected-tool/pricing/)

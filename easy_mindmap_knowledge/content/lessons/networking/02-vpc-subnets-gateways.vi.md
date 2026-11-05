@@ -61,7 +61,7 @@ Subnet là **public** khi route table có route tới internet gateway, và **pr
 
 - VPC = Region; subnet = một AZ.
 - Subnet public nghĩa là có route tới internet gateway.
-- NAT gateway: được quản lý, nằm trong subnet public, chỉ đi ra, mỗi AZ một cái để chịu lỗi; nên chọn nó thay NAT instance.
+- NAT gateway: được quản lý, loại zonal public nằm trong subnet public (loại regional không cần), chỉ đi ra, mỗi AZ một cái để chịu lỗi; nên chọn nó thay NAT instance.
 - Egress-only internet gateway = chỉ đi ra cho IPv6.
 - Elastic IP = public IPv4 tĩnh thuộc tài khoản của bạn.
 

@@ -10,7 +10,7 @@ The previous lesson introduced **Amazon RDS**. This one looks at the decisions b
 
 - **Engine**: IBM Db2, MariaDB, Microsoft SQL Server, MySQL, Oracle Database or PostgreSQL.
 - **Instance class**: the compute and memory (general purpose, memory optimized, compute optimized or burstable). You can change it later as needs change.
-- **Storage**: **General Purpose SSD** for most workloads, or **Provisioned IOPS** for I/O-intensive production databases. Magnetic storage is deprecated.
+- **Storage**: **General Purpose SSD** for many everyday workloads, or **Provisioned IOPS** for I/O-intensive production databases. Magnetic storage is deprecated.
 - **Network**: the DB instance runs in your **VPC**, and a security group controls who can reach it.
 
 ## Who manages what

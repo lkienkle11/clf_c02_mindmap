@@ -50,7 +50,7 @@ Chiến lược triển khai là cách phiên bản mới thay thế phiên bả
 
 - **All at once** là chính sách nhanh nhất, hợp khi chấp nhận được việc mất dịch vụ ngắn. **Rolling** tránh ngưng dịch vụ. **Rolling with an additional batch** giữ nguyên băng thông. **Immutable** dùng được cho environment có load balancer lẫn một instance; **traffic splitting** cần Application Load Balancer.
 - **Blue/green** trong Beanstalk nghĩa là khởi chạy environment thứ hai với phiên bản mới, kiểm thử, rồi dùng **Swap environment URLs** để hoán đổi bản ghi CNAME của hai environment. Đây là cách tránh việc ứng dụng bị gián đoạn ngắn như khi cập nhật tại chỗ, và là bắt buộc khi nâng cấp lên platform version không tương thích. Hãy để cơ sở dữ liệu nằm ngoài environment, nếu không phép hoán đổi sẽ không mang nó theo.
-- **CodeDeploy** cũng hỗ trợ triển khai tại chỗ và blue/green cho EC2 và máy chủ tại chỗ, còn với Lambda và Amazon ECS thì chuyển lưu lượng theo canary, linear và all-at-once.
+- **CodeDeploy** cũng hỗ trợ triển khai tại chỗ và blue/green cho EC2 (máy chủ tại chỗ: chỉ in-place), còn với Lambda và Amazon ECS thì chuyển lưu lượng theo canary, linear và all-at-once.
 
 ### Khi nào chọn cái nào
 

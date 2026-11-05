@@ -23,7 +23,7 @@ A DDoS attack tries to flood a target so legitimate users cannot reach it. These
 - Amazon CloudFront distributions, Route 53 hosted zones, Global Accelerator standard accelerators, EC2 Elastic IP addresses, and Application and Classic Load Balancers.
 - Expanded protection against network, transport and **application layer** attacks, with automatic application layer mitigation that uses AWS WAF.
 - **Real-time metrics and reports** on attacks, through the console, API and CloudWatch.
-- The **Shield Response Team (SRT)**, available at any time during an attack, if you also have a Business or Enterprise Support plan. Exam wording may call it the "DDoS response team" or "DRT".
+- The **Shield Response Team (SRT)**, available at any time during an attack, if you also have a Business or Enterprise Support plan (plan names are changing; see the support plans lesson). Exam wording may call it the "DDoS response team" or "DRT".
 - **Cost protection** against bill spikes from an attack, as Shield Advanced service credits.
 - Standard AWS WAF charges are covered for the resources it protects, and Firewall Manager Shield Advanced policies come at no extra charge.
 
