@@ -21,9 +21,11 @@
   const locale = $derived(i18n.locale);
   const questions = $derived(new Map(services.catalog.questions.map((q) => [q.id, q])));
   const topicTitle = $derived(
-    attempt.topicId
-      ? (services.catalog.topics.find((t) => t.id === attempt.topicId)?.title[locale] ?? attempt.topicId)
-      : i18n.t('history.mixed'),
+    attempt.kind === 'checkpoint' && attempt.groupIndex !== null
+      ? i18n.t('history.checkpointName', { group: attempt.groupIndex })
+      : attempt.topicId
+        ? (services.catalog.topics.find((t) => t.id === attempt.topicId)?.title[locale] ?? attempt.topicId)
+        : i18n.t('history.mixed'),
   );
   const title = $derived(
     i18n.t('history.detail.title', { topic: topicTitle, date: formatDateTime(attempt.submittedAt ?? attempt.startedAt, locale) }),

@@ -20,6 +20,11 @@ const rows = {
 };
 const when = (at: number) => new Intl.DateTimeFormat('en', { dateStyle: 'medium', timeStyle: 'short' }).format(at);
 
+const CP_AT = D + 4 * 3_600_000;
+const checkpoint = makeAttempt('c1', { kind: 'checkpoint', topicId: null, groupIndex: 2, scorePct: 85, passed: true, submittedAt: CP_AT });
+const checkpointRows = { c1: [makeRow('c1', 0, { questionId: 'q3', selected: ['A'], isCorrect: false })] };
+const withCheckpoint = { attempts: [...attempts, checkpoint], rows: { ...rows, ...checkpointRows } };
+
 async function mount(o: Parameters<typeof makeHistoryEnv>[0] = {}, route?: { view: 'history'; topicId?: string }) {
   const env = await makeHistoryEnv({ attempts, rows, ...o });
   await env.appState.refresh();
@@ -134,6 +139,52 @@ describe('HistoryScreen', () => {
     const dialog = await screen.findByRole('dialog');
     expect(within(dialog).getAllByRole('listitem').filter((l) => l.getAttribute('data-question'))).toHaveLength(2);
     expect(within(dialog).getByText('No answer')).toBeInTheDocument();
+  });
+
+  it('lists a checkpoint attempt as Checkpoint N with a pass mark, and opens its detail under that name', async () => {
+    await mount(withCheckpoint);
+    await screen.findByRole('table', { name: 'Attempts' });
+    const open = screen.getByRole('button', { name: when(CP_AT) });
+    const row = open.closest('tr') as HTMLElement;
+    expect(within(row).getByText('Checkpoint')).toBeInTheDocument();
+    expect(within(row).getByText('Checkpoint 2')).toBeInTheDocument();
+    expect(within(row).getByText('✓ Passed')).toBeInTheDocument();
+    expect(document.querySelector('[data-kind="checkpoint"]')).not.toBeNull();
+    await userEvent.click(open);
+    const dialog = await screen.findByRole('dialog');
+    expect(within(dialog).getByRole('heading', { name: /^Checkpoint 2 · / })).toBeInTheDocument();
+  });
+
+  it('hides checkpoint attempts under a topic filter and shows them under All', async () => {
+    const { appState } = await mount(withCheckpoint, { view: 'history', topicId: 'compute' });
+    const table = await screen.findByRole('table', { name: 'Attempts' });
+    expect(within(table).getAllByRole('row')).toHaveLength(3); // header + a1 + a2
+    expect(screen.queryByText('Checkpoint 2')).not.toBeInTheDocument();
+    await userEvent.click(screen.getByRole('button', { name: /^Remove filter:/ }));
+    expect(appState.route).toEqual({ view: 'history' });
+    await waitFor(() => expect(within(screen.getByRole('table', { name: 'Attempts' })).getAllByRole('row')).toHaveLength(6));
+    expect(screen.getByText('Checkpoint 2')).toBeInTheDocument();
+  });
+
+  it('keeps a checkpoint out of the weak-topics list and the topic filter options', async () => {
+    await mount(withCheckpoint);
+    const weak = await screen.findByRole('region', { name: 'Topics needing attention' });
+    const weakItems = within(weak).getAllByRole('listitem');
+    expect(weakItems).toHaveLength(2); // storage and compute, as without the checkpoint
+    expect(weak).not.toHaveTextContent('Checkpoint');
+    await userEvent.click(await screen.findByRole('button', { name: 'View most-missed questions (3)' }));
+    const dialog = await screen.findByRole('dialog', { name: 'Most-missed questions' });
+    const select = within(dialog).getByRole('combobox', { name: 'Topic' });
+    // only catalog topics that have a missed question (q1, q2, q3 are all compute); the checkpoint adds no option
+    expect(within(select).getAllByRole('option').map((o) => o.textContent)).toEqual(['All topics', 'compute']);
+  });
+
+  it('counts the wrong answers of a checkpoint in the most-missed dialog', async () => {
+    await mount(withCheckpoint);
+    await userEvent.click(await screen.findByRole('button', { name: 'View most-missed questions (3)' }));
+    const dialog = await screen.findByRole('dialog', { name: 'Most-missed questions' });
+    const q3 = dialog.querySelector('li[data-question="q3"]') as HTMLElement;
+    expect(within(q3).getByText('Missed 2 out of 2')).toBeInTheDocument();
   });
 
   it('loads the question rows of all shown attempts with ONE bulk call, never per attempt', async () => {

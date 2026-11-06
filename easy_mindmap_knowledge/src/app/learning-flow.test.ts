@@ -8,6 +8,7 @@ import type { Lesson, Question } from '@/content/types';
 import { createI18n } from '@/i18n/i18n.svelte';
 import { makeLesson, makeRawCatalog, TOPIC_IDS } from '@/testing/fixtures';
 import { createNodeSqliteExecutor } from '@/testing/node-sqlite-executor';
+import { startCheckpoint } from '@/features/exam';
 import { PracticeSession } from '@/features/practice';
 import { AppState } from './app-state.svelte';
 import { buildServices } from './composition';
@@ -73,8 +74,18 @@ async function passCurrentTopicViaUi(user: ReturnType<typeof userEvent.setup>): 
   await screen.findByRole('heading', { name: 'Mindmap' });
 }
 
+async function passCheckpoint(services: Services, appState: AppState, groupIndex: number): Promise<void> {
+  await services.repos.attempts.create({
+    id: `cp-${groupIndex}`, kind: 'checkpoint', topicId: null, status: 'submitted', startedAt: T0, submittedAt: T0 + 1,
+    submitReason: 'manual', reviewAllowed: true,
+    clock: { mode: 'freeze', limitMs: null, remainingMs: null, deadlineAt: null, onHidden: 'freeze' },
+    heartbeatAt: null, scorePct: 90, passed: true, groupIndex, plannedCount: 30,
+  }, []);
+  await appState.refresh();
+}
+
 async function passWithSession(services: Services, appState: AppState, topicId: string): Promise<void> {
-  const s = await PracticeSession.start(services, topicId, { allowReview: false, limitMs: null, clockMode: 'freeze', onHidden: 'freeze' }, () => appState.refresh());
+  const s = await PracticeSession.start(services, topicId, { allowReview: false, limitMs: null, clockMode: 'freeze', onHidden: 'freeze', questionCount: 10 }, () => appState.refresh());
   const byId = new Map(services.catalog.questions.map((q) => [q.id, q]));
   for (const q of s.questions) await s.select(q.position, byId.get(q.questionId)!.correct);
   const result = await s.submit('manual');
@@ -108,21 +119,30 @@ describe('learning flow (ruling R17: topics without lessons can be practised)', 
     expect(appState.statuses.get('global-infrastructure')).toBe('done');
 
     // Topics 3..12 the same way (service level; the UI path is proven above).
-    for (const topicId of TOPIC_IDS.slice(2, 12)) {
+    // After each group's last topic the next group stays locked until that group's checkpoint is passed.
+    for (const [i, topicId] of TOPIC_IDS.slice(2, 12).entries()) {
+      const position = i + 3;
       expect(appState.statuses.get(topicId)).toBe('current');
       await passWithSession(services, appState, topicId);
+      if (position % 3 === 0) {
+        const next = TOPIC_IDS[position];
+        expect(appState.statuses.get(next)).toBe('locked');
+        await passCheckpoint(services, appState, position / 3);
+        expect(appState.statuses.get(next)).toBe('current');
+      }
     }
 
-    // Capstone: no own questions and no lessons, yet practisable with the pooled bank (32 -> 30 asked).
+    // Capstone: no own questions and no lessons, yet practisable with the pooled bank (32 -> 10 asked).
     await waitFor(() => expect(appState.statuses.get('capstone')).toBe('current'));
     expect(practiceLeaf()).not.toHaveAttribute('aria-disabled', 'true');
     expect(screen.queryByText('No questions yet')).not.toBeInTheDocument();
     await user.click(practiceLeaf());
-    expect(await screen.findByText('30 questions')).toBeInTheDocument();
-    const start = screen.getByRole('button', { name: 'Start' });
+    // The Capstone is an exam now: the exam setup opens, and it draws from the pooled bank.
+    expect(await screen.findByRole('heading', { name: 'Capstone exam' })).toBeInTheDocument();
+    const start = screen.getByRole('button', { name: 'Start exam' });
     await waitFor(() => expect(start).toBeEnabled());
     await user.click(start);
-    expect(await screen.findByText('1/30')).toBeInTheDocument();
+    expect(await screen.findByText(/^1\/\d+$/)).toBeInTheDocument();
   }, 30_000);
 
   it('the last lesson of a topic offers Practice: locked until every required lesson is read, then it opens the topic practice', async () => {
@@ -159,5 +179,90 @@ describe('learning flow (ruling R17: topics without lessons can be practised)', 
     expect(later.appState.dailyPromptVisible).toBe(true);
     render(App, { services: later.services, appState: later.appState, i18n: createI18n('en') });
     expect(await screen.findByRole('dialog', { name: 'Time to review' })).toBeInTheDocument();
+  });
+});
+
+/** Clicks the expanded topic's Practice leaf, answers every question correctly and submits; stops on the result. */
+async function submitAllRightUi(user: ReturnType<typeof userEvent.setup>): Promise<void> {
+  await user.click(practiceLeaf());
+  const start = await screen.findByRole('button', { name: 'Start' });
+  await waitFor(() => expect(start).toBeEnabled());
+  await user.click(start);
+  await screen.findByRole('button', { name: 'Exit' });
+  for (;;) {
+    await user.click(screen.getByLabelText(RIGHT));
+    const next = screen.getByRole('button', { name: 'Next question' });
+    if (next.hasAttribute('disabled')) break;
+    await user.click(next);
+  }
+  await user.click(screen.getByRole('button', { name: 'Submit' }));
+  await user.click(within(screen.getByRole('dialog')).getByRole('button', { name: 'Submit' }));
+  expect(await screen.findByText('100%')).toBeInTheDocument();
+}
+
+describe('checkpoint hints on the result screen', () => {
+  it('a topic that closes a group says to take the checkpoint; the topics before it say the next topic unlocked', async () => {
+    const { services, appState } = await makeEnv();
+    const user = userEvent.setup();
+    render(App, { services, appState, i18n: createI18n('en') });
+
+    await user.click(screen.getByRole('button', { name: /^Cloud intro/ }));
+    await user.click(await screen.findByRole('button', { name: 'Complete lesson' }));
+    await waitFor(() => expect(appState.readIds.has('cc-intro')).toBe(true));
+    await user.click(screen.getByRole('button', { name: /Back to the mindmap/ }));
+    await waitFor(() => expect(practiceLeaf()).not.toHaveAttribute('aria-disabled', 'true'));
+
+    // Topic 1 and topic 2 are not the last of group 1: the normal unlock line.
+    await submitAllRightUi(user);
+    expect(screen.getByText('Next topic unlocked')).toBeInTheDocument();
+    await user.click(screen.getByRole('button', { name: 'Back to the map' }));
+    await screen.findByRole('heading', { name: 'Mindmap' });
+
+    await submitAllRightUi(user);
+    expect(screen.getByText('Next topic unlocked')).toBeInTheDocument();
+    await user.click(screen.getByRole('button', { name: 'Back to the map' }));
+    await screen.findByRole('heading', { name: 'Mindmap' });
+
+    // Topic 3 (compute) is the last topic of group 1: the checkpoint hint, no unlock line.
+    await submitAllRightUi(user);
+    expect(screen.getByText('Complete checkpoint 1 to unlock the next topics')).toBeInTheDocument();
+    expect(screen.queryByText('Next topic unlocked')).not.toBeInTheDocument();
+  }, 30_000);
+});
+
+describe('checkpoint flow (a real checkpoint attempt through PracticeSession)', () => {
+  /** Topics 1-3 completed by real practice attempts; topic 4 is locked behind checkpoint 1. */
+  async function groupOneDone() {
+    const env = await makeEnv();
+    for (const topicId of TOPIC_IDS.slice(0, 3)) await passWithSession(env.services, env.appState, topicId);
+    expect(env.appState.passedGroups.size).toBe(0);
+    expect(env.appState.statuses.get(TOPIC_IDS[2])).toBe('done');
+    expect(env.appState.statuses.get(TOPIC_IDS[3])).toBe('locked');
+    return env;
+  }
+
+  async function sitCheckpoint(env: Awaited<ReturnType<typeof makeEnv>>, answerRight: boolean) {
+    const session = await startCheckpoint(env.services, 1, { extraTime: false }, () => env.appState.refresh());
+    const byId = new Map(env.services.catalog.questions.map((q) => [q.id, q]));
+    for (const q of session.questions) await session.select(q.position, answerRight ? byId.get(q.questionId)!.correct : ['B']);
+    return session.submit('manual');
+  }
+
+  it('passing checkpoint 1 records the group and opens topic 4', async () => {
+    const env = await groupOneDone();
+    const result = await sitCheckpoint(env, true);
+    expect(result.passed).toBe(true);
+    await env.appState.refresh();
+    expect(env.appState.passedGroups.has(1)).toBe(true);
+    expect(env.appState.statuses.get(TOPIC_IDS[3])).toBe('current');
+  });
+
+  it('failing checkpoint 1 leaves topic 4 locked', async () => {
+    const env = await groupOneDone();
+    const result = await sitCheckpoint(env, false);
+    expect(result.passed).toBe(false);
+    await env.appState.refresh();
+    expect(env.appState.passedGroups.has(1)).toBe(false);
+    expect(env.appState.statuses.get(TOPIC_IDS[3])).toBe('locked');
   });
 });

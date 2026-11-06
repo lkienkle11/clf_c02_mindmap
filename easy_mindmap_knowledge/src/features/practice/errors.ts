@@ -1,3 +1,16 @@
+import type { QuestionCountReason } from './logic/question-count';
+
+/** The requested question count cannot start an attempt (not an integer, or below the minimum). */
+export class InvalidQuestionCountError extends Error {
+  readonly reason: QuestionCountReason;
+
+  constructor(reason: QuestionCountReason) {
+    super(`Invalid question count: ${reason}`);
+    this.name = 'InvalidQuestionCountError';
+    this.reason = reason;
+  }
+}
+
 export class NoQuestionsError extends Error {
   constructor(topicId: string) {
     super(`No questions available for topic "${topicId}"`);
@@ -17,5 +30,13 @@ export class KnowledgeNotAllowedError extends Error {
   constructor() {
     super('Knowledge review is not allowed in this attempt');
     this.name = 'KnowledgeNotAllowedError';
+  }
+}
+
+/** An exam start request mixes kind, topic and group in a way no attempt can be restored from. */
+export class InvalidExamInputError extends Error {
+  constructor(reason: string) {
+    super(`Invalid exam input: ${reason}`);
+    this.name = 'InvalidExamInputError';
   }
 }

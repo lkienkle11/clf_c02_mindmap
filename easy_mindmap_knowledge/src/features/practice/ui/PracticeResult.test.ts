@@ -110,3 +110,43 @@ describe('PracticeResult', () => {
     expect(within(row).getByText('Options').closest('[lang="en"]')).toBeNull();
   });
 });
+
+describe('PracticeResult in exam mode', () => {
+  it('uses the exam title, the 80% pass line, and never the unlock line', async () => {
+    await mount({ scorePct: 90, correct: 9, total: 10, passed: true, items }, false, { mode: 'exam', unlocked: true });
+    expect(screen.getByRole('heading', { level: 1, name: 'Exam result' })).toBeInTheDocument();
+    expect(screen.getByText('Passed!')).toBeInTheDocument();
+    expect(screen.getByText('Pass mark: 80% or higher')).toBeInTheDocument();
+    expect(screen.queryByText('Next topic unlocked')).not.toBeInTheDocument();
+  });
+
+  it('shows "not passed" at 79%', async () => {
+    await mount({ scorePct: 79, correct: 79, total: 100, passed: false, items }, false, { mode: 'exam' });
+    expect(screen.getByText('Not yet. Review and try again')).toBeInTheDocument();
+    expect(screen.queryByText('Passed!')).not.toBeInTheDocument();
+  });
+
+  it('shows "passed" at 80%', async () => {
+    await mount({ scorePct: 80, correct: 80, total: 100, passed: true, items }, false, { mode: 'exam' });
+    expect(screen.getByText('Passed!')).toBeInTheDocument();
+    expect(screen.queryByText('Not yet. Review and try again')).not.toBeInTheDocument();
+  });
+
+  it('keeps the retry button, which calls the retry callback supplied by the caller', async () => {
+    const { onretry } = await mount({ scorePct: 33, correct: 1, total: 3, passed: false, items }, false, { mode: 'exam' });
+    await userEvent.click(screen.getByRole('button', { name: 'Try again' }));
+    expect(onretry).toHaveBeenCalledTimes(1);
+  });
+});
+
+describe('PracticeResult notice', () => {
+  it('shows the notice as a status line under the pass line', async () => {
+    await mount({ scorePct: 90, correct: 9, total: 10, passed: true, items }, false, { mode: 'exam', notice: 'Next group unlocked' });
+    expect(screen.getByRole('status')).toHaveTextContent('Next group unlocked');
+  });
+
+  it('shows no status line without a notice', async () => {
+    await mount({ scorePct: 90, correct: 9, total: 10, passed: true, items });
+    expect(screen.queryByRole('status')).not.toBeInTheDocument();
+  });
+});

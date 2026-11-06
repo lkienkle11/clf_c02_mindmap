@@ -26,6 +26,8 @@ const attempt = (over: Partial<AttemptRow> = {}): AttemptRow => ({
   heartbeatAt: 1500,
   scorePct: null,
   passed: null,
+  groupIndex: null,
+  plannedCount: null,
   ...over,
 });
 const questions = (attemptId = 'a1'): AttemptQuestionRow[] => [
@@ -126,6 +128,13 @@ describe('attempts', () => {
       clock: { mode: 'run', limitMs: null, remainingMs: null, deadlineAt: null, onHidden: 'freeze' },
       heartbeatAt: null,
     });
+    await repo.create(a, questions());
+    expect((await repo.findInProgress())!.attempt).toEqual(a);
+  });
+
+  it('round-trips a checkpoint attempt with groupIndex and plannedCount', async () => {
+    const repo = createAttemptsRepo(db);
+    const a = attempt({ kind: 'checkpoint', topicId: null, reviewAllowed: false, groupIndex: 2, plannedCount: 40 });
     await repo.create(a, questions());
     expect((await repo.findInProgress())!.attempt).toEqual(a);
   });
@@ -232,6 +241,18 @@ describe('attempts', () => {
     expect(selects.map((s) => s.n)).toEqual([500, 500, 1]);
     expect(selects[0].sql).toContain('IN ($1, $2');
     expect(selects[0].sql).toContain('$500)');
+  });
+
+  it('listGradedAnswers returns graded rows of submitted attempts only', async () => {
+    const repo = createAttemptsRepo(db);
+    // in progress: a graded row must still not count, the attempt is not submitted
+    await repo.create(attempt({ id: 'a1' }), [{ ...questions('a1')[0], isCorrect: true }]);
+    await repo.create(attempt({ id: 'a2' }), questions('a2'));
+    await repo.markSubmitted('a2', {
+      scorePct: 50, passed: false, reason: 'manual', at: 9,
+      grades: [{ position: 0, isCorrect: false, selected: ['B'] }], // position 1 stays ungraded
+    });
+    expect(await repo.listGradedAnswers()).toEqual([{ questionId: 'q1', isCorrect: false }]);
   });
 
   it('listSubmitted excludes in_progress attempts', async () => {

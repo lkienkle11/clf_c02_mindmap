@@ -85,6 +85,6 @@ describe('PracticeSession.startReview', () => {
     expect(submitted).toHaveLength(1);
     const completed = completedTopicIds(submitted);
     expect(completed.size).toBe(0);
-    expect(topicStatuses(services.catalog.topics, completed).get('cloud-concepts')).toBe('current');
+    expect(topicStatuses(services.catalog.topics, completed, () => true).get('cloud-concepts')).toBe('current');
   });
 });

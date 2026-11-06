@@ -52,10 +52,14 @@
         <circle data-testid="score-marker" data-kind="practice" {cx} {cy} r="6" class="fill-primary stroke-surface" stroke-width="2">
           <title>{formatDateTime(p.at, locale)}: {formatPct(p.scorePct, locale)}</title>
         </circle>
-      {:else}
+      {:else if p.kind === 'review'}
         <rect data-testid="score-marker" data-kind="review" x={cx - 6} y={cy - 6} width="12" height="12" class="fill-surface stroke-primary" stroke-width="3">
           <title>{formatDateTime(p.at, locale)}: {formatPct(p.scorePct, locale)}</title>
         </rect>
+      {:else}
+        <polygon data-testid="score-marker" data-kind="checkpoint" points="{cx},{cy - 8} {cx + 8},{cy} {cx},{cy + 8} {cx - 8},{cy}" class="fill-primary stroke-surface" stroke-width="2">
+          <title>{formatDateTime(p.at, locale)}: {formatPct(p.scorePct, locale)}</title>
+        </polygon>
       {/if}
     {/each}
   </svg>
@@ -63,5 +67,6 @@
   <ul class="flex flex-wrap gap-4 text-sm text-muted-foreground">
     <li class="flex items-center gap-1.5"><svg width="14" height="14" aria-hidden="true"><circle cx="7" cy="7" r="6" class="fill-primary" /></svg>{i18n.t('history.kind.practice')}</li>
     <li class="flex items-center gap-1.5"><svg width="14" height="14" aria-hidden="true"><rect x="2" y="2" width="10" height="10" stroke-width="3" class="fill-surface stroke-primary" /></svg>{i18n.t('history.kind.review')}</li>
+    <li class="flex items-center gap-1.5"><svg width="14" height="14" aria-hidden="true"><polygon points="7,1 13,7 7,13 1,7" class="fill-primary" /></svg>{i18n.t('history.kind.checkpoint')}</li>
   </ul>
 </figure>

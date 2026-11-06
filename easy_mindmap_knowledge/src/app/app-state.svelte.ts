@@ -1,3 +1,4 @@
+import { isGateOpen, passedCheckpointGroups } from '@/features/exam';
 import { completedTopicIds, topicStatuses } from '@/features/mindmap';
 import type { TopicStatus } from '@/features/mindmap';
 import { makeRng } from '@/random/seeded-random';
@@ -18,6 +19,7 @@ export type Route =
   | { view: 'lesson'; topicId: string; lessonId: string }
   | { view: 'practice'; topicId: string }
   | { view: 'review' }
+  | { view: 'checkpoint'; groupIndex: number }
   | { view: 'history'; topicId?: string }
   | { view: 'settings' };
 
@@ -31,6 +33,8 @@ export class AppState {
   route = $state.raw<Route>({ view: 'tree' });
   statuses = $state.raw<Map<string, TopicStatus>>(new Map());
   completed = $state.raw<Set<string>>(new Set());
+  /** Checkpoint groups with a submitted passed exam; they open the next topic group. */
+  passedGroups = $state.raw<Set<number>>(new Set());
   readIds = $state.raw<Set<string>>(new Set());
   summaries = $state.raw<TopicReviewSummary[]>([]);
   /** Decided once in load(); only dismissDailyPrompt() (the user's choice) clears it. */
@@ -83,12 +87,14 @@ export class AppState {
     ]);
     if (seq !== this.refreshSeq) return;
     const completed = completedTopicIds(submitted);
+    const passedGroups = passedCheckpointGroups(submitted);
     const summaries = reviewSummaries(stats, completed, now);
     this.readIds = readIds;
     this.submittedAttempts = submitted;
     this.resumeAttempt = resume;
     this.completed = completed;
-    this.statuses = topicStatuses(catalog.topics, completed);
+    this.passedGroups = passedGroups;
+    this.statuses = topicStatuses(catalog.topics, completed, isGateOpen(catalog.topics, passedGroups));
     this.summaries = summaries;
     this.stats = stats;
     this.reviewButtonHidden = hiddenDate === localDateString(now);

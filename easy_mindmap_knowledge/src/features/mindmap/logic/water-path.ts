@@ -36,11 +36,20 @@ export function waterPath(
 
   const curIdx = branches.findIndex((b) => b.topicId === progress.currentTopicId);
   if (curIdx < 0) {
-    // No current topic: everything is done (or there is nothing to show).
+    // No current topic: everything is done, or a checkpoint is pending and the water stops there.
     for (const b of branches) {
       if (progress.statuses.get(b.topicId) === 'done') seg(trunk.x, b.y, b.near, b.y, 'done');
     }
-    if (branches.length > 0) seg(trunk.x, trunk.y1, trunk.x, trunk.y2, 'done');
+    if (branches.length === 0) return { segments, head: null };
+    const lockedAhead = branches.some((b) => progress.statuses.get(b.topicId) === 'locked');
+    if (!lockedAhead) {
+      seg(trunk.x, trunk.y1, trunk.x, trunk.y2, 'done');
+    } else {
+      const lastDone = branches.filter((b) => progress.statuses.get(b.topicId) === 'done').pop();
+      const checkpoint = lastDone && layout.checkpoints.find((c) => c.afterTopicId === lastDone.topicId);
+      const stopY = checkpoint?.y ?? lastDone?.y;
+      if (stopY !== undefined && stopY > trunk.y1) seg(trunk.x, trunk.y1, trunk.x, stopY, 'done');
+    }
     return { segments, head: null };
   }
 

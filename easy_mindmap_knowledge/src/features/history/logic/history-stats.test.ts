@@ -15,6 +15,8 @@ function attempt(p: Partial<AttemptRow> & { id: string }): AttemptRow {
     heartbeatAt: null,
     scorePct: 50,
     passed: false,
+    groupIndex: null,
+    plannedCount: null,
     ...p,
   };
 }
@@ -77,6 +79,7 @@ describe('weakTopics', () => {
       [
         attempt({ id: '1', kind: 'review', topicId: 'r', scorePct: 0 }),
         attempt({ id: '2', topicId: null, scorePct: 0 }),
+        attempt({ id: '6', kind: 'checkpoint', topicId: 'cp', scorePct: 0, groupIndex: 1, plannedCount: 30 }),
         attempt({ id: '3', topicId: 'n', scorePct: null }),
         attempt({ id: '4', topicId: 'p', status: 'in_progress', submittedAt: null, scorePct: 0 }),
         attempt({ id: '5', topicId: 'ok', scorePct: 80 }),

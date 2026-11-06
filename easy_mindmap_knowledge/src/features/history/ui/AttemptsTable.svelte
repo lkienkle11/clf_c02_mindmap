@@ -38,11 +38,15 @@
               onclick={() => onopen(a)}
             >{formatDateTime(a.submittedAt ?? a.startedAt, locale)}</button>
           </td>
-          <td class="px-2 py-1">{topicName(a.topicId)}</td>
+          <td class="px-2 py-1">
+            {a.kind === 'checkpoint' && a.groupIndex !== null
+              ? i18n.t('history.checkpointName', { group: a.groupIndex })
+              : topicName(a.topicId)}
+          </td>
           <td class="px-2 py-1">{i18n.t(`history.kind.${a.kind}`)}</td>
           <td class="px-2 py-1 tabular-nums">{a.scorePct === null ? '' : formatPct(a.scorePct, locale)}</td>
           <td class={cn('px-2 py-1 font-medium', a.passed ? 'text-leaf-done-ink' : 'text-danger')}>
-            {#if a.kind === 'practice'}{a.passed ? `✓ ${i18n.t('history.passed')}` : `✗ ${i18n.t('history.failed')}`}{/if}
+            {#if a.kind === 'practice' || a.kind === 'checkpoint'}{a.passed ? `✓ ${i18n.t('history.passed')}` : `✗ ${i18n.t('history.failed')}`}{/if}
           </td>
         </tr>
       {/each}

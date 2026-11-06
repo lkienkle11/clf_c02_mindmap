@@ -39,7 +39,7 @@ describe('I18n', () => {
  */
 const DYNAMIC: Record<string, string[]> = {
   'nav.': ['nav.tree', 'nav.history', 'nav.settings'],
-  'history.kind.': ['history.kind.practice', 'history.kind.review'],
+  'history.kind.': ['history.kind.practice', 'history.kind.review', 'history.kind.checkpoint'],
   'mindmap.tier.': ['mindmap.tier.introduction', 'mindmap.tier.core', 'mindmap.tier.advanced', 'mindmap.tier.capstone'],
   'practice.announce.': ['practice.announce.m5', 'practice.announce.m1', 'practice.announce.s10'],
 };

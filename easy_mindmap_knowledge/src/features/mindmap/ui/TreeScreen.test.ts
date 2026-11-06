@@ -9,12 +9,13 @@ import TreeScreen from './TreeScreen.svelte';
 
 const PASSED = ['cloud-concepts', 'global-infrastructure']; // compute becomes current
 
-async function mountTree(opts: { passed?: string[]; read?: string[]; noComputeQuestions?: boolean; locale?: Locale } = {}) {
+async function mountTree(opts: { passed?: string[]; groups?: number[]; read?: string[]; noComputeQuestions?: boolean; locale?: Locale } = {}) {
   const raw = makeTreeRawCatalog();
   if (opts.noComputeQuestions) raw.questions = raw.questions.filter((q) => q.topicId !== 'compute');
   const fake = await makeFakeServices({
     catalog: loadCatalog(raw),
     passedTopicIds: opts.passed ?? PASSED,
+    passedGroupIndexes: opts.groups ?? [],
     readIds: opts.read ?? [],
   });
   const view = renderWithI18n(TreeScreen, { services: fake.services, appState: fake.appState }, opts.locale ?? 'en');
@@ -125,7 +126,7 @@ describe('TreeScreen topics without lessons (ruling R17)', () => {
 
   it('a current topic with questions but no lessons is practisable and says lessons come later', async () => {
     // storage has a question (q2) and no lessons; it becomes current after the first three topics.
-    const { appState } = await mountTree({ passed: [...PASSED, 'compute'] });
+    const { appState } = await mountTree({ passed: [...PASSED, 'compute'], groups: [1] });
     const p = practiceButton();
     expect(p).not.toHaveAttribute('aria-disabled', 'true');
     expect(screen.queryByText('Read all required lessons first')).not.toBeInTheDocument();
@@ -143,7 +144,7 @@ describe('TreeScreen topics without lessons (ruling R17)', () => {
   it('capstone has no own questions but is practisable with the pooled questions', async () => {
     const all = ['cloud-concepts', 'global-infrastructure', 'compute', 'storage', 'networking', 'databases', 'deploy-operate',
       'shared-responsibility', 'iam-security', 'pricing-billing', 'migration-caf', 'support-ai-other'];
-    const { appState } = await mountTree({ passed: all });
+    const { appState } = await mountTree({ passed: all, groups: [1, 2, 3, 4] });
     const p = practiceButton();
     expect(p).not.toHaveAttribute('aria-disabled', 'true');
     expect(screen.queryByText('No questions yet')).not.toBeInTheDocument();
@@ -152,7 +153,7 @@ describe('TreeScreen topics without lessons (ruling R17)', () => {
   });
 
   it('speaks Vietnamese', async () => {
-    await mountTree({ passed: [...PASSED, 'compute'], locale: 'vi' });
+    await mountTree({ passed: [...PASSED, 'compute'], groups: [1], locale: 'vi' });
     expect(screen.getByText('Bài học cho chủ đề này sẽ có trong bản cập nhật sau')).toBeInTheDocument();
   });
 });
@@ -199,5 +200,52 @@ describe('TreeScreen review badge', () => {
     const { appState } = await mountTree({ locale: 'vi' });
     appState.summaries = [summary('cloud-concepts', 3)];
     expect(await screen.findByText('Cần ôn · 3 ngày')).toBeInTheDocument();
+  });
+});
+
+describe('TreeScreen checkpoint nodes', () => {
+  const GROUP1 = ['cloud-concepts', 'global-infrastructure', 'compute'];
+
+  it('group 1 finished but unpassed: checkpoint 1 is available and opens the checkpoint route; storage is locked by it', async () => {
+    const { appState } = await mountTree({ passed: GROUP1 });
+    const cp = screen.getByRole('button', { name: /^Checkpoint 1/ });
+    expect(cp).toHaveAccessibleName(/Ready/);
+    expect(cp).not.toHaveAttribute('aria-disabled', 'true');
+    const locked = screen.getByRole('button', { name: /^storage/ });
+    expect(locked).toHaveAttribute('aria-disabled', 'true');
+    expect(locked).toHaveAccessibleName(/Pass checkpoint 1 to unlock/);
+    expect(locked).not.toHaveAccessibleName(/Score 80%/);
+    expect(screen.queryByRole('button', { name: /^Practice/ })).not.toBeInTheDocument(); // nothing expanded
+    await fireEvent.click(cp);
+    expect(appState.route).toEqual({ view: 'checkpoint', groupIndex: 1 });
+    appState.open({ view: 'tree' });
+    await fireEvent.keyDown(cp, { key: 'Enter' });
+    expect(appState.route).toEqual({ view: 'checkpoint', groupIndex: 1 });
+  });
+
+  it('nothing completed: checkpoint 1 is locked, explains why, and is not clickable', async () => {
+    const { appState } = await mountTree({ passed: [] });
+    const cp = screen.getByRole('button', { name: /^Checkpoint 1/ });
+    expect(cp).toHaveAttribute('aria-disabled', 'true');
+    expect(cp).toHaveAccessibleName(/Locked/);
+    expect(within(cp).getByText('🔒')).toBeInTheDocument();
+    expect(cp.querySelector('title')).toHaveTextContent('Finish all topics in group 1 first');
+    await fireEvent.click(cp);
+    await fireEvent.keyDown(cp, { key: 'Enter' });
+    expect(appState.route).toEqual({ view: 'tree' });
+  });
+
+  it('group 1 passed: shows a check and storage becomes current', async () => {
+    await mountTree({ passed: GROUP1, groups: [1] });
+    const cp = screen.getByRole('button', { name: /^Checkpoint 1/ });
+    expect(cp).toHaveAccessibleName(/Passed/);
+    expect(within(cp).getByText('✓')).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /^storage/ })).toHaveAccessibleName(/Up next/);
+  });
+
+  it('renders the four checkpoints and speaks Vietnamese', async () => {
+    await mountTree({ passed: GROUP1, locale: 'vi' });
+    expect(screen.getAllByRole('button', { name: /^Bài kiểm tra mốc \d/ })).toHaveLength(4);
+    expect(screen.getByRole('button', { name: /^storage/ })).toHaveAccessibleName(/Đạt bài kiểm tra mốc 1 để mở/);
   });
 });

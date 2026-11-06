@@ -36,6 +36,7 @@ Mẹo thi: khớp **điểm nghẽn** trong tình huống với họ instance. "
 - Dừng instance **không** làm dừng phí lưu trữ EBS.
 - Dữ liệu trên ổ **instance store** bị mất khi instance bị dừng, ngủ đông (hibernate) hoặc bị xóa (xem thêm ở chủ đề Lưu trữ).
 - Theo mô hình trách nhiệm chia sẻ, vá hệ điều hành khách (guest OS) trên EC2 là việc của **khách hàng**.
+- Để chọn hoặc right-size loại instance dựa trên dữ liệu sử dụng thực tế, xem **AWS Compute Optimizer** trong các chủ đề khái niệm đám mây và giá cả & thanh toán.
 
 ## Ý chính
 

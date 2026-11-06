@@ -3,9 +3,11 @@ import { AttemptMissingError } from '@/persistence';
 import type { AttemptQuestionRow, AttemptRow, ClockState } from '@/persistence';
 import { advanceFreeze, isExpired, remainingAt, resolveOnResume, settleHidden as settleClockHidden, startClock } from './logic/attempt-clock';
 import { gradeQuestion, passes } from './logic/grading';
-import { buildPool, planAttempt, practiceCount } from './logic/pick-questions';
+import { buildPool, planAttempt } from './logic/pick-questions';
+import type { PlannedQuestion } from './logic/pick-questions';
+import { validateQuestionCount } from './logic/question-count';
 import { makeRng, shuffle } from '@/random/seeded-random';
-import { CorruptAttemptError, KnowledgeNotAllowedError, NoQuestionsError } from './errors';
+import { CorruptAttemptError, InvalidExamInputError, InvalidQuestionCountError, KnowledgeNotAllowedError, NoQuestionsError } from './errors';
 import { saveLastOptions } from './options';
 import type { PracticeOptions } from './options';
 
@@ -47,6 +49,8 @@ export class PracticeSession {
   readonly kind: AttemptRow['kind'];
   readonly topicId: string | null;
   readonly allowReview: boolean;
+  /** The checkpoint group of an exam attempt; null for every other kind. */
+  readonly groupIndex: number | null;
 
   // $state.raw + frozen items: components cannot mutate selections and bypass persistence.
   #questions = $state.raw<readonly SessionQuestion[]>([]);
@@ -77,6 +81,7 @@ export class PracticeSession {
     this.kind = attempt.kind;
     this.topicId = attempt.topicId;
     this.allowReview = attempt.reviewAllowed;
+    this.groupIndex = attempt.groupIndex;
     this.#clock = clock;
     this.#remainingMs = remainingAt(clock, services.now());
     const byId = new Map(services.catalog.questions.map((q) => [q.id, q]));
@@ -108,14 +113,18 @@ export class PracticeSession {
   ): Promise<PracticeSession> {
     const pool = buildPool(services.catalog, topicId);
     if (pool.length === 0) throw new NoQuestionsError(topicId);
+    // Only the integer and minimum rules apply here: a count above the pool is clamped below, so a small topic still starts.
+    const requested = validateQuestionCount(options.questionCount, Number.POSITIVE_INFINITY);
+    if (!requested.ok) throw new InvalidQuestionCountError(requested.reason);
+    const count = Math.min(requested.count, pool.length);
     const now = services.now();
     // Shuffles happen exactly once, here; resume replays the stored order.
-    const plan = planAttempt(pool, practiceCount(topicId), makeRng(now % 0x100000000));
+    const plan = planAttempt(pool, count, makeRng(now % 0x100000000));
     const clock = startClock(options.limitMs, options.clockMode, now, options.onHidden);
     const attempt: AttemptRow = {
       id: services.newId(), kind: 'practice', topicId, status: 'in_progress', startedAt: now,
       submittedAt: null, submitReason: null, reviewAllowed: options.allowReview, clock,
-      heartbeatAt: now, scorePct: null, passed: null,
+      heartbeatAt: now, scorePct: null, passed: null, groupIndex: null, plannedCount: count,
     };
     const rows: AttemptQuestionRow[] = plan.map((p, position) => ({
       attemptId: attempt.id, position, questionId: p.questionId, optionOrder: p.optionOrder,
@@ -156,8 +165,45 @@ export class PracticeSession {
     const attempt: AttemptRow = {
       id, kind: 'review', topicId: null, status: 'in_progress', startedAt: now,
       submittedAt: null, submitReason: null, reviewAllowed: true, clock,
-      heartbeatAt: now, scorePct: null, passed: null,
+      heartbeatAt: now, scorePct: null, passed: null, groupIndex: null, plannedCount: null,
     };
+    await services.repos.attempts.create(attempt, rows);
+    return new PracticeSession(services, onSubmitted, attempt, rows, clock);
+  }
+
+  /**
+   * Starts an exam-mode attempt (checkpoint or Capstone): questions and option order exactly as PLANNED,
+   * no knowledge review, a run clock that keeps running while the tab is hidden. Leaves
+   * `practice_last_options` alone. Unanswered questions are graded wrong at submit, as always.
+   */
+  static async startExam(
+    services: Services,
+    input: {
+      kind: 'checkpoint' | 'practice';
+      topicId: string | null;
+      groupIndex: number | null;
+      plan: PlannedQuestion[];
+      limitMs: number;
+    },
+    onSubmitted: () => Promise<void>,
+  ): Promise<PracticeSession> {
+    // Reject combinations that cannot be stored or restored before anything is written.
+    if (input.kind === 'checkpoint' && input.groupIndex === null) throw new InvalidExamInputError('checkpoint without a group index');
+    if (input.kind === 'practice' && input.groupIndex !== null) throw new InvalidExamInputError('practice exam with a group index');
+    if (input.kind === 'practice' && input.topicId === null) throw new InvalidExamInputError('practice exam without a topic');
+    if (input.plan.length === 0) throw new NoQuestionsError(input.topicId ?? input.kind);
+    const now = services.now();
+    const clock = startClock(input.limitMs, 'run', now, 'run');
+    const id = services.newId();
+    const attempt: AttemptRow = {
+      id, kind: input.kind, topicId: input.topicId, status: 'in_progress', startedAt: now,
+      submittedAt: null, submitReason: null, reviewAllowed: false, clock,
+      heartbeatAt: now, scorePct: null, passed: null, groupIndex: input.groupIndex, plannedCount: input.plan.length,
+    };
+    const rows: AttemptQuestionRow[] = input.plan.map((p, position) => ({
+      attemptId: id, position, questionId: p.questionId, optionOrder: [...p.optionOrder],
+      selected: [], isCorrect: null,
+    }));
     await services.repos.attempts.create(attempt, rows);
     return new PracticeSession(services, onSubmitted, attempt, rows, clock);
   }
@@ -173,12 +219,12 @@ export class PracticeSession {
     if (questions.some((q, i) => q.position !== i)) throw new CorruptAttemptError('positions are not 0..n-1');
     const known = new Set(services.catalog.questions.map((q) => q.id));
     if (questions.some((q) => !known.has(q.questionId))) throw new CorruptAttemptError('unknown question');
-    if (attempt.kind === 'practice') {
-      if (attempt.topicId === null) throw new CorruptAttemptError('practice attempt without topic');
-      const expected = Math.min(practiceCount(attempt.topicId), buildPool(services.catalog, attempt.topicId).length);
-      // Depends on the CURRENT catalog: a content update that shrinks a pool relaxes the check, and one that
-      // grows it may flag an old attempt as partial; accepted, since the cost is only a discarded attempt.
-      if (questions.length < expected) throw new CorruptAttemptError('partial attempt');
+    if (attempt.kind === 'practice' && attempt.topicId === null) throw new CorruptAttemptError('practice attempt without topic');
+    if (attempt.kind === 'checkpoint' && attempt.groupIndex === null) throw new CorruptAttemptError('checkpoint attempt without group');
+    if (attempt.kind === 'practice' || attempt.kind === 'checkpoint') {
+      // plannedCount is the count drawn at start (already clamped to the pool). Null marks an attempt that
+      // predates the column; it cannot be checked, so it is not.
+      if (attempt.plannedCount !== null && questions.length < attempt.plannedCount) throw new CorruptAttemptError('partial attempt');
     }
     const now = services.now();
     const resolved = resolveOnResume(attempt.clock, now, attempt.heartbeatAt ?? attempt.startedAt);

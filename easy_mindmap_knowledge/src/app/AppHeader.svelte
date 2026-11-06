@@ -23,7 +23,7 @@
   // A lesson belongs to the mindmap section.
   const section = $derived<View>(appState.view === 'lesson' ? 'tree' : appState.view);
   // Hidden mid-attempt so the only way out of a session is its own Exit.
-  const hidden = $derived(appState.view === 'practice' || appState.view === 'review');
+  const hidden = $derived(appState.view === 'practice' || appState.view === 'review' || appState.view === 'checkpoint');
 </script>
 
 {#if !hidden}

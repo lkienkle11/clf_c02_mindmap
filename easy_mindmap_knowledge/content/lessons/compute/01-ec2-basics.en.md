@@ -37,6 +37,7 @@ An **AMI** is the image used to boot an instance: it holds the operating system 
 - Stopping an instance does **not** stop EBS storage charges.
 - Data on **instance store** volumes is lost when an instance is stopped, hibernated or terminated (more in the Storage topic).
 - Under the shared responsibility model, patching the guest operating system on EC2 is the **customer's** job.
+- To choose or right-size an instance type from real usage data, see **AWS Compute Optimizer** in the cloud concepts and pricing and billing topics.
 
 ## Key points
 

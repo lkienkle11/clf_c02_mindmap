@@ -3,6 +3,7 @@
   import type { I18n } from '@/i18n/i18n.svelte';
   import { LessonScreen } from '@/features/lesson';
   import { TreeScreen, practiceUnlocked } from '@/features/mindmap';
+  import { ExamScreen, checkpointGroups } from '@/features/exam';
   import { HistoryScreen } from '@/features/history';
   import { PracticeScreen, ResumeGate } from '@/features/practice';
   import type { PracticeSession } from '@/features/practice';
@@ -30,7 +31,7 @@
   // A session restored by the resume prompt; dropped as soon as the user leaves the practice screen.
   let resumed = $state.raw<PracticeSession | null>(null);
   $effect(() => {
-    if (appState.view !== 'practice') resumed = null;
+    if (appState.view !== 'practice' && appState.view !== 'checkpoint') resumed = null;
   });
 
   // The webview's <html lang> follows the chosen UI language (screen readers, hyphenation, fonts).
@@ -51,6 +52,17 @@
     ...(resumeNotice ? [{ id: 'resume', text: resumeNotice, onclose: () => (resumeNotice = null) }] : []),
   ]);
 
+  /** The checkpoint group this topic closes (when it is the group's last topic), or null. */
+  function checkpointAfter(topicId: string): number | null {
+    return checkpointGroups(services.catalog.topics).find((g) => g.topicIds.at(-1) === topicId)?.index ?? null;
+  }
+
+  /** True when the checkpoint closing this topic is the last group, which opens the Capstone exam. */
+  function checkpointOpensCapstone(topicId: string): boolean {
+    const after = checkpointAfter(topicId);
+    return after !== null && after === checkpointGroups(services.catalog.topics).length;
+  }
+
   function onresumed(session: PracticeSession): void {
     if (session.kind === 'review') {
       appState.reviewRun = ReviewRun.adoptSingle(session);
@@ -58,6 +70,10 @@
       return;
     }
     resumed = session;
+    if (session.kind === 'checkpoint' && session.groupIndex !== null) {
+      appState.open({ view: 'checkpoint', groupIndex: session.groupIndex });
+      return;
+    }
     appState.open({ view: 'practice', topicId: session.topicId ?? '' });
   }
 </script>
@@ -73,9 +89,15 @@
       {openExternal}
       canPractice={(topicId) => practiceUnlocked(services.catalog.lessonsOf(topicId), appState.readIds)}
     />
+  {:else if appState.route.view === 'checkpoint'}
+    {#key appState.route.groupIndex}
+      <ExamScreen {services} {appState} groupIndex={appState.route.groupIndex} initialSession={resumed} />
+    {/key}
+  {:else if appState.route.view === 'practice' && appState.route.topicId === 'capstone'}
+    <ExamScreen {services} {appState} groupIndex={null} initialSession={resumed} />
   {:else if appState.route.view === 'practice'}
     {#key appState.route.topicId}
-      <PracticeScreen {services} {appState} topicId={appState.route.topicId} initialSession={resumed} />
+      <PracticeScreen {services} {appState} topicId={appState.route.topicId} checkpointAfter={checkpointAfter(appState.route.topicId)} checkpointOpensCapstone={checkpointOpensCapstone(appState.route.topicId)} initialSession={resumed} />
     {/key}
   {:else if appState.view === 'review'}
     <ReviewScreen {services} {appState} />

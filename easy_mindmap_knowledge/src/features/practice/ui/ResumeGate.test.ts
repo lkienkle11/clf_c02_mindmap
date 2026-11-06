@@ -9,7 +9,7 @@ import ResumeGate from './ResumeGate.svelte';
 const attempt = (over: Partial<AttemptRow> = {}): AttemptRow => ({
   id: 'old', kind: 'practice', topicId: 'compute', status: 'in_progress', startedAt: 0, submittedAt: null,
   submitReason: null, reviewAllowed: false, clock: { mode: 'freeze', limitMs: null, remainingMs: null, deadlineAt: null, onHidden: 'freeze' },
-  heartbeatAt: null, scorePct: null, passed: null, ...over,
+  heartbeatAt: null, scorePct: null, passed: null, groupIndex: null, plannedCount: null, ...over,
 });
 const rows = (ids = ['q1', 'q2', 'q3']): AttemptQuestionRow[] =>
   ids.map((questionId, position) => ({ attemptId: 'old', position, questionId, optionOrder: ['A', 'B', 'C', 'D'], selected: [], isCorrect: null }));

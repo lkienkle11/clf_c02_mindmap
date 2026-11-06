@@ -7,6 +7,11 @@ import type { Lesson, Topic } from './types';
 // Checks on the real content/ folder. Every topic listed here has lessons and authored questions,
 // and the same content contract applies to all of them. Add a topic here when its content lands.
 const CONTENT_TOPICS = ['cloud-concepts', 'global-infrastructure', 'compute', 'storage', 'networking', 'databases', 'deploy-operate', 'shared-responsibility', 'iam-security', 'pricing-billing', 'migration-caf', 'support-ai-other', 'capstone'];
+// Topics whose lessons were expanded: 8-14 lessons, at least 1 optional, and every optional lesson has a videoQuery.
+// A content task adds its topic id here when that topic's lessons land. Empty until then, so every
+// topic keeps the legacy rule (4-5 lessons, exactly 1 optional with a videoQuery).
+const EXPANDED_TOPICS: string[] = ['cloud-concepts', 'global-infrastructure', 'compute', 'storage', 'networking', 'databases', 'deploy-operate', 'shared-responsibility', 'iam-security', 'pricing-billing', 'migration-caf', 'support-ai-other'];
+const CAPSTONE_TOPIC = 'capstone';
 const AUTHORED_PER_TOPIC = 10;
 const CHOOSE_TWO_PER_TOPIC = 3;
 /** Largest share of the single-answer questions of one topic that may use the same correct key. */
@@ -71,13 +76,28 @@ describe('loadBundledCatalog (real content folder)', () => {
     const lessons = catalog.lessonsOf(topicId);
     const required = lessons.filter((l) => l.required);
     const optional = lessons.filter((l) => !l.required);
+    const expanded = EXPANDED_TOPICS.includes(topicId);
+    const isCapstone = topicId === CAPSTONE_TOPIC;
+    const [min, max] = isCapstone ? [5, 8] : expanded ? [8, 14] : [4, 5];
+    const optionalRule = expanded
+      ? 'at least 1 optional, every optional with a videoQuery'
+      : isCapstone
+        ? 'at least 1 optional with a videoQuery'
+        : 'exactly 1 optional with a videoQuery';
 
-    it('has 4-5 lessons, at least 3 required and exactly 1 optional with a videoQuery', () => {
-      expect(lessons.length).toBeGreaterThanOrEqual(4);
-      expect(lessons.length).toBeLessThanOrEqual(5);
+    it(`has ${min}-${max} lessons, at least 3 required and ${optionalRule}`, () => {
+      expect(lessons.length).toBeGreaterThanOrEqual(min);
+      expect(lessons.length).toBeLessThanOrEqual(max);
       expect(required.length).toBeGreaterThanOrEqual(3);
-      expect(optional).toHaveLength(1);
-      expect(optional[0].videoQuery?.trim()).toBeTruthy();
+      if (expanded) {
+        expect(optional.length).toBeGreaterThanOrEqual(1);
+        for (const l of optional) expect(l.videoQuery?.trim(), l.id).toBeTruthy();
+      } else if (isCapstone) {
+        expect(optional.some((l) => l.videoQuery?.trim())).toBe(true);
+      } else {
+        expect(optional).toHaveLength(1);
+        expect(optional[0].videoQuery?.trim()).toBeTruthy();
+      }
     });
 
     it('lists lessonIds in lesson file order', () => {
@@ -109,7 +129,7 @@ describe('loadBundledCatalog (real content folder)', () => {
       }
       const n = proseWords(l.body.en);
       expect(n, 'EN prose words').toBeGreaterThanOrEqual(250);
-      expect(n, 'EN prose words').toBeLessThanOrEqual(450);
+      expect(n, 'EN prose words').toBeLessThanOrEqual(900);
     });
   });
 
@@ -173,6 +193,57 @@ describe('loadBundledCatalog (real content folder)', () => {
     const ids = catalog.questions.filter((q) => q.source === 'authored').map((q) => q.id);
     expect(new Set(ids).size).toBe(ids.length);
     for (const id of ids) expect(imported.has(id)).toBe(false);
+  });
+});
+
+describe('Capstone lessons match the official exam (real content folder)', () => {
+  const lesson = (id: string) => {
+    const found = catalog.lessons.find((l) => l.id === id);
+    if (!found) throw new Error(`lesson ${id} is missing`);
+    return found;
+  };
+  const capstone = catalog.lessonsOf('capstone');
+
+  it('the exam-format lesson states the 90-minute exam and the ESL accommodation, with no 30-question exam', () => {
+    const en = lesson('capstone-exam-format').body.en;
+    expect(en).toContain('90 minutes');
+    expect(en).toContain('ESL');
+    expect(en).not.toContain('30 questions');
+  });
+
+  it('the Vietnamese exam-format lesson does not say 30 câu', () => {
+    expect(lesson('capstone-exam-format').body.vi).not.toContain('30 câu');
+  });
+
+  it('the exam-format lesson does not claim review is impossible during the attempt', () => {
+    expect(lesson('capstone-exam-format').body.en.toLowerCase()).not.toContain('cannot review earlier answers');
+    expect(lesson('capstone-exam-format').body.vi.toLowerCase()).not.toContain('không thể xem lại câu đã trả lời');
+  });
+
+  it('the Vietnamese Capstone lessons use the project term "bài kiểm tra mốc", not "bài thi checkpoint"', () => {
+    for (const l of capstone) expect(l.body.vi.toLowerCase(), l.id).not.toContain('bài thi checkpoint');
+  });
+
+  it('the Capstone has 6 lessons in topic order and ends with the optional further-learning lesson', () => {
+    expect(catalog.topic('capstone').lessonIds).toEqual([
+      'capstone-exam-format',
+      'capstone-domains',
+      'capstone-answering',
+      'capstone-final-review',
+      'capstone-exam-registration',
+      'capstone-further',
+    ]);
+    expect(capstone).toHaveLength(6);
+    const last = capstone[capstone.length - 1];
+    expect(last.id).toBe('capstone-further');
+    expect(last.required).toBe(false);
+  });
+
+  it('the registration lesson is required and covers the ESL +30 MINUTES accommodation', () => {
+    const reg = lesson('capstone-exam-registration');
+    expect(reg.required).toBe(true);
+    expect(reg.body.en).toContain('ESL +30 MINUTES');
+    expect(reg.body.vi).toContain('ESL +30 MINUTES');
   });
 });
 

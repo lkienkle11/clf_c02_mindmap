@@ -18,6 +18,8 @@ interface AttemptDb {
   heartbeat_at: number | null;
   score_pct: number | null;
   passed: number | null;
+  group_index: number | null;
+  planned_count: number | null;
 }
 
 interface QuestionDb {
@@ -44,6 +46,8 @@ const toAttempt = (r: AttemptDb): AttemptRow => ({
   heartbeatAt: r.heartbeat_at,
   scorePct: r.score_pct,
   passed: bool(r.passed),
+  groupIndex: r.group_index,
+  plannedCount: r.planned_count,
 });
 
 const toQuestion = (r: QuestionDb): AttemptQuestionRow => ({
@@ -122,12 +126,12 @@ export function createAttemptsRepo(db: SqlExecutor) {
       await db.execute(
         `INSERT INTO attempts
            (id, kind, topic_id, status, started_at, submitted_at, submit_reason, review_allowed,
-            time_limit_ms, clock_mode, remaining_ms, deadline_at, heartbeat_at, score_pct, passed, clock_on_hidden)
-         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16)`,
+            time_limit_ms, clock_mode, remaining_ms, deadline_at, heartbeat_at, score_pct, passed, clock_on_hidden, group_index, planned_count)
+         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18)`,
         [
           a.id, a.kind, a.topicId, a.status, a.startedAt, a.submittedAt, a.submitReason,
           a.reviewAllowed ? 1 : 0, a.clock.limitMs, a.clock.mode, a.clock.remainingMs, a.clock.deadlineAt,
-          a.heartbeatAt, a.scorePct, a.passed === null ? null : a.passed ? 1 : 0, a.clock.onHidden,
+          a.heartbeatAt, a.scorePct, a.passed === null ? null : a.passed ? 1 : 0, a.clock.onHidden, a.groupIndex, a.plannedCount,
         ],
       );
     },
@@ -190,6 +194,16 @@ export function createAttemptsRepo(db: SqlExecutor) {
         "SELECT * FROM attempts WHERE status = 'submitted' ORDER BY submitted_at, id",
       );
       return rows.map(toAttempt);
+    },
+
+    /** Graded answers of submitted attempts only: in-progress attempts and ungraded rows are not history. */
+    async listGradedAnswers(): Promise<{ questionId: string; isCorrect: boolean }[]> {
+      const rows = await db.select<{ question_id: string; is_correct: number }>(
+        `SELECT q.question_id, q.is_correct FROM attempt_questions q
+           JOIN attempts a ON a.id = q.attempt_id
+          WHERE a.status = 'submitted' AND q.is_correct IS NOT NULL`,
+      );
+      return rows.map((r) => ({ questionId: r.question_id, isCorrect: r.is_correct === 1 }));
     },
   };
 }

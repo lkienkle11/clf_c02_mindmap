@@ -30,7 +30,7 @@ const attempt = (over: Partial<AttemptRow>): AttemptRow => ({
   id: 'a1', kind: 'practice', topicId: 'cloud-concepts', status: 'submitted', startedAt: NOW - DAY,
   submittedAt: NOW - DAY + 1000, submitReason: 'manual', reviewAllowed: true,
   clock: { mode: 'freeze', limitMs: null, remainingMs: null, deadlineAt: null, onHidden: 'freeze' },
-  heartbeatAt: null, scorePct: 90, passed: true, ...over,
+  heartbeatAt: null, scorePct: 90, passed: true, groupIndex: null, plannedCount: null, ...over,
 });
 const question = (attemptId: string, questionId: string, isCorrect: boolean | null) => ({
   attemptId, position: 0, questionId, optionOrder: ['A', 'B'], selected: ['A'], isCorrect,
@@ -71,6 +71,18 @@ describe('AppState', () => {
     expect(state.completed.has('cloud-concepts')).toBe(true);
     expect(state.summaries.length).toBeGreaterThan(0);
     expect(state.submittedAttempts).toHaveLength(1);
+  });
+
+  it('refresh fills passedGroups from a submitted passed checkpoint only', async () => {
+    await state.load();
+    expect(state.passedGroups.size).toBe(0);
+    await services.repos.attempts.create(
+      attempt({ id: 'cp1', kind: 'checkpoint', topicId: null, groupIndex: 1, plannedCount: 30 }), []);
+    await services.repos.attempts.create(
+      attempt({ id: 'cp2', kind: 'checkpoint', topicId: null, groupIndex: 2, plannedCount: 30, passed: false, scorePct: 40 }), []);
+    await state.refresh();
+    expect([...state.passedGroups]).toEqual([1]);
+    expect(state.completed.size).toBe(0);
   });
 
   it('hides the prompt when it was already shown today', async () => {

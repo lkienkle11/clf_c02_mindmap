@@ -21,7 +21,7 @@
 
   const i18n = getI18n();
   const found = $derived(appState.resumeAttempt?.attempt.id === activeAttemptId ? null : appState.resumeAttempt);
-  const open = $derived(found !== null && appState.view !== 'practice' && appState.view !== 'review');
+  const open = $derived(found !== null && appState.view !== 'practice' && appState.view !== 'review' && appState.view !== 'checkpoint');
   let busy = $state(false);
 
   async function discard(attemptId: string): Promise<void> {

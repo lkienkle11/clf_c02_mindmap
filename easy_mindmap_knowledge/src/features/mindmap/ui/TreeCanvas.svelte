@@ -1,10 +1,12 @@
 <script lang="ts">
   import type { AppState } from '@/app/app-state.svelte';
   import type { Services } from '@/app/composition';
+  import { checkpointGroups, checkpointState, gateBefore } from '@/features/exam';
   import { buildPool } from '@/features/practice';
   import { getI18n } from '@/i18n/i18n.svelte';
   import { layoutTree } from '../logic/tree-layout';
   import { stopLeafId, waterPath } from '../logic/water-path';
+  import CheckpointNode from './CheckpointNode.svelte';
   import TopicBranch from './TopicBranch.svelte';
   import TrunkWater from './TrunkWater.svelte';
 
@@ -21,7 +23,20 @@
   const i18n = getI18n();
   const catalog = $derived(services.catalog);
   const topics = $derived([...catalog.topics].sort((a, b) => a.order - b.order));
-  const layout = $derived(layoutTree(topics, { expandedTopicId }));
+  const groups = $derived(checkpointGroups(topics));
+  const layout = $derived(
+    layoutTree(topics, {
+      expandedTopicId,
+      checkpoints: groups.map((g) => ({ index: g.index, afterTopicId: g.topicIds[g.topicIds.length - 1] })),
+    }),
+  );
+  const groupByIndex = $derived(new Map(groups.map((g) => [g.index, g])));
+  // Group whose unpassed (but finished) checkpoint is what keeps this topic locked.
+  function pendingGate(topicId: string): number | null {
+    const gate = gateBefore(topics, topicId);
+    if (!gate || appState.statuses.get(topicId) !== 'locked') return null;
+    return checkpointState(gate, appState.completed, appState.passedGroups) === 'available' ? gate.index : null;
+  }
   const currentTopicId = $derived(topics.find((t) => appState.statuses.get(t.id) === 'current')?.id ?? null);
   const water = $derived(
     waterPath(layout, {
@@ -37,6 +52,10 @@
 
   function openLesson(topicId: string, lessonId: string): void {
     appState.open({ view: 'lesson', topicId, lessonId });
+  }
+
+  function openCheckpoint(groupIndex: number): void {
+    appState.open({ view: 'checkpoint', groupIndex });
   }
 
   function openHistory(topicId: string): void {
@@ -77,6 +96,7 @@
           lessons={catalog.lessonsOf(branch.topicId)}
           readIds={appState.readIds}
           review={summaryById.get(branch.topicId) ?? null}
+          lockedByCheckpoint={pendingGate(branch.topicId)}
           hasQuestions={withQuestions.has(branch.topicId)}
           expanded={branch.topicId === expandedTopicId}
           canvasWidth={layout.width}
@@ -86,6 +106,19 @@
           onopenpractice={openPractice}
           {onexpand}
           onopenhistory={openHistory}
+        />
+      {/if}
+    {/each}
+
+    {#each layout.checkpoints as cp (cp.groupIndex)}
+      {@const group = groupByIndex.get(cp.groupIndex)}
+      {#if group}
+        <CheckpointNode
+          groupIndex={cp.groupIndex}
+          x={layout.trunk.x}
+          y={cp.y}
+          state={checkpointState(group, appState.completed, appState.passedGroups)}
+          onopen={openCheckpoint}
         />
       {/if}
     {/each}

@@ -8,8 +8,8 @@ import { createNodeSqliteExecutor } from '@/testing/node-sqlite-executor';
 import { AttemptMissingError } from '@/persistence';
 import type { SqlExecutor } from '@/persistence';
 import {
-  CorruptAttemptError, DEFAULT_PRACTICE_OPTIONS, FREEZE_MAX_TICK_MS, KnowledgeNotAllowedError, NoQuestionsError, PracticeSession,
-  loadLastOptions, saveLastOptions,
+  CorruptAttemptError, DEFAULT_PRACTICE_OPTIONS, FREEZE_MAX_TICK_MS, InvalidQuestionCountError, KnowledgeNotAllowedError,
+  NoQuestionsError, PracticeSession, loadLastOptions, saveLastOptions,
 } from './index';
 import type { PracticeOptions } from './index';
 
@@ -35,7 +35,10 @@ function qs(topicId: string | null, n: number, prefix: string, multi = false) {
 
 async function setup() {
   const raw = makeRawCatalog();
-  raw.questions = [...qs('compute', 12, 'c'), ...qs('storage', 4, 's'), ...qs('networking', 12, 'n', true), ...qs(null, 40, 'x')];
+  raw.questions = [
+    ...qs('compute', 12, 'c'), ...qs('storage', 4, 's'), ...qs('networking', 12, 'n', true), ...qs('iam-security', 40, 'i'),
+    ...qs(null, 40, 'x'),
+  ];
   const base = await createNodeSqliteExecutor();
   executes = [];
   gate = null; gateHit = null; failSql = null;
@@ -74,6 +77,7 @@ describe('start', () => {
     const found = await services.repos.attempts.findInProgress();
     expect(found!.attempt).toMatchObject({ kind: 'practice', topicId: 'compute', reviewAllowed: false, status: 'in_progress' });
     expect(found!.questions).toHaveLength(10);
+    expect(found!.attempt.plannedCount).toBe(10);
     for (const q of found!.questions) {
       expect([...q.optionOrder].sort()).toEqual(['A', 'B', 'C']);
       expect(q.selected).toEqual([]);
@@ -81,12 +85,33 @@ describe('start', () => {
     }
     expect(s.questions.map((q) => q.questionId)).toEqual(found!.questions.map((q) => q.questionId));
   });
-  it('capstone uses 30', async () => {
+  it('capstone uses 10 like every topic', async () => {
     const s = await start('capstone');
-    expect(s.questions).toHaveLength(30);
+    expect(s.questions).toHaveLength(10);
   });
-  it('pool smaller than count uses all', async () => {
-    expect((await start('storage')).questions).toHaveLength(4);
+  it('pool smaller than count uses all and stores the clamped count', async () => {
+    const s = await start('storage');
+    expect(s.questions).toHaveLength(4);
+    expect((await services.repos.attempts.findInProgress())!.attempt.plannedCount).toBe(4);
+  });
+  it('draws the chosen question count and stores it as plannedCount', async () => {
+    const s = await start('iam-security', { questionCount: 25 });
+    const found = (await services.repos.attempts.findInProgress())!;
+    expect(s.questions).toHaveLength(25);
+    expect(found.questions).toHaveLength(25);
+    expect(found.attempt.plannedCount).toBe(25);
+    expect(new Set(found.questions.map((q) => q.questionId)).size).toBe(25);
+  });
+  it('rejects a count below the minimum, creates nothing and saves nothing', async () => {
+    const err = await start('compute', { questionCount: 9 }).catch((e: unknown) => e);
+    expect(err).toBeInstanceOf(InvalidQuestionCountError);
+    expect(err).toMatchObject({ reason: 'tooFew' });
+    expect(await services.repos.attempts.findInProgress()).toBeNull();
+    expect(await services.repos.settings.get('practice_last_options')).toBeNull();
+  });
+  it('rejects a count that is not an integer', async () => {
+    await expect(start('compute', { questionCount: 10.5 })).rejects.toMatchObject({ reason: 'notInteger' });
+    expect(await services.repos.attempts.findInProgress()).toBeNull();
   });
   it('empty pool throws NoQuestionsError and creates nothing', async () => {
     await expect(start('databases')).rejects.toBeInstanceOf(NoQuestionsError);
@@ -96,7 +121,9 @@ describe('start', () => {
     const s = await start('networking', { allowReview: true, limitMs: 60000, clockMode: 'run', onHidden: 'freeze' });
     expect(s.questions.every((q) => q.multi)).toBe(true);
     expect(s.allowReview).toBe(true);
-    expect(await loadLastOptions(services.repos.settings)).toEqual({ allowReview: true, limitMs: 60000, clockMode: 'run', onHidden: 'freeze' });
+    expect(await loadLastOptions(services.repos.settings)).toEqual({
+      allowReview: true, limitMs: 60000, clockMode: 'run', onHidden: 'freeze', questionCount: 10,
+    });
   });
 });
 
@@ -104,8 +131,8 @@ describe('options persistence', () => {
   it('defaults, round trip, invalid json and wrong shape', async () => {
     const st = services.repos.settings;
     expect(await loadLastOptions(st)).toEqual(DEFAULT_PRACTICE_OPTIONS);
-    await saveLastOptions(st, { allowReview: true, limitMs: 1000, clockMode: 'run', onHidden: 'freeze' });
-    expect(await loadLastOptions(st)).toEqual({ allowReview: true, limitMs: 1000, clockMode: 'run', onHidden: 'freeze' });
+    await saveLastOptions(st, { allowReview: true, limitMs: 1000, clockMode: 'run', onHidden: 'freeze', questionCount: 20 });
+    expect(await loadLastOptions(st)).toEqual({ allowReview: true, limitMs: 1000, clockMode: 'run', onHidden: 'freeze', questionCount: 20 });
     await st.set('practice_last_options', '{nope');
     expect(await loadLastOptions(st)).toEqual(DEFAULT_PRACTICE_OPTIONS);
     await st.set('practice_last_options', JSON.stringify({ allowReview: 'x', limitMs: 1, clockMode: 'freeze', onHidden: 'freeze' }));
@@ -129,6 +156,30 @@ describe('resume', () => {
     expect(session.questions[0].selected).toEqual(['B']);
     expect(session.questions[3].selected).toEqual(['C']);
     expect(session.remainingMs).toBe(600000);
+  });
+  it('resumes a chosen-count attempt in full', async () => {
+    const s = await start('iam-security', { questionCount: 25 });
+    const found = (await services.repos.attempts.findInProgress())!;
+    const { session } = await PracticeSession.resume(services, found, onSubmitted);
+    expect(session.questions.map((q) => q.questionId)).toEqual(s.questions.map((q) => q.questionId));
+  });
+  it('a chosen-count attempt that lost its last question row is partial', async () => {
+    const s = await start('iam-security', { questionCount: 25 });
+    await db.execute('DELETE FROM attempt_questions WHERE attempt_id = $1 AND position = $2', [s.attemptId, 24]);
+    const found = (await services.repos.attempts.findInProgress())!;
+    expect(found.questions).toHaveLength(24);
+    await expect(PracticeSession.resume(services, found, onSubmitted)).rejects.toBeInstanceOf(CorruptAttemptError);
+    await expect(PracticeSession.resume(services, found, onSubmitted)).rejects.toThrow('partial attempt');
+  });
+  it('an attempt without plannedCount resumes without the partial check', async () => {
+    const s = await start('iam-security', { questionCount: 25 });
+    await db.execute('UPDATE attempts SET planned_count = NULL WHERE id = $1', [s.attemptId]);
+    await db.execute('DELETE FROM attempt_questions WHERE attempt_id = $1 AND position >= $2', [s.attemptId, 5]);
+    const found = (await services.repos.attempts.findInProgress())!;
+    expect(found.attempt.plannedCount).toBeNull();
+    expect(found.questions).toHaveLength(5);
+    const { session } = await PracticeSession.resume(services, found, onSubmitted);
+    expect(session.questions).toHaveLength(5);
   });
   it('throws CorruptAttemptError for zero, unknown or partial questions', async () => {
     await start();
