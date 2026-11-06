@@ -45,3 +45,13 @@
 - refactoring
 - web-research
 - run
+
+## STEP 5 (verification) — ghi bổ sung sau khi đã làm, đáng lẽ phải dừng chờ xác nhận:
+- superpowers:verification-before-completion
+
+## STEP 6 (review) — ghi bổ sung sau khi đã làm, đáng lẽ phải dừng chờ xác nhận:
+- superpowers:requesting-code-review
+- superpowers:receiving-code-review
+
+## STEP 7:
+- superpowers:finishing-a-development-branch
