@@ -24,6 +24,37 @@ async function mountTree(opts: { passed?: string[]; groups?: number[]; read?: st
 
 const practiceButton = () => screen.getByRole('button', { name: /^Practice/ });
 
+describe('TreeScreen scrolling', () => {
+  const scroller = () => screen.getByRole('group').parentElement as HTMLDivElement;
+
+  it('opens scrolled to the current topic instead of the left edge', async () => {
+    await mountTree();
+    expect(scroller().scrollLeft).toBeGreaterThan(0);
+  });
+
+  it('with no current topic, opens centred on the trunk', async () => {
+    await mountTree({ passed: [] , groups: [] });
+    expect(scroller().scrollLeft).toBeGreaterThan(0);
+  });
+
+  it('dragging empty space pans horizontally, dragging a node does not', async () => {
+    await mountTree();
+    const el = scroller();
+    el.setPointerCapture = () => {};
+    el.scrollLeft = 500;
+    const svg = screen.getByRole('group');
+    await fireEvent.pointerDown(svg, { button: 0, clientX: 300 });
+    await fireEvent.pointerMove(el, { clientX: 200 });
+    expect(el.scrollLeft).toBe(600);
+    await fireEvent.pointerUp(el);
+
+    el.scrollLeft = 500;
+    await fireEvent.pointerDown(screen.getByRole('button', { name: /^compute/ }), { button: 0, clientX: 300 });
+    await fireEvent.pointerMove(el, { clientX: 200 });
+    expect(el.scrollLeft).toBe(500);
+  });
+});
+
 describe('TreeScreen', () => {
   it('expands the current topic by default and shows its lessons and practice leaf', async () => {
     await mountTree();

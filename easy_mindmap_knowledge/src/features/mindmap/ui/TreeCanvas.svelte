@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { onMount } from 'svelte';
   import type { AppState } from '@/app/app-state.svelte';
   import type { Services } from '@/app/composition';
   import { checkpointGroups, checkpointState, gateBefore } from '@/features/exam';
@@ -50,6 +51,49 @@
   const summaryById = $derived(new Map(appState.summaries.map((s) => [s.topicId, s])));
   const topicById = $derived(new Map(topics.map((t, i) => [t.id, { topic: t, prev: i > 0 ? topics[i - 1] : null }])));
 
+  let scroller = $state<HTMLDivElement>();
+
+  /** Horizontal centre of what the learner is working on; the trunk when there is no current topic. */
+  function focusX(): number {
+    const branch = layout.branches.find((b) => b.topicId === currentTopicId);
+    if (!branch) return layout.trunk.x;
+    const xs = [branch.node.left, branch.node.right, ...branch.leaves.map((l) => l.x)];
+    return (Math.min(...xs) + Math.max(...xs)) / 2;
+  }
+
+  // The canvas remounts on every tab switch, so this also restores the position after coming back.
+  onMount(() => {
+    if (!scroller) return;
+    scroller.scrollLeft = Math.max(0, focusX() - scroller.clientWidth / 2);
+  });
+
+  const DRAG_THRESHOLD = 4;
+  let drag: { x: number; left: number; moved: boolean } | null = null;
+  let dragging = $state(false);
+
+  function onpointerdown(e: PointerEvent): void {
+    if (e.button !== 0 || !scroller) return;
+    if ((e.target as Element).closest('button, a, [role="button"], [tabindex]')) return;
+    drag = { x: e.clientX, left: scroller.scrollLeft, moved: false };
+  }
+
+  function onpointermove(e: PointerEvent): void {
+    if (!drag || !scroller) return;
+    const dx = e.clientX - drag.x;
+    if (!drag.moved && Math.abs(dx) < DRAG_THRESHOLD) return;
+    if (!drag.moved) {
+      drag.moved = true;
+      dragging = true;
+      scroller.setPointerCapture(e.pointerId);
+    }
+    scroller.scrollLeft = drag.left - dx;
+  }
+
+  function endDrag(): void {
+    drag = null;
+    dragging = false;
+  }
+
   function openLesson(topicId: string, lessonId: string): void {
     appState.open({ view: 'lesson', topicId, lessonId });
   }
@@ -67,7 +111,15 @@
   }
 </script>
 
-<div class="overflow-x-auto rounded-lg border border-border-subtle bg-surface">
+<div
+  role="presentation"
+  bind:this={scroller}
+  class="overflow-x-auto rounded-lg border border-border-subtle bg-surface select-none {dragging ? 'cursor-grabbing' : 'cursor-grab'}"
+  {onpointerdown}
+  {onpointermove}
+  onpointerup={endDrag}
+  onpointercancel={endDrag}
+>
   <svg
     role="group"
     aria-label={i18n.t('mindmap.treeLabel')}
