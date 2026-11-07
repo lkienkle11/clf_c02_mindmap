@@ -8,6 +8,7 @@
   import { layoutTree } from '../logic/tree-layout';
   import { stopLeafId, waterPath } from '../logic/water-path';
   import CheckpointNode from './CheckpointNode.svelte';
+  import { recallTreeScroll, rememberTreeScroll } from './scroll-memory';
   import TopicBranch from './TopicBranch.svelte';
   import TrunkWater from './TrunkWater.svelte';
 
@@ -61,10 +62,28 @@
     return (Math.min(...xs) + Math.max(...xs)) / 2;
   }
 
-  // The canvas remounts on every tab switch, so this also restores the position after coming back.
+  // The canvas remounts on every tab switch. Centre on the current topic only the first time it opens
+  // after app start; afterwards put the view back exactly where the learner left it.
+  // The position is recorded as the learner scrolls rather than on teardown: by then Svelte has already
+  // detached the element, so its scrollLeft would read 0.
   onMount(() => {
     if (!scroller) return;
-    scroller.scrollLeft = Math.max(0, focusX() - scroller.clientWidth / 2);
+    const el = scroller;
+    const saved = recallTreeScroll();
+    if (saved) {
+      el.scrollLeft = saved.left;
+      window.scrollTo({ top: saved.top });
+    } else {
+      el.scrollLeft = Math.max(0, focusX() - el.clientWidth / 2);
+    }
+    rememberTreeScroll({ left: el.scrollLeft, top: window.scrollY });
+    const record = () => rememberTreeScroll({ left: el.scrollLeft, top: window.scrollY });
+    el.addEventListener('scroll', record, { passive: true });
+    window.addEventListener('scroll', record, { passive: true });
+    return () => {
+      el.removeEventListener('scroll', record);
+      window.removeEventListener('scroll', record);
+    };
   });
 
   const DRAG_THRESHOLD = 4;

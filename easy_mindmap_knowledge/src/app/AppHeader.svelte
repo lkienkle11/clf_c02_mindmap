@@ -27,7 +27,7 @@
 </script>
 
 {#if !hidden}
-  <header class="flex flex-wrap items-center justify-between gap-3 border-b border-border-subtle bg-surface px-4 py-2">
+  <header class="sticky top-0 z-30 flex flex-wrap items-center justify-between gap-3 border-b border-border-subtle bg-surface px-4 py-2">
     <span class="text-lg font-semibold">{i18n.t('app.title')}</span>
     <nav aria-label={i18n.t('nav.main')} class="flex flex-wrap items-center gap-1">
       {#each items as item (item.view)}

@@ -3,6 +3,7 @@
   import type { AppState } from '@/app/app-state.svelte';
   import type { Services } from '@/app/composition';
   import { getI18n } from '@/i18n/i18n.svelte';
+  import { recallExpandedChoice, rememberExpandedChoice } from './scroll-memory';
   import TreeCanvas from './TreeCanvas.svelte';
 
   interface Props {
@@ -21,17 +22,20 @@
       .find((t) => appState.statuses.get(t.id) === 'current')?.id ?? null,
   );
   // null = the user has not chosen yet, so the current topic is open by default.
-  let choice = $state.raw<{ id: string | null } | null>(null);
+  // Remembered across tab switches (this screen remounts each time) but not across app restarts.
+  let choice = $state.raw<{ id: string | null } | null>(recallExpandedChoice());
   const expandedTopicId = $derived(choice ? choice.id : currentTopicId);
 
   function expand(topicId: string): void {
     if (appState.statuses.get(topicId) === 'locked') return;
     choice = { id: topicId };
+    rememberExpandedChoice(choice);
   }
 
   function toggle(topicId: string): void {
     if (appState.statuses.get(topicId) === 'locked') return;
     choice = { id: expandedTopicId === topicId ? null : topicId };
+    rememberExpandedChoice(choice);
   }
 </script>
 
