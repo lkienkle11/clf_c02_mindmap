@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it } from 'vitest';
 import { fireEvent, screen } from '@testing-library/svelte';
 import userEvent from '@testing-library/user-event';
 import { loadCatalog } from '@/content/load-catalog';
@@ -7,7 +7,11 @@ import { makeAttempt } from '@/testing/history-env';
 import { makePracticeEnv } from '@/testing/practice-env';
 import { makeTreeRawCatalog } from '@/testing/fixtures';
 import { renderWithI18n } from '@/testing/render-with-i18n';
+import { resetTreeScroll } from './scroll-memory';
 import TreeScreen from './TreeScreen.svelte';
+
+// The tree remembers its view between mounts; each test starts like a fresh app launch.
+beforeEach(() => resetTreeScroll());
 
 async function mountTree(read: string[] = []) {
   const fake = await makeFakeServices({

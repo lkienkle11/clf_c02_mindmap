@@ -1,10 +1,11 @@
-import { describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it } from 'vitest';
 import { fireEvent, screen, within } from '@testing-library/svelte';
 import { loadCatalog } from '@/content/load-catalog';
 import { makeTreeRawCatalog } from '@/testing/fixtures';
 import { makeFakeServices } from '@/testing/fake-services';
 import { renderWithI18n } from '@/testing/render-with-i18n';
 import type { Locale } from '@/i18n/i18n.svelte';
+import { resetTreeScroll } from './scroll-memory';
 import TreeScreen from './TreeScreen.svelte';
 
 const PASSED = ['cloud-concepts', 'global-infrastructure']; // compute becomes current
@@ -22,6 +23,9 @@ async function mountTree(opts: { passed?: string[]; groups?: number[]; read?: st
   return { ...fake, ...view };
 }
 
+// The tree remembers its view between mounts, so every test starts like a fresh app launch.
+beforeEach(() => resetTreeScroll());
+
 const practiceButton = () => screen.getByRole('button', { name: /^Practice/ });
 
 describe('TreeScreen scrolling', () => {
@@ -34,6 +38,25 @@ describe('TreeScreen scrolling', () => {
 
   it('with no current topic, opens centred on the trunk', async () => {
     await mountTree({ passed: [] , groups: [] });
+    expect(scroller().scrollLeft).toBeGreaterThan(0);
+  });
+
+  it('coming back to the tree keeps where the learner scrolled instead of re-centring', async () => {
+    const first = await mountTree();
+    scroller().scrollLeft = 123;
+    await fireEvent.scroll(scroller());
+    first.unmount();
+    await mountTree();
+    expect(scroller().scrollLeft).toBe(123);
+  });
+
+  it('resets to the current topic once the remembered position is cleared (app restart)', async () => {
+    const first = await mountTree();
+    scroller().scrollLeft = 0;
+    await fireEvent.scroll(scroller());
+    first.unmount();
+    resetTreeScroll();
+    await mountTree();
     expect(scroller().scrollLeft).toBeGreaterThan(0);
   });
 
@@ -94,6 +117,15 @@ describe('TreeScreen', () => {
   it('clicking a done topic expands it and collapses the other', async () => {
     await mountTree();
     await fireEvent.click(screen.getByRole('button', { name: /^cloud-concepts/ }));
+    expect(screen.getByRole('button', { name: /^Cloud intro/ })).toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: /^EC2 basics/ })).not.toBeInTheDocument();
+  });
+
+  it('coming back to the tree keeps the topic the learner opened instead of re-opening the current one', async () => {
+    const first = await mountTree();
+    await fireEvent.click(screen.getByRole('button', { name: /^cloud-concepts/ }));
+    first.unmount();
+    await mountTree();
     expect(screen.getByRole('button', { name: /^Cloud intro/ })).toBeInTheDocument();
     expect(screen.queryByRole('button', { name: /^EC2 basics/ })).not.toBeInTheDocument();
   });
