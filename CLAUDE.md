@@ -372,7 +372,8 @@ WORKER RULES. This brief is the only instruction you have. Project rule files an
 
 - **Claude Code skills (`superpowers:*`, `svelte-*`, `refactoring`, and so on) are not available to Codex, Agy or Haiku workers.** A worker applies only what is written in its brief. Skills guide the orchestrator and the review; the part a worker needs is copied into its brief in short form.
 - For a task that writes code, put this block in the brief right after the Worker rules block, and copy the plan task's own steps below it (they carry the exact test names, signatures and commands).
-- Do not tell a worker to "use the TDD skill" or to read a skill file and follow it, unless a test showed that this worker follows such a file. **[Unverified]**
+- **Naming a skill is not enough; giving the file path can work for Codex [Partly verified 2026-11-10].** Never write only "use the TDD skill". In a test, Codex (`gpt-6.1-sol`, effort low) followed the Claude Code TDD skill when its brief said "read this file and follow its method" and gave the absolute path of the `SKILL.md`: it read the file and a sibling file that the skill links, saw the test fail twice before writing the code, and its report matched the log. A control run without the path wrote the test and the code together and never saw a failing test. The evidence is one run per side, one small task, Codex only. Agy in headless mode cannot run tests, and Haiku was not tested; do not rely on this for them.
+- **How to use it with Codex:** in addition to the CODE WORKER RULES block and the plan task's steps, the brief may name the absolute path of one skill file as "read and follow", limited with "read only this file and the files it links; change nothing else". After the run, check the log for the order of events (the compliance check below). A worker's own report is never proof.
 
 ```
 CODE WORKER RULES. These apply in addition to WORKER RULES, because this task writes code.
