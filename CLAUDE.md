@@ -368,6 +368,23 @@ WORKER RULES. This brief is the only instruction you have. Project rule files an
 
 - **Compliance check after every worker run (mandatory, by the orchestrator):** `git status --porcelain`, the commit count and head hash unchanged, and `git diff --name-only` inside "Allowed paths". On any violation: stop, show the user exactly what happened, undo only what the worker changed outside its allowed paths after the user agrees, and do not treat that run's output as valid.
 
+#### Code worker rules: skills do not reach workers **[Decided]**
+
+- **Claude Code skills (`superpowers:*`, `svelte-*`, `refactoring`, and so on) are not available to Codex, Agy or Haiku workers.** A worker applies only what is written in its brief. Skills guide the orchestrator and the review; the part a worker needs is copied into its brief in short form.
+- For a task that writes code, put this block in the brief right after the Worker rules block, and copy the plan task's own steps below it (they carry the exact test names, signatures and commands).
+- Do not tell a worker to "use the TDD skill" or to read a skill file and follow it, unless a test showed that this worker follows such a file. **[Unverified]**
+
+```
+CODE WORKER RULES. These apply in addition to WORKER RULES, because this task writes code.
+1. Test first. For each behaviour: write the failing test, run it and read the failure, write the minimal code, run it and read the pass. Never skip the step where you see the test fail.
+2. Run only the commands named in the brief's steps. For each one, report the exact command and its result.
+3. A refactor must keep behaviour unchanged. Change only what the brief names, and run the existing tests before and after to show that nothing else changed.
+4. If a test or command fails in a way the brief does not expect, stop. Report what you saw and the cause you found. Do not widen the change to make it pass.
+5. In Svelte files (.svelte and .svelte.ts), replace only the code the brief names. Do not touch reactive state, effects or component markup unless the brief says so.
+6. Never weaken, skip or delete an existing test to make a run pass.
+7. Do not add dependencies, files or abstractions that the brief does not name.
+```
+
 #### One session per task, and fallback goes through files **[Decided]**
 
 - **Each task (or batch) gets a new session.** Do not carry one chat from task A to task B. Reasons: no anchoring on earlier conclusions (every audit batch is judged independently), the Worker rules sit at the top of a short context where they are not forgotten, a short context uses less quota than a long one, and each task may use a different model and effort.
