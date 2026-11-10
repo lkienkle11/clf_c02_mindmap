@@ -1,3 +1,4 @@
+/* WARNING: this script regenerates content/questions/imported.json from the card deck. Once answers were corrected by the audit (content/review/answer-corrections.json), do NOT re-run it over the corrected file: it would overwrite those corrections. Apply corrections with scripts/audit/apply-corrections.ts instead. */
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
