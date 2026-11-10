@@ -36,7 +36,7 @@ Kiểm toán viên kiểm tra các **kiểm soát (control)**: những biện ph
 - "Đâu là kiểm soát **chia sẻ**?" Hãy tìm **quản lý bản vá**, **quản lý cấu hình** hoặc **nhận thức và đào tạo**.
 - "Khách hàng **kế thừa** kiểm soát nào?" Hãy tìm kiểm soát **vật lý và môi trường**.
 - Đào tạo nhân viên của bạn không bao giờ là việc của AWS; AWS chỉ đào tạo nhân viên AWS.
-- Kiểm soát vật lý không bao giờ là kiểm soát chia sẻ: chỉ nhân viên AWS được phê duyệt mới vào được trung tâm dữ liệu của AWS.
+- Kiểm soát vật lý không bao giờ là kiểm soát chia sẻ: chỉ những người mà AWS đã phê duyệt mới vào được trung tâm dữ liệu của AWS (nhân viên được phê duyệt; bên thứ ba chỉ khi có nhân viên AWS đã được phê duyệt yêu cầu, và khách ghé thăm được xác minh danh tính và có người đi kèm).
 
 ## Ý chính
 

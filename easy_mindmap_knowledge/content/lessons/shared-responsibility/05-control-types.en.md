@@ -37,7 +37,7 @@ Auditors check **controls**: the safeguards that protect systems and data. When 
 - "Which is a **shared** control?" Look for **patch management**, **configuration management** or **awareness and training**.
 - "Which control does the customer **inherit**?" Look for **physical and environmental** controls.
 - Training your own staff is never AWS's job; AWS trains only AWS employees.
-- Physical controls are never shared: only approved AWS staff can enter AWS data centers.
+- Physical controls are never shared: only people AWS has approved can enter AWS data centers (approved employees; third parties only when an approved AWS employee requests it, and visitors are identified and escorted).
 
 ## Key points
 

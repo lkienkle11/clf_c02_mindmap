@@ -29,7 +29,7 @@ Volume **Amazon EBS** là ổ đĩa khối của các instance EC2. AWS sở h�
 | Công việc | Ai chịu trách nhiệm |
 | --- | --- |
 | Phần cứng, cơ sở vật chất, host và cài đặt phần mềm cơ sở dữ liệu | AWS |
-| Vá hệ điều hành và database engine | AWS (bạn chọn maintenance window) |
+| Vá hệ điều hành và database engine | AWS (bạn chọn maintenance window; bản cập nhật bắt buộc vẫn có thể được áp dụng sau ngày áp dụng của nó) |
 | Cơ chế sao lưu và failover | AWS cung cấp; bạn chọn dùng và cấu hình |
 | User và quyền trong cơ sở dữ liệu | Khách hàng |
 | Truy cập mạng (VPC và security group) | Khách hàng |

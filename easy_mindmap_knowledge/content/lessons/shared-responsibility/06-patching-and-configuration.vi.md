@@ -20,8 +20,8 @@ Từ "shared" là mấu chốt khi thi: cùng một kiểm soát tồn tại ở
 | Hạ tầng AWS: host, hypervisor, thiết bị mạng | AWS vá và sửa lỗi |
 | Guest OS của instance EC2 | Khách hàng |
 | Ứng dụng và thư viện bạn cài | Khách hàng |
-| OS và engine của cơ sở dữ liệu RDS | AWS, trong maintenance window do bạn chọn |
-| Runtime của hàm Lambda dùng managed runtime | AWS |
+| OS và engine của cơ sở dữ liệu RDS | AWS, trong maintenance window do bạn chọn (bản cập nhật bắt buộc vẫn có thể được áp dụng sau ngày áp dụng của nó) |
+| Runtime của hàm Lambda dùng managed runtime | AWS phát hành các bản vá và tự động áp dụng chúng ở chế độ Auto mặc định; chế độ Function update và Manual cần khách hàng tự thực hiện |
 | Code hàm và thư viện đóng gói kèm | Khách hàng |
 
 Vậy "quản lý bản vá" là kiểm soát chia sẻ, nhưng không có bản vá cụ thể nào là chia sẻ. Với mỗi bản vá, hãy hỏi nó thuộc lớp nào. Khách hàng có thể tự động hóa phần của mình, ví dụ bằng AWS Systems Manager Patch Manager, nhưng tự động hóa không chuyển quyền sở hữu.

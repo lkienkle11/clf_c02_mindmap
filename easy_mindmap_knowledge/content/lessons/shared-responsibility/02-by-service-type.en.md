@@ -18,7 +18,7 @@ videoQuery: AWS shared responsibility model EC2 vs RDS vs Lambda who patches wha
 | --- | --- | --- | --- |
 | Physical security, hardware, host OS, hypervisor | AWS | AWS | AWS |
 | Guest OS install and patching | Customer | AWS | AWS |
-| Database or runtime software patching | Customer (if installed) | AWS, in a maintenance window the customer chooses | AWS (Lambda managed runtimes) |
+| Database or runtime software patching | Customer (if installed) | AWS, in a maintenance window the customer chooses (a mandatory update can still be applied after its apply date) | AWS (Lambda managed runtimes; applied automatically in the default Auto mode) |
 | Application code and its libraries | Customer | Customer (schema, queries) | Customer (function code, dependencies) |
 | Network access rules | Customer (security groups, NACLs) | Customer (DB security group) | Customer (bucket policies, function permissions) |
 | Encryption choices (keys, extra options, encryption in transit) | Customer | Customer | Customer (S3 and DynamoDB encrypt at rest by default) |
@@ -30,7 +30,7 @@ EC2 is close to running your own server: you patch the **guest operating system*
 
 ## Amazon RDS in detail
 
-AWS installs and patches the operating system and database engine, runs automated backups and, with Multi-AZ, handles failover. **You** choose the weekly **maintenance window** when required patches are applied, control network access with security groups, create database users, decide whether to enable encryption at rest, and tune your queries.
+AWS applies the required operating system and database engine patches (optional operating system updates are applied only when you choose), runs automated backups and, with Multi-AZ, handles failover. **You** choose the weekly **maintenance window** when required patches are applied, control network access with security groups, create database users, decide whether to enable encryption at rest, and tune your queries.
 
 ## AWS Lambda and Amazon S3 in detail
 
@@ -40,7 +40,7 @@ AWS installs and patches the operating system and database engine, runs automate
 ## Common traps
 
 - "Who patches the guest OS on EC2?" The **customer**.
-- "Who patches the database engine on RDS?" **AWS**, during the maintenance window **the customer** chooses.
+- "Who patches the database engine on RDS?" **AWS**, during the maintenance window **the customer** chooses (a mandatory update can still be applied after its apply date).
 - "Who patches the OS under Lambda?" **AWS**.
 - "Who configures the security group of an RDS instance?" The **customer**, even though RDS is managed.
 

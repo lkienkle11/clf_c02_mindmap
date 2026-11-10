@@ -32,7 +32,7 @@ Not every service is in scope for every program. The **AWS Services in Scope by 
 Some laws require data to stay in a particular country or region. On AWS:
 
 - **You choose the AWS Region** where your content is stored.
-- AWS states that it **will not move or replicate your content outside the Regions you choose** without your agreement, except where needed to provide a service you started or to comply with the law.
+- AWS states that it **will not move or replicate your content outside the Regions you choose** except where needed to provide a service you started or to comply with the law or a binding government order.
 - **You own your content** and control who can access it.
 
 So "data must remain in Germany" points to choosing a Region in that country.
@@ -42,7 +42,7 @@ So "data must remain in Germany" points to choosing a Region in that country.
 - "Download a SOC 2 report" or "find the PCI attestation for AWS" means **AWS Artifact**.
 - "Accept a BAA for HIPAA" also means **AWS Artifact** (agreements).
 - "AWS is PCI DSS compliant, so our application is automatically compliant" is **false**.
-- Data residency is met by **choosing Regions**; AWS does not move content out of them without your agreement.
+- Data residency is met by **choosing Regions**; AWS does not move or replicate content outside them, except as needed to provide services you started or to comply with the law or a binding government order.
 
 ## Key points
 

@@ -23,7 +23,7 @@ AWS may investigate suspected violations and remove or disable offending content
 
 ## Penetration testing
 
-You may test the security of **your own** resources. For the services on AWS's permitted list, AWS allows testing **without prior approval**. The list includes, for example, Amazon EC2, Amazon RDS, Amazon Aurora, Amazon CloudFront, AWS Lambda, AWS Elastic Beanstalk and AWS Fargate. The list changes over time, so check the current page. Some services have extra limits, such as outbound testing from API Gateway.
+You may test the security of **your own** resources. For the services on AWS's permitted list, AWS allows testing **without prior approval** (security testing that includes Command and Control, and simulated events such as DDoS or phishing tests, still need AWS approval or the simulated-events process). The list includes, for example, Amazon EC2, Amazon RDS, Amazon Aurora, Amazon CloudFront, AWS Lambda, AWS Elastic Beanstalk and AWS Fargate. The list changes over time, so check the current page. Some services have extra limits: outbound penetration testing from Amazon API Gateway is prohibited (the AWS page lists API Gateway under both permitted services and prohibited-for-outbound-testing, so check the current page).
 
 Activities AWS lists as **prohibited**:
 
@@ -39,13 +39,13 @@ If you find a security issue in an AWS service during testing, contact AWS Secur
 
 ### Exam angle
 
-- Customers may pen test permitted services **without prior approval**.
+- Customers may pen test permitted services **without prior approval** (Command and Control testing and simulated events are the exceptions).
 - Attacks that overload a target (DoS/DDoS) are prohibited, and DDoS simulation needs the proper process.
 - Testing is of **your** resources; you may not attack AWS infrastructure or other customers.
 
 ## Reporting abuse
 
-If you believe someone is using AWS resources for abuse (spam, malware hosting, attacks), report it through the **AWS abuse reporting process** linked from the policy page. If AWS receives an abuse report about your resources, it forwards it to you and expects a response describing your use case and a contact.
+If you believe someone is using AWS resources for abuse (spam, malware hosting, attacks), report it through the **AWS abuse reporting process** linked from the policy page. If AWS receives an abuse report about activities related to your security testing, it forwards the report to you and expects approved language describing your use case and a contact.
 
 ## Compliance evidence
 

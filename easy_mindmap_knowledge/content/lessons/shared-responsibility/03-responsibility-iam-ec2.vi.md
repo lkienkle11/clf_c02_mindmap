@@ -23,7 +23,7 @@ required: true
 
 Bẫy thường gặp là nghĩ rằng AWS sẽ tự xoay vòng key hoặc siết quyền thay bạn. AWS cung cấp công cụ, nhưng không quyết định ai trong công ty bạn được làm gì. Chính sách mật khẩu cũng vậy: AWS có sẵn tùy chọn, bạn là người đặt chính sách.
 
-Root user cần được nhắc riêng. Đây là danh tính đầu tiên của tài khoản AWS và có toàn quyền. AWS khuyến nghị không dùng nó cho công việc hằng ngày, nên việc bảo vệ nó (mật khẩu mạnh, MFA, không dùng access key cho việc thường ngày) hoàn toàn là việc của khách hàng. Chủ đề IAM và bảo mật tiếp theo sẽ đi sâu vào các công cụ này.
+Root user cần được nhắc riêng. Đây là danh tính đầu tiên của tài khoản AWS và có toàn quyền. AWS khuyến nghị không dùng nó cho công việc hằng ngày, nên việc bảo vệ nó (một mật khẩu mạnh, MFA, và không có access key nào cho root user, điều mà AWS khuyến nghị không nên tạo) hoàn toàn là việc của khách hàng. Chủ đề IAM và bảo mật tiếp theo sẽ đi sâu vào các công cụ này.
 
 ## Amazon EC2: bạn sở hữu phần máy chủ phía trên hypervisor
 
@@ -54,7 +54,7 @@ Trang shared responsibility của AWS liệt kê các việc chính của khách
 
 ## Bẫy: câu hỏi về VPC và mạng
 
-Khách hàng **cấu hình** VPC của mình: dải địa chỉ, subnet, route table, security group và network ACL. AWS bảo vệ hạ tầng chạy dịch vụ VPC và mạng bên dưới. Vì vậy "bảo trì hoặc vận hành hạ tầng mạng hay dịch vụ bên dưới" là **AWS**, còn "cấu hình những gì bạn xây trên đó" là **khách hàng**. Khi danh sách đáp án có *dữ liệu của bạn*, bảo vệ và phân loại dữ liệu là đáp án khách hàng an toàn nhất. Và nếu câu hỏi hỏi khách hàng **luôn luôn** chịu trách nhiệm về gì, hãy chọn **dữ liệu** của khách hàng; mạng và khóa mã hóa là đáp án gây nhiễu, dù các lựa chọn mã hóa là quyết định của khách hàng.
+Khách hàng **cấu hình** VPC của mình: dải địa chỉ, subnet, route table, security group và network ACL. AWS bảo vệ hạ tầng chạy dịch vụ VPC và mạng bên dưới. Vì vậy "bảo trì hoặc vận hành hạ tầng mạng hay dịch vụ bên dưới" là **AWS**, còn "cấu hình những gì bạn xây trên đó" là **khách hàng**. Khi danh sách đáp án có *dữ liệu của bạn*, bảo vệ và phân loại dữ liệu thường là đáp án khách hàng an toàn nhất, nhưng hãy đối chiếu từng đáp án với yêu cầu của đề bài và dịch vụ. Và nếu câu hỏi hỏi khách hàng **luôn luôn** chịu trách nhiệm về gì, hãy chọn **dữ liệu** của khách hàng; mạng và khóa mã hóa là đáp án gây nhiễu, dù các lựa chọn mã hóa là quyết định của khách hàng.
 
 ## Ý chính
 

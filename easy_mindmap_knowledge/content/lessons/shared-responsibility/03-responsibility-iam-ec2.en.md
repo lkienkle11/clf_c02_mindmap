@@ -24,7 +24,7 @@ videoQuery: AWS shared responsibility model IAM and EC2 customer vs AWS responsi
 
 A common exam trap is to assume AWS rotates keys or tightens permissions for you. AWS provides the tools, but it does not decide who in your company may do what. The same holds for password policies: AWS offers the setting, you define the policy.
 
-The root user deserves special mention. It is the first identity of an AWS account and has complete access. AWS recommends not using it for everyday tasks, so securing it (strong password, MFA, no access keys for daily work) is squarely a customer task. The next topic, IAM and Security, covers these tools in detail.
+The root user deserves special mention. It is the first identity of an AWS account and has complete access. AWS recommends not using it for everyday tasks, so securing it (a strong password, MFA, and no root access keys at all, which AWS strongly recommends not creating) is squarely a customer task. The next topic, IAM and Security, covers these tools in detail.
 
 ## Amazon EC2: you own the server above the hypervisor
 
@@ -55,7 +55,7 @@ The AWS shared responsibility page lists the main customer tasks for EC2: managi
 
 ## Trap: VPC and network questions
 
-The customer **configures** its VPC: address ranges, subnets, route tables, security groups and network ACLs. AWS protects the infrastructure that runs the VPC service and the network underneath it. So "maintain or operate the underlying network infrastructure or service" is **AWS**, while "configure what you build with it" is the **customer**. When a question lists *your data* among the answers, data protection and classification is the safest customer answer. And if it asks what the customer is **always** responsible for, choose the customer's **data**; networking and encryption keys are distractors, even though encryption choices are the customer's decision.
+The customer **configures** its VPC: address ranges, subnets, route tables, security groups and network ACLs. AWS protects the infrastructure that runs the VPC service and the network underneath it. So "maintain or operate the underlying network infrastructure or service" is **AWS**, while "configure what you build with it" is the **customer**. When a question lists *your data* among the answers, data protection and classification is usually the safest customer answer, but check every option against the task and the service. And if it asks what the customer is **always** responsible for, choose the customer's **data**; networking and encryption keys are distractors, even though encryption choices are the customer's decision.
 
 ## Key points
 

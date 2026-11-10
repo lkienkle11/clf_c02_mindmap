@@ -56,7 +56,7 @@
     ],
     "multi": false,
     "orderDependent": false,
-    "explanation": "AWS patches the operating system and engine of RDS instances, and the customer controls the timing by choosing the weekly maintenance window. Customers do not install patches on the RDS host themselves.",
+    "explanation": "AWS patches the operating system and engine of RDS instances, and the customer influences the timing by choosing the weekly maintenance window or by applying an available update at a chosen time; a mandatory update can still be applied outside the window once its apply date has passed. Customers do not install patches on the RDS host themselves.",
     "source": "authored"
   },
   {
@@ -91,7 +91,7 @@
     ],
     "multi": true,
     "orderDependent": false,
-    "explanation": "With Lambda the customer owns the function code, the libraries it packages, and the IAM permissions the function uses. AWS operates and patches the servers, operating system, runtime and virtualization layer, and secures the data centers.",
+    "explanation": "With Lambda the customer owns the function code, the libraries it packages, and the IAM permissions the function uses. AWS operates and patches the servers, operating system and virtualization layer, and publishes runtime updates, which Lambda applies automatically in its default Auto mode (in Function update or Manual mode the customer must update functions to pick them up); AWS also secures the data centers.",
     "source": "authored"
   },
   {
