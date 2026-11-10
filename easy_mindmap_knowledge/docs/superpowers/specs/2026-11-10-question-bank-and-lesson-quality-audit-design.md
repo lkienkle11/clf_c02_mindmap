@@ -122,23 +122,24 @@ The full rules (models, effort levels, pre-flight checks, handoff, quota, fallba
 - The user approves every answer change one by one (section 4, Phase B).
 - Fallback: Codex, then Agy, then Claude (Haiku); or Agy, then Codex, then Claude. If Claude is exhausted, stop and report.
 
-**[Agent's call]** Assignment (a proposal, to be confirmed by the pilot below):
-- Audit of questions and answers: Codex `gpt-6.1-sol`, effort high, batches of 25-30 questions.
-- Explanations and option notes against the answer: Haiku 5.5, XHigh.
-- Lesson claims, EN and VI: Agy `gemini-3.8-flash-high`.
-- Disputed or low-confidence findings: Agy `claude-sonnet-4-6` (effort cannot be set).
-- Merging and formatting reports: Agy `gpt-oss-120b-medium` (effort fixed).
-- Import-bug detection and applying approved changes to JSON: scripts, no model.
-- Re-grade code and tests (Phase C): Codex `gpt-6.1-sol`, effort xhigh, write access only in an isolated worktree that the user allowed.
+**[User, 2026-11-11] Final assignment, decided after the pilot below:**
+- Audit of questions and answers: Codex `gpt-6.1-sol`, effort high, as the primary checker, in batches of 25-30 questions.
+- Second opinion on every batch: Haiku 5.5, effort XHigh (it also checks explanations and option notes). A question is treated as clean only when both agree that it is verified.
+- Every disagreement, every low-confidence item and a random sample of the "verified" ones are checked by the orchestrator against the NEWEST official AWS page (several AWS pages disagree with each other, so one cited page is never enough).
+- Lesson claims (EN and VI): the same pair, Codex primary and Haiku second.
+- Agy is not used to verify facts (no web access in headless mode, may cite invented URLs, missed an outdated question with high confidence). It is used only for mechanical work such as merging and formatting reports (`gpt-oss-120b-medium`, effort fixed) if useful.
+- Import-bug detection and applying approved changes to JSON: scripts (`scripts/audit/`), no model.
+- Re-grade code and tests (done in Part 1): Codex `gpt-6.1-sol`, no worktree by the user's decision; one writing worker at a time.
 - Never use effort `ultra` or `max`.
 
-**Pilot first [Agent's call]:** before the full audit, run one small topic (suggestion: `shared-responsibility`, 29 questions) with Haiku XHigh, Sol high and Gemini Flash high on the same batch, read-only. The orchestrator checks accuracy against official documentation and records the quota each one used. The cheapest model that is accurate enough then takes each kind of task. The pilot's result decides the final assignment.
+**Pilot result [measured 2026-11-10/11]:** (a) topic `shared-responsibility`, 29 questions, all three workers: no wrong answer among the 10 questions the orchestrator verified against official documentation; the findings were about the precision of explanations. (b) A control batch of 8 known-suspect questions without explanations; the orchestrator's ground truth from 14 official pages says all 8 are defective. Codex flagged 8/8 (right key 6/8, no confident miss), Haiku 7/8 (right key 7/8, one confident miss), Agy 7/8 (right key 5/8, one confident miss and one invented URL). Time and tokens per batch: Codex 122-187 s and 76k-88k tokens, Haiku about 200 s and 104k-133k tokens, Agy 158-501 s. Details: the task ledger `.superpowers/diff-agents/2026-11-10-question-bank-audit/progress.md`.
+**Rough estimate for the full audit (extrapolated from two runs, uncertain):** about 28 batches, two workers each, roughly 2 million tokens for Codex and 3 million for Haiku, and the orchestrator reading official pages for roughly 55 to 200 disputed questions.
 
 **Handoff and state:** every delegated task has a folder with `brief.md`, `ledger.json`, `notes.md` and one result file per batch, so that another agent can continue after a quota or error stop without redoing finished batches. **[User]** The path is `.superpowers/diff-agents/2026-11-10-question-bank-audit/<task-id>/` (for example `.../shared-responsibility/`), at the repository root. It is already ignored by git, so this working state is never committed, and it is deleted when the audit is accepted. Workers write only inside their own task folder; the orchestrator creates it and saves each batch result there.
 
 The audit reports in section 9b item 8 are the tracked deliverables, stored at `easy_mindmap_knowledge/docs/superpowers/audits/2026-11-10-<topic>.md`. They are built from the `results/` files and are not stored in the task folder.
 
-**Not yet known:** how to read the quota percentage of Codex and Agy, the exact message when a quota runs out, and whether Codex Luna and Terra use the same quota as Sol. These are checked before the pilot and recorded in `CLAUDE.md`.
+**Still not known after the pilot:** how to read the quota percentage of Codex and Agy (no command was found), the exact message when a quota runs out, and whether Codex Luna and Terra use the same quota as Sol. A quota stop is therefore detected from a failed run, as `CLAUDE.md` says.
 
 ## 10. Risks and open items
 
