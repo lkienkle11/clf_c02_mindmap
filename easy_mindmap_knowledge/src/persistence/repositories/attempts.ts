@@ -77,6 +77,13 @@ export interface SubmitInput {
   grades: { position: number; isCorrect: boolean; selected: string[] }[];
 }
 
+export interface RegradeInput {
+  attemptId: string;
+  grades: { position: number; isCorrect: boolean }[];
+  scorePct: number;
+  passed: boolean;
+}
+
 export function createAttemptsRepo(db: SqlExecutor) {
   async function questionsOf(attemptId: string): Promise<AttemptQuestionRow[]> {
     const rows = await db.select<QuestionDb>(
@@ -166,6 +173,22 @@ export function createAttemptsRepo(db: SqlExecutor) {
       // UPDATEs on a vanished row affect nothing and do not throw; verify instead of reporting a phantom submit.
       const rows = await db.select<{ status: string }>('SELECT status FROM attempts WHERE id = $1', [attemptId]);
       if (rows[0]?.status !== 'submitted') throw new AttemptMissingError(attemptId);
+    },
+
+    /** Not atomic: grade rows are written first and the attempt row last. An interruption in between leaves a stale score, which reconcileAnswers repairs at the next start by comparing the stored score with the one recomputed from the rows. */
+    async applyRegrade(changes: RegradeInput[]): Promise<void> {
+      for (const change of changes) {
+        const rows = await db.select<{ status: string }>('SELECT status FROM attempts WHERE id = $1', [change.attemptId]);
+        if (rows[0]?.status !== 'submitted') continue;
+        for (const grade of change.grades) {
+          await db.execute('UPDATE attempt_questions SET is_correct = $1 WHERE attempt_id = $2 AND position = $3', [
+            grade.isCorrect ? 1 : 0, change.attemptId, grade.position,
+          ]);
+        }
+        await db.execute('UPDATE attempts SET score_pct = $1, passed = $2 WHERE id = $3', [
+          change.scorePct, change.passed ? 1 : 0, change.attemptId,
+        ]);
+      }
     },
 
     async exists(attemptId: string): Promise<boolean> {
