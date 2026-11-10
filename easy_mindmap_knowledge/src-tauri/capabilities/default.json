@@ -1,7 +1,7 @@
 {
   "$schema": "../gen/schemas/desktop-schema.json",
   "identifier": "default",
-  "description": "Main window: SQL for the local database, and opening only YouTube search results and AWS documentation pages in the system browser",
+  "description": "Main window: SQL for the local database, report files under the app data folder, the folder picker, and opening only YouTube search results and AWS documentation pages in the system browser",
   "windows": [
     "main"
   ],
@@ -9,6 +9,109 @@
     "core:default",
     "sql:default",
     "sql:allow-execute",
+    "dialog:allow-open",
+    {
+      "identifier": "fs:allow-read-file",
+      "allow": [
+        {
+          "path": "$APPDATA/report-images"
+        },
+        {
+          "path": "$APPDATA/report-images/**"
+        },
+        {
+          "path": "$APPDATA/reports"
+        },
+        {
+          "path": "$APPDATA/reports/**"
+        }
+      ]
+    },
+    {
+      "identifier": "fs:allow-read-text-file",
+      "allow": [
+        {
+          "path": "$APPDATA/report-images"
+        },
+        {
+          "path": "$APPDATA/report-images/**"
+        },
+        {
+          "path": "$APPDATA/reports"
+        },
+        {
+          "path": "$APPDATA/reports/**"
+        }
+      ]
+    },
+    {
+      "identifier": "fs:allow-write-file",
+      "allow": [
+        {
+          "path": "$APPDATA/report-images"
+        },
+        {
+          "path": "$APPDATA/report-images/**"
+        },
+        {
+          "path": "$APPDATA/reports"
+        },
+        {
+          "path": "$APPDATA/reports/**"
+        }
+      ]
+    },
+    {
+      "identifier": "fs:allow-write-text-file",
+      "allow": [
+        {
+          "path": "$APPDATA/report-images"
+        },
+        {
+          "path": "$APPDATA/report-images/**"
+        },
+        {
+          "path": "$APPDATA/reports"
+        },
+        {
+          "path": "$APPDATA/reports/**"
+        }
+      ]
+    },
+    {
+      "identifier": "fs:allow-mkdir",
+      "allow": [
+        {
+          "path": "$APPDATA/report-images"
+        },
+        {
+          "path": "$APPDATA/report-images/**"
+        },
+        {
+          "path": "$APPDATA/reports"
+        },
+        {
+          "path": "$APPDATA/reports/**"
+        }
+      ]
+    },
+    {
+      "identifier": "fs:allow-exists",
+      "allow": [
+        {
+          "path": "$APPDATA/report-images"
+        },
+        {
+          "path": "$APPDATA/report-images/**"
+        },
+        {
+          "path": "$APPDATA/reports"
+        },
+        {
+          "path": "$APPDATA/reports/**"
+        }
+      ]
+    },
     {
       "identifier": "opener:allow-open-url",
       "allow": [

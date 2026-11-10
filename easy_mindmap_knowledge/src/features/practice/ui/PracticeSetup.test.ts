@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest';
-import { screen, waitFor } from '@testing-library/svelte';
+import { screen, waitFor, within } from '@testing-library/svelte';
 import userEvent from '@testing-library/user-event';
 import { makeQuestion } from '@/testing/fixtures';
 import { makePracticeEnv, makePracticeRawCatalog } from '@/testing/practice-env';
@@ -28,6 +28,10 @@ async function mount(topicId = 'compute', seed: string | null = null, rawCatalog
   await waitFor(() => expect(screen.getByRole('button', { name: 'Start' })).toBeEnabled());
   return { ...env, onstarted };
 }
+
+const HIDDEN_LEGEND = 'When you switch tabs or minimize';
+const REPORT_LEGEND = 'When you open a report during a session';
+const hiddenGroup = () => screen.getByRole('group', { name: HIDDEN_LEGEND });
 
 describe('PracticeSetup', () => {
   it('shows the topic, the question count and the three pairs of choices', async () => {
@@ -95,7 +99,7 @@ describe('PracticeSetup', () => {
     const session = onstarted.mock.calls[0][0] as PracticeSession;
     expect(session).toBeInstanceOf(PracticeSession);
     expect(session.allowReview).toBe(true);
-    expect(await loadLastOptions(services.repos.settings)).toEqual({ allowReview: true, limitMs: 150_000, clockMode: 'run', onHidden: 'freeze', questionCount: 10 });
+    expect(await loadLastOptions(services.repos.settings)).toEqual({ allowReview: true, limitMs: 150_000, clockMode: 'run', onHidden: 'freeze', onReport: 'freeze', questionCount: 10 });
   });
 
   it('starts from the last saved options', async () => {
@@ -114,7 +118,7 @@ describe('PracticeSetup', () => {
     await userEvent.click(screen.getByRole('radio', { name: 'Set a time' }));
     expect(screen.getByRole('group', { name: legend })).toBeInTheDocument();
     expect(screen.getByText(/Only applies while the window is hidden/)).toBeInTheDocument();
-    expect(screen.getByRole('radio', { name: 'Freeze the time' })).toBeChecked();
+    expect(within(screen.getByRole('group', { name: legend })).getByRole('radio', { name: 'Freeze the time' })).toBeChecked();
     await userEvent.click(screen.getByRole('radio', { name: 'No time limit' }));
     expect(screen.queryByRole('group', { name: legend })).not.toBeInTheDocument();
   });
@@ -122,15 +126,62 @@ describe('PracticeSetup', () => {
   it('choosing "keep running" starts the session with onHidden run and persists it', async () => {
     const { services, onstarted } = await mount();
     await userEvent.click(screen.getByRole('radio', { name: 'Set a time' }));
-    await userEvent.click(screen.getByRole('radio', { name: 'Let the time keep running' }));
+    await userEvent.click(within(hiddenGroup()).getByRole('radio', { name: 'Let the time keep running' }));
     await userEvent.click(screen.getByRole('button', { name: 'Start' }));
     await waitFor(() => expect(onstarted).toHaveBeenCalledTimes(1));
-    expect((await loadLastOptions(services.repos.settings))?.onHidden).toBe('run');
+    const saved = await loadLastOptions(services.repos.settings);
+    expect(saved.onHidden).toBe('run');
+    expect(saved.onReport).toBe('freeze');
+  });
+
+  it('shows the report-clock pair under the hidden one only when a time is set, defaulting to freeze', async () => {
+    await mount();
+    expect(screen.queryByRole('group', { name: REPORT_LEGEND })).not.toBeInTheDocument();
+    await userEvent.click(screen.getByRole('radio', { name: 'Set a time' }));
+    const report = screen.getByRole('group', { name: REPORT_LEGEND });
+    expect(hiddenGroup().compareDocumentPosition(report) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    expect(within(report).getByRole('radio', { name: 'Freeze the time' })).toBeChecked();
+    expect(within(report).getByRole('radio', { name: 'Let the time keep running' })).not.toBeChecked();
+    expect(within(report).getByText(/Time with the window hidden still follows/)).toBeInTheDocument();
+    await userEvent.click(screen.getByRole('radio', { name: 'No time limit' }));
+    expect(screen.queryByRole('group', { name: REPORT_LEGEND })).not.toBeInTheDocument();
+  });
+
+  it('choosing "keep running" for the report starts the attempt with onReport run and persists it', async () => {
+    const { services, onstarted } = await mount();
+    const create = vi.spyOn(services.repos.attempts, 'create');
+    await userEvent.click(screen.getByRole('radio', { name: 'Set a time' }));
+    await userEvent.click(within(screen.getByRole('group', { name: REPORT_LEGEND })).getByRole('radio', { name: 'Let the time keep running' }));
+    await userEvent.click(screen.getByRole('button', { name: 'Start' }));
+    await waitFor(() => expect(onstarted).toHaveBeenCalledTimes(1));
+    expect(create.mock.calls[0][0].clock).toMatchObject({ onHidden: 'freeze', onReport: 'run' });
+    const saved = await loadLastOptions(services.repos.settings);
+    expect(saved.onReport).toBe('run');
+    expect(saved.onHidden).toBe('freeze');
+  });
+
+  it('restores the previously saved onReport and treats an old save as freeze', async () => {
+    await mount('compute', JSON.stringify({ allowReview: false, limitMs: 90_000, clockMode: 'freeze', onHidden: 'freeze', onReport: 'run' }));
+    expect(within(screen.getByRole('group', { name: REPORT_LEGEND })).getByRole('radio', { name: 'Let the time keep running' })).toBeChecked();
+  });
+
+  it('an options save from before onReport shows freeze', async () => {
+    await mount('compute', JSON.stringify({ allowReview: false, limitMs: 90_000, clockMode: 'freeze', onHidden: 'run' }));
+    expect(within(screen.getByRole('group', { name: REPORT_LEGEND })).getByRole('radio', { name: 'Freeze the time' })).toBeChecked();
+  });
+
+  it('shows the report-clock legend and labels in Vietnamese', async () => {
+    const env = await makePracticeEnv();
+    env.store.set('practice_last_options', JSON.stringify({ allowReview: false, limitMs: 90_000, clockMode: 'freeze', onHidden: 'freeze' }));
+    renderWithI18n(PracticeSetup, { services: env.services, appState: env.appState, topicId: 'compute', onstarted: vi.fn() }, 'vi');
+    const group = await screen.findByRole('group', { name: 'Khi mở báo cáo lúc đang làm bài' });
+    expect(within(group).getByRole('radio', { name: 'Đóng băng thời gian' })).toBeChecked();
+    expect(within(group).getByRole('radio', { name: 'Thời gian tiếp tục trôi' })).toBeInTheDocument();
   });
 
   it('restores the previously saved onHidden', async () => {
     await mount('compute', JSON.stringify({ allowReview: false, limitMs: 90_000, clockMode: 'freeze', onHidden: 'run' }));
-    expect(screen.getByRole('radio', { name: 'Let the time keep running' })).toBeChecked();
+    expect(within(hiddenGroup()).getByRole('radio', { name: 'Let the time keep running' })).toBeChecked();
   });
 
   it('shows a clear message and does not navigate when the topic has no questions', async () => {

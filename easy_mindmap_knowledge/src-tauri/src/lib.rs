@@ -4,6 +4,10 @@ use tauri_plugin_sql::{Migration, MigrationKind};
 pub fn run() {
   tauri::Builder::default()
     .plugin(tauri_plugin_opener::init())
+    .plugin(tauri_plugin_fs::init())
+    .plugin(tauri_plugin_dialog::init())
+    // After fs and dialog: it saves the folder scopes they grant and restores them on the next start.
+    .plugin(tauri_plugin_persisted_scope::init())
     .plugin(
       tauri_plugin_sql::Builder::default()
         .add_migrations(
@@ -32,6 +36,12 @@ pub fn run() {
               version: 4,
               description: "checkpoint_attempts",
               sql: include_str!("../migrations/0004_checkpoint_attempts.sql"),
+              kind: MigrationKind::Up,
+            },
+            Migration {
+              version: 5,
+              description: "reports",
+              sql: include_str!("../migrations/0005_reports.sql"),
               kind: MigrationKind::Up,
             },
           ],

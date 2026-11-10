@@ -2,11 +2,18 @@ import type { ClockState, HiddenPolicy } from '@/persistence/records';
 
 export type { ClockState };
 
-export function startClock(limitMs: number | null, mode: 'freeze' | 'run', now: number, onHidden: HiddenPolicy): ClockState {
-  if (limitMs === null) return { mode, onHidden, limitMs: null, remainingMs: null, deadlineAt: null };
+export function startClock(
+  limitMs: number | null,
+  mode: 'freeze' | 'run',
+  now: number,
+  onHidden: HiddenPolicy,
+  onReport: HiddenPolicy = 'freeze',
+): ClockState {
+  if (limitMs === null) return { mode, onHidden, onReport, limitMs: null, remainingMs: null, deadlineAt: null };
   return {
     mode,
     onHidden,
+    onReport,
     limitMs,
     remainingMs: limitMs,
     deadlineAt: mode === 'run' ? now + limitMs : null,
@@ -51,5 +58,18 @@ export function settleHidden(state: ClockState, hiddenMs: number): ClockState {
   if (state.mode === 'freeze' && state.onHidden === 'run' && state.remainingMs !== null) {
     return { ...state, remainingMs: Math.max(0, state.remainingMs - hidden) };
   }
+  return state;
+}
+
+/**
+ * Time the clock must NOT charge because a report dialog was open for `elapsedMs` of visible time. A freeze
+ * clock only counts ticks, so skipping the charge is enough and the state is unchanged. A run clock follows a
+ * deadline, so the deadline moves later by the same amount. Hidden-window time is never routed through here:
+ * it is governed only by `settleHidden` and `onHidden`.
+ */
+export function pauseForReport(state: ClockState, elapsedMs: number): ClockState {
+  if (state.limitMs === null) return state;
+  const paused = Math.max(0, elapsedMs);
+  if (state.mode === 'run' && state.deadlineAt !== null) return { ...state, deadlineAt: state.deadlineAt + paused };
   return state;
 }

@@ -31,6 +31,7 @@
   let timeMode = $state<'set' | 'none'>('none');
   let clock = $state<'freeze' | 'run'>('freeze');
   let onHidden = $state<'freeze' | 'run'>('freeze');
+  let onReport = $state<'freeze' | 'run'>('freeze');
   let questionInput = $state<number | null>(DEFAULT_PRACTICE_OPTIONS.questionCount);
   let minutes = $state<number | null>(10);
   let seconds = $state<number | null>(0);
@@ -64,6 +65,7 @@
           review = o.allowReview ? 'allow' : 'deny';
           clock = o.clockMode;
           onHidden = o.onHidden;
+          onReport = o.onReport;
           // A saved count larger than the pool is clamped to it.
           questionInput = Math.min(o.questionCount, poolSize);
           if (o.limitMs !== null) {
@@ -108,7 +110,7 @@
         services,
         topicId,
         // A pool below the minimum saves the minimum; the session clamps the draw to the pool.
-        { allowReview: review === 'allow', limitMs, clockMode: clock, onHidden, questionCount: fixedCount ? MIN_PRACTICE_QUESTIONS : count },
+        { allowReview: review === 'allow', limitMs, clockMode: clock, onHidden, onReport, questionCount: fixedCount ? MIN_PRACTICE_QUESTIONS : count },
         () => appState.refresh(),
       );
       onstarted(session);
@@ -206,6 +208,13 @@
       <p class="mb-1 text-muted-foreground">{i18n.t('practice.setup.hiddenHint')}</p>
       <label class={radio}><input class="size-5" type="radio" name="hidden" value="freeze" bind:group={onHidden} />{i18n.t('practice.setup.hiddenFreeze')}</label>
       <label class={radio}><input class="size-5" type="radio" name="hidden" value="run" bind:group={onHidden} />{i18n.t('practice.setup.hiddenRun')}</label>
+    </fieldset>
+
+    <fieldset class="flex flex-col gap-1">
+      <legend class="mb-1 text-lg font-medium">{i18n.t('practice.setup.reportLegend')}</legend>
+      <p class="mb-1 text-muted-foreground">{i18n.t('practice.setup.reportHint')}</p>
+      <label class={radio}><input class="size-5" type="radio" name="report" value="freeze" bind:group={onReport} />{i18n.t('practice.setup.reportFreeze')}</label>
+      <label class={radio}><input class="size-5" type="radio" name="report" value="run" bind:group={onReport} />{i18n.t('practice.setup.reportRun')}</label>
     </fieldset>
   {/if}
 

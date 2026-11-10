@@ -52,7 +52,7 @@ describe('PracticeSession.startExam', () => {
       kind: 'checkpoint', topicId: null, groupIndex: 2, plannedCount: plan.length,
       reviewAllowed: false, status: 'in_progress', startedAt: T0,
     });
-    expect(found.attempt.clock).toMatchObject({ mode: 'run', onHidden: 'run', limitMs: LIMIT, deadlineAt: T0 + LIMIT });
+    expect(found.attempt.clock).toMatchObject({ mode: 'run', onHidden: 'run', onReport: 'run', limitMs: LIMIT, deadlineAt: T0 + LIMIT });
     const rows = [...found.questions].sort((a, b) => a.position - b.position);
     expect(rows.map((r) => r.questionId)).toEqual(plan.map((p) => p.questionId));
     expect(rows.map((r) => r.optionOrder)).toEqual(plan.map((p) => p.optionOrder));

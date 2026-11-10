@@ -74,7 +74,7 @@ export interface MissedDetail {
   topicId: string | null;
   misses: number;
   seen: number;
-  latestWrong: { attemptId: string; at: number; selected: string[]; optionOrder: string[] };
+  latestWrong: { attemptId: string; position: number; at: number; selected: string[]; optionOrder: string[] };
   distinctWrongAnswers: number;
 }
 
@@ -103,6 +103,7 @@ export function missedDetails(
         if (l === null || at > l.at || (at === l.at && a.id > l.attemptId)) {
           cur.latest = {
             attemptId: a.id,
+            position: r.position,
             at,
             selected: [...r.selected],
             optionOrder: [...r.optionOrder],

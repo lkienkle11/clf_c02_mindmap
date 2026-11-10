@@ -13,12 +13,14 @@
     title: string;
     onclose: () => void;
     closeOnBackdrop?: boolean;
+    /** Extra `data-*` attributes for the backdrop and the dialog, e.g. a marker that screenshots skip. */
+    attrs?: Record<`data-${string}`, string>;
     children?: Snippet;
     /** Pinned below the scrolling content, so long modals keep their actions in view. */
     footer?: Snippet;
   }
 
-  let { open, title, onclose, closeOnBackdrop = false, children, footer }: Props = $props();
+  let { open, title, onclose, closeOnBackdrop = false, attrs, children, footer }: Props = $props();
 
   const uid = $props.id();
   const titleId = `modal-title-${uid}`;
@@ -81,6 +83,7 @@
 
 {#if open}
   <div
+    {...attrs}
     data-testid="modal-backdrop"
     class="fixed inset-0 z-50 flex items-center justify-center bg-foreground/50 p-4"
     role="presentation"
@@ -89,6 +92,7 @@
     }}
   >
     <div
+      {...attrs}
       bind:this={dialog}
       role="dialog"
       aria-modal="true"

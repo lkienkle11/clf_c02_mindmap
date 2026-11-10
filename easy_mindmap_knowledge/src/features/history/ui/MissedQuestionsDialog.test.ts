@@ -11,7 +11,7 @@ const detail = (questionId: string, over: Partial<MissedDetail> = {}): MissedDet
   topicId: 'compute',
   misses: 2,
   seen: 3,
-  latestWrong: { attemptId: 'a1', at: 1, selected: ['B'], optionOrder: ['B', 'A', 'C', 'D'] },
+  latestWrong: { attemptId: 'a1', position: 0, at: 1, selected: ['B'], optionOrder: ['B', 'A', 'C', 'D'] },
   distinctWrongAnswers: 1,
   ...over,
 });

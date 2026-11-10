@@ -72,7 +72,7 @@
   {/if}
   {#key session.attemptId}
     {#if session.submitted && session.result}
-      <PracticeResult {services} mode="review" result={session.result} onback={() => appState.open({ view: 'tree' })}>
+      <PracticeResult {services} mode="review" attemptId={session.attemptId} result={session.result} onback={() => appState.open({ view: 'tree' })}>
         {#snippet actions()}
           {#if run.finished || run.remainingAfterCurrent === 0}
             <Button onclick={() => appState.open({ view: 'tree' })}>{i18n.t('practice.result.backToMap')}</Button>

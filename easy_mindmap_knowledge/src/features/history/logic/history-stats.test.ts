@@ -165,7 +165,7 @@ describe('missedDetails', () => {
       ['a3', [qrow({ attemptId: 'a3', questionId: 'q1', selected: ['C'], optionOrder: ['C', 'A', 'B'] })]],
     ]);
     const [d] = missedDetails(attempts, rows, topicOf);
-    expect(d.latestWrong).toEqual({ attemptId: 'a3', at: 300, selected: ['C'], optionOrder: ['C', 'A', 'B'] });
+    expect(d.latestWrong).toEqual({ attemptId: 'a3', position: 0, at: 300, selected: ['C'], optionOrder: ['C', 'A', 'B'] });
   });
 
   it('counts distinct wrong answers ignoring order', () => {

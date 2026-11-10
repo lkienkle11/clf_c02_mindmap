@@ -1,6 +1,7 @@
 <script lang="ts">
   import type { Services } from '@/app/composition';
   import { OptionReview } from '@/features/practice';
+  import { ReportButton } from '@/features/report';
   import { getI18n } from '@/i18n/i18n.svelte';
   import Button from '@/ui/Button.svelte';
   import Modal from '@/ui/Modal.svelte';
@@ -39,14 +40,21 @@
     return initialTopicId !== null && items.some((i) => i.topicId === initialTopicId) ? initialTopicId : null;
   }
 
+  // Each <li> is a plain block holding the whole entry; it is the screenshot target.
+  const frames: Record<string, HTMLElement | undefined> = {};
+  const frame = (id: string) => (node: HTMLElement) => {
+    frames[id] = node;
+    return () => delete frames[id];
+  };
+
   const filtered = $derived(filterMissed(items, query, topicId, textOf));
   const view = $derived(paginate(filtered, page, PAGE_SIZE));
 </script>
 
 <Modal open title={i18n.t('history.missed.dialogTitle')} {onclose} closeOnBackdrop>
   <div class="flex flex-col gap-4">
-    <div class="flex flex-col gap-3 sm:flex-row">
-      <div class="flex flex-1 flex-col gap-1">
+    <div class="flex flex-col gap-3">
+      <div class="flex min-w-0 flex-col gap-1">
         <label for="{uid}-search" class="text-sm font-medium">{i18n.t('history.missed.search')}</label>
         <input
           id="{uid}-search"
@@ -56,10 +64,10 @@
             query = e.currentTarget.value;
             page = 1;
           }}
-          class="min-h-11 rounded-lg border border-border bg-surface px-3 text-surface-foreground focus-visible:outline-2 focus-visible:outline-ring"
+          class="min-h-11 w-full min-w-0 rounded-lg border border-border bg-surface px-3 text-surface-foreground focus-visible:outline-2 focus-visible:outline-ring"
         />
       </div>
-      <div class="flex flex-col gap-1">
+      <div class="flex min-w-0 flex-col gap-1">
         <label for="{uid}-topic" class="text-sm font-medium">{i18n.t('history.missed.topicFilter')}</label>
         <select
           id="{uid}-topic"
@@ -68,7 +76,7 @@
             topicId = e.currentTarget.value === '' ? null : e.currentTarget.value;
             page = 1;
           }}
-          class="min-h-11 rounded-lg border border-border bg-surface px-3 text-surface-foreground focus-visible:outline-2 focus-visible:outline-ring"
+          class="min-h-11 w-full min-w-0 rounded-lg border border-border bg-surface px-3 text-surface-foreground focus-visible:outline-2 focus-visible:outline-ring"
         >
           <option value="">{i18n.t('history.missed.allTopics')}</option>
           {#each topicChoices as t (t.id)}
@@ -83,7 +91,7 @@
     {:else}
       <ol class="flex flex-col gap-3">
         {#each view.items as item (item.questionId)}
-          <li data-question={item.questionId} class="flex flex-col gap-1 rounded-lg border border-border-subtle p-3">
+          <li data-question={item.questionId} class="flex flex-col gap-1 rounded-lg border border-border-subtle p-3" {@attach frame(item.questionId)}>
             <p lang="en" class="font-medium">{textOf(item.questionId)}</p>
             <p class="flex flex-wrap gap-x-2 text-sm text-muted-foreground">
               {#if item.topicId !== null}<span>{topicName(item.topicId)}</span><span aria-hidden="true">·</span>{/if}
@@ -100,6 +108,28 @@
               question={questions.get(item.questionId)}
               selected={item.latestWrong.selected}
               optionOrder={item.latestWrong.optionOrder}
+            />
+            <ReportButton
+              {services}
+              class="self-end"
+              context={{
+                type: 'question',
+                questionId: item.questionId,
+                sourceScreen: 'missed',
+                // The latest wrong attempt is the one shown above; without its id there is nothing to reference.
+                ...(item.latestWrong.attemptId !== ''
+                  ? {
+                      attempt: {
+                        attemptId: item.latestWrong.attemptId,
+                        position: item.latestWrong.position,
+                        optionOrder: [...item.latestWrong.optionOrder],
+                        selected: [...item.latestWrong.selected],
+                        isCorrect: false,
+                      },
+                    }
+                  : {}),
+              }}
+              captureTarget={() => frames[item.questionId] ?? null}
             />
           </li>
         {/each}

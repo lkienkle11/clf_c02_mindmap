@@ -1,9 +1,10 @@
 // @vitest-environment node
-import { describe, expect, it } from 'vitest';
+import { describe, expect, expectTypeOf, it } from 'vitest';
 import { DatabaseSync } from 'node:sqlite';
 import { readdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { createNodeSqliteExecutor } from '@/testing/node-sqlite-executor';
+import type { ReportRow, ReportStatus, ReportType } from '@/persistence/records';
 
 const ROOT = process.cwd();
 const DIR = join(ROOT, 'src-tauri', 'migrations');
@@ -127,6 +128,81 @@ describe('migrations', () => {
       expect(bad('clock_on_hidden', 'bogus')).toThrow(/CHECK/i);
       expect(bad('submit_reason', 'bogus')).toThrow(/CHECK/i);
       expect(bad('submit_reason', 'timeout')).not.toThrow();
+    });
+  });
+
+  describe('0005 reports', () => {
+    const MIGRATION = '0005_reports.sql';
+    const migrateTo = (n: number) => {
+      const db = new DatabaseSync(':memory:');
+      for (const f of files.slice(0, n)) db.exec(sql(f));
+      return db;
+    };
+    const columns = (db: DatabaseSync, table: string) =>
+      (db.prepare(`PRAGMA table_info(${table})`).all() as { name: string }[]).map((c) => c.name);
+    const insertReport = (db: DatabaseSync, id: string, type: string, status: string) =>
+      db.prepare(
+        'INSERT INTO reports (id, type, status, created_at, status_updated_at, body, app_version, locale) VALUES (?1, ?2, ?3, 1, 1, ?4, ?5, ?6)',
+      ).run(id, type, status, 'body', '1.0.0', 'en');
+
+    it('0005 creates reports and report_images and keeps existing attempts (clock_on_report defaults to freeze)', () => {
+      expect(files[4]).toBe(MIGRATION);
+      const db = migrateTo(4);
+      db.exec("INSERT INTO attempts (id, kind, topic_id, status, started_at, clock_mode) VALUES ('a1', 'practice', 't', 'submitted', 1, 'freeze')");
+      db.exec(sql(MIGRATION));
+      expect(db.prepare('SELECT id, clock_on_report FROM attempts').all()).toEqual([{ id: 'a1', clock_on_report: 'freeze' }]);
+      expect(columns(db, 'reports')).toEqual([
+        'id', 'type', 'status', 'created_at', 'status_updated_at', 'body', 'app_version', 'locale', 'source_screen',
+        'question_id', 'lesson_id', 'attempt_id', 'position', 'option_order', 'selected', 'is_correct',
+      ]);
+      expect(columns(db, 'report_images')).toEqual(['report_id', 'idx', 'path']);
+      const indexColumns = (db.prepare("PRAGMA index_list('reports')").all() as { name: string }[]).map((i) =>
+        (db.prepare(`PRAGMA index_info('${i.name}')`).all() as { name: string }[]).map((c) => c.name),
+      );
+      expect(indexColumns).toContainEqual(['status', 'created_at']);
+      insertReport(db, 'r1', 'question', 'new');
+      expect(db.prepare('SELECT status FROM reports').all()).toEqual([{ status: 'new' }]);
+    });
+
+    it('reports rejects an unknown type or status', () => {
+      const db = migrateTo(5);
+      expect(() => insertReport(db, 'r1', 'question', 'new')).not.toThrow();
+      expect(() => insertReport(db, 'r2', 'bogus', 'new')).toThrow(/CHECK/i);
+      expect(() => insertReport(db, 'r3', 'lesson', 'bogus')).toThrow(/CHECK/i);
+    });
+
+    it('attempts.clock_on_report accepts only freeze or run', () => {
+      const db = migrateTo(5);
+      const insert = (id: string, value: string) =>
+        db.prepare("INSERT INTO attempts (id, kind, status, started_at, clock_mode, clock_on_report) VALUES (?1, 'practice', 'in_progress', 1, 'freeze', ?2)").run(id, value);
+      expect(() => insert('a1', 'run')).not.toThrow();
+      expect(() => insert('a2', 'bogus')).toThrow(/CHECK/i);
+    });
+  });
+
+  describe('report record types', () => {
+    it('ReportRow mirrors the reports columns, with images as ordered relative paths', () => {
+      expectTypeOf<ReportType>().toEqualTypeOf<'question' | 'lesson' | 'system'>();
+      expectTypeOf<ReportStatus>().toEqualTypeOf<'new' | 'handled'>();
+      expectTypeOf<ReportRow>().toEqualTypeOf<{
+        id: string;
+        type: ReportType;
+        status: ReportStatus;
+        createdAt: number;
+        statusUpdatedAt: number;
+        body: string;
+        appVersion: string;
+        locale: 'en' | 'vi';
+        sourceScreen: string | null;
+        questionId: string | null;
+        lessonId: string | null;
+        attemptId: string | null;
+        position: number | null;
+        optionOrder: string[] | null;
+        selected: string[] | null;
+        isCorrect: boolean | null;
+        images: string[];
+      }>();
     });
   });
 

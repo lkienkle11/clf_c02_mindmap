@@ -5,6 +5,9 @@ import {
   createAttemptsRepo,
   createLessonProgressRepo,
   createQuestionStatsRepo,
+  createReportsRepo,
+  createTauriReportStorage,
+  createUnavailableReportStorage,
   createSettingsRepo,
   createTauriExecutor,
 } from '@/persistence';
@@ -12,6 +15,8 @@ import type {
   AttemptsRepo,
   LessonProgressRepo,
   QuestionStatsRepo,
+  ReportsRepo,
+  ReportStorage,
   SettingsRepo,
   SqlExecutor,
 } from '@/persistence';
@@ -27,8 +32,10 @@ export interface Services {
     attempts: AttemptsRepo;
     questionStats: QuestionStatsRepo;
     settings: SettingsRepo;
+    reports: ReportsRepo;
   };
   rebuildDeps: RebuildDeps;
+  reportStorage: ReportStorage;
   /**
    * Re-derives question_stats for these questions from history. Injected so practice can trigger it
    * without importing the review feature (review depends on practice, never the other way round).
@@ -44,6 +51,8 @@ export function buildServices(parts: {
   catalog: Catalog;
   now?: () => number;
   newId?: () => string;
+  /** Defaults to a stub whose methods reject; createServices passes the Tauri implementation. */
+  reportStorage?: ReportStorage;
   /** Test override; defaults to rebuildStatsFor over this executor and catalog. */
   rebuildStats?: (questionIds: string[]) => Promise<void>;
 }): Services {
@@ -60,8 +69,10 @@ export function buildServices(parts: {
       attempts: createAttemptsRepo(executor),
       questionStats: createQuestionStatsRepo(executor),
       settings: createSettingsRepo(executor),
+      reports: createReportsRepo(executor),
     },
     rebuildDeps,
+    reportStorage: parts.reportStorage ?? createUnavailableReportStorage(),
     rebuildStats: parts.rebuildStats ?? ((ids) => rebuildStatsFor(rebuildDeps, ids)),
     now: parts.now ?? (() => Date.now()),
     newId: parts.newId ?? (() => crypto.randomUUID()),
@@ -69,5 +80,9 @@ export function buildServices(parts: {
 }
 
 export async function createServices(): Promise<Services> {
-  return buildServices({ executor: await createTauriExecutor(), catalog: loadBundledCatalog() });
+  return buildServices({
+    executor: await createTauriExecutor(),
+    catalog: loadBundledCatalog(),
+    reportStorage: createTauriReportStorage(),
+  });
 }

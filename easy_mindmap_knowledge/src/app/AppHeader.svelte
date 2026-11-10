@@ -15,10 +15,11 @@
   let { services, appState, onreview }: Props = $props();
 
   const i18n = getI18n();
-  const items: { view: 'tree' | 'history' | 'settings'; route: Route }[] = [
-    { view: 'tree', route: { view: 'tree' } },
-    { view: 'history', route: { view: 'history' } },
-    { view: 'settings', route: { view: 'settings' } },
+  const items: { view: 'tree' | 'history' | 'reports' | 'settings'; label: string; route: Route }[] = [
+    { view: 'tree', label: 'nav.tree', route: { view: 'tree' } },
+    { view: 'history', label: 'nav.history', route: { view: 'history' } },
+    { view: 'reports', label: 'report.tab', route: { view: 'reports' } },
+    { view: 'settings', label: 'nav.settings', route: { view: 'settings' } },
   ];
   // A lesson belongs to the mindmap section.
   const section = $derived<View>(appState.view === 'lesson' ? 'tree' : appState.view);
@@ -41,7 +42,10 @@
             current ? 'bg-primary text-primary-foreground' : 'text-foreground hover:bg-muted',
           )}
           onclick={() => appState.open(item.route)}
-        >{i18n.t(`nav.${item.view}`)}</button>
+        >{i18n.t(item.label)}{#if item.view === 'reports' && appState.newReportCount > 0}<span class="sr-only">, {i18n.t('report.tab.new', { n: appState.newReportCount })}</span><span
+              aria-hidden="true"
+              class="ml-2 inline-flex min-w-6 items-center justify-center rounded-full bg-danger px-1.5 text-sm font-semibold text-danger-foreground"
+            >{appState.newReportCount}</span>{/if}</button>
       {/each}
       <ReviewButton {services} {appState} onstart={onreview} />
     </nav>

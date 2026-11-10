@@ -3,6 +3,7 @@ import { screen, waitFor } from '@testing-library/svelte';
 import userEvent from '@testing-library/user-event';
 import { makeReviewEnv } from '@/testing/review-env';
 import { renderWithI18n } from '@/testing/render-with-i18n';
+import { makeReportSeed, makeReportsScreenEnv } from '@/testing/reports-screen-env';
 import AppHeader from './AppHeader.svelte';
 
 async function mount(over: Parameters<typeof makeReviewEnv>[0] = {}) {
@@ -69,5 +70,63 @@ describe('AppHeader', () => {
     expect(screen.queryByRole('navigation', { name: 'Main navigation' })).not.toBeInTheDocument();
     appState.open({ view: 'tree' });
     expect(await screen.findByRole('banner')).toBeInTheDocument();
+  });
+
+  describe('Reports tab', () => {
+    const seeds = [
+      makeReportSeed({ id: 'a' }),
+      makeReportSeed({ id: 'b' }),
+      makeReportSeed({ id: 'c', status: 'handled' }),
+    ];
+    const mountReports = async (list = seeds, locale: 'en' | 'vi' = 'en') => {
+      const env = await makeReportsScreenEnv(list);
+      const view = renderWithI18n(AppHeader, { services: env.services, appState: env.appState, onreview: () => {} }, locale);
+      return { ...env, ...view };
+    };
+
+    it('shows a Reports tab between History and Settings with the number of new reports', async () => {
+      await mountReports();
+      const before = (x: HTMLElement, y: HTMLElement) => Boolean(x.compareDocumentPosition(y) & Node.DOCUMENT_POSITION_FOLLOWING);
+      const history = screen.getByRole('button', { name: 'History' });
+      const reports = screen.getByRole('button', { name: 'Reports, 2 new' });
+      const settings = screen.getByRole('button', { name: 'Settings' });
+      expect(before(history, reports)).toBe(true);
+      expect(before(reports, settings)).toBe(true);
+      const tab = screen.getByRole('button', { name: 'Reports, 2 new' });
+      expect(tab).toHaveTextContent('2');
+    });
+
+    it('hides the badge when no report is new', async () => {
+      await mountReports([makeReportSeed({ id: 'c', status: 'handled' })]);
+      const tab = screen.getByRole('button', { name: 'Reports' });
+      expect(tab).not.toHaveTextContent(/\d/);
+      expect(screen.queryByText(/new$/)).toBeNull();
+    });
+
+    it('is named Báo cáo in Vietnamese and opens the reports route, marked current', async () => {
+      const { appState } = await mountReports(seeds, 'vi');
+      const tab = screen.getByRole('button', { name: 'Báo cáo, 2 mới' });
+      expect(tab).not.toHaveAttribute('aria-current');
+      await userEvent.click(tab);
+      expect(appState.route).toEqual({ view: 'reports' });
+      expect(screen.getByRole('button', { name: 'Báo cáo, 2 mới' })).toHaveAttribute('aria-current', 'page');
+    });
+
+    it('can be reached and activated from the keyboard', async () => {
+      const { appState } = await mountReports();
+      await userEvent.tab();
+      await userEvent.tab();
+      await userEvent.tab();
+      expect(screen.getByRole('button', { name: 'Reports, 2 new' })).toHaveFocus();
+      await userEvent.keyboard('{Enter}');
+      expect(appState.route).toEqual({ view: 'reports' });
+    });
+
+    it('follows the new-report count', async () => {
+      const { appState, services } = await mountReports();
+      await services.repos.reports.setStatus('a', 'handled', 1);
+      await appState.refresh();
+      expect(await screen.findByRole('button', { name: 'Reports, 1 new' })).toBeInTheDocument();
+    });
   });
 });

@@ -10,7 +10,7 @@ import PracticeScreen from './PracticeScreen.svelte';
 
 const passedAttempt = (topicId: string): AttemptRow => ({
   id: `p-${topicId}`, kind: 'practice', topicId, status: 'submitted', startedAt: 0, submittedAt: 1, submitReason: 'manual',
-  reviewAllowed: false, clock: { mode: 'freeze', limitMs: null, remainingMs: null, deadlineAt: null, onHidden: 'freeze' },
+  reviewAllowed: false, clock: { mode: 'freeze', limitMs: null, remainingMs: null, deadlineAt: null, onHidden: 'freeze', onReport: 'freeze' },
   heartbeatAt: null, scorePct: 100, passed: true, groupIndex: null, plannedCount: null,
 });
 

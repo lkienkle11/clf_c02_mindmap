@@ -122,7 +122,7 @@ describe('start', () => {
     expect(s.questions.every((q) => q.multi)).toBe(true);
     expect(s.allowReview).toBe(true);
     expect(await loadLastOptions(services.repos.settings)).toEqual({
-      allowReview: true, limitMs: 60000, clockMode: 'run', onHidden: 'freeze', questionCount: 10,
+      allowReview: true, limitMs: 60000, clockMode: 'run', onHidden: 'freeze', onReport: 'freeze', questionCount: 10,
     });
   });
 });
@@ -131,8 +131,8 @@ describe('options persistence', () => {
   it('defaults, round trip, invalid json and wrong shape', async () => {
     const st = services.repos.settings;
     expect(await loadLastOptions(st)).toEqual(DEFAULT_PRACTICE_OPTIONS);
-    await saveLastOptions(st, { allowReview: true, limitMs: 1000, clockMode: 'run', onHidden: 'freeze', questionCount: 20 });
-    expect(await loadLastOptions(st)).toEqual({ allowReview: true, limitMs: 1000, clockMode: 'run', onHidden: 'freeze', questionCount: 20 });
+    await saveLastOptions(st, { allowReview: true, limitMs: 1000, clockMode: 'run', onHidden: 'freeze', onReport: 'run', questionCount: 20 });
+    expect(await loadLastOptions(st)).toEqual({ allowReview: true, limitMs: 1000, clockMode: 'run', onHidden: 'freeze', onReport: 'run', questionCount: 20 });
     await st.set('practice_last_options', '{nope');
     expect(await loadLastOptions(st)).toEqual(DEFAULT_PRACTICE_OPTIONS);
     await st.set('practice_last_options', JSON.stringify({ allowReview: 'x', limitMs: 1, clockMode: 'freeze', onHidden: 'freeze' }));
@@ -568,6 +568,132 @@ describe('settleHidden', () => {
     await s.settleHidden(5000);
     expect(spy).toHaveBeenCalledTimes(1);
     expect(spy).toHaveBeenLastCalledWith(s.attemptId, expect.objectContaining({ remainingMs: 55000 }), NOW);
+  });
+});
+
+describe('report clock (beginReport / endReport)', () => {
+  const FREEZE = { limitMs: 100_000, clockMode: 'freeze' as const, onHidden: 'freeze' as const };
+  /** Ticks 1 s at a time (like the real interval) for `seconds`, advancing the fake clock. */
+  async function runFor(s: PracticeSession, seconds: number) {
+    for (let i = 0; i < seconds; i++) { clock += 1000; await s.tick(1000); }
+  }
+
+  it('freeze-mode clock, onReport freeze: 30 s with a report open leaves remaining unchanged', async () => {
+    const s = await start('compute', { ...FREEZE, onReport: 'freeze' });
+    s.beginReport();
+    await runFor(s, 30);
+    s.endReport();
+    expect(s.remainingMs).toBe(100_000);
+    await runFor(s, 5);
+    expect(s.remainingMs).toBe(95_000);
+  });
+  it('freeze-mode clock, onReport run: 30 s with a report open is charged', async () => {
+    const s = await start('compute', { ...FREEZE, onReport: 'run' });
+    s.beginReport();
+    await runFor(s, 30);
+    s.endReport();
+    expect(s.remainingMs).toBe(70_000);
+  });
+  it('run-mode clock with 10 s left, onReport freeze: not expired after 30 s open, deadline moved', async () => {
+    const s = await start('compute', { limitMs: 60_000, clockMode: 'run', onHidden: 'freeze', onReport: 'freeze' });
+    await runFor(s, 50);
+    expect(s.remainingMs).toBe(10_000);
+    s.beginReport();
+    await runFor(s, 30);
+    expect(s.submitted).toBe(false);
+    expect(s.remainingMs).toBe(10_000);
+    s.endReport();
+    expect((await services.repos.attempts.findInProgress())!.attempt.clock.deadlineAt).toBe(NOW + 90_000);
+    await runFor(s, 4);
+    expect(s.remainingMs).toBe(6_000);
+  });
+  it('run-mode clock, onReport run: the open report does not stop the deadline', async () => {
+    const s = await start('compute', { limitMs: 60_000, clockMode: 'run', onHidden: 'freeze', onReport: 'run' });
+    await runFor(s, 50);
+    s.beginReport();
+    await runFor(s, 10);
+    expect(s.submitted).toBe(true);
+    expect((await services.repos.attempts.listSubmitted())[0].submitReason).toBe('timeout');
+  });
+  it('hidden time still follows onHidden: report open + settleHidden(20 s), onHidden run + onReport freeze, freeze-mode', async () => {
+    const s = await start('compute', { ...FREEZE, onHidden: 'run', onReport: 'freeze' });
+    s.beginReport();
+    await s.settleHidden(20_000);
+    expect(s.remainingMs).toBe(80_000);
+    await runFor(s, 10); // visible time with the report open is still frozen
+    expect(s.remainingMs).toBe(80_000);
+  });
+  it('hidden time with onHidden freeze is not charged even when onReport is run', async () => {
+    const s = await start('compute', { ...FREEZE, onHidden: 'freeze', onReport: 'run' });
+    s.beginReport();
+    await s.settleHidden(20_000);
+    expect(s.remainingMs).toBe(100_000);
+  });
+  it('run-mode, onHidden run + onReport freeze: hidden time is charged, never turned into free time by the report', async () => {
+    const s = await start('compute', { limitMs: 60_000, clockMode: 'run', onHidden: 'run', onReport: 'freeze' });
+    s.beginReport();
+    clock += 20_000;
+    await s.settleHidden(20_000);
+    expect(s.remainingMs).toBe(40_000);
+    expect((await services.repos.attempts.findInProgress())!.attempt.clock.deadlineAt).toBe(NOW + 60_000);
+  });
+  it('a long gap between ticks (suspended app) is not forgiven by an open report', async () => {
+    const s = await start('compute', { limitMs: 60_000, clockMode: 'run', onHidden: 'freeze', onReport: 'freeze' });
+    s.beginReport();
+    clock += 30_000;
+    await s.tick(30_000);
+    expect(s.remainingMs).toBe(60_000 - 30_000 + FREEZE_MAX_TICK_MS);
+  });
+  it('after endReport the clock is charged again', async () => {
+    const s = await start('compute', { ...FREEZE, onReport: 'freeze' });
+    s.beginReport();
+    s.endReport();
+    await runFor(s, 10);
+    expect(s.remainingMs).toBe(90_000);
+  });
+  it('beginReport twice then one endReport closes it', async () => {
+    const s = await start('compute', { ...FREEZE, onReport: 'freeze' });
+    s.beginReport();
+    s.beginReport();
+    s.endReport();
+    await runFor(s, 10);
+    expect(s.remainingMs).toBe(90_000);
+  });
+  it('untimed session: beginReport changes nothing', async () => {
+    const s = await start();
+    const spy = vi.spyOn(services.repos.attempts, 'saveClock');
+    s.beginReport();
+    expect(s.reportOpen).toBe(false);
+    await s.tick(10_000);
+    expect(s.remainingMs).toBeNull();
+    expect(spy).not.toHaveBeenCalled();
+    s.endReport();
+  });
+  it('closed or exited session: beginReport is a no-op', async () => {
+    const a = await start('compute', { ...FREEZE, onReport: 'freeze' });
+    await a.submit('manual');
+    a.beginReport();
+    expect(a.reportOpen).toBe(false);
+    const b = await start('compute', { ...FREEZE, onReport: 'freeze' });
+    await b.exit();
+    b.beginReport();
+    expect(b.reportOpen).toBe(false);
+  });
+  it('persists the extended run-mode deadline with the periodic clock save', async () => {
+    const s = await start('compute', { limitMs: 600_000, clockMode: 'run', onHidden: 'freeze', onReport: 'freeze' });
+    const spy = vi.spyOn(services.repos.attempts, 'saveClock');
+    s.beginReport();
+    await runFor(s, 5);
+    expect(spy).toHaveBeenCalledTimes(1);
+    expect(spy).toHaveBeenLastCalledWith(s.attemptId, expect.objectContaining({ deadlineAt: NOW + 605_000 }), NOW + 5000);
+  });
+  it('a resumed session starts with no report open', async () => {
+    const s = await start('compute', { ...FREEZE, onReport: 'run' });
+    s.beginReport();
+    const found = (await services.repos.attempts.findInProgress())!;
+    expect(found.attempt.clock.onReport).toBe('run');
+    const { session } = await PracticeSession.resume(services, found, onSubmitted);
+    expect(session.reportOpen).toBe(false);
   });
 });
 

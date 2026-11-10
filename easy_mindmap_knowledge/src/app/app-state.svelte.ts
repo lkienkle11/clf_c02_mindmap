@@ -1,6 +1,7 @@
 import { isGateOpen, passedCheckpointGroups } from '@/features/exam';
 import { completedTopicIds, topicStatuses } from '@/features/mindmap';
 import type { TopicStatus } from '@/features/mindmap';
+import { onReportSubmitted } from '@/features/report';
 import { makeRng } from '@/random/seeded-random';
 import {
   buildReviewPlan,
@@ -21,6 +22,7 @@ export type Route =
   | { view: 'review' }
   | { view: 'checkpoint'; groupIndex: number }
   | { view: 'history'; topicId?: string }
+  | { view: 'reports' }
   | { view: 'settings' };
 
 export type View = Route['view'];
@@ -43,6 +45,8 @@ export class AppState {
   reviewButtonHidden = $state(false);
   resumeAttempt = $state.raw<{ attempt: AttemptRow; questions: AttemptQuestionRow[] } | null>(null);
   submittedAttempts = $state.raw<AttemptRow[]>([]);
+  /** Reports still marked `new`; the header badge and the Reports screen read it. */
+  newReportCount = $state(0);
   /** The batched review in progress; the review route reads it, and it is cleared when that route closes. */
   reviewRun = $state.raw<ReviewRun | null>(null);
 
@@ -51,6 +55,8 @@ export class AppState {
 
   constructor(services: Services) {
     this.services = services;
+    // The app lives as long as the process, so this subscription is never removed.
+    onReportSubmitted(() => void this.refreshReportCount());
   }
 
   get view(): View {
@@ -75,7 +81,7 @@ export class AppState {
     const seq = ++this.refreshSeq;
     const { repos, catalog } = this.services;
     const now = this.services.now();
-    const [readIds, submitted, resume, stats, hiddenDate] = await Promise.all([
+    const [readIds, submitted, resume, stats, hiddenDate, newReports] = await Promise.all([
       repos.lessonProgress.readIds(),
       repos.attempts.listSubmitted(),
       repos.attempts.findInProgress(),
@@ -84,6 +90,7 @@ export class AppState {
         console.error('Could not read the review button setting', e);
         return null;
       }),
+      this.#readNewReportCount(),
     ]);
     if (seq !== this.refreshSeq) return;
     const completed = completedTopicIds(submitted);
@@ -98,6 +105,23 @@ export class AppState {
     this.summaries = summaries;
     this.stats = stats;
     this.reviewButtonHidden = hiddenDate === localDateString(now);
+    if (newReports !== null) this.newReportCount = newReports;
+  }
+
+  /** Reloads only the new-report count (after a report changes status). */
+  async refreshReportCount(): Promise<void> {
+    const count = await this.#readNewReportCount();
+    if (count !== null) this.newReportCount = count;
+  }
+
+  /** null when the count cannot be read: the badge is a convenience and must never break a refresh. */
+  async #readNewReportCount(): Promise<number | null> {
+    try {
+      return (await this.services.repos.reports.counts()).newCount;
+    } catch (e) {
+      console.error('Could not read the number of new reports', e);
+      return null;
+    }
   }
 
   /**
