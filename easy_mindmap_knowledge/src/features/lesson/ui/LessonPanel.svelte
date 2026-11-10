@@ -130,19 +130,16 @@
     </div>
   </div>
 
-  {#if lesson.videoQuery}
-    <div>
+  <div class="flex flex-wrap items-center justify-between gap-3">
+    {#if lesson.videoQuery}
       <Button variant="secondary" onclick={openVideo}><span aria-hidden="true">▶</span> {i18n.t('lesson.openVideo')}</Button>
-    </div>
-  {/if}
+    {/if}
+    <ReportButton class="ml-auto" {services} context={{ type: 'lesson', lessonId: lesson.id, sourceScreen: 'lesson' }} captureTarget={() => content ?? null} />
+  </div>
 
   {#if error}
     <p role="alert" class="rounded-lg border border-danger bg-surface p-3 text-danger">{error}</p>
   {/if}
-
-  <div class="flex justify-end">
-    <ReportButton {services} context={{ type: 'lesson', lessonId: lesson.id, sourceScreen: 'lesson' }} captureTarget={() => content ?? null} />
-  </div>
 
   <footer class="flex flex-wrap items-center justify-between gap-3">
     <Button variant="secondary" disabled={previous === null} onclick={() => go(previous)}><span aria-hidden="true">←</span> {i18n.t('lesson.previous')}</Button>
