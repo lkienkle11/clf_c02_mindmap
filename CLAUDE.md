@@ -316,6 +316,13 @@ Status of this section: written on 2026-11-10 for the user to check. Items marke
 - Pick the cheapest model that is accurate enough for the kind of task. When accuracy for a kind of task is not known, measure it on one small, read-only sample before relying on the choice.
 - Use a script instead of a model for mechanical work.
 
+#### What each worker can and cannot do (tested on 2026-11-10)
+
+- **Codex CLI (`gpt-6.1-sol`):** can open web pages by itself while read-only (built-in tool, no shell command needed) and can read a file given by absolute path. An audit batch of 8 to 29 questions took 2 to 3 minutes and about 76k to 88k tokens, and returned valid JSON in 2 of 2 runs.
+- **Agy CLI, headless (`agy --print`):** cannot browse (its web tool needs the "command" permission, which is auto-denied) and cannot read a file outside its working folder (`read_file` is auto-denied), so pass the input inline in the prompt. It answers from memory, so treat every URL it cites as unverified: in the test one cited CAF URL returned HTTP 404. Run time for similar batches varied from 158 s to 501 s.
+- **Haiku 5.5 (Agent tool):** has WebSearch and WebFetch. A batch took about 200 s and 100k to 133k tokens. In 1 of 2 runs one JSON item was syntactically broken (a missing key name), so always parse a worker's JSON and ask again when it fails.
+- **No worker's "verified" is evidence.** In a control batch of 8 known-defective questions, two of three workers said "verified" with high confidence on the same outdated question (they cited an older page of the AWS documentation, while a newer page of the same documentation said otherwise). AWS pages can disagree with each other, so for every disputed item, and for a sample of "verified" ones, the orchestrator reads the newest official page itself.
+
 #### Pre-flight checks before delegating
 
 1. Codex auth: `codex login status` must print "Logged in". Agy auth: `agy models` must return the model list (Agy has no login-status command; a successful query is the evidence).
