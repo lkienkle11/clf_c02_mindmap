@@ -18,12 +18,12 @@
   }
  },
  "q_429ad5e33114": {
-  "explanation": "Running containers directly on Amazon EC2 instances gives the company full control of the underlying compute, including the instance type, OS, and patching.",
+  "explanation": "Running containers directly on Amazon EC2 instances gives the company full control of the underlying compute, including the instance type, OS, and patching. Amazon ECS and EKS can also run on EC2 instances that the customer manages, but Amazon EC2 is the most direct answer.",
   "optionNotes": {
-   "A": "EKS is a managed Kubernetes control plane; on its own it does not give full control of the compute unless you also run EC2 worker nodes.",
+   "A": "EKS is a managed Kubernetes control plane; with EC2 worker nodes you control the compute, with Fargate you do not.",
    "B": "Fargate is serverless compute for containers, so AWS manages the compute and the customer has less control.",
    "C": "With EC2 the company chooses and manages the instances that host the containers, giving full control of the compute resources.",
-   "D": "ECS is a container orchestrator; it can use EC2 or Fargate, so by itself it does not guarantee control of the compute."
+   "D": "ECS can run on EC2 instances that you manage (full control) or on Fargate (managed by AWS); the plain wording of the question points to running the containers directly on EC2."
   }
  },
  "q_ed4aff43991b": {
@@ -127,12 +127,12 @@
   }
  },
  "q_3979d8ab2d09": {
-  "explanation": "Amazon EC2 lets the company launch pre-configured instances from AMIs, including AMIs that come with application stacks, to run its workload.",
+  "explanation": "Amazon Lightsail lets you launch an instance from a pre-configured application or development stack (for example WordPress or LAMP) in a few clicks, which matches the wording about application stacks and pre-configured instances.",
   "optionNotes": {
-   "A": "Lightsail also ships preconfigured application-stack blueprints (for example LAMP and WordPress), so it is arguably a valid match; the exam nevertheless expects EC2 with pre-configured AMIs.",
+   "A": "Lightsail instances launch from pre-configured application and development stacks such as WordPress and LAMP.",
    "B": "Athena is a serverless query service for data in S3 and does not run application stacks on instances.",
    "C": "Outposts places AWS infrastructure on premises; it is a deployment location, not a source of pre-configured instances.",
-   "D": "EC2 provides instances launched from pre-configured AMIs, which can include application stacks."
+   "D": "EC2 launches instances from AMIs, some of which include software, but you choose and configure the image yourself; the wording about application stacks points to Lightsail."
   }
  },
  "q_f501e57e3c45": {
@@ -202,10 +202,10 @@
   }
  },
  "q_63c23e178263": {
-  "explanation": "AWS Compute Optimizer analyzes utilization metrics and recommends optimal resources; Amazon EC2 is the service whose instance types and sizes it recommends.",
+  "explanation": "AWS Compute Optimizer analyzes utilization metrics and recommends right-sized resources. Amazon EC2 is its classic target (instance types and sizes), and it also supports Amazon RDS and Aurora databases, so this question looks for EC2 as the answer.",
   "optionNotes": {
    "A": "Compute Optimizer recommends EC2 instance types and sizes based on workload metrics.",
-   "B": "RDS is a managed database service; the expected answer is EC2, the classic Compute Optimizer target for instance sizing recommendations.",
+   "B": "Compute Optimizer also supports Amazon RDS and Aurora databases, so this option is not wrong in AWS documentation; EC2 is the classic target and the answer this question looks for.",
    "C": "Lightsail uses fixed bundles and is not a Compute Optimizer-supported resource type.",
    "D": "Step Functions orchestrates workflows and has no instance sizing recommendations."
   }
@@ -474,7 +474,7 @@
  "q_7ebfaa2be391": {
   "explanation": "Elastic Load Balancing distributes incoming traffic across multiple targets such as EC2 instances, containers, and IP addresses.",
   "optionNotes": {
-   "A": "Scaling resources is the job of Auto Scaling, not the load balancer, which only distributes traffic.",
+   "A": "Scaling the application's compute resources is the job of Auto Scaling; ELB scales its own capacity automatically but does not add or remove your instances.",
    "B": "An ELB balances traffic across multiple compute resources, improving availability.",
    "C": "A load balancer operates within a single Region and cannot span multiple Regions.",
    "D": "ELB distributes traffic to targets in a VPC, not between internet gateways."
@@ -490,7 +490,7 @@
   }
  },
  "q_8add147cbbf7": {
-  "explanation": "AWS Fargate and Amazon S3 are serverless because AWS manages the underlying servers. MSK, EMR, and EC2 use clusters or instances that you configure.",
+  "explanation": "AWS Fargate and Amazon S3 are serverless because AWS manages the underlying servers. Provisioned Amazon MSK, classic Amazon EMR and Amazon EC2 use clusters or instances that you configure (MSK Serverless and EMR Serverless exist as separate options).",
   "optionNotes": {
    "A": "Fargate runs containers without any servers to manage.",
    "B": "Amazon MSK provisioned clusters run on brokers you size and configure, so it is not serverless in the classic sense (an MSK Serverless option exists but is not the intended answer here).",
@@ -536,11 +536,11 @@
   }
  },
  "q_7e665a1faa9c": {
-  "explanation": "AWS App Runner builds container images from source code and deploys the containerized web application with little operational effort.",
+  "explanation": "Elastic Beanstalk in Cluster mode can take source code, build a container image from it, and deploy and run the containerized web application. AWS App Runner also builds from source, but it is closed to new customers (existing customers can keep using it), so a new company cannot choose it.",
   "optionNotes": {
-   "A": "Elastic Beanstalk deploys applications to managed EC2 environments and is not described as building container images from source.",
-   "B": "ECS runs containers but expects you to supply container images and configure the cluster.",
-   "C": "App Runner can build from source code and deploy and run the containerized web application automatically.",
+   "A": "Elastic Beanstalk Cluster mode accepts source code that Beanstalk builds into a container image, then deploys and runs it.",
+   "B": "ECS runs containers but expects you to supply the container image (even ECS Express Mode deploys a prebuilt image).",
+   "C": "App Runner can build from source and deploy, but AWS has closed it to new customers; existing customers can still use it.",
    "D": "EC2 requires you to build images and manage the servers yourself."
   }
  },
@@ -600,10 +600,10 @@
   }
  },
  "q_3bddc0977fd4": {
-  "explanation": "An application that runs under 5 minutes and is invoked only a few times a day suits Lambda, which charges only for the time code runs.",
+  "explanation": "An application that runs under 5 minutes and is invoked only a few times a day suits Lambda, which charges for requests and for the time code runs.",
   "optionNotes": {
    "A": "ECS needs a cluster and containers, which cost more to operate for a rarely used application.",
-   "B": "Lambda bills only for execution time and short runs well within its 15-minute limit are cheap.",
+   "B": "Lambda bills for requests and for execution time, and short runs well within its 15-minute limit are cheap.",
    "C": "EKS has cluster management overhead and cost that are unnecessary for a rarely invoked app.",
    "D": "An always-on EC2 instance would cost money while idle most of the day."
   }
@@ -615,15 +615,6 @@
    "B": "High availability of a self-managed database layer is designed and maintained by the customer.",
    "C": "AWS patches and maintains the physical infrastructure that hosts EC2 instances.",
    "D": "Configuring security group firewall rules is the customer's responsibility."
-  }
- },
- "q_9e6c9d987920": {
-  "explanation": "The exam expects operating system patches to be AWS's task, while backups, database software patches, and OS installation are customer tasks; note that the customer normally patches the guest OS on EC2; current AWS documentation treats this as a customer task.",
-  "optionNotes": {
-   "A": "Backing up the database is the customer's job when the database runs on EC2.",
-   "B": "Patching the database software is the customer's job on EC2.",
-   "C": "The exam expects this to be AWS's task, although under the shared responsibility model the customer normally patches the guest OS on EC2; current AWS documentation treats this as a customer task.",
-   "D": "Installing the operating system is something the customer chooses and does through the AMI it launches."
   }
  },
  "q_c582cd897c65": {

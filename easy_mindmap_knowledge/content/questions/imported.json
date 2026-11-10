@@ -6179,7 +6179,7 @@
       }
     ],
     "correct": [
-      "D"
+      "A"
     ],
     "multi": false,
     "orderDependent": false,
@@ -17410,7 +17410,7 @@
       }
     ],
     "correct": [
-      "C"
+      "A"
     ],
     "multi": false,
     "orderDependent": false,
@@ -19374,35 +19374,6 @@
     ],
     "correct": [
       "A"
-    ],
-    "multi": false,
-    "orderDependent": false,
-    "source": "imported"
-  },
-  {
-    "id": "q_9e6c9d987920",
-    "topicId": "compute",
-    "text": "Which responsibility belongs to AWS when a company hosts its databases on Amazon EC2 instances?",
-    "options": [
-      {
-        "key": "A",
-        "text": "Database backups"
-      },
-      {
-        "key": "B",
-        "text": "Database software patches"
-      },
-      {
-        "key": "C",
-        "text": "Operating system patches"
-      },
-      {
-        "key": "D",
-        "text": "Operating system installations"
-      }
-    ],
-    "correct": [
-      "C"
     ],
     "multi": false,
     "orderDependent": false,

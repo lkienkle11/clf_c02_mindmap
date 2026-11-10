@@ -1,1 +1,33 @@
-[]
+[
+  {
+    "questionId": "q_7e665a1faa9c",
+    "oldCorrect": [
+      "C"
+    ],
+    "newCorrect": [
+      "A"
+    ],
+    "reason": "AWS App Runner is closed to new customers; Elastic Beanstalk Cluster mode builds container images from source code and is available to new customers.",
+    "sources": [
+      "https://docs.aws.amazon.com/apprunner/latest/dg/apprunner-availability-change.html",
+      "https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/Welcome.html"
+    ],
+    "confidence": "medium",
+    "approvedOn": "2026-11-11"
+  },
+  {
+    "questionId": "q_3979d8ab2d09",
+    "oldCorrect": [
+      "D"
+    ],
+    "newCorrect": [
+      "A"
+    ],
+    "reason": "The Lightsail guide describes launching a pre-configured application or development stack (WordPress, LAMP and others), which matches the question's wording about application stacks and pre-configured instances.",
+    "sources": [
+      "https://docs.aws.amazon.com/lightsail/latest/userguide/what-is-amazon-lightsail.html"
+    ],
+    "confidence": "medium",
+    "approvedOn": "2026-11-11"
+  }
+]

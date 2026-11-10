@@ -9,3 +9,9 @@ Skipped (no answer): 2. Duplicates dropped: 2. Mismatched multi flag (excluded):
 | card 271 | n/a | A company needs a bridge between technology and business to help evolve to a cul | skipped: no correct answer marked in source |
 | card 173 | q_56b19c1e74b3 | Which options are AWS Cloud Adoption Framework (AWS CAF) security perspective ca | duplicate of card 43 |
 | card 344 | q_7f0986a080e3 | Which AWS service can a company use to manage encryption keys in the cloud? | duplicate of card 310 |
+
+## Retired by the audit
+
+| id | text (first 80 chars) | reason | date |
+| --- | --- | --- | --- |
+| q_9e6c9d987920 | Which responsibility belongs to AWS when a company hosts its databases on Amazon EC | retired: no option is an AWS responsibility under current AWS documentation (shared responsibility model: the customer manages the guest operating system, the database software and backups on EC2) | 2026-11-11 |
