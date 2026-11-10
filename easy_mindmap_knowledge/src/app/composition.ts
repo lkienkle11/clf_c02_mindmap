@@ -10,6 +10,7 @@ import {
   createUnavailableReportStorage,
   createSettingsRepo,
   createTauriExecutor,
+  createTauriDbBackup,
 } from '@/persistence';
 import type {
   AttemptsRepo,
@@ -84,9 +85,11 @@ export function buildServices(parts: {
 }
 
 export async function createServices(): Promise<Services> {
+  const executor = await createTauriExecutor();
   return buildServices({
-    executor: await createTauriExecutor(),
+    executor,
     catalog: loadBundledCatalog(),
     reportStorage: createTauriReportStorage(),
+    beforeRegrade: createTauriDbBackup(executor),
   });
 }

@@ -1,5 +1,8 @@
 export type { SqlExecutor } from './sql-executor';
 export { createTauriExecutor } from './tauri-executor';
+export { createDbBackup, backupFileName } from './db-backup';
+export type { DbBackupDeps } from './db-backup';
+export { createTauriDbBackup } from './tauri-db-backup';
 export { createLessonProgressRepo } from './repositories/lesson-progress';
 export type { LessonProgressRepo } from './repositories/lesson-progress';
 export { createAttemptsRepo, AttemptMissingError } from './repositories/attempts';
