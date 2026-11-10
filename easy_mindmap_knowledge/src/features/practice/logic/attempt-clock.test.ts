@@ -1,11 +1,17 @@
 import { describe, expect, it } from 'vitest';
-import { advanceFreeze, isExpired, remainingAt, resolveOnResume, settleHidden, startClock } from './attempt-clock';
+import { advanceFreeze, isExpired, pauseForReport, remainingAt, resolveOnResume, settleHidden, startClock } from './attempt-clock';
 
 describe('attempt clock', () => {
   it('startClock carries onHidden', () => {
     expect(startClock(60_000, 'freeze', 0, 'run').onHidden).toBe('run');
     expect(startClock(60_000, 'run', 0, 'freeze').onHidden).toBe('freeze');
     expect(startClock(null, 'run', 0, 'run').onHidden).toBe('run');
+  });
+
+  it("startClock carries onReport and defaults it to 'freeze'", () => {
+    expect(startClock(60_000, 'freeze', 0, 'freeze').onReport).toBe('freeze');
+    expect(startClock(60_000, 'freeze', 0, 'freeze', 'run').onReport).toBe('run');
+    expect(startClock(null, 'run', 0, 'run', 'run').onReport).toBe('run');
   });
 
   it('no limit: remainingAt null and never expired', () => {
@@ -104,5 +110,27 @@ describe('settleHidden', () => {
   it('untimed (limitMs null) is returned as is', () => {
     const s = startClock(null, 'run', 0, 'freeze');
     expect(settleHidden(s, 5000)).toBe(s);
+  });
+});
+
+describe('pauseForReport', () => {
+  it('freeze-mode: unchanged (the freeze clock is simply not charged)', () => {
+    const s = startClock(100_000, 'freeze', 0, 'run');
+    expect(pauseForReport(s, 30_000)).toEqual(s);
+    expect(pauseForReport(s, 30_000).remainingMs).toBe(100_000);
+  });
+  it('run-mode: deadlineAt moves later by the elapsed time', () => {
+    const s = startClock(100_000, 'run', 1000, 'run');
+    const p = pauseForReport(s, 30_000);
+    expect(p.deadlineAt).toBe(131_000);
+    expect(remainingAt(p, 1000 + 70_000)).toBe(60_000);
+  });
+  it('negative elapsed is treated as 0', () => {
+    const s = startClock(100_000, 'run', 1000, 'run');
+    expect(pauseForReport(s, -5000)).toEqual(s);
+  });
+  it('untimed is returned as is', () => {
+    const s = startClock(null, 'run', 0, 'run');
+    expect(pauseForReport(s, 5000)).toBe(s);
   });
 });

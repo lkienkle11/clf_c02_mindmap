@@ -5,6 +5,7 @@
   import { TreeScreen, practiceUnlocked } from '@/features/mindmap';
   import { ExamScreen, checkpointGroups } from '@/features/exam';
   import { HistoryScreen } from '@/features/history';
+  import { ReportsScreen } from '@/features/report';
   import { PracticeScreen, ResumeGate } from '@/features/practice';
   import type { PracticeSession } from '@/features/practice';
   import { ReviewLauncher, ReviewPrompts, ReviewRun, ReviewScreen } from '@/features/review';
@@ -103,6 +104,8 @@
     <ReviewScreen {services} {appState} />
   {:else if appState.view === 'history'}
     <HistoryScreen {services} {appState} />
+  {:else if appState.view === 'reports'}
+    <ReportsScreen {services} {appState} />
   {:else}
     <SettingsScreen {services} {appState} />
   {/if}

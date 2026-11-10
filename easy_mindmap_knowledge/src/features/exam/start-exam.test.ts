@@ -30,6 +30,7 @@ describe('startCheckpoint', () => {
     const found = (await services.repos.attempts.findInProgress())!;
     expect(found.questions).toHaveLength(65);
     expect(found.attempt.clock.limitMs).toBe(5_400_000);
+    expect(found.attempt.clock.onReport).toBe('run');
     expect(found.attempt.kind).toBe('checkpoint');
     expect(found.attempt.groupIndex).toBe(1);
     expect(found.attempt.topicId).toBeNull();
@@ -86,6 +87,7 @@ describe('startCapstoneExam', () => {
     expect(found.attempt.topicId).toBe('capstone');
     expect(found.attempt.groupIndex).toBeNull();
     expect(found.attempt.clock.limitMs).toBe(5_400_000);
+    expect(found.attempt.clock.onReport).toBe('run');
     expect(found.questions).toHaveLength(65);
     const byId = new Map(catalog.questions.map((q) => [q.id, q]));
     const counts: Record<string, number> = {};

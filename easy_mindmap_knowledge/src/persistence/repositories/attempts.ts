@@ -13,6 +13,7 @@ interface AttemptDb {
   time_limit_ms: number | null;
   clock_mode: ClockState['mode'];
   clock_on_hidden: ClockState['onHidden'];
+  clock_on_report: ClockState['onReport'];
   remaining_ms: number | null;
   deadline_at: number | null;
   heartbeat_at: number | null;
@@ -42,7 +43,7 @@ const toAttempt = (r: AttemptDb): AttemptRow => ({
   submittedAt: r.submitted_at,
   submitReason: r.submit_reason,
   reviewAllowed: r.review_allowed === 1,
-  clock: { mode: r.clock_mode, onHidden: r.clock_on_hidden, limitMs: r.time_limit_ms, remainingMs: r.remaining_ms, deadlineAt: r.deadline_at },
+  clock: { mode: r.clock_mode, onHidden: r.clock_on_hidden, onReport: r.clock_on_report, limitMs: r.time_limit_ms, remainingMs: r.remaining_ms, deadlineAt: r.deadline_at },
   heartbeatAt: r.heartbeat_at,
   scorePct: r.score_pct,
   passed: bool(r.passed),
@@ -126,12 +127,12 @@ export function createAttemptsRepo(db: SqlExecutor) {
       await db.execute(
         `INSERT INTO attempts
            (id, kind, topic_id, status, started_at, submitted_at, submit_reason, review_allowed,
-            time_limit_ms, clock_mode, remaining_ms, deadline_at, heartbeat_at, score_pct, passed, clock_on_hidden, group_index, planned_count)
-         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18)`,
+            time_limit_ms, clock_mode, remaining_ms, deadline_at, heartbeat_at, score_pct, passed, clock_on_hidden, group_index, planned_count, clock_on_report)
+         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19)`,
         [
           a.id, a.kind, a.topicId, a.status, a.startedAt, a.submittedAt, a.submitReason,
           a.reviewAllowed ? 1 : 0, a.clock.limitMs, a.clock.mode, a.clock.remainingMs, a.clock.deadlineAt,
-          a.heartbeatAt, a.scorePct, a.passed === null ? null : a.passed ? 1 : 0, a.clock.onHidden, a.groupIndex, a.plannedCount,
+          a.heartbeatAt, a.scorePct, a.passed === null ? null : a.passed ? 1 : 0, a.clock.onHidden, a.groupIndex, a.plannedCount, a.clock.onReport,
         ],
       );
     },
@@ -145,8 +146,8 @@ export function createAttemptsRepo(db: SqlExecutor) {
     async saveClock(attemptId: string, clock: ClockState, heartbeatAt: number | null): Promise<void> {
       await db.execute(
         `UPDATE attempts SET clock_mode = $1, time_limit_ms = $2, remaining_ms = $3, deadline_at = $4,
-           heartbeat_at = $5, clock_on_hidden = $6 WHERE id = $7`,
-        [clock.mode, clock.limitMs, clock.remainingMs, clock.deadlineAt, heartbeatAt, clock.onHidden, attemptId],
+           heartbeat_at = $5, clock_on_hidden = $6, clock_on_report = $7 WHERE id = $8`,
+        [clock.mode, clock.limitMs, clock.remainingMs, clock.deadlineAt, heartbeatAt, clock.onHidden, clock.onReport, attemptId],
       );
     },
 

@@ -54,6 +54,7 @@
 {:else if session.submitted && session.result}
   <PracticeResult
     {services}
+    attemptId={session.attemptId}
     result={session.result}
     {timedOut}
     {canRetry}

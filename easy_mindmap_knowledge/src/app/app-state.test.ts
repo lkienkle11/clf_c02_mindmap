@@ -6,6 +6,7 @@ import { createNodeSqliteExecutor } from '@/testing/node-sqlite-executor';
 import type { AttemptRow, QuestionStat } from '@/persistence';
 import { buildReviewPlan, localDateString } from '@/features/review';
 import { makeRng } from '@/random/seeded-random';
+import { notifyReportSubmitted } from '@/features/report';
 import { buildServices } from './composition';
 import type { Services } from './composition';
 import { AppState, SETTING_BUTTON_HIDDEN_DATE, SETTING_PROMPT_DATE } from './app-state.svelte';
@@ -29,7 +30,7 @@ beforeEach(async () => {
 const attempt = (over: Partial<AttemptRow>): AttemptRow => ({
   id: 'a1', kind: 'practice', topicId: 'cloud-concepts', status: 'submitted', startedAt: NOW - DAY,
   submittedAt: NOW - DAY + 1000, submitReason: 'manual', reviewAllowed: true,
-  clock: { mode: 'freeze', limitMs: null, remainingMs: null, deadlineAt: null, onHidden: 'freeze' },
+  clock: { mode: 'freeze', limitMs: null, remainingMs: null, deadlineAt: null, onHidden: 'freeze', onReport: 'freeze' },
   heartbeatAt: null, scorePct: 90, passed: true, groupIndex: null, plannedCount: null, ...over,
 });
 const question = (attemptId: string, questionId: string, isCorrect: boolean | null) => ({
@@ -116,10 +117,49 @@ describe('AppState', () => {
     expect(await state.load()).toBe('en');
   });
 
+  it('refresh() loads the number of new reports, and refreshReportCount() updates just that', async () => {
+    const report = (id: string, status: 'new' | 'handled') => ({
+      id, type: 'system' as const, status, createdAt: 1, statusUpdatedAt: 1, body: 'b', appVersion: '1', locale: 'en' as const,
+      sourceScreen: null, questionId: null, lessonId: null, attemptId: null, position: null, optionOrder: null, selected: null, isCorrect: null,
+    });
+    expect(state.newReportCount).toBe(0);
+    await services.repos.reports.create(report('n1', 'new'), []);
+    await services.repos.reports.create(report('n2', 'new'), []);
+    await services.repos.reports.create(report('h1', 'handled'), []);
+    await state.refresh();
+    expect(state.newReportCount).toBe(2);
+    await services.repos.reports.setStatus('n1', 'handled', 5);
+    await state.refreshReportCount();
+    expect(state.newReportCount).toBe(1);
+  });
+
+  it('updates the new-report count by itself when a report is submitted', async () => {
+    expect(state.newReportCount).toBe(0);
+    await services.repos.reports.create({
+      id: 'n1', type: 'system', status: 'new', createdAt: 1, statusUpdatedAt: 1, body: 'b', appVersion: '1', locale: 'en',
+      sourceScreen: null, questionId: null, lessonId: null, attemptId: null, position: null, optionOrder: null, selected: null, isCorrect: null,
+    }, []);
+    notifyReportSubmitted();
+    await vi.waitFor(() => expect(state.newReportCount).toBe(1));
+  });
+
+  it('a failing report count never breaks refresh and keeps the last known count', async () => {
+    const spy = vi.spyOn(console, 'error').mockImplementation(() => {});
+    services.repos.reports.counts = async () => {
+      throw new Error('db locked');
+    };
+    await expect(state.refresh()).resolves.toBeUndefined();
+    expect(state.newReportCount).toBe(0);
+    expect(spy).toHaveBeenCalled();
+    spy.mockRestore();
+  });
+
   it('open() sets a typed route and derives view', () => {
     expect(state.route).toEqual({ view: 'tree' });
     state.open({ view: 'history' });
     expect(state.view).toBe('history');
+    state.open({ view: 'reports' });
+    expect(state.view).toBe('reports');
     state.open({ view: 'lesson', topicId: 'compute', lessonId: 'compute-ec2' });
     expect(state.view).toBe('lesson');
     expect(state.route).toEqual({ view: 'lesson', topicId: 'compute', lessonId: 'compute-ec2' });

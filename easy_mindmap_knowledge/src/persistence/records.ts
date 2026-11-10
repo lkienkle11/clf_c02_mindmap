@@ -1,9 +1,11 @@
-/** What the practice clock does while the page is hidden. */
+/** What the practice clock does while the page is hidden, or while a report dialog is open. */
 export type HiddenPolicy = 'freeze' | 'run';
 
 export interface ClockState {
   mode: 'freeze' | 'run';
   onHidden: HiddenPolicy;
+  /** What the clock does while the report dialog is open (visible time only; hidden time follows onHidden). */
+  onReport: HiddenPolicy;
   limitMs: number | null;
   remainingMs: number | null;
   deadlineAt: number | null;
@@ -46,4 +48,28 @@ export interface QuestionStat {
   timesCorrect: number;
   lastSeenAt: number;
   lastCorrect: boolean;
+}
+
+export type ReportType = 'question' | 'lesson' | 'system';
+export type ReportStatus = 'new' | 'handled';
+
+export interface ReportRow {
+  id: string;
+  type: ReportType;
+  status: ReportStatus;
+  createdAt: number;
+  statusUpdatedAt: number;
+  body: string;
+  appVersion: string;
+  locale: 'en' | 'vi';
+  sourceScreen: string | null;
+  questionId: string | null;
+  lessonId: string | null;
+  attemptId: string | null;
+  position: number | null;
+  optionOrder: string[] | null;
+  selected: string[] | null;
+  isCorrect: boolean | null;
+  /** Relative image paths, in attachment order. */
+  images: string[];
 }

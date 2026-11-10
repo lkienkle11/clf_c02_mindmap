@@ -7,7 +7,7 @@ const item = (questionId: string, topicId: string | null): MissedDetail => ({
   topicId,
   misses: 1,
   seen: 1,
-  latestWrong: { attemptId: 'a', at: 1, selected: ['A'], optionOrder: ['A'] },
+  latestWrong: { attemptId: 'a', position: 0, at: 1, selected: ['A'], optionOrder: ['A'] },
   distinctWrongAnswers: 1,
 });
 const texts: Record<string, string> = { q1: 'What is an EC2 instance?', q2: 'Which S3 class is cheapest?', q3: 'Name the ec2 pricing model' };

@@ -11,6 +11,7 @@ Built with Tauri v2, Svelte 5, Tailwind 4 and SQLite. The app lives in [`easy_mi
 - **Practice** with timed or untimed sessions, "Choose two" questions, per-question explanations and a read-only knowledge review while you answer.
 - **Spaced review** using a Leitner schedule (1 / 3 / 7 / 14 / 30 / 60 days), in batches of 15 questions.
 - **History and stats**: score chart and a list of past attempts.
+- **Reports**: report a wrong question, wrong lesson knowledge or an app bug, with an optional screenshot. A Reports tab manages them and exports them for review (details in the app README).
 - **Question bank**: 668 questions imported from a card deck, plus 130 hand-authored questions with explanations (including a Capstone set that spans all topics).
 
 ## Quick start

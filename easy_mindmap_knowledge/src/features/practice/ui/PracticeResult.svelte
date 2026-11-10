@@ -2,6 +2,7 @@
   import type { Snippet } from 'svelte';
   import type { Question } from '@/content/types';
   import type { Services } from '@/app/composition';
+  import { ReportButton } from '@/features/report';
   import { getI18n } from '@/i18n/i18n.svelte';
   import Button from '@/ui/Button.svelte';
   import { cn } from '@/ui/cn';
@@ -11,6 +12,8 @@
   interface Props {
     services: Services;
     result: SubmitResult;
+    /** The attempt these results belong to; question reports reference it. */
+    attemptId?: string;
     onback: () => void;
     timedOut?: boolean;
     canRetry?: boolean;
@@ -28,7 +31,7 @@
     actions?: Snippet;
   }
 
-  let { services, result, onback, timedOut = false, canRetry = false, onretry, unlocked = false, mode = 'practice', notice, actions }: Props = $props();
+  let { services, result, attemptId, onback, timedOut = false, canRetry = false, onretry, unlocked = false, mode = 'practice', notice, actions }: Props = $props();
   const isReview = $derived(mode === 'review');
   const isExam = $derived(mode === 'exam');
   const titleKey = $derived(isReview ? 'review.result.title' : isExam ? 'exam.result.title' : 'practice.result.title');
@@ -40,6 +43,13 @@
   const explained = (q: Question, fallback?: string): Question => (q.explanation || fallback === undefined ? q : { ...q, explanation: fallback });
 
   // Screen readers land on the result when it appears.
+  // Each <li> is a plain block holding the whole question (text, marks, options, explanation); it is the screenshot target.
+  const frames: Record<string, HTMLElement | undefined> = {};
+  const frame = (id: string) => (node: HTMLElement) => {
+    frames[id] = node;
+    return () => delete frames[id];
+  };
+
   const focusOnMount = (node: HTMLElement) => node.focus();
 </script>
 
@@ -70,7 +80,7 @@
     <ol class="flex flex-col gap-4">
       {#each result.items as item, i (item.questionId)}
         {@const q = questions.get(item.questionId)}
-        <li data-question={item.questionId} class="flex flex-col gap-2 rounded-lg border border-border-subtle bg-surface p-4">
+        <li data-question={item.questionId} class="flex flex-col gap-2 rounded-lg border border-border-subtle bg-surface p-4" {@attach frame(item.questionId)}>
           <p class="text-sm text-muted-foreground">{i18n.t('practice.result.question', { n: i + 1 })}</p>
           <p lang="en" class="font-medium">{q?.text ?? item.questionId}</p>
           <p class={cn('font-semibold', item.isCorrect ? 'text-leaf-done-ink' : 'text-danger')}>
@@ -86,12 +96,25 @@
               <p class="text-sm text-muted-foreground">{item.explanation}</p>
             {/if}
           {/if}
+          <ReportButton
+            {services}
+            class="self-end"
+            context={{
+              type: 'question',
+              questionId: item.questionId,
+              sourceScreen: 'result',
+              ...(attemptId !== undefined
+                ? { attempt: { attemptId, position: i, optionOrder: [...(item.optionOrder ?? [])], selected: [...item.selected], isCorrect: item.isCorrect } }
+                : {}),
+            }}
+            captureTarget={() => frames[item.questionId] ?? null}
+          />
         </li>
       {/each}
     </ol>
   </section>
 
-  <div class="flex flex-wrap gap-3">
+  <div class="sticky bottom-0 z-10 -mx-6 -mb-6 flex flex-wrap gap-3 border-t border-border-subtle bg-surface px-6 py-3">
     {#if actions}
       {@render actions()}
     {:else}

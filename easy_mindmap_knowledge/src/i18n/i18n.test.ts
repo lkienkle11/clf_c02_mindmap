@@ -28,10 +28,26 @@ describe('I18n', () => {
     expect(i.t('mindmap.lockedHint', { topic: 'EC2' })).toBe('Cần đạt từ 80% trở lên ở EC2 để mở');
     expect(createI18n('en').t('mindmap.lockedHint', { topic: 'EC2' })).toBe('Score 80% or higher in EC2 to unlock');
   });
-  it('en and vi have identical key sets', () => {
-    expect(Object.keys(vi).sort()).toEqual(Object.keys(en).sort());
+  it('en and vi define exactly the same keys (report.* and practice.setup.report* included)', () => {
+    // A failure lists each side's missing keys by name, not just two long arrays.
+    expect({ missingInVi: keysMissingFrom(en, vi), missingInEn: keysMissingFrom(vi, en) }).toEqual({ missingInVi: [], missingInEn: [] });
+  });
+
+  it('the parity comparison reports a key that exists on one side only', () => {
+    // Throwaway in-memory objects: proves the comparison above can fail.
+    const withKey = { 'report.tab': 'Reports', 'report.button': 'Report' };
+    const withoutKey = { 'report.tab': 'Báo cáo' };
+    expect(keysMissingFrom(withKey, withoutKey)).toEqual(['report.button']);
+    expect(keysMissingFrom(withoutKey, withKey)).toEqual([]);
   });
 });
+
+/** Keys of `a` that `b` does not define, sorted. */
+function keysMissingFrom(a: Record<string, unknown>, b: Record<string, unknown>): string[] {
+  return Object.keys(a)
+    .filter((k) => !Object.prototype.hasOwnProperty.call(b, k))
+    .sort();
+}
 
 /**
  * Keys built at runtime from a template, declared explicitly: `prefix` is the literal text before `${`.

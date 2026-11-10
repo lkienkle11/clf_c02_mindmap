@@ -1,7 +1,7 @@
 import type { Services } from '@/app/composition';
 import { AttemptMissingError } from '@/persistence';
 import type { AttemptQuestionRow, AttemptRow, ClockState } from '@/persistence';
-import { advanceFreeze, isExpired, remainingAt, resolveOnResume, settleHidden as settleClockHidden, startClock } from './logic/attempt-clock';
+import { advanceFreeze, isExpired, pauseForReport, remainingAt, resolveOnResume, settleHidden as settleClockHidden, startClock } from './logic/attempt-clock';
 import { gradeQuestion, passes } from './logic/grading';
 import { buildPool, planAttempt } from './logic/pick-questions';
 import type { PlannedQuestion } from './logic/pick-questions';
@@ -60,6 +60,8 @@ export class PracticeSession {
   #result = $state.raw<SubmitResult | null>(null);
   #knowledgeOpen = $state(false);
   #submitReason = $state<Reason | null>(null);
+  /** True while the report dialog is open on a timed attempt; never persisted, so a resumed attempt starts closed. */
+  #reportOpen = $state(false);
 
   #clock: ClockState;
   #sinceSave = 0;
@@ -102,6 +104,7 @@ export class PracticeSession {
   get submitted(): boolean { return this.#submitted; }
   get result(): SubmitResult | null { return this.#result; }
   get knowledgeOpen(): boolean { return this.#knowledgeOpen; }
+  get reportOpen(): boolean { return this.#reportOpen; }
   /** Why the attempt is (being) submitted; set by the first submit request, cleared if that submit fails. */
   get submitReason(): Reason | null { return this.#submitReason; }
 
@@ -120,7 +123,7 @@ export class PracticeSession {
     const now = services.now();
     // Shuffles happen exactly once, here; resume replays the stored order.
     const plan = planAttempt(pool, count, makeRng(now % 0x100000000));
-    const clock = startClock(options.limitMs, options.clockMode, now, options.onHidden);
+    const clock = startClock(options.limitMs, options.clockMode, now, options.onHidden, options.onReport);
     const attempt: AttemptRow = {
       id: services.newId(), kind: 'practice', topicId, status: 'in_progress', startedAt: now,
       submittedAt: null, submitReason: null, reviewAllowed: options.allowReview, clock,
@@ -193,7 +196,7 @@ export class PracticeSession {
     if (input.kind === 'practice' && input.topicId === null) throw new InvalidExamInputError('practice exam without a topic');
     if (input.plan.length === 0) throw new NoQuestionsError(input.topicId ?? input.kind);
     const now = services.now();
-    const clock = startClock(input.limitMs, 'run', now, 'run');
+    const clock = startClock(input.limitMs, 'run', now, 'run', 'run');
     const id = services.newId();
     const attempt: AttemptRow = {
       id, kind: input.kind, topicId: input.topicId, status: 'in_progress', startedAt: now,
@@ -259,10 +262,20 @@ export class PracticeSession {
     if (this.#closed || this.#exited || this.#clock.limitMs === null) return;
     const now = this.services.now();
     const frozen = this.#clock.mode === 'freeze';
-    const charged = frozen ? Math.min(Math.max(0, elapsedMs), FREEZE_MAX_TICK_MS) : elapsedMs;
-    if (frozen) {
+    // A gap above the cap means the app was suspended, not that the user was reading a report; it is never forgiven.
+    const capped = Math.min(Math.max(0, elapsedMs), FREEZE_MAX_TICK_MS);
+    const paused = this.#reportOpen && this.#clock.onReport === 'freeze';
+    let charged: number;
+    if (paused) {
+      // Visible time only (SessionTimer skips ticks while hidden); hidden time still follows onHidden via settleHidden.
+      this.#clock = pauseForReport(this.#clock, capped);
+      if (!frozen) this.#clock = { ...this.#clock, remainingMs: remainingAt(this.#clock, now) };
+      charged = frozen ? 0 : capped; // a run clock's moved deadline must reach the periodic save; a freeze clock did not change
+    } else if (frozen) {
+      charged = capped;
       this.#clock = advanceFreeze(this.#clock, charged);
     } else {
+      charged = elapsedMs;
       this.#clock = { ...this.#clock, remainingMs: remainingAt(this.#clock, now) };
     }
     this.#remainingMs = remainingAt(this.#clock, now);
@@ -291,6 +304,19 @@ export class PracticeSession {
     if (this.#closed || this.#exited || this.#clock.limitMs === null) return;
     this.#sinceSave = 0;
     await this.services.repos.attempts.saveClock(this.attemptId, this.#clock, this.services.now());
+  }
+
+  /**
+   * The report dialog opened. On a timed attempt whose `onReport` is 'freeze' the clock stops charging visible
+   * time until `endReport`. No-op for an untimed, submitted, or exited attempt.
+   */
+  beginReport(): void {
+    if (this.#closed || this.#exited || this.#clock.limitMs === null) return;
+    this.#reportOpen = true;
+  }
+
+  endReport(): void {
+    this.#reportOpen = false;
   }
 
   openKnowledge(): void {

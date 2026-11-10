@@ -51,6 +51,30 @@ xattr -dr com.apple.quarantine "src-tauri/target/release/bundle/macos/AWS CLF-C0
 - **Retakes** draw questions you have never seen first, then questions you got wrong (most misses first), then the rest.
 - The real exam facts used by the app come from the official AWS pages: 65 questions (50 scored and 15 unscored), 90 minutes, passing score 700/1000. The app uses a simpler 80% pass mark and counts every question.
 
+## Reports
+
+Learners can report a wrong question, wrong lesson knowledge or a system problem. Reports stay on your machine.
+
+- **Stored**: tables `reports` and `report_images` in `mindmap.db` (migration `0005_reports.sql`, which also adds `clock_on_report` to `attempts`). A report stores ids, not content: the question or lesson id and, for questions, the attempt details (position, option order, selected answers, correct or not). Question text and options are not copied. Screenshots are PNG or JPEG files in `report-images/` under the app data directory; the database keeps their relative paths.
+- **Where**: the Tauri app data directory (`appDataDir()`, identifier `app.awsclf.mindmap`):
+  - macOS: `~/Library/Application Support/app.awsclf.mindmap/`
+  - Windows: `%APPDATA%\app.awsclf.mindmap\`
+  - Linux: `$XDG_DATA_HOME/app.awsclf.mindmap/`, or `~/.local/share/app.awsclf.mindmap/` when `XDG_DATA_HOME` is unset
+  - `mindmap.db` itself stays in the app config directory (see User data). That is the same folder as the data directory on macOS and Windows, but not on Linux.
+- **Where to report**:
+  - Wrong question (5 places): the practice, exam and review result screens; the history attempt view; the "most missed questions" dialog; the footer of a practice, exam or review session.
+  - Wrong knowledge (3 places): the lesson screen; the knowledge overlay during a practice or exam; the same overlay during a review.
+  - System issue (1 place): Settings, below the Language section.
+- **Report dialog**: the text (bold, italic, lists; up to 1500 visible characters). Question and lesson reports take one optional screenshot of the content on screen, taken without the dialog. System reports attach up to 3 PNG or JPEG images of 5 MB or less each. Closing the dialog always asks for confirmation and then discards the text.
+- **Timed attempts**: the practice setup screen has "When you open a report during a session", with "Freeze the time" (default) or "Let the time keep running". It is chosen per attempt, applies only while the window is visible, and does nothing for untimed attempts. A hidden window still follows "When you switch tabs or minimize". Exam and checkpoint attempts always keep the clock running.
+- **Reports tab**: a summary (counts by type and status), filters (type, status, date range, text search), a list of 10 per page, and a detail view with the text, screenshots and references. Mark a report "Handled" or reopen it there. The tab shows how many reports are new.
+- **Export**: "Export reports" on the Reports tab writes to the default folder `reports/` under the app data directory, or to a folder you choose (the choice is remembered). The folder holds:
+  - `README.md`: how to read a report and how to mark it handled (rewritten on every export)
+  - `index.json`: one entry per report
+  - `<id>.json`: one report, with `status` and `statusUpdatedAt`
+  - `images/<id>-<idx>.png` or `.jpg`: the screenshots
+- **Marking a report handled from a file**: in `<id>.json`, set `"status": "handled"` and set `statusUpdatedAt` to the current time in milliseconds since the epoch, which must be newer than the old value. Fixing the content alone does not change the status. The app reads the change when the Reports tab opens or when you export, and writes its own status changes back to the files on the same sync. For each report the newer `statusUpdatedAt` wins. Files stamped more than 24 hours in the future are ignored.
+
 ## User data
 
 All progress lives in a SQLite file `mindmap.db` in the app config directory of the bundle identifier `app.awsclf.mindmap`. On macOS: `~/Library/Application Support/app.awsclf.mindmap/mindmap.db`. To reset the app, quit it and delete that directory. The schema is created on first launch by the embedded migrations in `src-tauri/migrations/`.

@@ -3,6 +3,7 @@
   import type { AppState } from '@/app/app-state.svelte';
   import { SETTING_LOCALE } from '@/app/app-state.svelte';
   import type { Services } from '@/app/composition';
+  import { ReportButton } from '@/features/report';
   import { getI18n } from '@/i18n/i18n.svelte';
   import type { Locale } from '@/i18n/i18n.svelte';
 
@@ -62,6 +63,8 @@
   {#if failed}
     <p role="alert" class="font-medium text-danger">{i18n.t('settings.saveFailed')}</p>
   {/if}
+
+  <ReportButton {services} context={{ type: 'system' }} class="self-start" />
 
   <p class="text-sm text-muted-foreground">{i18n.t('settings.version', { version })}</p>
 </section>

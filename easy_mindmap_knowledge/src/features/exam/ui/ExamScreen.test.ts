@@ -14,7 +14,7 @@ const GROUP1 = ['cloud-concepts', 'global-infrastructure', 'compute'];
 /** A submitted, passed practice attempt: what makes a topic completed in the app's own state. */
 const passedTopic = (topicId: string): AttemptRow => ({
   id: `p-${topicId}`, kind: 'practice', topicId, status: 'submitted', startedAt: 0, submittedAt: 1, submitReason: 'manual',
-  reviewAllowed: false, clock: { mode: 'freeze', limitMs: null, remainingMs: null, deadlineAt: null, onHidden: 'freeze' },
+  reviewAllowed: false, clock: { mode: 'freeze', limitMs: null, remainingMs: null, deadlineAt: null, onHidden: 'freeze', onReport: 'freeze' },
   heartbeatAt: null, scorePct: 100, passed: true, groupIndex: null, plannedCount: null,
 });
 

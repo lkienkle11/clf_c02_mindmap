@@ -4,6 +4,7 @@
   import type { Services } from '@/app/composition';
   import type { Lesson } from '@/content/types';
   import { getI18n } from '@/i18n/i18n.svelte';
+  import { ReportButton } from '@/features/report';
   import Badge from '@/ui/Badge.svelte';
   import Button from '@/ui/Button.svelte';
   import { isAllowedExternalUrl } from './external-url';
@@ -30,6 +31,16 @@
   const isRead = $derived(appState.readIds.has(lesson.id));
   const practiceLocked = $derived(!canPractice(lesson.topicId));
   const html = $derived(withoutDeadLinks(renderLessonBody(lesson.body[locale])));
+  /**
+   * Screenshot target: the header + body wrapper, a plain block that grows with its content. It is never the
+   * scrolling panel (html-to-image sizes from clientWidth/clientHeight, so a scroller would be cut) and it
+   * excludes the report dialog itself.
+   */
+  let content: HTMLElement | undefined;
+  const keepContent: Attachment<HTMLElement> = (node) => {
+    content = node;
+    return () => (content = undefined);
+  };
   let saving = $state(false);
   let error = $state<string | null>(null);
 
@@ -106,22 +117,25 @@
     <Button variant="ghost" onclick={() => appState.open({ view: 'tree' })}><span aria-hidden="true">←</span> {i18n.t('lesson.backToTree')}</Button>
   </div>
 
-  <header class="flex flex-wrap items-center gap-3">
-    <h1 class="text-2xl font-semibold">{lesson.title[locale]}</h1>
-    {#if !lesson.required}<Badge tone="review" label={i18n.t('lesson.optional')} />{/if}
-    {#if isRead}<Badge tone="done" label={i18n.t('lesson.completed')} />{/if}
-  </header>
+  <div {@attach keepContent} class="flex flex-col gap-4">
+    <header class="flex flex-wrap items-center gap-3">
+      <h1 class="text-2xl font-semibold">{lesson.title[locale]}</h1>
+      {#if !lesson.required}<Badge tone="review" label={i18n.t('lesson.optional')} />{/if}
+      {#if isRead}<Badge tone="done" label={i18n.t('lesson.completed')} />{/if}
+    </header>
 
-  <div data-lesson-body class="lesson-body rounded-lg border border-border-subtle bg-surface p-5 text-surface-foreground" {@attach interceptLinks}>
-    <!-- eslint-disable-next-line svelte/no-at-html-tags -- bundled, trusted content; raw HTML is escaped by renderLessonBody -->
-    {@html html}
+    <div data-lesson-body class="lesson-body rounded-lg border border-border-subtle bg-surface p-5 text-surface-foreground" {@attach interceptLinks}>
+      <!-- eslint-disable-next-line svelte/no-at-html-tags -- bundled, trusted content; raw HTML is escaped by renderLessonBody -->
+      {@html html}
+    </div>
   </div>
 
-  {#if lesson.videoQuery}
-    <div>
+  <div class="flex flex-wrap items-center justify-between gap-3">
+    {#if lesson.videoQuery}
       <Button variant="secondary" onclick={openVideo}><span aria-hidden="true">▶</span> {i18n.t('lesson.openVideo')}</Button>
-    </div>
-  {/if}
+    {/if}
+    <ReportButton class="ml-auto" {services} context={{ type: 'lesson', lessonId: lesson.id, sourceScreen: 'lesson' }} captureTarget={() => content ?? null} />
+  </div>
 
   {#if error}
     <p role="alert" class="rounded-lg border border-danger bg-surface p-3 text-danger">{error}</p>

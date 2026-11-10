@@ -3,6 +3,7 @@
   import type { AppState } from '@/app/app-state.svelte';
   import type { Services } from '@/app/composition';
   import { getI18n } from '@/i18n/i18n.svelte';
+  import { ReportButton } from '@/features/report';
   import { AttemptMissingError } from '@/persistence';
   import Button from '@/ui/Button.svelte';
   import Modal from '@/ui/Modal.svelte';
@@ -137,11 +138,26 @@
       </div>
     {/if}
     <Button disabled={busy} onclick={() => (submitOpen = true)}>{i18n.t('practice.submit')}</Button>
-    <Button variant="ghost" class="ml-auto" disabled={busy} onclick={() => (exitOpen = true)}>{i18n.t('practice.exit')}</Button>
+    <!-- The screenshot target is the question wrapper (`panel`): a plain block that grows with its content, never a scrolling container, so the image is not cut. -->
+    {#if current}
+      <ReportButton
+        {services}
+        class="ml-auto"
+        context={{
+          type: 'question',
+          questionId: current.questionId,
+          sourceScreen: session.kind,
+          attempt: { attemptId: session.attemptId, position: current.position, optionOrder: [...current.optionOrder], selected: [...current.selected], isCorrect: null },
+        }}
+        captureTarget={() => panel ?? null}
+        onopenchange={(open) => (open ? session.beginReport() : session.endReport())}
+      />
+    {/if}
+    <Button variant="ghost" disabled={busy} onclick={() => (exitOpen = true)}>{i18n.t('practice.exit')}</Button>
   </div>
 </div>
 
-<KnowledgeOverlay {services} topicId={knowledgeTopicId} open={session.knowledgeOpen} {timeLeft} showClockNotice={!isReview} onclose={() => session.closeKnowledge()} />
+<KnowledgeOverlay {services} topicId={knowledgeTopicId} open={session.knowledgeOpen} {timeLeft} showClockNotice={!isReview} onclose={() => session.closeKnowledge()} onreportchange={(open) => (open ? session.beginReport() : session.endReport())} />
 
 <Modal open={submitOpen} title={i18n.t('practice.submitTitle')} onclose={() => (submitOpen = false)}>
   <p class="mb-5">
