@@ -79,4 +79,34 @@ describe('AttemptDetail', () => {
     expect(within(item).getByText('Pick the first?').closest('[lang="en"]')).not.toBeNull();
     expect(within(item).getByText('Alpha').closest('[lang="en"]')).not.toBeNull();
   });
+
+  it('follows the attempt\'s unansweredDisplay: answersOnly hides correct marking and explanation of unanswered questions only', async () => {
+    const unanswered = [
+      makeRow('a2', 0, { questionId: 'q1', selected: [], isCorrect: false }),
+      makeRow('a2', 1, { questionId: 'q2', optionOrder: ['D', 'C', 'B', 'A'], selected: ['C'], isCorrect: false }),
+    ];
+    await mount({ rows: unanswered, attempt: makeAttempt('a2', { scorePct: 0, passed: false, unansweredDisplay: 'answersOnly' }) });
+    const [first, second] = recordedItems();
+    expect(within(first).queryByText('Correct answer')).not.toBeInTheDocument();
+    expect(within(first).queryByText('Because alpha.')).not.toBeInTheDocument();
+    expect(within(second).getAllByText('Correct answer').length).toBeGreaterThan(0);
+  });
+
+  it('shows the explanation of an unanswered question when the attempt is reveal', async () => {
+    await mount({ rows: [makeRow('a2', 0, { questionId: 'q1', selected: [], isCorrect: false })] });
+    expect(within(recordedItems()[0]).getByText('Because alpha.')).toBeInTheDocument();
+  });
+
+  it('searches by number and filters by verdict inside the dialog', async () => {
+    await mount();
+    await userEvent.type(screen.getByRole('searchbox', { name: 'Search questions' }), '3');
+    expect(recordedItems().map((li) => li.getAttribute('data-question'))).toEqual(['q3']);
+    await userEvent.clear(screen.getByRole('searchbox', { name: 'Search questions' }));
+    await userEvent.selectOptions(screen.getByRole('combobox', { name: 'Show' }), 'correct');
+    expect(recordedItems().map((li) => li.getAttribute('data-question'))).toEqual(['q2']);
+    expect(screen.getByText('1 / 3 questions')).toBeInTheDocument();
+    await userEvent.selectOptions(screen.getByRole('combobox', { name: 'Show' }), 'all');
+    await userEvent.type(screen.getByRole('searchbox', { name: 'Search questions' }), 'zzzz');
+    expect(screen.getByText('No question matches.')).toBeInTheDocument();
+  });
 });

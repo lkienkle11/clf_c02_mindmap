@@ -60,6 +60,7 @@
     {canRetry}
     {unlocked}
     {notice}
+    unansweredDisplay={session.unansweredDisplay}
     onback={() => appState.open({ view: 'tree' })}
     onretry={() => (chosen = { session: null })}
   />

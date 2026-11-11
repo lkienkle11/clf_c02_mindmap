@@ -149,4 +149,90 @@ describe('PracticeResult notice', () => {
     await mount({ scorePct: 90, correct: 9, total: 10, passed: true, items });
     expect(screen.queryByRole('status')).not.toBeInTheDocument();
   });
+
+  describe('unanswered questions with answersOnly', () => {
+    const unanswered: SubmitResult['items'] = [
+      { questionId: 'q1', selected: [], correct: ['A'], isCorrect: false, explanation: 'Because alpha.' },
+      { questionId: 'q2', selected: ['C'], correct: ['A', 'B'], isCorrect: false },
+    ];
+    const rowsOf = () => screen.getAllByRole('listitem').filter((li) => li.getAttribute('data-question'));
+
+    it('shows the unanswered question without correct marking or explanation, and still shows an answered wrong one in full', async () => {
+      await mount({ scorePct: 0, correct: 0, total: 2, passed: false, items: unanswered }, false, { unansweredDisplay: 'answersOnly' });
+      const [first, second] = rowsOf();
+      expect(within(first).getByText('No answer')).toBeInTheDocument();
+      expect(within(first).queryByText('Correct answer')).not.toBeInTheDocument();
+      expect(within(first).queryByText('Because alpha.')).not.toBeInTheDocument();
+      expect(within(first).getAllByText(/✗/)[0]).toHaveTextContent('Incorrect');
+      expect(within(second).getAllByText('Correct answer').length).toBeGreaterThan(0);
+    });
+
+    it('keeps everything with reveal (default)', async () => {
+      await mount({ scorePct: 0, correct: 0, total: 2, passed: false, items: unanswered });
+      const [first] = rowsOf();
+      expect(within(first).getByText('Correct answer')).toBeInTheDocument();
+      expect(within(first).getByText('Because alpha.')).toBeInTheDocument();
+    });
+
+    it('hides the kept explanation too when the question is missing from the catalog', async () => {
+      await mount(
+        { scorePct: 0, correct: 0, total: 1, passed: false, items: [{ questionId: 'gone', selected: [], correct: ['A'], isCorrect: false, explanation: 'Kept note.' }] },
+        false,
+        { unansweredDisplay: 'answersOnly' },
+      );
+      expect(screen.queryByText('Kept note.')).not.toBeInTheDocument();
+      expect(screen.getByText('No answer')).toBeInTheDocument();
+    });
+  });
+
+  describe('search and filter', () => {
+    const shown = () => screen.queryAllByRole('listitem').filter((li) => li.getAttribute('data-question')).map((li) => li.getAttribute('data-question'));
+    const search = () => screen.getByRole('searchbox', { name: 'Search questions' });
+    const verdict = () => screen.getByRole('combobox', { name: 'Show' });
+    const result: SubmitResult = { scorePct: 33, correct: 1, total: 3, passed: false, items };
+
+    it('shows every question and the full count at first', async () => {
+      await mount(result);
+      expect(shown()).toEqual(['q1', 'q2', 'q3']);
+      expect(screen.getByText('3 / 3 questions')).toBeInTheDocument();
+    });
+
+    it('a number finds that question and keeps its original number', async () => {
+      await mount(result);
+      await userEvent.type(search(), '3');
+      expect(shown()).toEqual(['q3']);
+      expect(screen.getByText('Question 3')).toBeInTheDocument();
+    });
+
+    it('finds by title and by option text', async () => {
+      await mount(result);
+      await userEvent.type(search(), 'choose two');
+      expect(shown()).toEqual(['q2']);
+      await userEvent.clear(search());
+      await userEvent.type(search(), 'charlie');
+      expect(shown()).toContain('q3');
+    });
+
+    it('does not search explanations', async () => {
+      await mount(result);
+      await userEvent.type(search(), 'because alpha');
+      expect(shown()).toEqual([]);
+    });
+
+    it('the wrong filter keeps wrong and unanswered, the correct filter keeps correct', async () => {
+      await mount(result);
+      await userEvent.selectOptions(verdict(), 'wrong');
+      expect(shown()).toEqual(['q2', 'q3']);
+      await userEvent.selectOptions(verdict(), 'correct');
+      expect(shown()).toEqual(['q1']);
+    });
+
+    it('shows the empty message and 0 / n when nothing matches', async () => {
+      await mount(result);
+      await userEvent.type(search(), 'zzzz');
+      expect(shown()).toEqual([]);
+      expect(screen.getByText('No question matches.')).toBeInTheDocument();
+      expect(screen.getByText('0 / 3 questions')).toBeInTheDocument();
+    });
+  });
 });

@@ -18,6 +18,16 @@ describe('toExportedReport', () => {
   });
 });
 
+describe('toExportedReport for an attempt report', () => {
+  it('keeps the type and the attempt reference', () => {
+    const exported = toExportedReport({
+      ...row, type: 'attempt', sourceScreen: 'history', questionId: null, position: null, optionOrder: null, selected: null, isCorrect: null,
+    });
+    expect(exported.type).toBe('attempt');
+    expect(exported.refs).toMatchObject({ attemptId: 'a1', questionId: null, sourceScreen: 'history' });
+  });
+});
+
 describe('exportReadme', () => {
   it('tells agents the required step and where content lives', () => {
     const text = exportReadme();
@@ -25,6 +35,7 @@ describe('exportReadme', () => {
     expect(text).toContain('statusUpdatedAt');
     expect(text).toContain('content/questions');
     expect(text).toContain('content/lessons');
+    expect(text).toContain('`attempt`');
     expect(text).toMatch(/next sync/);
   });
 });

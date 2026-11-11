@@ -28,6 +28,7 @@ const attempt = (over: Partial<AttemptRow> = {}): AttemptRow => ({
   passed: null,
   groupIndex: null,
   plannedCount: null,
+  unansweredDisplay: 'reveal',
   ...over,
 });
 const questions = (attemptId = 'a1'): AttemptQuestionRow[] => [
@@ -101,6 +102,20 @@ describe('attempts', () => {
        VALUES ('raw', 'practice', 'in_progress', 1, 1, 'freeze')`,
     );
     expect((await createAttemptsRepo(db).findInProgress())?.attempt.clock.onReport).toBe('freeze');
+  });
+
+  it('stores and reads back unansweredDisplay', async () => {
+    const repo = createAttemptsRepo(db);
+    await repo.create(attempt({ unansweredDisplay: 'answersOnly' }), questions());
+    expect((await repo.findInProgress())?.attempt.unansweredDisplay).toBe('answersOnly');
+  });
+
+  it("a pre-existing attempt row reads back unansweredDisplay 'reveal'", async () => {
+    await db.execute(
+      `INSERT INTO attempts (id, kind, status, started_at, review_allowed, clock_mode)
+       VALUES ('raw', 'practice', 'in_progress', 1, 1, 'freeze')`,
+    );
+    expect((await createAttemptsRepo(db).findInProgress())?.attempt.unansweredDisplay).toBe('reveal');
   });
 
   it("a row inserted without the column reads back 'freeze'", async () => {

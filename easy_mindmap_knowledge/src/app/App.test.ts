@@ -43,7 +43,7 @@ describe('App shell', () => {
         attempt: {
           id: 'bad', kind: 'practice', topicId: 'compute', status: 'in_progress', startedAt: 0, submittedAt: null,
           submitReason: null, reviewAllowed: false, clock: { mode: 'freeze', limitMs: null, remainingMs: null, deadlineAt: null, onHidden: 'freeze', onReport: 'freeze' },
-          heartbeatAt: null, scorePct: null, passed: null, groupIndex: null, plannedCount: null,
+          heartbeatAt: null, scorePct: null, passed: null, groupIndex: null, plannedCount: null, unansweredDisplay: 'reveal' as const,
         },
         questions: [],
       },
@@ -81,7 +81,7 @@ describe('App shell', () => {
     const attempt = {
       id: 'cp', kind: 'checkpoint' as const, topicId: null, status: 'in_progress' as const, startedAt: 0, submittedAt: null,
       submitReason: null, reviewAllowed: false, clock: { mode: 'run' as const, limitMs: 5_400_000, remainingMs: null, deadlineAt: 5_400_000, onHidden: 'run' as const, onReport: 'run' as const },
-      heartbeatAt: null, scorePct: null, passed: null, groupIndex: 1, plannedCount: 3,
+      heartbeatAt: null, scorePct: null, passed: null, groupIndex: 1, plannedCount: 3, unansweredDisplay: 'reveal' as const,
     };
     const questions = ['e0', 'e1', 'e2'].map((questionId, position) => ({
       attemptId: 'cp', position, questionId, optionOrder: ['A', 'B', 'C', 'D'], selected: [], isCorrect: null,
@@ -145,7 +145,7 @@ async function mountWithUnfinished() {
   const attempt = {
     id: 'old', kind: 'practice' as const, topicId: 'compute', status: 'in_progress' as const, startedAt: 0, submittedAt: null,
     submitReason: null, reviewAllowed: false, clock: { mode: 'freeze' as const, limitMs: null, remainingMs: null, deadlineAt: null, onHidden: 'freeze' as const, onReport: 'freeze' as const },
-    heartbeatAt: null, scorePct: null, passed: null, groupIndex: null, plannedCount: null,
+    heartbeatAt: null, scorePct: null, passed: null, groupIndex: null, plannedCount: null, unansweredDisplay: 'reveal' as const,
   };
   const questions = ['q1', 'q2', 'q3'].map((questionId, position) => ({
     attemptId: 'old', position, questionId, optionOrder: ['A', 'B', 'C', 'D'], selected: [], isCorrect: null,

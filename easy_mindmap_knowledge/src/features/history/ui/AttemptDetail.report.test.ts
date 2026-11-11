@@ -22,7 +22,7 @@ async function mount() {
 describe('AttemptDetail report buttons', () => {
   it('has one Report button per question', async () => {
     await mount();
-    expect(screen.getAllByRole('button', { name: 'Report' })).toHaveLength(3);
+    expect(screen.getAllByRole('button', { name: 'Report' })).toHaveLength(4);
     for (const id of ['q1', 'q2', 'q3']) expect(within(entry(id)).getAllByRole('button', { name: 'Report' })).toHaveLength(1);
   });
 
@@ -40,5 +40,17 @@ describe('AttemptDetail report buttons', () => {
     expect(env.created[0].row).toMatchObject({
       type: 'question', questionId: id, sourceScreen: 'history', attemptId: 'a2', position, selected, isCorrect, optionOrder,
     });
+  });
+
+  it('has an attempt Report button beside Close that files an attempt report from history', async () => {
+    const env = await mount();
+    const close = screen.getByRole('button', { name: 'Close' });
+    const footerReport = within(close.parentElement as HTMLElement).getByRole('button', { name: 'Report' });
+    await userEvent.click(footerReport);
+    expect(screen.getByRole('dialog', { name: 'Report attempt' })).toBeInTheDocument();
+    await fireEvent.input(screen.getByRole('textbox'), { target: { value: 'the whole attempt' } });
+    await userEvent.click(screen.getByRole('button', { name: 'Submit report' }));
+    await waitFor(() => expect(env.created).toHaveLength(1));
+    expect(env.created[0].row).toMatchObject({ type: 'attempt', attemptId: 'a2', sourceScreen: 'history', questionId: null });
   });
 });

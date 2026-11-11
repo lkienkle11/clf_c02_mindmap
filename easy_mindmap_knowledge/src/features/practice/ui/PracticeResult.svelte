@@ -2,11 +2,16 @@
   import type { Snippet } from 'svelte';
   import type { Question } from '@/content/types';
   import type { Services } from '@/app/composition';
+  import type { UnansweredDisplay } from '@/persistence';
   import { ReportButton } from '@/features/report';
   import { getI18n } from '@/i18n/i18n.svelte';
   import Button from '@/ui/Button.svelte';
   import { cn } from '@/ui/cn';
+  import { filterResultItems } from '../logic/result-filter';
+  import type { ResultVerdict } from '../logic/result-filter';
+  import { hidesAnswers } from '../logic/unanswered';
   import OptionReview from './OptionReview.svelte';
+  import ResultSearchBar from './ResultSearchBar.svelte';
   import type { SubmitResult } from '../session.svelte';
 
   interface Props {
@@ -20,6 +25,8 @@
     onretry?: () => void;
     /** True when this pass completed the topic for the first time and opened the next one. */
     unlocked?: boolean;
+    /** What to show for unanswered questions; 'reveal' (the default) shows everything. */
+    unansweredDisplay?: UnansweredDisplay;
     /**
      * 'review' shows the score and breakdown only: no pass mark, no unlock wording, no retry.
      * 'exam' uses the exam title and the pass mark, and never the unlock wording.
@@ -31,7 +38,7 @@
     actions?: Snippet;
   }
 
-  let { services, result, attemptId, onback, timedOut = false, canRetry = false, onretry, unlocked = false, mode = 'practice', notice, actions }: Props = $props();
+  let { services, result, attemptId, onback, timedOut = false, canRetry = false, onretry, unlocked = false, unansweredDisplay = 'reveal', mode = 'practice', notice, actions }: Props = $props();
   const isReview = $derived(mode === 'review');
   const isExam = $derived(mode === 'exam');
   const titleKey = $derived(isReview ? 'review.result.title' : isExam ? 'exam.result.title' : 'practice.result.title');
@@ -42,6 +49,22 @@
   /** Item explanation is the fallback only when the catalog question lacks one. */
   const explained = (q: Question, fallback?: string): Question => (q.explanation || fallback === undefined ? q : { ...q, explanation: fallback });
 
+  let query = $state('');
+  let verdict = $state<ResultVerdict>('all');
+  // The numbers (1-based, as shown) of the questions that pass the search and the filter; a numbered item keeps its number.
+  const visible = $derived(
+    new Set(
+      filterResultItems(
+        result.items.map((item, i) => {
+          const q = questions.get(item.questionId);
+          return { number: i + 1, isCorrect: item.isCorrect, title: q?.text ?? item.questionId, optionTexts: q?.options.map((o) => o.text) ?? [] };
+        }),
+        query,
+        verdict,
+      ),
+    ),
+  );
+
   // Screen readers land on the result when it appears.
   // Each <li> is a plain block holding the whole question (text, marks, options, explanation); it is the screenshot target.
   const frames: Record<string, HTMLElement | undefined> = {};
@@ -50,10 +73,17 @@
     return () => delete frames[id];
   };
 
+  // The whole result (score and every question) is what an attempt report screenshots.
+  let page: HTMLElement | null = null;
+  const trackPage = (node: HTMLElement) => {
+    page = node;
+    return () => (page = null);
+  };
+
   const focusOnMount = (node: HTMLElement) => node.focus();
 </script>
 
-<div class="mx-auto flex max-w-3xl flex-col gap-6 p-6">
+<div {@attach trackPage} class="mx-auto flex max-w-3xl flex-col gap-6 p-6">
   <header class="flex flex-col items-start gap-2">
     <h1 tabindex="-1" class="text-2xl font-semibold focus:outline-none" {@attach focusOnMount}>{i18n.t(titleKey)}</h1>
     {#if timedOut && !isReview}
@@ -77,9 +107,14 @@
 
   <section aria-labelledby="breakdown-title">
     <h2 id="breakdown-title" class="mb-3 text-xl font-semibold">{i18n.t('practice.result.breakdown')}</h2>
+    <div class="mb-4">
+      <ResultSearchBar bind:query bind:verdict shown={visible.size} total={result.items.length} />
+    </div>
     <ol class="flex flex-col gap-4">
       {#each result.items as item, i (item.questionId)}
+        {#if visible.has(i + 1)}
         {@const q = questions.get(item.questionId)}
+        {@const hide = hidesAnswers(item.selected, unansweredDisplay)}
         <li data-question={item.questionId} class="flex flex-col gap-2 rounded-lg border border-border-subtle bg-surface p-4" {@attach frame(item.questionId)}>
           <p class="text-sm text-muted-foreground">{i18n.t('practice.result.question', { n: i + 1 })}</p>
           <p lang="en" class="font-medium">{q?.text ?? item.questionId}</p>
@@ -87,12 +122,12 @@
             {item.isCorrect ? `✓ ${i18n.t('practice.result.correct')}` : `✗ ${i18n.t('practice.result.incorrect')}`}
           </p>
           {#if q}
-            <OptionReview question={explained(q, item.explanation)} selected={item.selected} optionOrder={item.optionOrder} />
+            <OptionReview question={explained(q, item.explanation)} selected={item.selected} optionOrder={item.optionOrder} hideAnswers={hide} />
           {:else}
             {#if item.selected.length === 0}
               <p class="text-sm text-muted-foreground">{i18n.t('practice.result.noAnswer')}</p>
             {/if}
-            {#if item.explanation}
+            {#if item.explanation && !hide}
               <p class="text-sm text-muted-foreground">{item.explanation}</p>
             {/if}
           {/if}
@@ -110,6 +145,7 @@
             captureTarget={() => frames[item.questionId] ?? null}
           />
         </li>
+        {/if}
       {/each}
     </ol>
   </section>
@@ -122,6 +158,14 @@
       {#if canRetry && onretry}
         <Button variant="secondary" onclick={onretry}>{i18n.t('practice.result.tryAgain')}</Button>
       {/if}
+    {/if}
+    {#if attemptId !== undefined}
+      <ReportButton
+        {services}
+        class="ml-auto"
+        context={{ type: 'attempt', attemptId, sourceScreen: 'result' }}
+        captureTarget={() => page}
+      />
     {/if}
   </div>
 </div>

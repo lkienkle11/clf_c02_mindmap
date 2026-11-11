@@ -79,13 +79,13 @@ async function passCheckpoint(services: Services, appState: AppState, groupIndex
     id: `cp-${groupIndex}`, kind: 'checkpoint', topicId: null, status: 'submitted', startedAt: T0, submittedAt: T0 + 1,
     submitReason: 'manual', reviewAllowed: true,
     clock: { mode: 'freeze', limitMs: null, remainingMs: null, deadlineAt: null, onHidden: 'freeze', onReport: 'freeze' },
-    heartbeatAt: null, scorePct: 90, passed: true, groupIndex, plannedCount: 30,
+    heartbeatAt: null, scorePct: 90, passed: true, groupIndex, plannedCount: 30, unansweredDisplay: 'reveal',
   }, []);
   await appState.refresh();
 }
 
 async function passWithSession(services: Services, appState: AppState, topicId: string): Promise<void> {
-  const s = await PracticeSession.start(services, topicId, { allowReview: false, limitMs: null, clockMode: 'freeze', onHidden: 'freeze', onReport: 'freeze', questionCount: 10 }, () => appState.refresh());
+  const s = await PracticeSession.start(services, topicId, { allowReview: false, limitMs: null, clockMode: 'freeze', onHidden: 'freeze', onReport: 'freeze', unansweredDisplay: 'reveal' as const, questionCount: 10 }, () => appState.refresh());
   const byId = new Map(services.catalog.questions.map((q) => [q.id, q]));
   for (const q of s.questions) await s.select(q.position, byId.get(q.questionId)!.correct);
   const result = await s.submit('manual');

@@ -19,6 +19,7 @@ export type ReportContext =
       };
     }
   | { type: 'lesson'; lessonId: string; sourceScreen: string }
+  | { type: 'attempt'; attemptId: string; sourceScreen: string }
   | { type: 'system' };
 
 export interface ReportDraft {
@@ -196,6 +197,19 @@ export function buildReportRow(
         questionId: null,
         lessonId: ctx.lessonId,
         attemptId: null,
+        position: null,
+        optionOrder: null,
+        selected: null,
+        isCorrect: null,
+      };
+    case 'attempt':
+      return {
+        ...common,
+        type: 'attempt',
+        sourceScreen: ctx.sourceScreen,
+        questionId: null,
+        lessonId: null,
+        attemptId: ctx.attemptId,
         position: null,
         optionOrder: null,
         selected: null,

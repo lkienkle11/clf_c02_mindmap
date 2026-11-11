@@ -11,6 +11,7 @@ import ReportDialog from './ReportDialog.svelte';
 
 const question: ReportContext = { type: 'question', questionId: 'q1', sourceScreen: 'practice' };
 const lesson: ReportContext = { type: 'lesson', lessonId: 'compute-ec2', sourceScreen: 'lesson' };
+const attemptCtx: ReportContext = { type: 'attempt', attemptId: 'att-1', sourceScreen: 'result' };
 const system: ReportContext = { type: 'system' };
 
 let env: ReportEnv;
@@ -42,6 +43,7 @@ describe('ReportDialog shell', () => {
     const cases: [ReportContext, string, string][] = [
       [question, 'Báo cáo câu hỏi sai', 'Bạn có góp ý gì đối với câu hỏi này?'],
       [lesson, 'Báo cáo kiến thức sai', 'Bạn có góp ý gì với kiến thức này?'],
+      [attemptCtx, 'Báo cáo bài làm', 'Bạn có góp ý gì với bài làm này?'],
       [system, 'Báo cáo hệ thống', 'Hệ thống đang có bug gì?'],
     ];
     for (const [context, title, placeholder] of cases) {
@@ -55,6 +57,7 @@ describe('ReportDialog shell', () => {
     const cases: [ReportContext, string][] = [
       [question, 'Report wrong question'],
       [lesson, 'Report wrong knowledge'],
+      [attemptCtx, 'Report attempt'],
       [system, 'Report system issue'],
     ];
     for (const [context, title] of cases) {
@@ -328,6 +331,14 @@ describe('ReportDialog screenshot (question and lesson)', () => {
     await waitFor(() => expect(env.created).toHaveLength(1));
     expect(env.created[0].paths).toEqual([]);
     expect(env.created[0].row.type).toBe('lesson');
+  });
+  it('an attempt report offers the screenshot button (not the system upload picker) and stores an attempt row', async () => {
+    mount({ context: attemptCtx });
+    expect(screen.getByRole('button', { name: 'Take screenshot' })).toBeInTheDocument();
+    await write('the whole attempt looks wrong');
+    await userEvent.click(submitBtn());
+    await waitFor(() => expect(env.created).toHaveLength(1));
+    expect(env.created[0].row).toMatchObject({ type: 'attempt', attemptId: 'att-1', sourceScreen: 'result', questionId: null });
   });
   it('a capture error shows an inline alert and submit still works without an image', async () => {
     const capture = vi.fn().mockRejectedValue(new CaptureError(new Error('boom')));

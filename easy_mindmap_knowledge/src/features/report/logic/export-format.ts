@@ -62,7 +62,7 @@ Each \`<id>.json\` file in this folder is one report written by a learner. \`ind
 
 ## How to read a report
 
-- \`type\`: \`question\` (the question is wrong), \`lesson\` (the knowledge text is wrong) or \`system\` (an app bug).
+- \`type\`: \`question\` (the question is wrong), \`lesson\` (the knowledge text is wrong), \`attempt\` (a whole practice or exam attempt; only \`attemptId\` and \`sourceScreen\` are set) or \`system\` (an app bug).
 - \`body\`: the learner's text (a small Markdown subset).
 - \`refs\`: where it came from. \`questionId\` / \`lessonId\` point at the content by id; \`attemptId\`, \`position\`,
   \`optionOrder\`, \`selected\`, \`isCorrect\` describe the attempt in which the learner saw the question.

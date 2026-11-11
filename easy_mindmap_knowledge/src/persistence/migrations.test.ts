@@ -180,9 +180,71 @@ describe('migrations', () => {
     });
   });
 
+  describe('0006 attempt unanswered_display', () => {
+    const migrateTo = (n: number) => {
+      const db = new DatabaseSync(':memory:');
+      for (const f of files.slice(0, n)) db.exec(sql(f));
+      return db;
+    };
+
+    it('keeps existing attempts and defaults them to reveal', () => {
+      expect(files[5]).toBe('0006_attempt_unanswered_display.sql');
+      const db = migrateTo(5);
+      db.exec("INSERT INTO attempts (id, kind, topic_id, status, started_at, clock_mode) VALUES ('a1', 'practice', 't', 'submitted', 1, 'freeze')");
+      db.exec(sql(files[5]));
+      expect(db.prepare('SELECT id, unanswered_display FROM attempts').all()).toEqual([{ id: 'a1', unanswered_display: 'reveal' }]);
+    });
+
+    it('accepts only reveal or answersOnly', () => {
+      const db = migrateTo(6);
+      const insert = (id: string, value: string) =>
+        db.prepare("INSERT INTO attempts (id, kind, status, started_at, clock_mode, unanswered_display) VALUES (?1, 'practice', 'in_progress', 1, 'freeze', ?2)").run(id, value);
+      expect(() => insert('a1', 'answersOnly')).not.toThrow();
+      expect(() => insert('a2', 'bogus')).toThrow(/CHECK/i);
+    });
+  });
+
+  describe('0007 reports attempt type', () => {
+    const MIGRATION = '0007_reports_attempt_type.sql';
+    const migrateTo = (n: number) => {
+      const db = new DatabaseSync(':memory:');
+      for (const f of files.slice(0, n)) db.exec(sql(f));
+      return db;
+    };
+    const insertReport = (db: DatabaseSync, id: string, type: string) =>
+      db.prepare(
+        'INSERT INTO reports (id, type, status, created_at, status_updated_at, body, app_version, locale, source_screen, question_id, attempt_id, position, option_order, selected, is_correct) VALUES (?1, ?2, \'new\', 1, 2, \'body\', \'1.0.0\', \'en\', \'result\', \'q1\', \'a1\', 3, \'["b","a"]\', \'["a"]\', 0)',
+      ).run(id, type);
+
+    it('keeps every report and image row, and the status/created index', () => {
+      expect(files[6]).toBe(MIGRATION);
+      const db = migrateTo(6);
+      insertReport(db, 'r1', 'question');
+      insertReport(db, 'r2', 'lesson');
+      db.exec("INSERT INTO report_images (report_id, idx, path) VALUES ('r1', 0, 'a.png'), ('r1', 1, 'b.png')");
+      const before = db.prepare('SELECT * FROM reports ORDER BY id').all();
+      db.exec(sql(MIGRATION));
+      expect(db.prepare('SELECT * FROM reports ORDER BY id').all()).toEqual(before);
+      expect(db.prepare('SELECT report_id, idx, path FROM report_images ORDER BY idx').all()).toEqual([
+        { report_id: 'r1', idx: 0, path: 'a.png' },
+        { report_id: 'r1', idx: 1, path: 'b.png' },
+      ]);
+      const indexColumns = (db.prepare("PRAGMA index_list('reports')").all() as { name: string }[]).map((i) =>
+        (db.prepare(`PRAGMA index_info('${i.name}')`).all() as { name: string }[]).map((c) => c.name),
+      );
+      expect(indexColumns).toContainEqual(['status', 'created_at']);
+    });
+
+    it('accepts the attempt type and still rejects an unknown one', () => {
+      const db = migrateTo(7);
+      expect(() => insertReport(db, 'r1', 'attempt')).not.toThrow();
+      expect(() => insertReport(db, 'r2', 'bogus')).toThrow(/CHECK/i);
+    });
+  });
+
   describe('report record types', () => {
     it('ReportRow mirrors the reports columns, with images as ordered relative paths', () => {
-      expectTypeOf<ReportType>().toEqualTypeOf<'question' | 'lesson' | 'system'>();
+      expectTypeOf<ReportType>().toEqualTypeOf<'question' | 'lesson' | 'system' | 'attempt'>();
       expectTypeOf<ReportStatus>().toEqualTypeOf<'new' | 'handled'>();
       expectTypeOf<ReportRow>().toEqualTypeOf<{
         id: string;

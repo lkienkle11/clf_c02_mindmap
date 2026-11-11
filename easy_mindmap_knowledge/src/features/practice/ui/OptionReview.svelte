@@ -8,9 +8,11 @@
     selected: string[];
     /** Order the options were shown in; falls back to the question's own order. */
     optionOrder?: string[];
+    /** Shows the options as plain choices: no correct marking, notes or explanation (an unanswered question under 'answersOnly'). */
+    hideAnswers?: boolean;
   }
 
-  let { question, selected, optionOrder }: Props = $props();
+  let { question, selected, optionOrder, hideAnswers = false }: Props = $props();
   const i18n = getI18n();
 
   const ordered = $derived.by(() => {
@@ -23,6 +25,7 @@
 
   type State = 'right' | 'wrong' | 'missed' | 'none';
   function stateOf(key: string): State {
+    if (hideAnswers) return 'none';
     const picked = selected.includes(key);
     const correct = question?.correct.includes(key) ?? false;
     if (picked) return correct ? 'right' : 'wrong';
@@ -63,7 +66,7 @@
         </li>
       {/each}
     </ul>
-    {#if question.explanation}
+    {#if question.explanation && !hideAnswers}
       <div>
         <h3 class="text-sm text-muted-foreground">{i18n.t('practice.result.explanation')}</h3>
         <p lang="en">{question.explanation}</p>

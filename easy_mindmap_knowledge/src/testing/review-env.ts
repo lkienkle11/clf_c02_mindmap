@@ -40,7 +40,7 @@ const passed = (topicId: string): AttemptRow => ({
   id: `done-${topicId}`, kind: 'practice', topicId, status: 'submitted', startedAt: 0, submittedAt: 1,
   submitReason: 'manual', reviewAllowed: true,
   clock: { mode: 'freeze', limitMs: null, remainingMs: null, deadlineAt: null, onHidden: 'freeze', onReport: 'freeze' },
-  heartbeatAt: null, scorePct: 90, passed: true, groupIndex: null, plannedCount: null,
+  heartbeatAt: null, scorePct: 90, passed: true, groupIndex: null, plannedCount: null, unansweredDisplay: 'reveal',
 });
 
 export async function makeReviewEnv(o: ReviewEnvOptions = {}) {

@@ -264,6 +264,24 @@ describe('validateDraft image count', () => {
   });
 });
 
+describe('attempt report', () => {
+  const attemptContext: ReportContext = { type: 'attempt', attemptId: 'att-1', sourceScreen: 'result' };
+
+  it('allows 0 or 1 image and rejects 2', () => {
+    expect(validateDraft(draftWith(attemptContext, 'wrong', 0))).toEqual({ ok: true });
+    expect(validateDraft(draftWith(attemptContext, 'wrong', 1))).toEqual({ ok: true });
+    expect(validateDraft(draftWith(attemptContext, 'wrong', 2))).toEqual({ ok: false, reason: 'tooManyImages' });
+  });
+
+  it('stores the attempt id and source screen and leaves every other reference null', () => {
+    const row = buildReportRow(draftWith(attemptContext, 'x'), { id: 'rep-1', now: 5, appVersion: '0.1.0', locale: 'vi' });
+    expect(row).toEqual({
+      id: 'rep-1', type: 'attempt', status: 'new', createdAt: 5, statusUpdatedAt: 5, body: 'x', appVersion: '0.1.0', locale: 'vi',
+      sourceScreen: 'result', questionId: null, lessonId: null, attemptId: 'att-1', position: null, optionOrder: null, selected: null, isCorrect: null,
+    });
+  });
+});
+
 describe('buildReportRow', () => {
   const meta = { id: 'rep-1', now: 1_700_000_000_000, appVersion: '0.1.0', locale: 'vi' as const };
 

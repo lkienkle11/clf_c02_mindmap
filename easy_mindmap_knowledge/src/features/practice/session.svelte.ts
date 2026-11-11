@@ -1,6 +1,6 @@
 import type { Services } from '@/app/composition';
 import { AttemptMissingError } from '@/persistence';
-import type { AttemptQuestionRow, AttemptRow, ClockState } from '@/persistence';
+import type { AttemptQuestionRow, AttemptRow, ClockState, UnansweredDisplay } from '@/persistence';
 import { advanceFreeze, isExpired, pauseForReport, remainingAt, resolveOnResume, settleHidden as settleClockHidden, startClock } from './logic/attempt-clock';
 import { gradeQuestion } from './logic/grading';
 import { attemptScore } from './logic/regrade';
@@ -52,6 +52,8 @@ export class PracticeSession {
   readonly allowReview: boolean;
   /** The checkpoint group of an exam attempt; null for every other kind. */
   readonly groupIndex: number | null;
+  /** What the results show for questions left unanswered; fixed when the attempt starts. */
+  readonly unansweredDisplay: UnansweredDisplay;
 
   // $state.raw + frozen items: components cannot mutate selections and bypass persistence.
   #questions = $state.raw<readonly SessionQuestion[]>([]);
@@ -85,6 +87,7 @@ export class PracticeSession {
     this.topicId = attempt.topicId;
     this.allowReview = attempt.reviewAllowed;
     this.groupIndex = attempt.groupIndex;
+    this.unansweredDisplay = attempt.unansweredDisplay;
     this.#clock = clock;
     this.#remainingMs = remainingAt(clock, services.now());
     const byId = new Map(services.catalog.questions.map((q) => [q.id, q]));
@@ -128,7 +131,7 @@ export class PracticeSession {
     const attempt: AttemptRow = {
       id: services.newId(), kind: 'practice', topicId, status: 'in_progress', startedAt: now,
       submittedAt: null, submitReason: null, reviewAllowed: options.allowReview, clock,
-      heartbeatAt: now, scorePct: null, passed: null, groupIndex: null, plannedCount: count,
+      heartbeatAt: now, scorePct: null, passed: null, groupIndex: null, plannedCount: count, unansweredDisplay: options.unansweredDisplay,
     };
     const rows: AttemptQuestionRow[] = plan.map((p, position) => ({
       attemptId: attempt.id, position, questionId: p.questionId, optionOrder: p.optionOrder,
@@ -169,7 +172,7 @@ export class PracticeSession {
     const attempt: AttemptRow = {
       id, kind: 'review', topicId: null, status: 'in_progress', startedAt: now,
       submittedAt: null, submitReason: null, reviewAllowed: true, clock,
-      heartbeatAt: now, scorePct: null, passed: null, groupIndex: null, plannedCount: null,
+      heartbeatAt: now, scorePct: null, passed: null, groupIndex: null, plannedCount: null, unansweredDisplay: 'reveal',
     };
     await services.repos.attempts.create(attempt, rows);
     return new PracticeSession(services, onSubmitted, attempt, rows, clock);
@@ -202,7 +205,7 @@ export class PracticeSession {
     const attempt: AttemptRow = {
       id, kind: input.kind, topicId: input.topicId, status: 'in_progress', startedAt: now,
       submittedAt: null, submitReason: null, reviewAllowed: false, clock,
-      heartbeatAt: now, scorePct: null, passed: null, groupIndex: input.groupIndex, plannedCount: input.plan.length,
+      heartbeatAt: now, scorePct: null, passed: null, groupIndex: input.groupIndex, plannedCount: input.plan.length, unansweredDisplay: 'reveal',
     };
     const rows: AttemptQuestionRow[] = input.plan.map((p, position) => ({
       attemptId: id, position, questionId: p.questionId, optionOrder: [...p.optionOrder],

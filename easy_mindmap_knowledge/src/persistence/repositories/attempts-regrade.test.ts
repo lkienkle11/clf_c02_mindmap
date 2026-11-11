@@ -27,7 +27,7 @@ const attempt = (): AttemptRow => ({
   scorePct: null,
   passed: null,
   groupIndex: null,
-  plannedCount: null,
+  plannedCount: null, unansweredDisplay: 'reveal',
 });
 
 const questions = (): AttemptQuestionRow[] => [

@@ -108,13 +108,14 @@ describe('reports repository', () => {
 
   it('counts total, new and by type; listAll returns everything', async () => {
     const repo = createReportsRepo(db);
-    expect(await repo.counts()).toEqual({ total: 0, newCount: 0, byType: { question: 0, lesson: 0, system: 0 } });
+    expect(await repo.counts()).toEqual({ total: 0, newCount: 0, byType: { question: 0, lesson: 0, system: 0, attempt: 0 } });
     await repo.create(base({ id: 'a', type: 'question', createdAt: 1 }), ['p.png']);
     await repo.create(base({ id: 'b', type: 'question', createdAt: 2, status: 'handled' }), []);
     await repo.create(base({ id: 'c', type: 'system', createdAt: 3 }), []);
-    expect(await repo.counts()).toEqual({ total: 3, newCount: 2, byType: { question: 2, lesson: 0, system: 1 } });
+    await repo.create(base({ id: 'd', type: 'attempt', createdAt: 4, sourceScreen: 'result', attemptId: 'a1' }), ['s.png']);
+    expect(await repo.counts()).toEqual({ total: 4, newCount: 3, byType: { question: 2, lesson: 0, system: 1, attempt: 1 } });
     const all = await repo.listAll();
-    expect(all.map((r) => r.id)).toEqual(['c', 'b', 'a']);
-    expect(all[2].images).toEqual(['p.png']);
+    expect(all.map((r) => r.id)).toEqual(['d', 'c', 'b', 'a']);
+    expect(all[3].images).toEqual(['p.png']);
   });
 });
