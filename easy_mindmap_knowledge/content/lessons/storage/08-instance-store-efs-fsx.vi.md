@@ -25,7 +25,7 @@ Dùng cho cache, bộ đệm, dữ liệu tạm, hoặc dữ liệu bạn đã n
 - File system loại **Regional** lưu dữ liệu trên nhiều Availability Zone; loại **One Zone** giữ trong một AZ để rẻ hơn.
 - Dung lượng **co giãn**: bạn không cấp phát trước kích thước và chỉ trả cho phần đã lưu.
 - **Storage class** ở mức tổng quan: Standard cho tệp truy cập thường xuyên, Infrequent Access (IA) và Archive cho tệp nguội hơn với giá lưu trữ thấp hơn. Lifecycle management có thể tự chuyển tệp giữa các class theo mức truy cập.
-- Dữ liệu được mã hóa khi lưu bằng AWS KMS và khi truyền bằng TLS.
+- Dữ liệu có thể được mã hóa khi lưu bằng AWS KMS (bật khi tạo file system; console bật sẵn theo mặc định) và khi truyền bằng TLS (tùy chọn, bật bằng mount option).
 
 Mẹo thi: "hệ thống tệp dùng chung cho nhiều instance Linux", "NFS", "được quản lý, tự lớn lên" chỉ về EFS.
 

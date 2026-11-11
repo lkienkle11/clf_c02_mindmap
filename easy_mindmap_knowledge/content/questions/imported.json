@@ -6,7 +6,7 @@
     "options": [
       {
         "key": "A",
-        "text": "Use of the Snowball Edge appliance for a 10-day period"
+        "text": "Use of the Snowball Edge appliance for a 15-day period"
       },
       {
         "key": "B",
@@ -18,7 +18,7 @@
       },
       {
         "key": "D",
-        "text": "Daily use of the Snowball Edge appliance after 10 days"
+        "text": "Daily use of the Snowball Edge appliance after 15 days"
       }
     ],
     "correct": [
@@ -1728,11 +1728,11 @@
     "options": [
       {
         "key": "A",
-        "text": "AWS Snowmobile"
+        "text": "AWS DataSync"
       },
       {
         "key": "B",
-        "text": "AWS Snowball Edge"
+        "text": "AWS Transfer Family"
       },
       {
         "key": "C",
@@ -3041,7 +3041,7 @@
       },
       {
         "key": "D",
-        "text": "AWS Snowball Edge"
+        "text": "AWS IoT Greengrass"
       }
     ],
     "correct": [
@@ -3647,7 +3647,7 @@
       },
       {
         "key": "B",
-        "text": "S3 Intelligent-Tiering"
+        "text": "S3 Express One Zone"
       },
       {
         "key": "C",
@@ -4020,7 +4020,7 @@
     "options": [
       {
         "key": "A",
-        "text": "AWS DataSync"
+        "text": "AWS Transfer Family"
       },
       {
         "key": "B",
@@ -4028,11 +4028,11 @@
       },
       {
         "key": "C",
-        "text": "AWS Snowmobile"
+        "text": "AWS Data Transfer Terminal"
       },
       {
         "key": "D",
-        "text": "AWS Direct Connect"
+        "text": "AWS Backup"
       }
     ],
     "correct": [
@@ -4270,7 +4270,7 @@
       },
       {
         "key": "C",
-        "text": "AWS Snow Family"
+        "text": "AWS Data Transfer Terminal"
       },
       {
         "key": "D",
@@ -4458,7 +4458,7 @@
       },
       {
         "key": "D",
-        "text": "AWS Snowball Edge"
+        "text": "AWS Outposts"
       }
     ],
     "correct": [
@@ -5631,7 +5631,7 @@
     "options": [
       {
         "key": "A",
-        "text": "Amazon FSx File Gateway"
+        "text": "Amazon FSx for Windows File Server"
       },
       {
         "key": "B",
@@ -6434,7 +6434,7 @@
     "options": [
       {
         "key": "A",
-        "text": "S3 Inventory report"
+        "text": "Amazon S3 Metadata"
       },
       {
         "key": "B",
@@ -7000,11 +7000,11 @@
     "options": [
       {
         "key": "A",
-        "text": "AWS Snowball Edge Storage Optimized"
+        "text": "AWS Transfer Family"
       },
       {
         "key": "B",
-        "text": "AWS Snowmobile"
+        "text": "AWS DataSync"
       },
       {
         "key": "C",
@@ -9935,7 +9935,7 @@
       },
       {
         "key": "B",
-        "text": "Amazon S3 Glacier Instant Retrieval"
+        "text": "Amazon S3 Express One Zone"
       },
       {
         "key": "C",
@@ -12386,7 +12386,7 @@
       },
       {
         "key": "C",
-        "text": "S3 Glacier Vault Lock."
+        "text": "S3 Object Lock"
       },
       {
         "key": "D",
@@ -17248,7 +17248,7 @@
       },
       {
         "key": "B",
-        "text": "AWS Snowball Edge"
+        "text": "AWS Outposts"
       },
       {
         "key": "C",

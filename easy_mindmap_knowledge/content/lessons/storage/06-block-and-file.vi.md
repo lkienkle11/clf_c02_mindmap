@@ -8,7 +8,7 @@ required: true
 | Kiểu | Cách dùng | Dịch vụ AWS |
 | --- | --- | --- |
 | Đối tượng (object) | Đọc ghi nguyên tệp qua API, từ bất cứ đâu | Amazon S3 |
-| Khối (block) | Một ổ đĩa gắn vào một máy chủ | Amazon EBS, instance store |
+| Khối (block) | Một ổ đĩa gắn vào một máy chủ (thường là vậy; EBS Multi-Attach trên volume io1 và io2 là ngoại lệ) | Amazon EBS, instance store |
 | Tệp (file) | Một thư mục dùng chung mà nhiều máy chủ cùng mount | Amazon EFS, Amazon FSx |
 
 Mẹo thi: "ổ đĩa cho cơ sở dữ liệu trên EC2" là block, "hệ thống tệp dùng chung cho nhiều instance" là file, "lưu bao nhiêu bản sao lưu cũng được" là object.
