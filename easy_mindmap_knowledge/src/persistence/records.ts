@@ -11,6 +11,9 @@ export interface ClockState {
   deadlineAt: number | null;
 }
 
+/** What the results show for questions left unanswered: everything, or the options only. */
+export type UnansweredDisplay = 'reveal' | 'answersOnly';
+
 export interface AttemptRow {
   id: string;
   kind: 'practice' | 'review' | 'checkpoint';
@@ -28,6 +31,7 @@ export interface AttemptRow {
   groupIndex: number | null;
   /** Question count the attempt was planned with; null for attempts that predate it. */
   plannedCount: number | null;
+  unansweredDisplay: UnansweredDisplay;
 }
 
 export interface AttemptQuestionRow {

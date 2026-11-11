@@ -31,7 +31,7 @@ const attempt = (over: Partial<AttemptRow>): AttemptRow => ({
   id: 'a1', kind: 'practice', topicId: 'cloud-concepts', status: 'submitted', startedAt: NOW - DAY,
   submittedAt: NOW - DAY + 1000, submitReason: 'manual', reviewAllowed: true,
   clock: { mode: 'freeze', limitMs: null, remainingMs: null, deadlineAt: null, onHidden: 'freeze', onReport: 'freeze' },
-  heartbeatAt: null, scorePct: 90, passed: true, groupIndex: null, plannedCount: null, ...over,
+  heartbeatAt: null, scorePct: 90, passed: true, groupIndex: null, plannedCount: null, unansweredDisplay: 'reveal', ...over,
 });
 const question = (attemptId: string, questionId: string, isCorrect: boolean | null) => ({
   attemptId, position: 0, questionId, optionOrder: ['A', 'B'], selected: ['A'], isCorrect,

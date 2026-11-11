@@ -11,12 +11,12 @@ const passedAttempt = (topicId: string): AttemptRow => ({
   id: `a-${topicId}`, kind: 'practice', topicId, status: 'submitted', startedAt: 0, submittedAt: 1,
   submitReason: 'manual', reviewAllowed: true,
   clock: { mode: 'freeze', limitMs: null, remainingMs: null, deadlineAt: null, onHidden: 'freeze', onReport: 'freeze' },
-  heartbeatAt: null, scorePct: 90, passed: true, groupIndex: null, plannedCount: null,
+  heartbeatAt: null, scorePct: 90, passed: true, groupIndex: null, plannedCount: null, unansweredDisplay: 'reveal',
 });
 
 const passedCheckpoint = (groupIndex: number): AttemptRow => ({
   ...passedAttempt(`group-${groupIndex}`), id: `cp-${groupIndex}`, kind: 'checkpoint', topicId: null,
-  groupIndex, plannedCount: 30,
+  groupIndex, plannedCount: 30, unansweredDisplay: 'reveal',
 });
 
 export interface FakeSetup {

@@ -14,7 +14,7 @@ export type { SettingsRepo } from './repositories/settings';
 export { createReportsRepo } from './repositories/reports';
 export type { ReportsRepo, ReportQuery } from './repositories/reports';
 export type { ReportRow, ReportType, ReportStatus } from './records';
-export type { AttemptRow, AttemptQuestionRow, QuestionStat, ClockState, HiddenPolicy } from './records';
+export type { AttemptRow, AttemptQuestionRow, QuestionStat, ClockState, HiddenPolicy, UnansweredDisplay } from './records';
 export type { ReportStorage } from './report-storage';
 export { createUnavailableReportStorage } from './report-storage';
 export { createTauriReportStorage } from './tauri-report-storage';

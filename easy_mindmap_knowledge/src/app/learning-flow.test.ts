@@ -79,7 +79,7 @@ async function passCheckpoint(services: Services, appState: AppState, groupIndex
     id: `cp-${groupIndex}`, kind: 'checkpoint', topicId: null, status: 'submitted', startedAt: T0, submittedAt: T0 + 1,
     submitReason: 'manual', reviewAllowed: true,
     clock: { mode: 'freeze', limitMs: null, remainingMs: null, deadlineAt: null, onHidden: 'freeze', onReport: 'freeze' },
-    heartbeatAt: null, scorePct: 90, passed: true, groupIndex, plannedCount: 30,
+    heartbeatAt: null, scorePct: 90, passed: true, groupIndex, plannedCount: 30, unansweredDisplay: 'reveal',
   }, []);
   await appState.refresh();
 }

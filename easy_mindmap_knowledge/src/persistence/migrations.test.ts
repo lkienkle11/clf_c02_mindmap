@@ -180,6 +180,30 @@ describe('migrations', () => {
     });
   });
 
+  describe('0006 attempt unanswered_display', () => {
+    const migrateTo = (n: number) => {
+      const db = new DatabaseSync(':memory:');
+      for (const f of files.slice(0, n)) db.exec(sql(f));
+      return db;
+    };
+
+    it('keeps existing attempts and defaults them to reveal', () => {
+      expect(files[5]).toBe('0006_attempt_unanswered_display.sql');
+      const db = migrateTo(5);
+      db.exec("INSERT INTO attempts (id, kind, topic_id, status, started_at, clock_mode) VALUES ('a1', 'practice', 't', 'submitted', 1, 'freeze')");
+      db.exec(sql(files[5]));
+      expect(db.prepare('SELECT id, unanswered_display FROM attempts').all()).toEqual([{ id: 'a1', unanswered_display: 'reveal' }]);
+    });
+
+    it('accepts only reveal or answersOnly', () => {
+      const db = migrateTo(6);
+      const insert = (id: string, value: string) =>
+        db.prepare("INSERT INTO attempts (id, kind, status, started_at, clock_mode, unanswered_display) VALUES (?1, 'practice', 'in_progress', 1, 'freeze', ?2)").run(id, value);
+      expect(() => insert('a1', 'answersOnly')).not.toThrow();
+      expect(() => insert('a2', 'bogus')).toThrow(/CHECK/i);
+    });
+  });
+
   describe('report record types', () => {
     it('ReportRow mirrors the reports columns, with images as ordered relative paths', () => {
       expectTypeOf<ReportType>().toEqualTypeOf<'question' | 'lesson' | 'system'>();

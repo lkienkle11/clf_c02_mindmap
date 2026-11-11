@@ -1,5 +1,5 @@
 import type { SqlExecutor } from '../sql-executor';
-import type { AttemptQuestionRow, AttemptRow, ClockState } from '../records';
+import type { AttemptQuestionRow, AttemptRow, ClockState, UnansweredDisplay } from '../records';
 
 interface AttemptDb {
   id: string;
@@ -21,6 +21,7 @@ interface AttemptDb {
   passed: number | null;
   group_index: number | null;
   planned_count: number | null;
+  unanswered_display: UnansweredDisplay;
 }
 
 interface QuestionDb {
@@ -49,6 +50,7 @@ const toAttempt = (r: AttemptDb): AttemptRow => ({
   passed: bool(r.passed),
   groupIndex: r.group_index,
   plannedCount: r.planned_count,
+  unansweredDisplay: r.unanswered_display,
 });
 
 const toQuestion = (r: QuestionDb): AttemptQuestionRow => ({
@@ -134,12 +136,12 @@ export function createAttemptsRepo(db: SqlExecutor) {
       await db.execute(
         `INSERT INTO attempts
            (id, kind, topic_id, status, started_at, submitted_at, submit_reason, review_allowed,
-            time_limit_ms, clock_mode, remaining_ms, deadline_at, heartbeat_at, score_pct, passed, clock_on_hidden, group_index, planned_count, clock_on_report)
-         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19)`,
+            time_limit_ms, clock_mode, remaining_ms, deadline_at, heartbeat_at, score_pct, passed, clock_on_hidden, group_index, planned_count, clock_on_report, unanswered_display)
+         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20)`,
         [
           a.id, a.kind, a.topicId, a.status, a.startedAt, a.submittedAt, a.submitReason,
           a.reviewAllowed ? 1 : 0, a.clock.limitMs, a.clock.mode, a.clock.remainingMs, a.clock.deadlineAt,
-          a.heartbeatAt, a.scorePct, a.passed === null ? null : a.passed ? 1 : 0, a.clock.onHidden, a.groupIndex, a.plannedCount, a.clock.onReport,
+          a.heartbeatAt, a.scorePct, a.passed === null ? null : a.passed ? 1 : 0, a.clock.onHidden, a.groupIndex, a.plannedCount, a.clock.onReport, a.unansweredDisplay,
         ],
       );
     },

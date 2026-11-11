@@ -16,7 +16,7 @@ function attempt(p: Partial<AttemptRow> & { id: string }): AttemptRow {
     scorePct: 50,
     passed: false,
     groupIndex: null,
-    plannedCount: null,
+    plannedCount: null, unansweredDisplay: 'reveal',
     ...p,
   };
 }
