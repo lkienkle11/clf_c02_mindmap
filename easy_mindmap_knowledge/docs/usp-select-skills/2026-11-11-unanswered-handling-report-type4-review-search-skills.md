@@ -40,3 +40,6 @@
 
 ## STEP 6:
 - superpowers:requesting-code-review
+
+## STEP 7:
+- superpowers:finishing-a-development-branch
