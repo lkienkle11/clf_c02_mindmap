@@ -1028,5 +1028,14 @@
    "D": "Customer managed keys have a monthly charge per key in addition to usage fees.",
    "E": "AWS owned keys are managed by AWS and do not appear in the customer's KMS console."
   }
+ },
+ "q_adcc896d5159": {
+  "explanation": "IAM Access Analyzer can review AWS CloudTrail events for an IAM user or role over a date range you choose (up to 90 days) and identify the services and actions that entity used, so it can generate a least-privilege policy from that activity.",
+  "optionNotes": {
+   "A": "S3 ACLs grant access to buckets and objects; they do not report which services a user has used.",
+   "B": "AWS Certificate Manager provisions and manages TLS certificates and does not report user activity.",
+   "C": "Network Access Analyzer finds unintended network access paths to resources; it does not report which services a user used.",
+   "D": "IAM Access Analyzer analyzes CloudTrail activity for a chosen date range and identifies the services and actions a user or role used."
+  }
  }
 }

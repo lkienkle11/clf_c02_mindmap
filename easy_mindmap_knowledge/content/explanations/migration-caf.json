@@ -733,5 +733,52 @@
    "D": "Building and securing the landing zone belongs to the mobilize phase.",
    "E": "Modernizing applications after migration belongs to the migrate and modernize phase."
   }
+ },
+ "q_8dbda4b2d28d": {
+  "explanation": "Resiliency is the capability of a workload to recover from infrastructure or service disruptions and keep functioning, which is a goal of the Reliability pillar of the AWS Well-Architected Framework.",
+  "optionNotes": {
+   "A": "Consistency is about all readers seeing the same data, not about remaining functional during problems.",
+   "B": "Elasticity is the ability to scale resources up and down with demand, not to withstand operational problems.",
+   "C": "Resiliency is the ability of a workload to recover from disruptions and keep functioning, as described for the Reliability pillar.",
+   "D": "Latency measures delay in responses, not the ability to keep functioning."
+  }
+ },
+ "q_ea907910d5b1": {
+  "explanation": "The People perspective of the AWS CAF covers culture, organizational structure, leadership and workforce skills. The other perspectives focus on strategy, the technical foundation and running workloads.",
+  "optionNotes": {
+   "A": "Business focuses on strategy, value creation, and data-driven outcomes rather than culture and workforce skills.",
+   "B": "People covers culture, leadership, organization design, and workforce skills, which matches the stated requirements.",
+   "C": "Platform focuses on the technical foundation and architecture rather than people and culture.",
+   "D": "Operations focuses on running and supporting workloads, not on people and organization."
+  }
+ },
+ "q_677db91ace22": {
+  "explanation": "For an application that cannot run in the cloud, the lowest-effort strategies are Retire (decommission it if it is no longer needed) and Retain (keep it in the source environment and do not migrate it for now). Repurchase, Replatform and Refactor all require work.",
+  "optionNotes": {
+   "A": "Retire decommissions the application when it has no business value in the cloud, which takes the least effort.",
+   "B": "Retain keeps the application in the source environment, for example when it is not ready to migrate, which requires no migration work.",
+   "C": "Repurchase means replacing the application with a different product and migrating to it, which takes more effort.",
+   "D": "Replatform requires optimizations to the application or its platform, which is more effort.",
+   "E": "Refactor redesigns the application and is the most complex and costly strategy."
+  }
+ },
+ "q_0b455edc2810": {
+  "explanation": "The six AWS CAF perspectives are Business, People, Governance, Platform, Security and Operations, so Security and Business are perspectives. Cloud fluency and Change acceleration are capabilities of the People perspective, and Architecture is not a perspective.",
+  "optionNotes": {
+   "A": "Cloud fluency is a capability of the People perspective, not a perspective.",
+   "B": "Security is one of the six AWS CAF perspectives.",
+   "C": "Change acceleration is a capability of the People perspective, not a perspective.",
+   "D": "Architecture is not one of the six AWS CAF perspectives.",
+   "E": "Business is one of the six AWS CAF perspectives."
+  }
+ },
+ "q_636c30bfd9f9": {
+  "explanation": "In the AWS CAF, the People perspective serves as the bridge between technology and business, accelerating the cloud journey so that the organization evolves toward a culture of continuous growth and learning.",
+  "optionNotes": {
+   "A": "People is the perspective described as the bridge between technology and business that helps build a culture of continuous growth and learning.",
+   "B": "Governance orchestrates cloud initiatives, risk, benefits and cloud financial management rather than bridging technology and business culture.",
+   "C": "Operations ensures that cloud services are delivered at a level that meets the needs of the business.",
+   "D": "Security focuses on protecting data and workloads, not on organizational culture."
+  }
  }
 }

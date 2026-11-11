@@ -19443,6 +19443,35 @@
     "source": "imported"
   },
   {
+    "id": "q_9e6c9d987920",
+    "topicId": "compute",
+    "text": "Which responsibility belongs to AWS when a company hosts its databases on Amazon EC2 instances?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Database backups"
+      },
+      {
+        "key": "B",
+        "text": "Database software patches"
+      },
+      {
+        "key": "C",
+        "text": "Maintenance of the physical servers that run the instances"
+      },
+      {
+        "key": "D",
+        "text": "Operating system installations"
+      }
+    ],
+    "correct": [
+      "C"
+    ],
+    "multi": false,
+    "orderDependent": false,
+    "source": "imported"
+  },
+  {
     "id": "q_fb8b85769700",
     "topicId": "migration-caf",
     "text": "Which of the following is a recommended design principle of the AWS Well-Architected Framework?",
@@ -19466,6 +19495,161 @@
     ],
     "correct": [
       "C"
+    ],
+    "multi": false,
+    "orderDependent": false,
+    "source": "imported"
+  },
+  {
+    "id": "q_8dbda4b2d28d",
+    "topicId": "migration-caf",
+    "text": "Which AWS Well-Architected Framework concept represents a system's ability to remain functional when the system encounters operational problems?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Consistency"
+      },
+      {
+        "key": "B",
+        "text": "Elasticity"
+      },
+      {
+        "key": "C",
+        "text": "Resiliency"
+      },
+      {
+        "key": "D",
+        "text": "Latency"
+      }
+    ],
+    "correct": [
+      "C"
+    ],
+    "multi": false,
+    "orderDependent": false,
+    "source": "imported"
+  },
+  {
+    "id": "q_ea907910d5b1",
+    "topicId": "migration-caf",
+    "text": "A company wants to improve its culture, organizational structure, leadership, and workforce skills as it adopts the cloud. Which AWS Cloud Adoption Framework (AWS CAF) perspective will meet these requirements?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Business"
+      },
+      {
+        "key": "B",
+        "text": "People"
+      },
+      {
+        "key": "C",
+        "text": "Platform"
+      },
+      {
+        "key": "D",
+        "text": "Operations"
+      }
+    ],
+    "correct": [
+      "B"
+    ],
+    "multi": false,
+    "orderDependent": false,
+    "source": "imported"
+  },
+  {
+    "id": "q_677db91ace22",
+    "topicId": "migration-caf",
+    "text": "A company is planning to migrate applications to the AWS Cloud. During a system audit, the company finds that its content management system (CMS) application is incompatible with cloud environments. Which migration strategies will help the company to migrate the CMS application with the LEAST effort? (Choose two.)",
+    "options": [
+      {
+        "key": "A",
+        "text": "Retire"
+      },
+      {
+        "key": "B",
+        "text": "Retain"
+      },
+      {
+        "key": "C",
+        "text": "Repurchase"
+      },
+      {
+        "key": "D",
+        "text": "Replatform"
+      },
+      {
+        "key": "E",
+        "text": "Refactor"
+      }
+    ],
+    "correct": [
+      "A",
+      "B"
+    ],
+    "multi": true,
+    "orderDependent": false,
+    "source": "imported"
+  },
+  {
+    "id": "q_0b455edc2810",
+    "topicId": "migration-caf",
+    "text": "Which options are AWS Cloud Adoption Framework (AWS CAF) perspectives? (Choose two.)",
+    "options": [
+      {
+        "key": "A",
+        "text": "Cloud fluency"
+      },
+      {
+        "key": "B",
+        "text": "Security"
+      },
+      {
+        "key": "C",
+        "text": "Change acceleration"
+      },
+      {
+        "key": "D",
+        "text": "Architecture"
+      },
+      {
+        "key": "E",
+        "text": "Business"
+      }
+    ],
+    "correct": [
+      "B",
+      "E"
+    ],
+    "multi": true,
+    "orderDependent": false,
+    "source": "imported"
+  },
+  {
+    "id": "q_636c30bfd9f9",
+    "topicId": "migration-caf",
+    "text": "A company needs a bridge between technology and business to help evolve to a culture of continuous growth and learning. Which perspective in the AWS Cloud Adoption Framework (AWS CAF) serves as this bridge?",
+    "options": [
+      {
+        "key": "A",
+        "text": "People"
+      },
+      {
+        "key": "B",
+        "text": "Governance"
+      },
+      {
+        "key": "C",
+        "text": "Operations"
+      },
+      {
+        "key": "D",
+        "text": "Security"
+      }
+    ],
+    "correct": [
+      "A"
     ],
     "multi": false,
     "orderDependent": false,
@@ -19645,6 +19829,35 @@
     ],
     "correct": [
       "C"
+    ],
+    "multi": false,
+    "orderDependent": false,
+    "source": "imported"
+  },
+  {
+    "id": "q_adcc896d5159",
+    "topicId": "iam-security",
+    "text": "Which AWS service or resource can be used to identify services that have been used by a user within a specified date range?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Amazon S3 access control lists (ACLs)"
+      },
+      {
+        "key": "B",
+        "text": "AWS Certificate Manager (ACM)"
+      },
+      {
+        "key": "C",
+        "text": "Network Access Analyzer"
+      },
+      {
+        "key": "D",
+        "text": "AWS Identity and Access Management Access Analyzer"
+      }
+    ],
+    "correct": [
+      "D"
     ],
     "multi": false,
     "orderDependent": false,

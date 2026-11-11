@@ -718,5 +718,14 @@
    "D": "Beanstalk does not buy Reserved Instances or other pricing commitments.",
    "E": "The developer designs the database schema; Beanstalk does not do it."
   }
+ },
+ "q_9e6c9d987920": {
+  "explanation": "On Amazon EC2, AWS is responsible for the physical servers, facilities and virtualization layer, while the customer manages the guest operating system, the database software and its backups.",
+  "optionNotes": {
+   "A": "Backing up the database is the customer's job when the database runs on EC2.",
+   "B": "Patching the database software is the customer's job on EC2.",
+   "C": "AWS maintains the physical servers and data centers that host EC2 instances, as part of its responsibility for security of the cloud.",
+   "D": "Installing the operating system is something the customer chooses and does through the AMI it launches."
+  }
  }
 }
