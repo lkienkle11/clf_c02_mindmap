@@ -12,7 +12,7 @@ These services connect on-premises data to AWS, move it, or protect it.
 
 **AWS Storage Gateway** connects an appliance in your data center (usually a virtual machine) to AWS storage. On-premises applications keep using familiar protocols, and a local cache gives low-latency access to recent data.
 
-- **Amazon S3 File Gateway**: applications store and read files over **NFS or SMB**, and the files are kept as objects in Amazon S3.
+- **Amazon S3 File Gateway**: applications store and read files over **NFS or SMB**, and the files are kept as objects in Amazon S3. **Shared file access plus local caching**: many on-premises users or applications can share the same files over NFS/SMB while the data lives in S3 and frequently used files are cached locally for low latency. It fits a company that has outgrown its on-premises file storage but still wants fast local sharing, with little to manage.
 - **Tape Gateway**: replaces a physical tape library with **virtual tapes** archived in AWS.
 - **Volume Gateway**: cloud-backed block storage volumes that on-premises servers mount over iSCSI.
 
@@ -42,6 +42,7 @@ The **AWS Snow Family** (for example **AWS Snowball Edge**) is a set of rugged d
 ## Common traps
 
 - Storage Gateway gives **ongoing hybrid access**; DataSync **moves** data.
+- Storage Gateway only connects on-premises storage to AWS (its cache is for fast reads). It does **not run your own data processing** on premises. If a question needs local processing, look at **AWS Outposts** (AWS infrastructure on premises, see the Global Infrastructure lesson) or **AWS IoT Greengrass** for devices at the edge (see the IoT lesson), not Storage Gateway.
 
 ## Key points
 

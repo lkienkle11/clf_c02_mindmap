@@ -11,7 +11,7 @@ Các dịch vụ sau kết nối dữ liệu tại chỗ (on-premises) với AWS
 
 **AWS Storage Gateway** kết nối một thiết bị (appliance) trong trung tâm dữ liệu của bạn (thường là một máy ảo) với lưu trữ AWS. Ứng dụng tại chỗ vẫn dùng các giao thức quen thuộc, và bộ nhớ đệm (cache) cục bộ cho phép truy cập dữ liệu gần đây với độ trễ thấp.
 
-- **Amazon S3 File Gateway**: ứng dụng lưu và đọc tệp qua **NFS hoặc SMB**, còn tệp được giữ dưới dạng object trong Amazon S3.
+- **Amazon S3 File Gateway**: ứng dụng lưu và đọc tệp qua **NFS hoặc SMB**, còn tệp được giữ dưới dạng object trong Amazon S3. **Chia sẻ tệp kèm cache cục bộ**: nhiều người dùng hoặc ứng dụng tại chỗ cùng truy cập một bộ tệp qua NFS/SMB, dữ liệu nằm trên S3 còn các tệp hay dùng được cache cục bộ để giảm độ trễ. Phù hợp khi doanh nghiệp đã vượt dung lượng lưu trữ tệp tại chỗ nhưng vẫn muốn chia sẻ nhanh ngay tại chỗ và ít phải quản lý.
 - **Tape Gateway**: thay thư viện băng từ vật lý bằng **băng từ ảo (virtual tape)** được lưu trữ lâu dài trong AWS.
 - **Volume Gateway**: volume lưu trữ khối dựa trên đám mây mà máy chủ tại chỗ mount qua iSCSI.
 
@@ -41,6 +41,7 @@ Các dịch vụ sau kết nối dữ liệu tại chỗ (on-premises) với AWS
 ## Bẫy thường gặp
 
 - Storage Gateway cho **truy cập lai lâu dài**; DataSync **di chuyển** dữ liệu.
+- Storage Gateway chỉ nối lưu trữ tại chỗ với AWS (cache của nó để đọc nhanh). Nó **không chạy xử lý dữ liệu của bạn** tại chỗ. Nếu đề cần xử lý cục bộ, hãy nghĩ tới **AWS Outposts** (hạ tầng AWS đặt tại chỗ, xem bài Hạ tầng toàn cầu) hoặc **AWS IoT Greengrass** cho thiết bị ở biên (xem bài IoT), không phải Storage Gateway.
 
 ## Ý chính
 
