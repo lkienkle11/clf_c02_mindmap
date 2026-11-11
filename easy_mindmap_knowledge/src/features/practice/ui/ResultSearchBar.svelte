@@ -15,12 +15,12 @@
   const i18n = getI18n();
   const uid = $props.id();
   const control =
-    'min-h-11 rounded-lg border border-border bg-surface px-3 text-surface-foreground focus-visible:outline-2 focus-visible:outline-ring';
+    'min-h-11 w-full min-w-0 rounded-lg border border-border bg-surface px-3 text-surface-foreground focus-visible:outline-2 focus-visible:outline-ring';
 </script>
 
 <div class="flex flex-col gap-2">
-  <form class="flex flex-wrap items-end gap-3" onsubmit={(e) => e.preventDefault()}>
-    <div class="flex min-w-48 flex-1 flex-col gap-1">
+  <form class="flex flex-col gap-3" onsubmit={(e) => e.preventDefault()}>
+    <div class="flex min-w-0 flex-col gap-1">
       <label for="{uid}-search" class="text-sm font-medium">{i18n.t('practice.result.search.label')}</label>
       <input
         id="{uid}-search"
@@ -30,7 +30,7 @@
         bind:value={query}
       />
     </div>
-    <div class="flex flex-col gap-1">
+    <div class="flex min-w-0 flex-col gap-1">
       <label for="{uid}-verdict" class="text-sm font-medium">{i18n.t('practice.result.filter.label')}</label>
       <select id="{uid}-verdict" class={control} bind:value={verdict}>
         <option value="all">{i18n.t('practice.result.filter.all')}</option>
