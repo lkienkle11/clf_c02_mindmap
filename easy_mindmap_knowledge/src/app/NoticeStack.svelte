@@ -19,7 +19,7 @@
 
 <!-- One positioned stack for every app notice, so two notices never overlap each other. -->
 {#if notices.length > 0}
-  <div data-testid="notices" class="fixed right-4 bottom-4 z-40 flex w-full max-w-sm flex-col gap-2">
+  <div data-testid="notices" class="fixed top-4 left-1/2 z-40 flex w-full max-w-sm -translate-x-1/2 flex-col gap-2">
     {#each notices as notice (notice.id)}
       <div role="status" class="flex items-center gap-3 rounded-lg border border-border bg-surface p-3 shadow-lg">
         <p class="flex-1">{notice.text}</p>
