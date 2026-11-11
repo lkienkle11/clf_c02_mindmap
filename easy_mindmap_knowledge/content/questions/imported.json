@@ -4894,7 +4894,7 @@
       },
       {
         "key": "C",
-        "text": "Determine which Availability Zones to use for Amazon S3 buckets."
+        "text": "Maintain the physical security of AWS data centers."
       },
       {
         "key": "D",
@@ -4902,7 +4902,7 @@
       },
       {
         "key": "E",
-        "text": "Select Amazon EC2 instances to run AWS Lambda on."
+        "text": "Operate the AWS global network infrastructure."
       }
     ],
     "correct": [
@@ -6071,7 +6071,7 @@
     "options": [
       {
         "key": "A",
-        "text": "VPC endpoints"
+        "text": "Amazon CloudFront"
       },
       {
         "key": "B",
@@ -6083,7 +6083,7 @@
       },
       {
         "key": "D",
-        "text": "AWS Direct Connect"
+        "text": "AWS WAF"
       },
       {
         "key": "E",
@@ -8045,7 +8045,7 @@
     "options": [
       {
         "key": "A",
-        "text": "Landing zone and network management"
+        "text": "Operational monitoring, incident management and patch management"
       },
       {
         "key": "B",
@@ -12532,7 +12532,7 @@
       },
       {
         "key": "B",
-        "text": "Amazon VPC"
+        "text": "AWS Shield"
       },
       {
         "key": "C",
@@ -18393,7 +18393,7 @@
       },
       {
         "key": "C",
-        "text": "Amazon ElastiCache"
+        "text": "AWS Config"
       },
       {
         "key": "D",
@@ -19699,7 +19699,7 @@
       },
       {
         "key": "C",
-        "text": "AWS Firewall Manager"
+        "text": "Amazon GuardDuty"
       },
       {
         "key": "D",
