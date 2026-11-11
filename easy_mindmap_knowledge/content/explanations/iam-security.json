@@ -6,7 +6,7 @@
    "B": "Client-side encryption happens before data reaches AWS, so protecting and encrypting that data is the customer's job.",
    "C": "Creating and managing IAM users, keys, and credentials is part of customer security in the cloud.",
    "D": "Edge locations are AWS-owned physical facilities, so AWS secures them.",
-   "E": "Amazon RDS is a managed service, so AWS patches the underlying DB instance; the customer does not."
+   "E": "Amazon RDS is a managed service: AWS applies the required patches to the underlying DB instance, while the customer chooses the maintenance window and when to apply optional updates."
   }
  },
  "q_31e57801f449": {
@@ -92,13 +92,13 @@
   }
  },
  "q_7c443b4d2130": {
-  "explanation": "Enabling MFA on the root user and using an IAM user with administrator privileges for daily tasks are root user best practices. Root credentials should not be shared, and an account has only one root user.",
+  "explanation": "Enabling MFA on the root user and using an administrative identity with temporary credentials for daily tasks are root user best practices. Root credentials should not be shared, an account has only one root user, and root access keys should be avoided.",
   "optionNotes": {
    "A": "Root credentials must never be shared because the root user has unrestricted access.",
    "B": "An AWS account has exactly one root user, so multiple root users cannot be created.",
    "C": "MFA adds a second authentication factor and strongly protects the powerful root user.",
-   "D": "Using an IAM administrator for daily tasks keeps the root user for the few tasks that require it.",
-   "E": "Creating access keys for the root user is discouraged; the best practice is to avoid root access keys and use IAM identities instead."
+   "D": "An administrative identity with temporary credentials (for example through IAM Identity Center) keeps the root user for the few tasks that require it.",
+   "E": "Creating access keys for the root user is discouraged; AWS recommends avoiding root access keys altogether."
   }
  },
  "q_7d4d65d78f25": {
@@ -138,11 +138,11 @@
   }
  },
  "q_c7cb45dd25db": {
-  "explanation": "Amazon Inspector assesses EC2 instances for vulnerabilities, using predefined rules packages and assessment templates (the classic Inspector model).",
+  "explanation": "Amazon Inspector automatically scans Amazon EC2 instances for software vulnerabilities and unintended network exposure.",
   "optionNotes": {
    "A": "AWS WAF filters web requests; it does not assess instances for vulnerabilities.",
-   "B": "Trusted Advisor gives best-practice checks across cost, security, and performance, but not template-based vulnerability assessments.",
-   "C": "Inspector runs assessments against EC2 instances using predefined rules packages (the classic assessment-template model) to find vulnerabilities.",
+   "B": "Trusted Advisor gives best-practice checks across cost, security, and performance, but not vulnerability scans of instances.",
+   "C": "Amazon Inspector continually scans EC2 instances for software vulnerabilities.",
    "D": "AWS Shield provides DDoS protection and does not scan instances."
   }
  },
@@ -174,10 +174,10 @@
   }
  },
  "q_850ab39b7c4f": {
-  "explanation": "Amazon Inspector assesses EC2 workloads for vulnerabilities and unintended network exposure, flagging deviations from security best practices.",
+  "explanation": "Amazon Inspector assesses EC2 workloads for software vulnerabilities and unintended network exposure.",
   "optionNotes": {
    "A": "Trusted Advisor checks account-level best practices but does not assess application vulnerabilities on EC2 instances.",
-   "B": "Inspector scans EC2 instances for vulnerabilities and network exposure that fall short of best practices.",
+   "B": "Inspector scans EC2 instances for software vulnerabilities and unintended network exposure.",
    "C": "AWS Config tracks resource configuration and compliance with rules, but it does not assess application vulnerabilities.",
    "D": "GuardDuty detects threats and malicious activity; it does not assess application vulnerabilities."
   }
@@ -197,7 +197,7 @@
    "A": "IAM policies define permissions; they do not issue credentials.",
    "B": "IAM user groups collect users to assign permissions together; they do not issue temporary credentials.",
    "C": "STS issues temporary security credentials for IAM users or federated users.",
-   "D": "IAM Identity Center provides workforce single sign-on; the temporary credentials it hands out are issued through STS, which is the service that provides them."
+   "D": "AWS KMS creates and manages encryption keys and does not issue temporary security credentials."
   }
  },
  "q_0df373bf57a6": {
@@ -318,10 +318,10 @@
   }
  },
  "q_7f7a634431f6": {
-  "explanation": "Closing (deleting) an AWS account is one of the tasks that require the root user. IAM users, EC2 instances, and Organizations can be managed with suitably permitted IAM identities.",
+  "explanation": "Changing the account email address and root user password is one of the tasks that require the root user. IAM users, EC2 instances, and Organizations can be managed with suitably permitted IAM identities.",
   "optionNotes": {
    "A": "IAM users can be deleted by an administrator IAM identity; the root user is not required.",
-   "B": "Closing the AWS account is a task that can only be done by the root user.",
+   "B": "Changing the account email address and the root user password is a task that requires signing in as the root user.",
    "C": "An organization can be created by an IAM identity with the proper permissions.",
    "D": "EC2 instances can be terminated by any IAM identity that has the required permissions."
   }
@@ -363,12 +363,12 @@
   }
  },
  "q_21a81c37f010": {
-  "explanation": "Turning on MFA adds a second factor to sign-in and is an IAM best practice. Root access keys, broad permissions, and avoiding rotation all weaken security.",
+  "explanation": "Turning on MFA adds a second factor to sign-in and is an IAM best practice. Root access keys, broad permissions, and avoiding credential updates all weaken security.",
   "optionNotes": {
    "A": "Root user access keys should be avoided; use IAM identities for administrative tasks.",
    "B": "Broad permissions violate least privilege; grant only what each person needs.",
    "C": "MFA adds a second authentication factor and is a recommended IAM best practice.",
-   "D": "Credentials should be rotated regularly; not rotating leaves leaked credentials usable."
+   "D": "Credentials should be updated when needed and temporary credentials preferred; leaving leaked credentials unchanged keeps them usable."
   }
  },
  "q_60fd78a2e515": {
@@ -395,7 +395,7 @@
    "A": "Inspector scans for vulnerabilities and does not analyze logs for investigations.",
    "B": "QuickSight is a business intelligence service for dashboards, not a security investigation tool.",
    "C": "Detective analyzes log data with machine learning to make security investigations efficient.",
-   "D": "GuardDuty detects threats and produces findings, but investigation of root cause is the role of Detective."
+   "D": "Amazon Macie discovers sensitive data in Amazon S3 and does not analyze EC2 log data for security investigations."
   }
  },
  "q_403968ccdd0c": {
@@ -462,10 +462,10 @@
   }
  },
  "q_718e0fe1aca1": {
-  "explanation": "For least privilege, create an IAM user with programmatic access only (CLI and SDKs) and attach a policy that grants only Amazon RDS access.",
+  "explanation": "For least privilege, give the employee programmatic access with temporary credentials (through federation or IAM Identity Center) for the CLI and SDKs, and attach a policy that grants only Amazon RDS access.",
   "optionNotes": {
    "A": "Console access is not wanted, since the interaction is limited to the CLI and SDKs.",
-   "B": "Programmatic access only allows use of the CLI and SDKs and nothing else.",
+   "B": "Temporary credentials through federation or IAM Identity Center give programmatic access for the CLI and SDKs without long-term keys.",
    "C": "A role with console access does not match the CLI and SDK requirement.",
    "D": "Administrator access grants far more than RDS access and violates least privilege.",
    "E": "A policy limited to Amazon RDS gives only the permissions the employee needs."
@@ -501,7 +501,7 @@
  "q_39185e4299a6": {
   "explanation": "Enabling MFA with Amazon Cognito and using AWS Trusted Advisor security checks both help improve security. Broad permissions weaken security, and the other options do not themselves improve it.",
   "optionNotes": {
-   "A": "Artifact provides compliance reports; reading them does not itself improve security.",
+   "A": "AWS Cost Explorer analyzes costs and usage and does not improve security.",
    "B": "Broad permissions for every role violate least privilege and reduce security.",
    "C": "Running application code on AWS is not by itself a way to improve security.",
    "D": "MFA with Cognito adds another authentication factor for application users.",
@@ -646,10 +646,10 @@
   }
  },
  "q_4a1a05d40368": {
-  "explanation": "Creating individual IAM users and using groups to assign permissions are IAM best practices. Sharing keys and granting maximum privileges are not.",
+  "explanation": "Requiring MFA for users and using groups to assign permissions are IAM best practices. Sharing keys and granting maximum privileges are not.",
   "optionNotes": {
    "A": "Sharing access keys defeats accountability and is not recommended.",
-   "B": "Each person should have their own IAM user so actions can be traced.",
+   "B": "Requiring MFA adds a second authentication factor and is a recommended IAM best practice.",
    "C": "Customer managed policies are preferred because they can be reused and versioned.",
    "D": "Maximum privileges violate least privilege.",
    "E": "Groups simplify permission management by assigning permissions to many users together."
@@ -711,11 +711,11 @@
   }
  },
  "q_476b25b75931": {
-  "explanation": "Only the AWS account owner, signing in as the root user, can manage the root user's access keys.",
+  "explanation": "Only the AWS account owner, signing in as the root user, can manage the root user's access keys of the account.",
   "optionNotes": {
    "A": "IAM users cannot manage the root user's access keys, even with permissions.",
-   "B": "IAM roles, in this or any account, cannot manage root user access keys.",
-   "C": "No IAM identity can be granted permission to manage root user access keys.",
+   "B": "AWS CloudFormation stacks are not identities and cannot manage root user access keys.",
+   "C": "AWS Support engineers do not manage a customer's root user access keys.",
    "D": "The account owner using the root user is the only one who can manage its access keys."
   }
  },
@@ -756,9 +756,9 @@
   }
  },
  "q_7061d4ff0c64": {
-  "explanation": "An AWS access key is the credential that lets a developer sign AWS CLI requests.",
+  "explanation": "An AWS access key is a credential that lets a developer sign AWS CLI requests, and it is the credential this question expects to be provisioned. Temporary credentials are preferred where possible.",
   "optionNotes": {
-   "A": "A user name and password are used to sign in to the console, not the CLI.",
+   "A": "An SSH key pair is used to connect to Linux instances, not to authenticate AWS CLI requests.",
    "B": "Systems Manager manages operations for resources and is not a credential for the CLI.",
    "C": "Root passwords are for console sign-in as the root user and should not be used for CLI access.",
    "D": "An access key (ID and secret) authenticates AWS CLI calls."
@@ -842,14 +842,14 @@
    "A": "AWS does not allow customers to inspect data centers by appointment; it supplies third-party audit reports instead.",
    "B": "AWS cannot certify customer applications; customers must validate their own applications.",
    "C": "AWS provides a PCI DSS AOC report for specific services to help customers with compliance.",
-   "D": "Professional PCI compliance services are not what AWS provides here; it provides audit documentation."
+   "D": "AWS does not offer a free third-party PCI audit of customer applications; customers use the AWS audit documentation for their own compliance."
   }
  },
  "q_4e4a0821e5b7": {
-  "explanation": "Create an IAM user when you need long-term credentials for individual people and when you want to organize users in IAM groups. Applications on EC2, mobile apps, and federated corporate users should use roles.",
+  "explanation": "Create an IAM user only for specific cases, such as a third-party client outside AWS that cannot use roles or federation, and when you want to organize users in IAM groups. Applications on EC2, mobile apps, and federated corporate users should use roles.",
   "optionNotes": {
    "A": "Applications on EC2 should use an IAM role to get temporary credentials.",
-   "B": "IAM users are used to create long-term credentials for specific individuals.",
+   "B": "IAM users with long-term credentials are meant for specific cases such as a third-party client that cannot use roles or federation.",
    "C": "Mobile apps should use temporary credentials, for example through Cognito and roles, not IAM users.",
    "D": "Groups contain IAM users, so users are needed to be added to IAM groups.",
    "E": "Federated users already authenticated in the corporate network should assume a role instead of using an IAM user."

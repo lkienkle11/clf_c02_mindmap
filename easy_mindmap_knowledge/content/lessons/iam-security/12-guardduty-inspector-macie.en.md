@@ -35,7 +35,7 @@ Questions that say "continuously monitor accounts, workloads and S3 buckets for 
 
 - **Managed data identifiers** detect many types of personally identifiable information (PII), financial data and credentials. **Custom data identifiers** (regular expressions you define) can find your own proprietary or intellectual-property patterns.
 - Macie keeps an **inventory of your S3 general purpose buckets** and evaluates their security and access control, raising **policy findings** for issues such as a publicly accessible bucket. Objects that contain sensitive data produce **sensitive data findings**.
-- It runs automated discovery, or discovery jobs you define; the first 30 days are a free trial.
+- It runs automated discovery, or discovery jobs you define; the first 30 days are a free trial for bucket monitoring and automated discovery, but discovery jobs are not free during the trial.
 
 "Discover and protect sensitive data in S3", "find PII" and "classify sensitive data or intellectual property" mean Macie. Macie looks at **what is in** the data; Inspector looks at **software**; GuardDuty watches **behavior**.
 

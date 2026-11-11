@@ -34,7 +34,7 @@ This is why "give an application on EC2 access to S3" or "let EC2 call Amazon SN
 
 **AWS STS** is the service that issues temporary credentials. They consist of an access key ID, a secret access key and a **session token**. They expire, are not stored with a user, and cannot be reused after they expire, so nothing needs to be rotated or revoked.
 
-- STS has a global endpoint by default, and Regional endpoints you can choose instead. Credentials work in every Region.
+- STS has a global endpoint by default, and Regional endpoints you can choose instead; AWS recommends the Regional endpoints.
 - STS is offered at no additional charge.
 - Its official name is *Security* Token Service, although some questions write "Simple Token Service".
 
@@ -65,7 +65,7 @@ No IAM user needs to be created in account B. A question such as "grant users in
 - Credentials expire on their own, and on EC2 they refresh automatically.
 - One change to a role applies to every instance that uses it.
 
-Create IAM users when you need credentials for individual people, or to place users in groups. Applications on EC2, mobile apps (through Amazon Cognito) and employees who already sign in on a corporate network use roles or federation instead.
+For individual people AWS recommends IAM Identity Center or federation with temporary credentials; create IAM users only for specific cases that cannot use them, or to place users in groups. Applications on EC2, mobile apps (through Amazon Cognito) and employees who already sign in on a corporate network use roles or federation instead.
 
 ## Key points
 

@@ -2030,11 +2030,11 @@
       },
       {
         "key": "D",
-        "text": "Create an IAM user with administrator privileges for daily administrative tasks, instead of using the root user."
+        "text": "Use an administrative identity with temporary credentials (for example IAM Identity Center) for daily administrative tasks instead of the root user."
       },
       {
         "key": "E",
-        "text": "Use programmatic access instead of the root user and password."
+        "text": "Create root user access keys for every developer."
       }
     ],
     "correct": [
@@ -2483,7 +2483,7 @@
   {
     "id": "q_c7cb45dd25db",
     "topicId": "iam-security",
-    "text": "Which AWS service enables users to check for vulnerabilities on Amazon EC2 instances by using predefined assessment templates?",
+    "text": "Which AWS service enables users to check for vulnerabilities on Amazon EC2 instances by running automated vulnerability scans?",
     "options": [
       {
         "key": "A",
@@ -3286,7 +3286,7 @@
   {
     "id": "q_850ab39b7c4f",
     "topicId": "iam-security",
-    "text": "A company has deployed applications on Amazon EC2 instances. The company needs to assess application vulnerabilities and must identify infrastructure deployments that do not meet best practices. Which AWS service can the company use to meet these requirements?",
+    "text": "A company has deployed applications on Amazon EC2 instances. The company needs to assess application vulnerabilities and unintended network exposure. Which AWS service can the company use to meet these requirements?",
     "options": [
       {
         "key": "A",
@@ -4545,7 +4545,7 @@
       },
       {
         "key": "D",
-        "text": "AWS IAM Identity Center (AWS Single Sign-On)"
+        "text": "AWS Key Management Service (AWS KMS)"
       }
     ],
     "correct": [
@@ -6772,7 +6772,7 @@
       },
       {
         "key": "B",
-        "text": "The deletion of an AWS account"
+        "text": "Changing the account email address and root user password"
       },
       {
         "key": "C",
@@ -8231,7 +8231,7 @@
       },
       {
         "key": "D",
-        "text": "Amazon GuardDuty"
+        "text": "Amazon Macie"
       }
     ],
     "correct": [
@@ -9374,7 +9374,7 @@
       },
       {
         "key": "B",
-        "text": "Create an IAM user and provide programmatic access only."
+        "text": "Provide programmatic access with temporary credentials through federation or IAM Identity Center."
       },
       {
         "key": "C",
@@ -9989,7 +9989,7 @@
     "options": [
       {
         "key": "A",
-        "text": "Using AWS Artifact"
+        "text": "Using AWS Cost Explorer"
       },
       {
         "key": "B",
@@ -12890,7 +12890,7 @@
       },
       {
         "key": "B",
-        "text": "Create individual IAM users."
+        "text": "Require multi-factor authentication (MFA) for users."
       },
       {
         "key": "C",
@@ -14375,11 +14375,11 @@
       },
       {
         "key": "B",
-        "text": "IAM roles in any account that have been granted permission"
+        "text": "AWS CloudFormation stacks"
       },
       {
         "key": "C",
-        "text": "IAM users and roles that have been granted permission"
+        "text": "Any AWS Support engineer"
       },
       {
         "key": "D",
@@ -15072,7 +15072,7 @@
     "options": [
       {
         "key": "A",
-        "text": "User name and password"
+        "text": "An SSH key pair"
       },
       {
         "key": "B",
@@ -16714,7 +16714,7 @@
       },
       {
         "key": "D",
-        "text": "professional PCI compliance services."
+        "text": "a free third-party PCI audit of the customer's applications."
       }
     ],
     "correct": [
@@ -16735,7 +16735,7 @@
       },
       {
         "key": "B",
-        "text": "When the company creates AWS access credentials for individuals"
+        "text": "When a third-party client outside AWS cannot use roles or federation and needs long-term credentials"
       },
       {
         "key": "C",

@@ -34,7 +34,7 @@ Câu hỏi nói "liên tục giám sát tài khoản, workload và S3 bucket đ�
 
 - **Managed data identifier** phát hiện nhiều loại thông tin định danh cá nhân (PII), dữ liệu tài chính và thông tin xác thực. **Custom data identifier** (biểu thức chính quy do bạn định nghĩa) có thể tìm các mẫu độc quyền hoặc sở hữu trí tuệ của riêng bạn.
 - Macie giữ một **bản kiểm kê các S3 general purpose bucket** của bạn và đánh giá bảo mật cùng kiểm soát truy cập của chúng, tạo **policy finding** cho các vấn đề như bucket truy cập công khai. Object chứa dữ liệu nhạy cảm tạo ra **sensitive data finding**.
-- Nó chạy khám phá tự động, hoặc các job khám phá do bạn định nghĩa; 30 ngày đầu là dùng thử miễn phí.
+- Nó chạy khám phá tự động, hoặc các job khám phá do bạn định nghĩa; 30 ngày đầu là dùng thử miễn phí cho việc giám sát bucket và khám phá tự động, còn các job khám phá thì không miễn phí trong thời gian dùng thử.
 
 "Khám phá và bảo vệ dữ liệu nhạy cảm trong S3", "tìm PII" và "phân loại dữ liệu nhạy cảm hoặc sở hữu trí tuệ" là Macie. Macie nhìn **thứ nằm trong** dữ liệu; Inspector nhìn **phần mềm**; GuardDuty theo dõi **hành vi**.
 
