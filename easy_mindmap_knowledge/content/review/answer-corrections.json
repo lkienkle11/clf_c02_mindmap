@@ -79,5 +79,21 @@
     ],
     "confidence": "high",
     "approvedOn": "2026-11-11"
+  },
+  {
+    "questionId": "q_5b0dac58ac8d",
+    "oldCorrect": [
+      "A"
+    ],
+    "newCorrect": [
+      "D"
+    ],
+    "reason": "Compute Savings Plans apply to EC2, AWS Fargate and AWS Lambda usage and can be paid up front, while Convertible Reserved Instances only discount EC2 usage.",
+    "sources": [
+      "https://docs.aws.amazon.com/savingsplans/latest/userguide/plan-types.html",
+      "https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-reserved-instances.html"
+    ],
+    "confidence": "high",
+    "approvedOn": "2026-11-11"
   }
 ]

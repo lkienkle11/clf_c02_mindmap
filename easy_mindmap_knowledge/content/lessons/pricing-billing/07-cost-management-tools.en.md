@@ -40,7 +40,7 @@ The **AWS Cost and Usage Report (CUR)** holds the **most comprehensive** cost an
 
 ## AWS Cost Anomaly Detection
 
-**Cost Anomaly Detection** uses **machine learning** to learn your normal spend pattern, including seasonality, and alerts you by email or Amazon SNS when spend looks abnormal. It shows **root causes** by service, account, Region and usage type. Unlike a budget, you do not set or maintain a threshold. It monitors AWS spend but not most third-party AWS Marketplace products.
+**Cost Anomaly Detection** uses **machine learning** to learn your normal spend pattern, including seasonality, and alerts you by email or Amazon SNS when spend looks abnormal. It shows **root causes** by service, account, Region and usage type. Unlike a budget, you do not define a spending limit, but each alert subscription still has a threshold that you set. It monitors AWS spend but not most third-party AWS Marketplace products.
 
 ## Billing alarms in Amazon CloudWatch
 
@@ -54,14 +54,14 @@ You can also create a **CloudWatch alarm on the EstimatedCharges metric**. You m
 | Alert me when spend or usage reaches or is forecast to reach a limit | AWS Budgets |
 | Email me a scheduled budget status report | AWS Budgets reports |
 | Give me every line item in S3 for Athena or dashboards | Cost and Usage Report (Data Exports) |
-| Tell me when spend is unusual, without thresholds | Cost Anomaly Detection |
+| Tell me when spend is unusual, without defining a budget | Cost Anomaly Detection |
 | Split cost by project or department | Cost allocation tags |
 | Alarm on estimated charges with a metric | CloudWatch billing alarm |
 
 ## Key points
 
 - Cost Explorer analyzes history, forecasts, and gives purchase and rightsizing recommendations; Budgets alerts and reports; CUR gives the deepest data in S3.
-- Cost Anomaly Detection needs no thresholds; billing alarms and Budgets do.
+- Cost Anomaly Detection learns normal spend itself (no budget needed), though its alert subscriptions take a threshold; billing alarms and Budgets need a threshold too.
 - Tags must be activated as cost allocation tags; AWS-generated and user-defined both count.
 
 ## Sources

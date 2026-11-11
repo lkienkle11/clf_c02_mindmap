@@ -9404,11 +9404,11 @@
     "options": [
       {
         "key": "A",
-        "text": "Standard Reserved Instances"
+        "text": "Dedicated Hosts"
       },
       {
         "key": "B",
-        "text": "Convertible Reserved Instances"
+        "text": "Dedicated Instances"
       },
       {
         "key": "C",
@@ -12120,7 +12120,7 @@
       },
       {
         "key": "C",
-        "text": "Amazon EC2"
+        "text": "Amazon S3"
       },
       {
         "key": "D",
@@ -12331,7 +12331,7 @@
       }
     ],
     "correct": [
-      "A"
+      "D"
     ],
     "multi": false,
     "orderDependent": false,
@@ -17634,7 +17634,7 @@
       },
       {
         "key": "C",
-        "text": "On-Demand Instances"
+        "text": "Dedicated Hosts"
       },
       {
         "key": "D",
@@ -18356,7 +18356,7 @@
     "options": [
       {
         "key": "A",
-        "text": "AWS Cost Explorer"
+        "text": "AWS Budgets"
       },
       {
         "key": "B",

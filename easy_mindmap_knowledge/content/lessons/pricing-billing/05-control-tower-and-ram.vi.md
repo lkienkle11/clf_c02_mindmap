@@ -22,7 +22,7 @@ Các thành phần chính:
 | **Detective** | Phát hiện và báo cáo vi phạm | Quy tắc AWS Config |
 | **Proactive** | Chặn tài nguyên không tuân thủ trước khi được tạo | AWS CloudFormation hooks |
 
-Controls còn có mức hướng dẫn: **mandatory** (các control nền tảng bảo vệ tài nguyên do Control Tower triển khai; từ landing zone phiên bản 4.0 chúng không còn được áp dụng mặc định), **strongly recommended** (rất nên bật) hoặc **elective** (tùy chọn).
+Controls còn có mức hướng dẫn: **mandatory** (các control nền tảng bảo vệ tài nguyên do Control Tower triển khai; chúng được áp dụng mặc định cho các OU của bạn, dù landing zone phiên bản 4.0 đã ngừng triển khai một số control), **strongly recommended** (rất nên bật) hoặc **elective** (tùy chọn).
 
 - **Account Factory**: một mẫu cấu hình giúp chuẩn hóa việc tạo tài khoản mới với các thiết lập đã được phê duyệt, nhờ đó các nhóm có tài khoản mới nhanh chóng.
 - **Dashboard**: một màn hình xem các tài khoản đã cấp, controls đang bật và tài nguyên không tuân thủ.
