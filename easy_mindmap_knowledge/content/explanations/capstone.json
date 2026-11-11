@@ -37,13 +37,13 @@
   }
  },
  "auth-capstone-05": {
-  "explanation": "Consolidated billing in AWS Organizations gives one bill for all 12 accounts. A service control policy that denies other Regions sets a limit on every account that an IAM policy cannot override.",
+  "explanation": "Consolidated billing in AWS Organizations gives one bill for all 12 accounts. A service control policy that denies other Regions sets a limit on the member accounts it applies to that an IAM policy cannot override. SCPs do not restrict the management account.",
   "optionNotes": {
    "A": "IAM groups manage permissions for users in one account; they do not combine billing or restrict Regions across accounts.",
    "B": "Consolidated billing in AWS Organizations combines the charges of all member accounts into a single bill.",
    "C": "Cost Explorer forecasts help predict spend per account but do not create a single bill or limit Regions.",
    "D": "A support plan provides technical support and does not consolidate billing or restrict Regions.",
-   "E": "An SCP sets the maximum permissions for accounts in the organization, so denying other Regions overrides any IAM policy that allows them."
+   "E": "An SCP sets the maximum permissions for the member accounts it applies to, so denying other Regions overrides any IAM policy that allows them there. SCPs do not restrict the management account."
   }
  },
  "auth-capstone-06": {
