@@ -18,7 +18,7 @@ Most questions are a short story and one ask, such as "Which AWS service will me
 | "Fault tolerant" | The workload **keeps running** when a component fails, with redundancy built in |
 | "Disaster recovery", "data sovereignty" | Choosing **Regions** deliberately |
 | "Loosely coupled", "decouple" | Amazon SQS, SNS or EventBridge between components |
-| "Customer's responsibility" | Data, IAM, guest OS patching, configuration |
+| "Customer's responsibility" | Data, IAM, configuration; on EC2 also guest OS patching (it varies by service) |
 
 ## Eliminate, then choose
 

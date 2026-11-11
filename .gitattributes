@@ -1,0 +1,2 @@
+# Keep LF on every platform: tests compare bank files byte for byte
+* text=auto eol=lf

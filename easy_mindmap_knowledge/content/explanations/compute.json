@@ -18,12 +18,12 @@
   }
  },
  "q_429ad5e33114": {
-  "explanation": "Running containers directly on Amazon EC2 instances gives the company full control of the underlying compute, including the instance type, OS, and patching.",
+  "explanation": "Running containers directly on Amazon EC2 instances gives the company full control of the underlying compute, including the instance type, OS, and patching. AWS Fargate removes that control because AWS manages the servers.",
   "optionNotes": {
-   "A": "EKS is a managed Kubernetes control plane; on its own it does not give full control of the compute unless you also run EC2 worker nodes.",
+   "A": "AWS Lambda runs functions without you managing the compute resources, so it does not give full control of the hosts.",
    "B": "Fargate is serverless compute for containers, so AWS manages the compute and the customer has less control.",
    "C": "With EC2 the company chooses and manages the instances that host the containers, giving full control of the compute resources.",
-   "D": "ECS is a container orchestrator; it can use EC2 or Fargate, so by itself it does not guarantee control of the compute."
+   "D": "Amazon Athena is a serverless SQL query service, not a container hosting service."
   }
  },
  "q_ed4aff43991b": {
@@ -87,14 +87,14 @@
    "A": "Spot Instances offer the deepest discount, and stateless workloads can handle the possible interruption.",
    "B": "Dedicated Instances run on single-tenant hardware at a higher price and do not help optimize cost.",
    "C": "Reserved Instances require a commitment and the company does not use all its capacity, so it would pay for unused commitment.",
-   "D": "On-Demand has no discount and is not the cheapest for a workload that tolerates interruptions."
+   "D": "Dedicated Hosts are physical servers for your exclusive use; they do not lower the cost of unused capacity."
   }
  },
  "q_c96d5ce8ebfc": {
   "explanation": "Stateless services that scale for short-term use tolerate interruptions, so Spot Instances give the lowest cost.",
   "optionNotes": {
    "A": "Spot Instances provide the largest discount and suit stateless, short-term services that can be replaced if interrupted.",
-   "B": "On-Demand is flexible but priced higher than Spot, so it is not the most cost-efficient for interruptible work.",
+   "B": "Dedicated Instances run on single-tenant hardware, which costs more and is not the cheapest option for short-term stateless services.",
    "C": "Reserved Instances need a 1- or 3-year commitment, which does not fit short-term usage.",
    "D": "Dedicated Hosts are physical servers priced at a premium and are meant for licensing or compliance needs."
   }
@@ -127,12 +127,12 @@
   }
  },
  "q_3979d8ab2d09": {
-  "explanation": "Amazon EC2 lets the company launch pre-configured instances from AMIs, including AMIs that come with application stacks, to run its workload.",
+  "explanation": "Amazon Lightsail lets you launch an instance from a pre-configured application or development stack (for example WordPress or LAMP) in a few clicks, which matches the wording about application stacks and pre-configured instances.",
   "optionNotes": {
-   "A": "Lightsail also ships preconfigured application-stack blueprints (for example LAMP and WordPress), so it is arguably a valid match; the exam nevertheless expects EC2 with pre-configured AMIs.",
+   "A": "Lightsail instances launch from pre-configured application and development stacks such as WordPress and LAMP.",
    "B": "Athena is a serverless query service for data in S3 and does not run application stacks on instances.",
    "C": "Outposts places AWS infrastructure on premises; it is a deployment location, not a source of pre-configured instances.",
-   "D": "EC2 provides instances launched from pre-configured AMIs, which can include application stacks."
+   "D": "EC2 launches instances from AMIs, some of which include software, but you choose and configure the image yourself; the wording about application stacks points to Lightsail."
   }
  },
  "q_f501e57e3c45": {
@@ -202,10 +202,10 @@
   }
  },
  "q_63c23e178263": {
-  "explanation": "AWS Compute Optimizer analyzes utilization metrics and recommends optimal resources; Amazon EC2 is the service whose instance types and sizes it recommends.",
+  "explanation": "AWS Compute Optimizer analyzes utilization metrics and recommends right-sized resources. Amazon EC2 instance types and sizes are its classic target, so EC2 is the service that uses it to provide sizing recommendations.",
   "optionNotes": {
    "A": "Compute Optimizer recommends EC2 instance types and sizes based on workload metrics.",
-   "B": "RDS is a managed database service; the expected answer is EC2, the classic Compute Optimizer target for instance sizing recommendations.",
+   "B": "Amazon CloudFront is a content delivery network and is not a Compute Optimizer-supported resource type.",
    "C": "Lightsail uses fixed bundles and is not a Compute Optimizer-supported resource type.",
    "D": "Step Functions orchestrates workflows and has no instance sizing recommendations."
   }
@@ -312,7 +312,7 @@
  "q_f6b4e1761246": {
   "explanation": "Amazon EC2 offers many instance types with different combinations of CPU, memory, storage, and networking, so each application can run on the configuration it needs.",
   "optionNotes": {
-   "A": "Lambda does not let you pick instance types with specific CPU, memory, storage, and network configurations.",
+   "A": "AWS Step Functions orchestrates workflows and does not host applications on instance types that you select.",
    "B": "Amazon Cognito handles user sign-up and authentication, not application hosting.",
    "C": "Athena is a serverless query service for data in S3, not a place to run custom applications.",
    "D": "EC2 offers a wide range of instance types and sizes, matching different resource profiles."
@@ -447,7 +447,7 @@
  "q_e8576e00ad1a": {
   "explanation": "AWS Fargate runs containers without provisioning or managing servers and has no 15-minute limit, so it handles containers that run for 4 hours.",
   "optionNotes": {
-   "A": "Lambda functions are limited to 15 minutes, so a 4-hour run does not fit, and the company wants container-based services.",
+   "A": "Amazon Cognito handles user sign-up and sign-in; it does not run containers.",
    "B": "Fargate runs containers for as long as needed with no servers to manage.",
    "C": "EC2 requires provisioning and managing instances, which the company wants to avoid.",
    "D": "Elastic Beanstalk still provisions EC2 instances in the account, so server management is not fully removed."
@@ -474,7 +474,7 @@
  "q_7ebfaa2be391": {
   "explanation": "Elastic Load Balancing distributes incoming traffic across multiple targets such as EC2 instances, containers, and IP addresses.",
   "optionNotes": {
-   "A": "Scaling resources is the job of Auto Scaling, not the load balancer, which only distributes traffic.",
+   "A": "An ELB distributes incoming traffic; it does not run application code on servers of its own.",
    "B": "An ELB balances traffic across multiple compute resources, improving availability.",
    "C": "A load balancer operates within a single Region and cannot span multiple Regions.",
    "D": "ELB distributes traffic to targets in a VPC, not between internet gateways."
@@ -490,11 +490,11 @@
   }
  },
  "q_8add147cbbf7": {
-  "explanation": "AWS Fargate and Amazon S3 are serverless because AWS manages the underlying servers. MSK, EMR, and EC2 use clusters or instances that you configure.",
+  "explanation": "AWS Fargate and Amazon S3 are serverless because AWS manages the underlying servers. Amazon EBS volumes attach to EC2 instances, Amazon Lightsail provides virtual servers that you manage, and Amazon EC2 uses instances that you configure, so those are not serverless.",
   "optionNotes": {
    "A": "Fargate runs containers without any servers to manage.",
-   "B": "Amazon MSK provisioned clusters run on brokers you size and configure, so it is not serverless in the classic sense (an MSK Serverless option exists but is not the intended answer here).",
-   "C": "Classic Amazon EMR runs on clusters of EC2 instances that you configure (EMR Serverless exists but is not the intended answer here).",
+   "B": "Amazon EBS provides block volumes that you attach to EC2 instances; it is not a serverless service.",
+   "C": "Amazon Lightsail provides preconfigured virtual servers that you manage, so it is not a serverless service.",
    "D": "S3 is a serverless storage service with no servers to provision or manage.",
    "E": "EC2 requires you to provision and manage instances."
   }
@@ -536,11 +536,11 @@
   }
  },
  "q_7e665a1faa9c": {
-  "explanation": "AWS App Runner builds container images from source code and deploys the containerized web application with little operational effort.",
+  "explanation": "Elastic Beanstalk in Cluster mode can take source code, build a container image from it, and deploy and run the containerized web application. AWS App Runner also builds from source, but it is closed to new customers (existing customers can keep using it), so a new company cannot choose it.",
   "optionNotes": {
-   "A": "Elastic Beanstalk deploys applications to managed EC2 environments and is not described as building container images from source.",
-   "B": "ECS runs containers but expects you to supply container images and configure the cluster.",
-   "C": "App Runner can build from source code and deploy and run the containerized web application automatically.",
+   "A": "Elastic Beanstalk Cluster mode accepts source code that Beanstalk builds into a container image, then deploys and runs it.",
+   "B": "ECS runs containers but expects you to supply the container image (even ECS Express Mode deploys a prebuilt image).",
+   "C": "App Runner can build from source and deploy, but AWS has closed it to new customers; existing customers can still use it.",
    "D": "EC2 requires you to build images and manage the servers yourself."
   }
  },
@@ -600,10 +600,10 @@
   }
  },
  "q_3bddc0977fd4": {
-  "explanation": "An application that runs under 5 minutes and is invoked only a few times a day suits Lambda, which charges only for the time code runs.",
+  "explanation": "An application that runs under 5 minutes and is invoked only a few times a day suits Lambda, which charges for requests and for the time code runs.",
   "optionNotes": {
    "A": "ECS needs a cluster and containers, which cost more to operate for a rarely used application.",
-   "B": "Lambda bills only for execution time and short runs well within its 15-minute limit are cheap.",
+   "B": "Lambda bills for requests and for execution time, and short runs well within its 15-minute limit are cheap.",
    "C": "EKS has cluster management overhead and cost that are unnecessary for a rarely invoked app.",
    "D": "An always-on EC2 instance would cost money while idle most of the day."
   }
@@ -615,15 +615,6 @@
    "B": "High availability of a self-managed database layer is designed and maintained by the customer.",
    "C": "AWS patches and maintains the physical infrastructure that hosts EC2 instances.",
    "D": "Configuring security group firewall rules is the customer's responsibility."
-  }
- },
- "q_9e6c9d987920": {
-  "explanation": "The exam expects operating system patches to be AWS's task, while backups, database software patches, and OS installation are customer tasks; note that the customer normally patches the guest OS on EC2; current AWS documentation treats this as a customer task.",
-  "optionNotes": {
-   "A": "Backing up the database is the customer's job when the database runs on EC2.",
-   "B": "Patching the database software is the customer's job on EC2.",
-   "C": "The exam expects this to be AWS's task, although under the shared responsibility model the customer normally patches the guest OS on EC2; current AWS documentation treats this as a customer task.",
-   "D": "Installing the operating system is something the customer chooses and does through the AMI it launches."
   }
  },
  "q_c582cd897c65": {
@@ -726,6 +717,15 @@
    "C": "Beanstalk sets up load balancing and automatic scaling for the environment.",
    "D": "Beanstalk does not buy Reserved Instances or other pricing commitments.",
    "E": "The developer designs the database schema; Beanstalk does not do it."
+  }
+ },
+ "q_9e6c9d987920": {
+  "explanation": "On Amazon EC2, AWS is responsible for the physical servers, facilities and virtualization layer, while the customer manages the guest operating system, the database software and its backups.",
+  "optionNotes": {
+   "A": "Backing up the database is the customer's job when the database runs on EC2.",
+   "B": "Patching the database software is the customer's job on EC2.",
+   "C": "AWS maintains the physical servers and data centers that host EC2 instances, as part of its responsibility for security of the cloud.",
+   "D": "Installing the operating system is something the customer chooses and does through the AMI it launches."
   }
  }
 }

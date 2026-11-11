@@ -101,6 +101,8 @@ content/
 npx tsx scripts/import-cards/build.ts
 ```
 
+Do not re-run the importer over a bank whose answers were corrected by the audit: it regenerates imported.json from the card deck and would overwrite the corrections recorded in content/review/answer-corrections.json.
+
 ### Lesson contract and coverage checks
 
 The lesson contract is in `src/content/bundled-content.test.ts` (`EXPANDED_TOPICS`): expanded topics have 8-14 lessons, Capstone has 5-8, and each topic has at least 3 required lessons. Every optional lesson needs a `videoQuery`. Required lessons are 250-900 English prose words and have Key points and Sources sections.

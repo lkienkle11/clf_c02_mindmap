@@ -10,6 +10,7 @@ import {
   createUnavailableReportStorage,
   createSettingsRepo,
   createTauriExecutor,
+  createTauriDbBackup,
 } from '@/persistence';
 import type {
   AttemptsRepo,
@@ -36,6 +37,8 @@ export interface Services {
   };
   rebuildDeps: RebuildDeps;
   reportStorage: ReportStorage;
+  /** Awaited once before the first re-grade write (for example a database backup); undefined in tests. */
+  beforeRegrade?: () => Promise<void>;
   /**
    * Re-derives question_stats for these questions from history. Injected so practice can trigger it
    * without importing the review feature (review depends on practice, never the other way round).
@@ -55,6 +58,7 @@ export function buildServices(parts: {
   reportStorage?: ReportStorage;
   /** Test override; defaults to rebuildStatsFor over this executor and catalog. */
   rebuildStats?: (questionIds: string[]) => Promise<void>;
+  beforeRegrade?: () => Promise<void>;
 }): Services {
   const { executor, catalog } = parts;
   const scheduler = new LeitnerScheduler();
@@ -74,15 +78,18 @@ export function buildServices(parts: {
     rebuildDeps,
     reportStorage: parts.reportStorage ?? createUnavailableReportStorage(),
     rebuildStats: parts.rebuildStats ?? ((ids) => rebuildStatsFor(rebuildDeps, ids)),
+    ...(parts.beforeRegrade !== undefined ? { beforeRegrade: parts.beforeRegrade } : {}),
     now: parts.now ?? (() => Date.now()),
     newId: parts.newId ?? (() => crypto.randomUUID()),
   };
 }
 
 export async function createServices(): Promise<Services> {
+  const executor = await createTauriExecutor();
   return buildServices({
-    executor: await createTauriExecutor(),
+    executor,
     catalog: loadBundledCatalog(),
     reportStorage: createTauriReportStorage(),
+    beforeRegrade: createTauriDbBackup(executor),
   });
 }

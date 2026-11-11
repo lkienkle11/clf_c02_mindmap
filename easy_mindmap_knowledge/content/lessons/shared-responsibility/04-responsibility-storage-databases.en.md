@@ -30,7 +30,7 @@ An exam trap: a bucket that is publicly readable is a customer configuration pro
 | Task | Who is responsible |
 | --- | --- |
 | Hardware, facilities, host and database software installation | AWS |
-| Operating system and database engine patching | AWS (you pick the maintenance window) |
+| Operating system and database engine patching | AWS (you pick the maintenance window; a mandatory update can still be applied after its apply date) |
 | Backup and failover mechanisms | AWS provides them; you choose to use and configure them |
 | Database users and permissions | Customer |
 | Network access (VPC and security groups) | Customer |

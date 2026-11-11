@@ -21,8 +21,8 @@ The word "shared" is the exam hook: the same control exists on both sides, appli
 | AWS infrastructure: hosts, hypervisor, network devices | AWS patches and fixes flaws |
 | Guest OS of an EC2 instance | Customer |
 | Applications and libraries you install | Customer |
-| OS and engine of an RDS database | AWS, in a maintenance window you choose |
-| Runtime of a Lambda function with a managed runtime | AWS |
+| OS and engine of an RDS database | AWS, in a maintenance window you choose (a mandatory update can still be applied after its apply date) |
+| Runtime of a Lambda function with a managed runtime | AWS publishes the patches and applies them automatically in the default Auto mode; Function update and Manual modes need customer action |
 | Your function code and packaged libraries | Customer |
 
 So "patch management" is shared, but no single patch is shared. For any given patch, ask which layer it belongs to. Customers may automate their part, for example with AWS Systems Manager Patch Manager, but automation does not transfer ownership.

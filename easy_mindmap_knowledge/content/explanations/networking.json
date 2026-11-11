@@ -68,9 +68,9 @@
     "optionNotes": {
       "A": "Although the security group firewall is provided by AWS, the customer decides and configures its rules, which is a customer responsibility.",
       "B": "Customers are responsible for classifying and protecting their own assets and data in the cloud.",
-      "C": "Amazon S3 automatically stores data across multiple Availability Zones; AWS manages this, not the customer.",
+      "C": "AWS is responsible for the physical security of its data centers, not the customer.",
       "D": "DynamoDB is a managed service, so AWS patches and upgrades it.",
-      "E": "AWS Lambda is serverless; AWS manages the underlying compute and the customer does not choose EC2 instances for it."
+      "E": "AWS operates the global network infrastructure that connects its Regions and data centers; this is not a customer task."
     }
   },
   "q_32d8c7e3e05e": {
@@ -114,10 +114,10 @@
   "q_8f3d719c6f61": {
     "explanation": "VPC peering connects two VPCs directly, and AWS Transit Gateway connects many VPCs through a central hub.",
     "optionNotes": {
-      "A": "VPC endpoints give private access to AWS services; they do not link two VPCs together.",
+      "A": "Amazon CloudFront is a content delivery network and does not build network connections between VPCs.",
       "B": "Route 53 provides DNS and routing of names; it does not build network connections between VPCs.",
       "C": "VPC peering creates a private network connection between two VPCs.",
-      "D": "Direct Connect links an on-premises network to AWS, not one VPC to another.",
+      "D": "AWS WAF filters web requests and does not connect VPCs.",
       "E": "Transit Gateway acts as a hub that interconnects multiple VPCs (and on-premises networks)."
     }
   },
@@ -158,9 +158,9 @@
     }
   },
   "q_6618bfe4df85": {
-    "explanation": "AWS Managed Services operates the AWS infrastructure for you, including landing zone, network management, monitoring, patching, and incident management. Developing applications and building pipelines remain the customer's work.",
+    "explanation": "AWS Managed Services operates your AWS environment for you, including operational monitoring, incident management and patch management. Developing applications, building pipelines and monitoring application logs remain the customer's work.",
     "optionNotes": {
-      "A": "Landing zone and network management are part of the operational infrastructure services that AMS provides.",
+      "A": "Operational monitoring, incident management and patch management are part of the operations that AMS provides.",
       "B": "Developing customer applications is the customer's responsibility and is not in the AMS scope.",
       "C": "Configuring DevSecOps pipelines for application delivery is customer work, not an AMS operational feature.",
       "D": "Monitoring application logs belongs to the customer's application operations; AMS focuses on the infrastructure."
@@ -231,11 +231,11 @@
     }
   },
   "q_7560b199e7a1": {
-    "explanation": "AWS Direct Connect needs a physical connection made at a Direct Connect location, which usually involves a colocation facility and a network provider or ISP.",
+    "explanation": "AWS Direct Connect needs a physical connection made at a Direct Connect location, for example through your own presence in a colocation facility or through an AWS Direct Connect partner or independent service provider.",
     "optionNotes": {
       "A": "AWS VPN is set up in software over the existing internet connection, with no colocation facility needed.",
       "B": "Amazon Connect is a cloud contact center service, not a connectivity option.",
-      "C": "Direct Connect uses a dedicated physical link into an AWS Direct Connect location, which requires a provider and colocation facility.",
+      "C": "Direct Connect uses a dedicated physical link into an AWS Direct Connect location, reached through your own colocation presence or a Direct Connect partner or provider.",
       "D": "An internet gateway is a VPC component and needs no ISP or colocation facility on your side."
     }
   },
@@ -288,7 +288,7 @@
     "explanation": "Amazon Route 53 provides DNS resolution, translating domain names into IP addresses.",
     "optionNotes": {
       "A": "CloudFront is a content delivery network; it relies on DNS but does not provide the DNS service.",
-      "B": "Amazon VPC creates virtual networks; the DNS service that resolves and hosts domain names is Route 53, not VPC itself.",
+      "B": "AWS Shield protects against DDoS attacks and does not provide DNS resolution.",
       "C": "Route 53 is the AWS DNS service that resolves domain names.",
       "D": "Direct Connect provides a dedicated network link, not DNS resolution."
     }
@@ -312,12 +312,12 @@
     }
   },
   "q_d901bbeb9455": {
-    "explanation": "A security group is a firewall attached to an individual instance, so it affects only that instance and not others in the same subnet.",
+    "explanation": "A security group is a firewall that applies to the resources it is associated with, so associating it only with the target instance affects only that instance and not others in the same subnet.",
     "optionNotes": {
       "A": "A network ACL applies to every instance in the subnet, which is what the company does not want.",
       "B": "AWS WAF filters web requests for supported web resources and is not an EC2 instance firewall.",
       "C": "A route table directs traffic and does not allow or block connections.",
-      "D": "A security group controls traffic to and from a single instance (its network interface) only."
+      "D": "A security group controls traffic for the resources it is associated with, so it can be scoped to a single instance (its network interface)."
     }
   },
   "q_d62f18492400": {
@@ -462,7 +462,7 @@
     "optionNotes": {
       "A": "Global Accelerator supports ALBs as endpoints and sends traffic over the AWS backbone, improving performance.",
       "B": "Amazon Connect is a contact center service and does not improve application performance.",
-      "C": "ElastiCache caches data in memory for backend applications; it does not improve network path performance to public ALBs.",
+      "C": "AWS Config records and evaluates resource configurations and does not improve application performance.",
       "D": "CloudWatch monitors performance but does not improve it."
     }
   },
@@ -516,7 +516,7 @@
     "optionNotes": {
       "A": "A security group controls traffic at the instance level, not for the whole subnet.",
       "B": "AWS WAF filters web requests for web applications and is not a subnet firewall.",
-      "C": "AWS Firewall Manager centrally manages firewall rules across accounts; it is not the subnet-level firewall itself.",
+      "C": "Amazon GuardDuty detects threats from logs and does not filter traffic at the subnet level.",
       "D": "A network ACL controls traffic entering and leaving a subnet."
     }
   },
@@ -567,7 +567,7 @@
     }
   },
   "auth-networking-06": {
-    "explanation": "The company needs an internet gateway attached to the VPC and a route in the subnet's route table that sends internet-bound traffic to it. Together these make the subnet public so internet requests can reach the web servers.",
+    "explanation": "The company needs an internet gateway attached to the VPC and a route in the subnet's route table that sends internet-bound traffic to it. Together these make the subnet public; the web servers also need a public IP address so internet requests can reach them.",
     "optionNotes": {
       "A": "A NAT gateway only allows connections that start inside the VPC, so it cannot accept requests from the internet.",
       "B": "The internet gateway provides the VPC's connection point to the internet.",

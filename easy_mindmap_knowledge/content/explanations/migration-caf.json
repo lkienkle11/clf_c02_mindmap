@@ -4,7 +4,7 @@
   "optionNotes": {
    "A": "Data architecture is a Platform perspective capability, covering how data and analytics platforms are designed.",
    "B": "Data protection is a Security perspective capability, not a Platform one.",
-   "C": "Data governance is not a Platform capability; the related Governance perspective capability is data curation.",
+   "C": "Data governance is a Governance perspective capability, not a Platform one.",
    "D": "Data science is a Business perspective capability about using data to produce insights and value."
   }
  },
@@ -82,7 +82,7 @@
   }
  },
  "q_2bfa37b37f25": {
-  "explanation": "AWS Application Discovery Service collects information about on-premises servers, such as hostname, IP address, and MAC address, to help plan a migration.",
+  "explanation": "AWS Application Discovery Service collects information about on-premises servers, such as hostname, IP address, and MAC address, to help plan a migration. AWS closed Application Discovery Service to new customers on November 7, 2025 and recommends AWS Transform for new discovery projects, but it is the only discovery service among these options.",
   "optionNotes": {
    "A": "DataSync transfers data between storage systems and does not inventory server details.",
    "B": "Application Migration Service replicates servers to AWS for cutover; it is not the discovery tool for hostnames and MAC addresses.",
@@ -210,15 +210,6 @@
    "D": "Migration Hub tracks migration progress; it does not move data."
   }
  },
- "q_ea907910d5b1": {
-  "explanation": "The question text does not list its requirements, so it looks incomplete. The exam expects People, the CAF perspective for culture, organization, leadership, and workforce skills.",
-  "optionNotes": {
-   "A": "Business focuses on strategy, value creation, and data-driven outcomes; the exam expects People here instead.",
-   "B": "People covers culture, leadership, organization design, and workforce skills, which is the perspective the exam expects.",
-   "C": "Platform focuses on the technical foundation and architecture rather than people and culture.",
-   "D": "Operations focuses on running and supporting workloads, not on people and organization."
-  }
- },
  "q_ed55ad67e5df": {
   "explanation": "AWS DMS migrates on-premises databases to managed AWS database services with a simplified process and minimal downtime.",
   "optionNotes": {
@@ -313,10 +304,10 @@
   }
  },
  "q_79a6198b037a": {
-  "explanation": "The exam expects Program and project management here. Note that current AWS CAF 3.0 lists program and project management under Governance and lists data science under Business, so this item conflicts with the current framework.",
+  "explanation": "Data science is a Business perspective capability: it uses experimentation, advanced analytics and machine learning to solve business problems. Program and project management belongs to the Governance perspective, while observability and change and release management belong to Operations.",
   "optionNotes": {
-   "A": "The exam expects this, although AWS CAF 3.0 places program and project management under the Governance perspective.",
-   "B": "Data science is a Business perspective capability in AWS CAF 3.0, even though the exam expects a different option here.",
+   "A": "Program and project management is a Governance perspective capability, not a Business one.",
+   "B": "Data science is a Business perspective capability about using experimentation, advanced analytics and machine learning.",
    "C": "Observability is an Operations perspective capability.",
    "D": "Change and release management is an Operations perspective capability."
   }
@@ -350,11 +341,11 @@
   }
  },
  "q_af399656dd4d": {
-  "explanation": "The exam expects Portfolio management and Risk management. Risk management is a Governance capability; in AWS CAF 3.0 portfolio management is under Business (Governance has application portfolio management) and program and project management is the Governance capability, so this item conflicts with current AWS docs.",
+  "explanation": "Program and project management and Risk management are Governance perspective capabilities. Portfolio management is a Business perspective capability (Governance has application portfolio management instead), product management is also Business, and event management is Operations.",
   "optionNotes": {
-   "A": "Program and project management is a Governance capability in the current CAF, even though the exam does not expect it here.",
+   "A": "Program and project management is a Governance capability that coordinates interdependent cloud initiatives.",
    "B": "Product management is a Business perspective capability.",
-   "C": "The exam expects this option, although the current CAF lists portfolio management under Business (Governance has application portfolio management).",
+   "C": "Portfolio management is a Business perspective capability; the Governance perspective has application portfolio management instead.",
    "D": "Risk management is a Governance perspective capability for managing cloud-related risks.",
    "E": "Event management is an Operations perspective capability."
   }
@@ -450,16 +441,6 @@
    "D": "Refactor redesigns the application, which is the most change possible."
   }
  },
- "q_677db91ace22": {
-  "explanation": "The exam expects Retire and Rehost as the lowest-effort strategies: retire removes the application, and rehost moves it as is. AWS notes that an application that cannot run in the cloud is often retired or retained, so rehost is a debatable fit for an incompatible CMS.",
-  "optionNotes": {
-   "A": "Retire removes the application if it is no longer needed, which takes the least effort.",
-   "B": "The exam expects Rehost as a low-effort option because it moves the application as is, though an incompatible CMS might not run unchanged.",
-   "C": "Repurchase means adopting a new product and migrating to it, which takes more effort.",
-   "D": "Replatform requires optimizations to the application or its platform, which is more effort.",
-   "E": "Refactor redesigns the application and takes the most effort."
-  }
- },
  "q_71cbd5277ea6": {
   "explanation": "Replatform (lift, tinker, and shift) moves a self-managed database to a managed service such as Amazon RDS with only small changes.",
   "optionNotes": {
@@ -533,7 +514,7 @@
   }
  },
  "q_6e5055488b62": {
-  "explanation": "AWS Application Discovery Service gathers information about on-premises servers and their configuration to support migration planning.",
+  "explanation": "AWS Application Discovery Service gathers information about on-premises servers and their configuration to support migration planning. AWS closed Application Discovery Service to new customers on November 7, 2025 and recommends AWS Transform for new discovery projects, but it is the only discovery service among these options.",
   "optionNotes": {
    "A": "Application Discovery Service collects data about the on-premises data center to plan the migration.",
    "B": "DataSync transfers data and does not gather server information.",
@@ -597,15 +578,6 @@
    "D": "Platform covers the technical foundation and architecture."
   }
  },
- "q_8dbda4b2d28d": {
-  "explanation": "The exam expects Durability. AWS documentation normally defines durability as long-term data persistence, while staying functional during problems is described as fault tolerance or resilience, so this item is loosely worded.",
-  "optionNotes": {
-   "A": "Consistency is about all readers seeing the same data, not about remaining functional during problems.",
-   "B": "Elasticity is the ability to scale resources up and down with demand, not to withstand operational problems.",
-   "C": "The exam expects Durability here, although AWS docs use durability for long-term data persistence rather than continued operation during problems.",
-   "D": "Latency measures delay in responses, not the ability to keep functioning."
-  }
- },
  "q_a87d9b79c7c6": {
   "explanation": "The Reliability pillar focuses on recovering automatically from service interruptions and failures.",
   "optionNotes": {
@@ -616,7 +588,7 @@
   }
  },
  "q_6ac10c72e267": {
-  "explanation": "AWS Application Discovery Service collects usage and configuration data from on-premises application components to support migration planning.",
+  "explanation": "AWS Application Discovery Service collects usage and configuration data from on-premises application components to support migration planning. AWS closed Application Discovery Service to new customers on November 7, 2025 and recommends AWS Transform for new discovery projects, but it is the only discovery service among these options.",
   "optionNotes": {
    "A": "DMS migrates databases and does not gather application usage and configuration data.",
    "B": "Transfer Family provides managed file transfer over SFTP, FTPS, and FTP, not discovery.",
@@ -625,16 +597,16 @@
   }
  },
  "q_170468ef4f96": {
-  "explanation": "The exam expects Scaling horizontally. AWS lists the Performance efficiency design principles as democratize advanced technologies, go global in minutes, use serverless architectures, experiment more often, and consider mechanical sympathy; horizontal scaling is usually a Reliability principle.",
+  "explanation": "Using serverless architectures is a listed Performance efficiency design principle, alongside democratize advanced technologies, go global in minutes, experiment more often and consider mechanical sympathy. Scaling horizontally is a Reliability principle.",
   "optionNotes": {
-   "A": "Using serverless architectures is a listed Performance efficiency design principle in AWS docs, even though the exam expects a different option.",
-   "B": "The exam expects this option, although AWS docs usually associate scaling horizontally with the Reliability pillar.",
+   "A": "Using serverless architectures is a listed Performance efficiency design principle; it removes the need to run and maintain servers for traditional compute activities.",
+   "B": "AWS lists scaling horizontally as a Reliability design principle, not a Performance efficiency one.",
    "C": "Measuring the cost of workloads relates to the Cost optimization pillar.",
    "D": "Using managed services is mostly associated with Operational excellence and Cost optimization."
   }
  },
  "q_cefaa55a11e3": {
-  "explanation": "AWS Application Discovery Service collects usage and configuration data without replicating workloads, which fits a company that only wants to understand its environment for now.",
+  "explanation": "AWS Application Discovery Service collects usage and configuration data without replicating workloads, which fits a company that only wants to understand its environment for now. AWS closed Application Discovery Service to new customers on November 7, 2025 and recommends AWS Transform for new discovery projects, but it is the only discovery service among these options.",
   "optionNotes": {
    "A": "Application Discovery Service gathers usage and configuration data without replicating anything.",
    "B": "Application Migration Service replicates servers to AWS, which the company does not want yet.",
@@ -760,6 +732,53 @@
    "C": "A high-level TCO analysis supports the business case in the assess phase.",
    "D": "Building and securing the landing zone belongs to the mobilize phase.",
    "E": "Modernizing applications after migration belongs to the migrate and modernize phase."
+  }
+ },
+ "q_8dbda4b2d28d": {
+  "explanation": "Resiliency is the capability of a workload to recover from infrastructure or service disruptions and keep functioning, which is a goal of the Reliability pillar of the AWS Well-Architected Framework.",
+  "optionNotes": {
+   "A": "Consistency is about all readers seeing the same data, not about remaining functional during problems.",
+   "B": "Elasticity is the ability to scale resources up and down with demand, not to withstand operational problems.",
+   "C": "Resiliency is the ability of a workload to recover from disruptions and keep functioning, as described for the Reliability pillar.",
+   "D": "Latency measures delay in responses, not the ability to keep functioning."
+  }
+ },
+ "q_ea907910d5b1": {
+  "explanation": "The People perspective of the AWS CAF covers culture, organizational structure, leadership and workforce skills. The other perspectives focus on strategy, the technical foundation and running workloads.",
+  "optionNotes": {
+   "A": "Business focuses on strategy, value creation, and data-driven outcomes rather than culture and workforce skills.",
+   "B": "People covers culture, leadership, organization design, and workforce skills, which matches the stated requirements.",
+   "C": "Platform focuses on the technical foundation and architecture rather than people and culture.",
+   "D": "Operations focuses on running and supporting workloads, not on people and organization."
+  }
+ },
+ "q_677db91ace22": {
+  "explanation": "For an application that cannot run in the cloud, the lowest-effort strategies are Retire (decommission it if it is no longer needed) and Retain (keep it in the source environment and do not migrate it for now). Repurchase, Replatform and Refactor all require work.",
+  "optionNotes": {
+   "A": "Retire decommissions the application when it has no business value in the cloud, which takes the least effort.",
+   "B": "Retain keeps the application in the source environment, for example when it is not ready to migrate, which requires no migration work.",
+   "C": "Repurchase means replacing the application with a different product and migrating to it, which takes more effort.",
+   "D": "Replatform requires optimizations to the application or its platform, which is more effort.",
+   "E": "Refactor redesigns the application and is the most complex and costly strategy."
+  }
+ },
+ "q_0b455edc2810": {
+  "explanation": "The six AWS CAF perspectives are Business, People, Governance, Platform, Security and Operations, so Security and Business are perspectives. Cloud fluency and Change acceleration are capabilities of the People perspective, and Architecture is not a perspective.",
+  "optionNotes": {
+   "A": "Cloud fluency is a capability of the People perspective, not a perspective.",
+   "B": "Security is one of the six AWS CAF perspectives.",
+   "C": "Change acceleration is a capability of the People perspective, not a perspective.",
+   "D": "Architecture is not one of the six AWS CAF perspectives.",
+   "E": "Business is one of the six AWS CAF perspectives."
+  }
+ },
+ "q_636c30bfd9f9": {
+  "explanation": "In the AWS CAF, the People perspective serves as the bridge between technology and business, accelerating the cloud journey so that the organization evolves toward a culture of continuous growth and learning.",
+  "optionNotes": {
+   "A": "People is the perspective described as the bridge between technology and business that helps build a culture of continuous growth and learning.",
+   "B": "Governance orchestrates cloud initiatives, risk, benefits and cloud financial management rather than bridging technology and business culture.",
+   "C": "Operations ensures that cloud services are delivered at a level that meets the needs of the business.",
+   "D": "Security focuses on protecting data and workloads, not on organizational culture."
   }
  }
 }

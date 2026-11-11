@@ -1,6 +1,7 @@
 import { isGateOpen, passedCheckpointGroups } from '@/features/exam';
 import { completedTopicIds, topicStatuses } from '@/features/mindmap';
 import type { TopicStatus } from '@/features/mindmap';
+import { reconcileAnswers } from '@/features/practice';
 import { onReportSubmitted } from '@/features/report';
 import { makeRng } from '@/random/seeded-random';
 import {
@@ -70,6 +71,15 @@ export class AppState {
 
   /** Reconciles derived stats first, then loads everything. Returns the saved locale, if any. */
   async load(): Promise<Locale | null> {
+    try {
+      await reconcileAnswers({
+        attempts: this.services.repos.attempts,
+        catalog: this.services.catalog,
+        ...(this.services.beforeRegrade ? { beforeWrite: this.services.beforeRegrade } : {}),
+      });
+    } catch (e) {
+      console.error('Could not re-grade submitted attempts against the answer bank', e);
+    }
     await reconcileStats(this.services.rebuildDeps);
     const [saved] = await Promise.all([this.services.repos.settings.get(SETTING_LOCALE), this.refresh()]);
     await this.#decideDailyPrompt();

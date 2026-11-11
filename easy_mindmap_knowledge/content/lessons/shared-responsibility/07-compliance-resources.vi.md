@@ -31,7 +31,7 @@ Không phải dịch vụ nào cũng nằm trong phạm vi của mọi chương 
 Một số luật yêu cầu dữ liệu phải ở lại trong một quốc gia hoặc khu vực nhất định. Trên AWS:
 
 - **Bạn chọn AWS Region** nơi lưu nội dung của mình.
-- AWS cam kết **không di chuyển hay sao chép nội dung của bạn ra ngoài các Region bạn chọn** nếu không có sự đồng ý của bạn, trừ khi cần để cung cấp dịch vụ mà bạn đã khởi chạy hoặc để tuân thủ pháp luật.
+- AWS cam kết **không di chuyển hay sao chép nội dung của bạn ra ngoài các Region bạn chọn** trừ khi cần để cung cấp dịch vụ mà bạn đã khởi chạy hoặc để tuân thủ pháp luật hoặc lệnh bắt buộc của cơ quan chính phủ.
 - **Bạn sở hữu nội dung của mình** và kiểm soát ai được truy cập nó.
 
 Vì vậy "dữ liệu phải ở lại nước Đức" chỉ tới việc chọn một Region tại quốc gia đó.
@@ -41,7 +41,7 @@ Vì vậy "dữ liệu phải ở lại nước Đức" chỉ tới việc chọ
 - "Tải báo cáo SOC 2" hoặc "tìm chứng thực PCI của AWS" là **AWS Artifact**.
 - "Chấp nhận BAA cho HIPAA" cũng là **AWS Artifact** (phần thỏa thuận).
 - "AWS tuân thủ PCI DSS, nên ứng dụng của chúng tôi tự động tuân thủ" là **sai**.
-- Yêu cầu lưu trú dữ liệu được đáp ứng bằng cách **chọn Region**; AWS không chuyển nội dung ra khỏi đó nếu không có sự đồng ý của bạn.
+- Yêu cầu lưu trú dữ liệu được đáp ứng bằng cách **chọn Region**; AWS không di chuyển hay sao chép nội dung ra ngoài các Region đó, trừ khi cần để cung cấp dịch vụ mà bạn đã khởi chạy hoặc để tuân thủ pháp luật hoặc lệnh bắt buộc của cơ quan chính phủ.
 
 ## Ý chính
 

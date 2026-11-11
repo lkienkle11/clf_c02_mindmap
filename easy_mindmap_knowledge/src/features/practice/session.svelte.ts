@@ -2,7 +2,8 @@ import type { Services } from '@/app/composition';
 import { AttemptMissingError } from '@/persistence';
 import type { AttemptQuestionRow, AttemptRow, ClockState } from '@/persistence';
 import { advanceFreeze, isExpired, pauseForReport, remainingAt, resolveOnResume, settleHidden as settleClockHidden, startClock } from './logic/attempt-clock';
-import { gradeQuestion, passes } from './logic/grading';
+import { gradeQuestion } from './logic/grading';
+import { attemptScore } from './logic/regrade';
 import { buildPool, planAttempt } from './logic/pick-questions';
 import type { PlannedQuestion } from './logic/pick-questions';
 import { validateQuestionCount } from './logic/question-count';
@@ -359,11 +360,12 @@ export class PracticeSession {
     });
     const total = items.length;
     const correctCount = items.filter((i) => i.isCorrect).length;
+    const { scorePct, passed } = attemptScore(correctCount, total);
     const result: SubmitResult = {
-      scorePct: total === 0 ? 0 : Math.round((correctCount * 100) / total),
+      scorePct,
       correct: correctCount,
       total,
-      passed: passes(correctCount, total),
+      passed,
       items,
     };
     try {

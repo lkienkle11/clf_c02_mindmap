@@ -9,12 +9,12 @@
   }
  },
  "q_341570b0e614": {
-  "explanation": "Customers are responsible for security in the cloud, which includes protecting their own application data. AWS handles the hardware and the physical data centers.",
+  "explanation": "Customers are responsible for security in the cloud, which includes protecting their own application data. AWS handles the hardware, the physical data centers and the global network infrastructure.",
   "optionNotes": {
    "A": "AWS maintains the hardware that underlies EC2 instances.",
    "B": "The customer decides how its application data is classified, encrypted and accessed, so securing it is a customer responsibility.",
    "C": "AWS provides physical security for its data centers, so this is not left to the customer.",
-   "D": "The exam expects this to be AWS's side: AWS maintains the network infrastructure underneath the VPC, while the customer only configures its own VPC settings (subnets, route tables, security groups)."
+   "D": "AWS maintains the global network infrastructure that connects its Regions and data centers, so this is an AWS responsibility."
   }
  },
  "q_b927dfd0a6af": {
@@ -32,7 +32,7 @@
    "A": "Software licensing depends on the service and model (for example license-included versus bring-your-own), so it is not something the customer always manages alone.",
    "B": "AWS runs the physical network, and the customer only configures the network settings it controls, so networking is split rather than always the customer's.",
    "C": "The customer owns its data and is always responsible for deciding how it is classified, protected and accessed.",
-   "D": "Key handling depends on the service: with AWS-managed options such as SSE-S3 AWS manages the keys, so the exam expects customer data, not keys, as the item that is always the customer's."
+   "D": "AWS maintains the hypervisor that runs customer instances, so this is not left to the customer."
   }
  },
  "q_4b4b61775da2": {
@@ -59,12 +59,12 @@
    "A": "AWS maintains the configuration of infrastructure devices as part of the global infrastructure.",
    "B": "Patching and updates within the hardware infrastructure are done by AWS.",
    "C": "Guest operating systems and applications belong to the customer, who must configure them securely.",
-   "D": "Customers choose whether and how to encrypt their data, so encryption decisions are theirs.",
+   "D": "Customers decide which encryption options to use and how their keys are managed, so encryption decisions are theirs (some services, such as Amazon S3, already encrypt new data by default).",
    "E": "AWS owns and maintains the infrastructure hardware."
   }
  },
  "q_d185d25f405f": {
-  "explanation": "IAM access keys and secret keys are credentials the customer controls, so the customer must manage and rotate them. AWS does not rotate customer IAM user keys automatically.",
+  "explanation": "IAM access keys and secret keys are long-term credentials that the customer controls, so the customer manages them and updates them when needed (for example when an employee leaves); AWS recommends temporary credentials wherever possible. AWS does not rotate customer IAM user keys automatically.",
   "optionNotes": {
    "A": "Static long-term keys carry risk if they leak, so rotating them is a recommended security practice.",
    "B": "Managing IAM users and rotating their access keys is part of security in the cloud, which is the customer's responsibility.",
@@ -185,16 +185,16 @@
   }
  },
  "auth-shared-responsibility-02": {
-  "explanation": "AWS patches the operating system and engine of RDS instances, and the customer controls the timing by choosing the weekly maintenance window. Customers do not install patches on the RDS host themselves.",
+  "explanation": "AWS patches the operating system and engine of RDS instances, and the customer influences the timing by choosing the weekly maintenance window or by applying an available update at a chosen time; a mandatory update can still be applied outside the window once its apply date has passed. Customers do not install patches on the RDS host themselves.",
   "optionNotes": {
    "A": "RDS does not give customers SSH access to the underlying host, so manual patching is not possible.",
    "B": "A support case is not needed; patch timing is controlled with a setting on the DB instance.",
    "C": "AWS does patch RDS instances, because RDS is a managed service.",
-   "D": "The preferred maintenance window defines when AWS applies required patches, so work happens in the company's quiet hours."
+   "D": "The preferred maintenance window is when RDS starts scheduled maintenance, so routine patching can be kept to the company's quiet hours (a mandatory update can still be applied after its apply date)."
   }
  },
  "auth-shared-responsibility-03": {
-  "explanation": "With Lambda the customer owns the function code, the libraries it packages, and the IAM permissions the function uses. AWS operates and patches the servers, operating system, runtime and virtualization layer, and secures the data centers.",
+  "explanation": "With Lambda the customer owns the function code, the libraries it packages, and the IAM permissions the function uses. AWS operates and patches the servers, operating system and virtualization layer, and publishes runtime updates, which Lambda applies automatically in its default Auto mode (in Function update or Manual mode the customer must update functions to pick them up); AWS also secures the data centers.",
   "optionNotes": {
    "A": "AWS manages and patches the servers and operating system that run Lambda functions.",
    "B": "The code and the third-party libraries in the deployment package are written and chosen by the customer, who must keep them secure.",

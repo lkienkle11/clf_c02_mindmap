@@ -111,6 +111,116 @@ describe('AppState', () => {
     expect(await services.repos.questionStats.get('q-cloud')).not.toBeNull();
   });
 
+  it('load() re-grades history against the corrected bank before rebuilding stats', async () => {
+    const raw = makeRawCatalog();
+    raw.questions.push(makeQuestion({ id: 'q-cloud', topicId: 'cloud-concepts', correct: ['B'] }));
+    const thatServices = buildServices({
+      executor: await createNodeSqliteExecutor(), catalog: loadCatalog(raw), now: () => NOW,
+    });
+    const thatState = new AppState(thatServices);
+    await thatServices.repos.attempts.create(
+      attempt({ scorePct: 100, passed: true, startedAt: NOW - 10 * DAY, submittedAt: NOW - 10 * DAY + 1000 }),
+      [question('a1', 'q-cloud', true)],
+    );
+
+    await thatState.load();
+
+    expect(await thatServices.executor.select<{ is_correct: number }>(
+      'SELECT is_correct FROM attempt_questions WHERE attempt_id = $1 AND question_id = $2', ['a1', 'q-cloud'],
+    )).toEqual([{ is_correct: 0 }]);
+    expect(await thatServices.executor.select<{ score_pct: number; passed: number }>(
+      'SELECT score_pct, passed FROM attempts WHERE id = $1', ['a1'],
+    )).toEqual([{ score_pct: 0, passed: 0 }]);
+    expect(await thatServices.repos.questionStats.get('q-cloud')).toMatchObject({
+      timesCorrect: 0, lastCorrect: false, box: 0,
+    });
+  });
+
+  it('a topic loses its completed status when the correction turns its only passing attempt into a failure', async () => {
+    const history = attempt({
+      scorePct: 100, passed: true, startedAt: NOW - 10 * DAY, submittedAt: NOW - 10 * DAY + 1000,
+    });
+    await services.repos.attempts.create(history, [question('a1', 'q-cloud', true)]);
+    await state.load();
+    expect(state.completed.has('cloud-concepts')).toBe(true);
+    expect(state.statuses.get('cloud-concepts')).toBe('done');
+
+    const raw = makeRawCatalog();
+    raw.questions.push(makeQuestion({ id: 'q-cloud', topicId: 'cloud-concepts', correct: ['B'] }));
+    const thatServices = buildServices({
+      executor: await createNodeSqliteExecutor(), catalog: loadCatalog(raw), now: () => NOW,
+    });
+    const thatState = new AppState(thatServices);
+    await thatServices.repos.attempts.create(history, [question('a1', 'q-cloud', true)]);
+    await thatState.load();
+    expect(thatState.completed.has('cloud-concepts')).toBe(false);
+    expect(thatState.statuses.get('cloud-concepts')).toBe('current');
+  });
+
+  it('a checkpoint attempt that falls below the pass mark is no longer passed, so its group is not passed any more', async () => {
+    const history = attempt({
+      id: 'cp1', kind: 'checkpoint', topicId: null, groupIndex: 1, plannedCount: 1, passed: true, scorePct: 100,
+    });
+    await services.repos.attempts.create(history, [question('cp1', 'q-cloud', true)]);
+    await state.load();
+    expect([...state.passedGroups]).toEqual([1]);
+
+    const raw = makeRawCatalog();
+    raw.questions.push(makeQuestion({ id: 'q-cloud', topicId: 'cloud-concepts', correct: ['B'] }));
+    const thatServices = buildServices({
+      executor: await createNodeSqliteExecutor(), catalog: loadCatalog(raw), now: () => NOW,
+    });
+    const thatState = new AppState(thatServices);
+    await thatServices.repos.attempts.create(history, [question('cp1', 'q-cloud', true)]);
+    await thatState.load();
+    expect(thatState.passedGroups.size).toBe(0);
+  });
+
+  it('a failing re-grade does not stop the app from loading', async () => {
+    const raw = makeRawCatalog();
+    raw.questions.push(makeQuestion({ id: 'q-cloud', topicId: 'cloud-concepts', correct: ['B'] }));
+    const thatServices = buildServices({
+      executor: await createNodeSqliteExecutor(), catalog: loadCatalog(raw), now: () => NOW,
+    });
+    const thatState = new AppState(thatServices);
+    await thatServices.repos.attempts.create(
+      attempt({ scorePct: 100, passed: true, startedAt: NOW - 10 * DAY, submittedAt: NOW - 10 * DAY + 1000 }),
+      [question('a1', 'q-cloud', true)],
+    );
+    const regrade = vi.spyOn(thatServices.repos.attempts, 'applyRegrade').mockRejectedValue(new Error('boom'));
+    const error = vi.spyOn(console, 'error').mockImplementation(() => {});
+    try {
+      await expect(thatState.load()).resolves.toBeNull();
+      expect(error).toHaveBeenCalledWith(expect.stringContaining('re-grade'), expect.any(Error));
+    } finally {
+      regrade.mockRestore();
+      error.mockRestore();
+    }
+  });
+
+  it('load() calls beforeRegrade once, and only when a re-grade will write', async () => {
+    const beforeRegrade = vi.fn(async () => {});
+    const originalServices = buildServices({
+      executor: await createNodeSqliteExecutor(), catalog: services.catalog, now: () => NOW, beforeRegrade,
+    });
+    const history = attempt({
+      scorePct: 100, passed: true, startedAt: NOW - 10 * DAY, submittedAt: NOW - 10 * DAY + 1000,
+    });
+    await originalServices.repos.attempts.create(history, [question('a1', 'q-cloud', true)]);
+    await new AppState(originalServices).load();
+    expect(beforeRegrade).not.toHaveBeenCalled();
+
+    const raw = makeRawCatalog();
+    raw.questions.push(makeQuestion({ id: 'q-cloud', topicId: 'cloud-concepts', correct: ['B'] }));
+    const thatServices = buildServices({
+      executor: await createNodeSqliteExecutor(), catalog: loadCatalog(raw), now: () => NOW, beforeRegrade,
+    });
+    const thatState = new AppState(thatServices);
+    await thatServices.repos.attempts.create(history, [question('a1', 'q-cloud', true)]);
+    await thatState.load();
+    expect(beforeRegrade).toHaveBeenCalledTimes(1);
+  });
+
   it('load() returns the saved locale or null', async () => {
     expect(await state.load()).toBeNull();
     await services.repos.settings.set('locale', 'en');

@@ -39,7 +39,7 @@ Cả hai đều phải được **kích hoạt thành cost allocation tag** tron
 
 ## AWS Cost Anomaly Detection
 
-**Cost Anomaly Detection** dùng **học máy** để học mẫu chi tiêu bình thường của bạn, kể cả tính mùa vụ, và cảnh báo qua email hoặc Amazon SNS khi chi tiêu có dấu hiệu bất thường. Nó chỉ ra **nguyên nhân gốc** theo dịch vụ, tài khoản, Region và loại sử dụng. Khác với budget, bạn không phải đặt hay duy trì ngưỡng. Nó theo dõi chi tiêu AWS nhưng không theo dõi hầu hết sản phẩm bên thứ ba trên AWS Marketplace.
+**Cost Anomaly Detection** dùng **học máy** để học mẫu chi tiêu bình thường của bạn, kể cả tính mùa vụ, và cảnh báo qua email hoặc Amazon SNS khi chi tiêu có dấu hiệu bất thường. Nó chỉ ra **nguyên nhân gốc** theo dịch vụ, tài khoản, Region và loại sử dụng. Khác với budget, bạn không phải đặt hạn mức chi tiêu, nhưng mỗi alert subscription vẫn có một ngưỡng do bạn đặt. Nó theo dõi chi tiêu AWS nhưng không theo dõi hầu hết sản phẩm bên thứ ba trên AWS Marketplace.
 
 ## Billing alarm trong Amazon CloudWatch
 
@@ -53,14 +53,14 @@ Bạn cũng có thể tạo **CloudWatch alarm trên metric EstimatedCharges**. 
 | Cảnh báo khi chi tiêu hoặc mức dùng chạm (hoặc được dự báo sẽ chạm) giới hạn | AWS Budgets |
 | Gửi email báo cáo tình hình budget theo lịch | AWS Budgets reports |
 | Cho tôi mọi dòng chi tiết trong S3 để dùng Athena hoặc dashboard | Cost and Usage Report (Data Exports) |
-| Báo khi chi tiêu bất thường, không cần ngưỡng | Cost Anomaly Detection |
+| Báo khi chi tiêu bất thường, không cần định nghĩa budget | Cost Anomaly Detection |
 | Chia chi phí theo dự án hoặc phòng ban | Cost allocation tag |
 | Báo động trên phí ước tính bằng metric | CloudWatch billing alarm |
 
 ## Ý chính
 
 - Cost Explorer phân tích lịch sử, dự báo và đưa gợi ý mua cùng rightsizing; Budgets cảnh báo và báo cáo; CUR cho dữ liệu sâu nhất trong S3.
-- Cost Anomaly Detection không cần ngưỡng; billing alarm và Budgets thì cần.
+- Cost Anomaly Detection tự học mức chi tiêu bình thường (không cần budget), dù alert subscription của nó có ngưỡng; billing alarm và Budgets cũng cần ngưỡng.
 - Tag phải được kích hoạt thành cost allocation tag; cả tag do AWS tạo lẫn do người dùng định nghĩa đều tính.
 
 ## Nguồn

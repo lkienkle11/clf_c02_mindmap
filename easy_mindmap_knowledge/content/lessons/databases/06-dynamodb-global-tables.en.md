@@ -40,7 +40,7 @@ DAX is **not** a fit for applications that need **strongly consistent reads**, a
 
 ## Time to Live (TTL)
 
-**TTL** lets you give each item an expiry timestamp (a number in Unix epoch seconds, stored in an attribute you choose). DynamoDB deletes expired items automatically, typically within a few days of expiry, and the deletion does **not consume write capacity**. Use it for sessions, temporary tokens, logs and anything that should disappear over time to keep storage cost down.
+**TTL** lets you give each item an expiry timestamp (a number in Unix epoch seconds, stored in an attribute you choose). DynamoDB deletes expired items automatically, typically within a few days of expiry, and the deletion does **not consume write capacity** in the Region where the item expires (with global tables, each replicated delete does consume write capacity in the replica Regions). Use it for sessions, temporary tokens, logs and anything that should disappear over time to keep storage cost down.
 
 ## Backups and recovery
 

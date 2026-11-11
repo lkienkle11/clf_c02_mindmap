@@ -38,10 +38,10 @@
   }
  },
  "q_7b025a8943a2": {
-  "explanation": "Amazon Timestream is the purpose-built AWS time-series database for storing and analyzing very large volumes of time-stamped events such as IoT and operational data; the exam expects Timestream for this wording.",
+  "explanation": "Amazon Timestream is the purpose-built AWS time-series database for storing and analyzing very large volumes of time-stamped events such as IoT and operational data. Timestream for LiveAnalytics has been closed to new customers since 20 June 2025; AWS recommends Timestream for InfluxDB for new workloads.",
   "optionNotes": {
    "A": "Amazon Neptune is a graph database for highly connected data, not a time-series database.",
-   "B": "Timestream is the AWS time-series database designed for trillions of events per day.",
+   "B": "Timestream is the AWS time-series database designed for trillions of events per day (the LiveAnalytics edition is closed to new customers).",
    "C": "Amazon Forecast is a machine learning forecasting service, not a database for storing events.",
    "D": "Amazon DocumentDB is a document database compatible with MongoDB, not a time-series store."
   }
@@ -101,12 +101,12 @@
   }
  },
  "q_acb80c2b7edb": {
-  "explanation": "Amazon DynamoDB is a durable NoSQL database that stores unstructured or semi-structured items without a fixed schema and lets you query them quickly by key.",
+  "explanation": "Amazon DynamoDB is a durable NoSQL database that stores key-value and document (flexible-schema) items without a fixed schema and lets you query them quickly by key.",
   "optionNotes": {
-   "A": "RDS is a relational database that requires structured data with a defined schema, so it suits unstructured data poorly.",
-   "B": "Aurora is a relational database that expects structured, schema-based data.",
+   "A": "Amazon Athena queries data stored elsewhere, such as in Amazon S3; it is not where the data is stored durably.",
+   "B": "AWS Glue prepares and catalogs data; it is not a durable data store.",
    "C": "QuickSight is a business intelligence and visualization service, not a data store.",
-   "D": "DynamoDB stores schemaless items durably across multiple Availability Zones and supports fast queries."
+   "D": "DynamoDB stores flexible-schema items durably across multiple Availability Zones and supports fast queries by key."
   }
  },
  "q_b6c4aa92dbdb": {
@@ -152,7 +152,7 @@
    "A": "Physical security of AWS data centers is always AWS's responsibility.",
    "B": "DynamoDB is serverless and AWS patches the underlying service, so the customer does not.",
    "C": "Managing access to tables (IAM policies and permissions) is the customer's responsibility.",
-   "D": "DynamoDB encrypts data at rest by default as part of the managed service, so this is not the customer's duty to perform."
+   "D": "DynamoDB encrypts data at rest by default, but the customer still chooses the key type (AWS owned, AWS managed or customer managed), so encryption choices are not only AWS's duty."
   }
  },
  "q_48d7363fc761": {
@@ -169,7 +169,7 @@
   "optionNotes": {
    "A": "DynamoDB scales horizontally to millions of requests per second, matching the requirement.",
    "B": "AWS Cloud9 is a cloud-based IDE for writing code, not a data store.",
-   "C": "ElastiCache for Memcached is an in-memory cache that sits in front of a data store; it is not the durable primary database for the application.",
+   "C": "AWS Glue is a data integration (ETL) service, not a data store for application queries.",
    "D": "Neptune is a graph database for connected data, not a general data store designed to scale to millions of key-based queries per second."
   }
  },
@@ -183,10 +183,10 @@
   }
  },
  "q_61a1c6b38011": {
-  "explanation": "Encryption of Aurora clusters and snapshots is configured by the customer, who chooses to enable it and manages the keys; AWS provides the encryption capability.",
+  "explanation": "Encryption options for Aurora clusters and snapshots are the customer's responsibility: AWS provides the encryption capability and encrypts new clusters by default, but the customer chooses the key type (for example an AWS managed or customer managed KMS key) and manages it.",
   "optionNotes": {
-   "A": "AWS supplies encryption features, but the customer is responsible for enabling and configuring encryption of their databases and snapshots.",
-   "B": "The company decides to turn on encryption and selects the KMS keys for its clusters and snapshots.",
+   "A": "AWS supplies encryption features, but the customer is responsible for choosing and configuring the encryption options and keys for their databases and snapshots.",
+   "B": "The company chooses the encryption settings and selects the KMS key type for its clusters and snapshots.",
    "C": "AWS Marketplace partners are not part of the shared responsibility model for a company's Aurora encryption.",
    "D": "Third-party partners are not responsible for encrypting the company's Aurora clusters under the shared responsibility model."
   }
@@ -273,9 +273,9 @@
   }
  },
  "q_65d7a063cbc7": {
-  "explanation": "Amazon DynamoDB is a key-value and document database that delivers single-digit millisecond performance at any scale, and DynamoDB Accelerator (DAX) can bring reads down to microseconds, which is why the exam expects it for sub-millisecond key-value access.",
+  "explanation": "Amazon DynamoDB is a key-value and document database that delivers single-digit millisecond performance at any scale, and DynamoDB Accelerator (DAX) can bring cached reads down to microseconds, so it is the key-value option for sub-millisecond access.",
   "optionNotes": {
-   "A": "DynamoDB is the AWS key-value database built for very fast access at any scale, with DAX available for microsecond reads.",
+   "A": "DynamoDB is the AWS key-value database built for very fast access at any scale, with DAX available for microsecond cached reads.",
    "B": "Aurora is a relational database, not a key-value database.",
    "C": "DocumentDB is a document database compatible with MongoDB, not a key-value database.",
    "D": "Neptune is a graph database, not a key-value database."

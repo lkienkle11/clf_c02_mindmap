@@ -6,7 +6,7 @@ videoQuery: Amazon Redshift DocumentDB Neptune and AWS Database Migration Servic
 ---
 ## Amazon Redshift: the data warehouse
 
-**Amazon Redshift** is a fully managed, petabyte-scale **data warehouse**. It runs **SQL analytics (OLAP)** over large amounts of data, often loaded from many sources, and works with business intelligence tools. **Redshift Serverless** scales capacity automatically, and you do not pay while it is idle.
+**Amazon Redshift** is a fully managed, petabyte-scale **data warehouse**. It runs **SQL analytics (OLAP)** over large amounts of data, often loaded from many sources, and works with business intelligence tools. **Redshift Serverless** scales capacity automatically, and you do not pay for compute while no queries are running (managed storage is still billed).
 
 Redshift is not a replacement for an application's transactional database. If the question says "analyze years of sales data" or "business reports across many sources", think Redshift. If it says "store each customer order as it happens", think RDS, Aurora or DynamoDB.
 

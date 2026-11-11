@@ -27,11 +27,11 @@
   }
  },
  "q_21dcc39b6973": {
-  "explanation": "A steady, uninterruptible workload expected to grow for years fits a Savings Plan, which gives a discount for committing to a consistent hourly spend and also applies to growing usage.",
+  "explanation": "A steady, uninterruptible workload expected to grow for years fits a Savings Plan, which gives a discount for committing to a consistent hourly spend. The discount applies up to the hourly commitment; usage above it is billed at On-Demand rates.",
   "optionNotes": {
    "A": "Spot Instances can be interrupted at any time, which does not suit an application that cannot stop.",
    "B": "On-Demand has no commitment discount, so it costs more than a plan for constant long-term usage.",
-   "C": "Savings Plans give lower prices in exchange for a commitment to a consistent spend over one or three years, which fits steady and growing usage.",
+   "C": "Savings Plans give lower prices in exchange for a commitment to a consistent hourly spend over one or three years, which fits steady usage; usage above the commitment is billed at On-Demand rates.",
    "D": "Dedicated Hosts are physical servers for licensing or compliance needs and are not the cheapest option for this workload."
   }
  },
@@ -128,10 +128,10 @@
   }
  },
  "q_b10f0f7081a9": {
-  "explanation": "The AWS Cost and Usage Report provides the most detailed billing data, delivered to S3, and can be integrated with Amazon QuickSight to build dashboards.",
+  "explanation": "The AWS Cost and Usage Report provides the most detailed billing data, delivered to S3, and can be loaded into AWS Quick Sight (formerly Amazon QuickSight) to build dashboards.",
   "optionNotes": {
    "A": "Budgets tracks spend against thresholds; it is not the data source for QuickSight dashboards.",
-   "B": "Cost Explorer has its own built-in graphs and does not provide the raw data for building custom QuickSight dashboards.",
+   "B": "Cost Explorer has its own built-in graphs; the Cost and Usage Report is the detailed data source for building custom dashboards.",
    "C": "The Cost and Usage Report delivers detailed billing data to S3 on a regular schedule, which can be used by QuickSight for dashboards.",
    "D": "Cost Anomaly Detection alerts on unusual spend and does not supply data for dashboards."
   }
@@ -293,8 +293,8 @@
  "q_3c87bfb3302a": {
   "explanation": "A job that runs only briefly once a week and at month end, and can be shut down in between, is cheapest on On-Demand Instances because you pay only while they run and make no commitment.",
   "optionNotes": {
-   "A": "Standard Reserved Instances bill for the full term whether or not the instance is running, which wastes money on sporadic use.",
-   "B": "Convertible Reserved Instances also require a term commitment and are billed continuously, which is wasteful here.",
+   "A": "Dedicated Hosts are physical servers for your exclusive use and are billed continuously, which is not the cheapest option for occasional use.",
+   "B": "Dedicated Instances run on single-tenant hardware and cost more, which is not cost-effective for an occasional workload.",
    "C": "On-Demand Capacity Reservations reserve capacity and charge for it even when unused, which does not match an occasional workload.",
    "D": "On-Demand charges only for running time with no commitment, which fits an intermittent workload."
   }
@@ -359,17 +359,17 @@
   "optionNotes": {
    "A": "Marketplace lets sellers publish AMIs that customers can find, subscribe to, and launch.",
    "B": "AWS Data Exchange is for subscribing to third-party data sets, not distributing AMIs.",
-   "C": "EC2 runs instances and can share AMIs privately but is not a marketplace for prospective customers.",
+   "C": "Amazon S3 is object storage and is not a catalog for delivering AMIs to prospective customers.",
    "D": "Organizations manages accounts and policies and does not distribute software."
   }
  },
  "q_5b0dac58ac8d": {
-  "explanation": "The exam expects Convertible Reserved Instances: they are paid up front for a discount and can be exchanged for different instance configurations as the compute mix changes during a partial move to serverless. Current AWS guidance would also point to a Compute Savings Plan, which covers EC2, Fargate, and Lambda and can be paid up front.",
+  "explanation": "Compute Savings Plans apply to Amazon EC2, AWS Fargate and AWS Lambda usage and can be paid up front, so they keep the discount as part of the workload moves to serverless. Convertible Reserved Instances can be exchanged but only discount EC2 usage.",
   "optionNotes": {
-   "A": "Convertible Reserved Instances can be paid up front for a discount and exchanged for other instance configurations during the term, which is the answer the exam expects here.",
+   "A": "Convertible Reserved Instances can be paid up front and exchanged for other EC2 configurations, but they discount only EC2 usage, not Lambda or Fargate.",
    "B": "Spot Instances can be interrupted and give no committed, upfront-paid discount.",
    "C": "EC2 Instance Savings Plans are tied to a specific instance family and Region, so they are less flexible when the workload is changing.",
-   "D": "Compute Savings Plans are also flexible across EC2, Fargate, and Lambda and can be paid up front, but the exam expects Convertible Reserved Instances for this scenario."
+   "D": "Compute Savings Plans apply across EC2, Fargate and Lambda and can be paid up front, so they fit a partial move to serverless."
   }
  },
  "q_2524db652449": {
@@ -541,7 +541,7 @@
   "optionNotes": {
    "A": "Standard Reserved Instances give the highest reservation discount for a fixed configuration.",
    "B": "Convertible Reserved Instances add flexibility but a smaller discount, which is not needed here.",
-   "C": "On-Demand costs more than reserved pricing for continuous use.",
+   "C": "Dedicated Hosts are physical servers for your exclusive use and cost more than a Reserved Instance for a steady workload.",
    "D": "Spot Instances can be interrupted, which fails the requirement."
   }
  },
@@ -592,9 +592,9 @@
   }
  },
  "q_61cea7a24ea1": {
-  "explanation": "AWS Cost Explorer lets the company monitor ongoing costs of the website against its budget.",
+  "explanation": "AWS Budgets lets the company set a cost budget for the website and monitor ongoing costs against it, with alerts when spend is forecast to exceed or exceeds the budget.",
   "optionNotes": {
-   "A": "Cost Explorer visualizes and monitors ongoing costs for the website.",
+   "A": "AWS Budgets tracks ongoing costs against a set budget and alerts when the budget is approached or exceeded.",
    "B": "SDKs are libraries for calling AWS APIs from code and do not monitor cost.",
    "C": "EC2 Image Builder automates building AMIs and does not track cost.",
    "D": "CloudFormation provisions infrastructure from templates and does not monitor cost."

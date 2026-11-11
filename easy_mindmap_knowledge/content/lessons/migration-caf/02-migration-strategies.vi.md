@@ -23,8 +23,8 @@ Một công ty hiếm khi chuyển mọi ứng dụng theo cùng một cách. Kh
 | --- | --- |
 | Ngừng sử dụng, không còn cần | Retire |
 | Chưa sẵn sàng, tạm thời phải ở lại tại chỗ | Retain |
-| Chuyển nguyên trạng, nhanh nhất, không sửa mã | Rehost |
-| Cùng nền tảng hypervisor chuyển sang phiên bản đám mây của nó | Relocate |
+| Chuyển nguyên trạng, không sửa mã | Rehost |
+| Cách chuyển nhanh nhất: cùng nền tảng hypervisor chuyển sang phiên bản đám mây của nó | Relocate |
 | Chuyển sang một sản phẩm SaaS | Repurchase |
 | Chuyển sang dịch vụ được quản lý với ít thay đổi | Replatform |
 | Xây lại thành microservice hoặc serverless | Refactor |

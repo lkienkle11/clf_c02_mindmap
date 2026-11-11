@@ -30,7 +30,7 @@ Most AMIs are **EBS-backed**: the root volume comes from an **Amazon EBS snapsho
 
 ## Copying and sharing AMIs
 
-To use an AMI in another Region, **copy** it there. The copy becomes a separate AMI in the destination Region and is backed by new snapshots. Launch permissions and bucket permissions are **not** copied, and only your own user-defined tags are. Copying itself is free, but you pay standard storage for the extra snapshots. You can also share an AMI with other AWS accounts without copying it.
+To use an AMI in another Region, **copy** it there. The copy becomes a separate AMI in the destination Region and is backed by new snapshots. Launch permissions and bucket permissions are **not** copied. Your own user-defined tags are copied only if you select the **Copy tags** option; system tags and tags added by other accounts are never copied. Copying itself is free, but you pay standard storage for the extra snapshots. You can also share an AMI with other AWS accounts without copying it.
 
 AMIs and snapshots also support **disaster recovery** for EC2. An AMI can recreate a whole server, including its configuration, and an EBS snapshot holds everything needed to restore a volume's data. Because an AMI can be copied to a second Region, you can launch the same server there if the first Region has trouble. In its backup and restore approach, AWS's disaster recovery guidance lists EBS snapshots as point-in-time backups of volume data and says you can back up EC2 instances as AMIs, which are built from snapshots of the instance's volumes and can be copied within or across Regions and used to launch a restored version of the server. AWS does not back up your EBS volumes automatically; taking snapshots is your responsibility.
 

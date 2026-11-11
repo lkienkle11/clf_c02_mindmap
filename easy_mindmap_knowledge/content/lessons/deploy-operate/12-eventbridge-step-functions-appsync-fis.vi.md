@@ -24,7 +24,7 @@ Ví dụ điển hình: khi một EC2 instance chuyển sang trạng thái "stop
 
 | Loại workflow | Chạy tối đa | Thực thi | Phù hợp với |
 | --- | --- | --- | --- |
-| Standard | Tới một năm | Mỗi bước đúng một lần | Workflow chạy lâu, cần kiểm toán |
+| Standard | Tới một năm | Đúng một lần (trừ khi đặt Retry) | Workflow chạy lâu, cần kiểm toán |
 | Express | Tới năm phút | Ít nhất một lần nếu bất đồng bộ, tối đa một lần nếu đồng bộ | Xử lý event tốc độ cao, như dữ liệu streaming và thu nhận IoT |
 
 Chọn Step Functions để **điều phối** nhiều dịch vụ theo thứ tự, có xử lý lỗi và rẽ nhánh, thay vì nối chúng bằng mã tự viết. Workflow Standard tính tiền theo số lần chuyển state; Express tính theo số lần và thời lượng thực thi.

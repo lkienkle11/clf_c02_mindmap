@@ -4,6 +4,8 @@ export type { PlannedQuestion } from './logic/pick-questions';
 export { MIN_PRACTICE_QUESTIONS, quickCounts, validateQuestionCount } from './logic/question-count';
 export type { QuestionCountReason, QuestionCountResult } from './logic/question-count';
 export { gradeQuestion, passes } from './logic/grading';
+export { reconcileAnswers } from './answers-reconcile';
+export type { ReconcileAnswersDeps, ReconcileAnswersResult } from './answers-reconcile';
 export { PracticeSession, FREEZE_MAX_TICK_MS } from './session.svelte';
 export type { SubmitResult, SessionQuestion } from './session.svelte';
 export { DEFAULT_PRACTICE_OPTIONS, loadLastOptions, saveLastOptions } from './options';

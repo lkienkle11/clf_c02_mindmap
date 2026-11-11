@@ -29,7 +29,7 @@ AMI gắn với một **Region**, một hệ điều hành, một kiến trúc b
 
 ## Sao chép và chia sẻ AMI
 
-Để dùng một AMI ở Region khác, hãy **copy** nó sang đó. Bản sao là một AMI riêng trong Region đích và dựa trên các snapshot mới. Launch permission và quyền bucket **không** được sao chép, và chỉ các tag do người dùng tự đặt của bạn được chép theo. Bản thân việc copy miễn phí, nhưng bạn trả phí lưu trữ chuẩn cho các snapshot phát sinh thêm. Bạn cũng có thể chia sẻ AMI cho tài khoản AWS khác mà không cần copy.
+Để dùng một AMI ở Region khác, hãy **copy** nó sang đó. Bản sao là một AMI riêng trong Region đích và dựa trên các snapshot mới. Launch permission và quyền bucket **không** được sao chép. Các tag do người dùng tự đặt của bạn chỉ được chép khi bạn chọn tùy chọn **Copy tags**; system tag và tag do tài khoản khác gắn thì không bao giờ được chép. Bản thân việc copy miễn phí, nhưng bạn trả phí lưu trữ chuẩn cho các snapshot phát sinh thêm. Bạn cũng có thể chia sẻ AMI cho tài khoản AWS khác mà không cần copy.
 
 AMI và snapshot còn hỗ trợ **khôi phục sau thảm họa** cho EC2. AMI dựng lại được cả một máy chủ cùng cấu hình, còn EBS snapshot chứa mọi thứ cần để khôi phục dữ liệu của volume. Vì AMI có thể copy sang Region thứ hai, bạn có thể khởi chạy lại máy chủ ở đó nếu Region đầu gặp sự cố. Trong cách tiếp cận sao lưu và khôi phục, hướng dẫn khôi phục sau thảm họa của AWS nêu EBS snapshot là bản sao lưu dữ liệu volume tại một thời điểm và cho phép sao lưu EC2 instance thành AMI, được tạo từ các snapshot của volume trên instance và có thể copy trong cùng Region hoặc sang Region khác để khởi chạy lại một phiên bản đã khôi phục của máy chủ. AWS không tự động sao lưu EBS volume của bạn; tạo snapshot là trách nhiệm của bạn.
 

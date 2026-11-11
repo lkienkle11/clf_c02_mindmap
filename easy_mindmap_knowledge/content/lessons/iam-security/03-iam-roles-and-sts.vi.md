@@ -33,7 +33,7 @@ Vì vậy "cho ứng dụng trên EC2 truy cập S3" hoặc "để EC2 gọi Ama
 
 **AWS STS** là dịch vụ cấp thông tin đăng nhập tạm thời. Chúng gồm access key ID, secret access key và **session token**. Chúng hết hạn, không được lưu cùng user, và không dùng lại được sau khi hết hạn, nên không cần xoay vòng hay thu hồi.
 
-- STS mặc định có một endpoint toàn cầu, và bạn có thể chọn endpoint theo Region. Thông tin đăng nhập dùng được ở mọi Region.
+- STS mặc định có một endpoint toàn cầu, và bạn có thể chọn endpoint theo Region; AWS khuyên dùng endpoint theo Region.
 - STS được cung cấp không tính thêm phí.
 - Tên chính thức là *Security* Token Service, dù một số câu hỏi viết "Simple Token Service".
 
@@ -64,7 +64,7 @@ Không cần tạo IAM user nào ở tài khoản B. Câu hỏi kiểu "cấp ch
 - Thông tin đăng nhập tự hết hạn, và trên EC2 chúng tự làm mới.
 - Một thay đổi ở role áp dụng cho mọi instance đang dùng nó.
 
-Hãy tạo IAM user khi cần thông tin đăng nhập cho từng cá nhân, hoặc để xếp user vào group. Ứng dụng trên EC2, ứng dụng di động (qua Amazon Cognito) và nhân viên vốn đã đăng nhập trong mạng công ty thì dùng role hoặc federation.
+Với từng cá nhân, AWS khuyên dùng IAM Identity Center hoặc federation với thông tin đăng nhập tạm thời; chỉ tạo IAM user cho các trường hợp cụ thể không dùng được chúng, hoặc để xếp user vào group. Ứng dụng trên EC2, ứng dụng di động (qua Amazon Cognito) và nhân viên vốn đã đăng nhập trong mạng công ty thì dùng role hoặc federation.
 
 ## Ý chính
 

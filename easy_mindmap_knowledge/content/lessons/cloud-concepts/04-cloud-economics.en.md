@@ -35,7 +35,7 @@ TCO compares the **full** cost of running a workload, not just the server price.
 
 - Cloud moves spending from CapEx (up front, fixed) to OpEx (variable, pay as you go).
 - TCO includes hidden on-premises costs: power, cooling, space, maintenance and staff.
-- Right-sizing matches resource size to real need, and it is never "done once".
+- Right-sizing matches resource size to real need, and it is usually an iterative process, though it can be one-off if the effort costs more than the savings.
 - Stopping idle resources is one of the simplest ways to save money.
 
 ## Sources

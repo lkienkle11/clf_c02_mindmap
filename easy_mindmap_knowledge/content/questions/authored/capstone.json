@@ -156,7 +156,7 @@
     ],
     "multi": true,
     "orderDependent": false,
-    "explanation": "AWS Organizations consolidated billing gives one bill for all member accounts, and a service control policy (SCP) sets the maximum permissions for accounts, so it can block other Regions even when IAM allows them. IAM groups only apply inside one account, and Cost Explorer analyzes spending without restricting anything.",
+    "explanation": "AWS Organizations consolidated billing gives one bill for all member accounts, and a service control policy (SCP) sets the maximum permissions for the member accounts it applies to, so it can block other Regions even when IAM allows them. SCPs do not restrict the management account. IAM groups only apply inside one account, and Cost Explorer analyzes spending without restricting anything.",
     "source": "authored"
   },
   {

@@ -9,7 +9,7 @@ videoQuery: Amazon EBS vs EFS vs S3 vs instance store explained
 | Type | How you use it | AWS services |
 | --- | --- | --- |
 | Object | Whole files over an API, from anywhere | Amazon S3 |
-| Block | A disk attached to one server | Amazon EBS, instance store |
+| Block | A disk attached to one server (usually; EBS Multi-Attach on io1 and io2 volumes is the exception) | Amazon EBS, instance store |
 | File | A shared folder that many servers mount | Amazon EFS, Amazon FSx |
 
 Exam clue: "a disk for a database on EC2" is block, "a file system shared by many instances" is file, "store any amount of backups" is object.

@@ -26,7 +26,7 @@ Use it for caches, buffers, scratch data, or data you replicate across a fleet. 
 - **Regional** file systems store data across multiple Availability Zones; **One Zone** file systems keep it in one AZ for lower cost.
 - Capacity is **elastic**: you do not provision a size, and you pay for what you store.
 - **Storage classes** at overview level: Standard for frequently accessed files, Infrequent Access (IA) and Archive for colder files at lower storage prices. Lifecycle management can move files between them automatically based on access.
-- Data is encrypted at rest with AWS KMS and in transit with TLS.
+- Data can be encrypted at rest with AWS KMS (turn it on when you create the file system; the console enables it by default) and in transit with TLS (optional, enabled with a mount option).
 
 Exam clue: "shared file system for many Linux instances", "NFS", "managed, grows automatically" point to EFS.
 

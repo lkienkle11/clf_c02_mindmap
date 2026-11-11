@@ -11,7 +11,7 @@ Mỗi **AWS Region** là một vị trí địa lý riêng, có các Availabilit
 Hai ý rút ra từ đây thường xuất hiện trong đề thi:
 
 - **Tính cô lập**: các Region được thiết kế độc lập, nên sự cố ở một Region không nên lan sang Region khác.
-- **Dữ liệu ở nguyên nơi bạn đặt**: với dịch vụ theo Region, nội dung được lưu trong Region bạn chọn. Dữ liệu chỉ rời đi khi chính bạn quyết định sao chép, nhân bản hoặc di chuyển (ví dụ bằng cross-Region replication). AWS không tự chuyển dữ liệu của bạn giữa các Region.
+- **Dữ liệu ở nguyên nơi bạn đặt**: với dịch vụ theo Region, nội dung được lưu trong Region bạn chọn. Dữ liệu chỉ rời đi khi chính bạn quyết định sao chép, nhân bản hoặc di chuyển (ví dụ bằng cross-Region replication, hoặc bằng cách gửi cho người dùng một bản tải xuống). AWS không tự chuyển dữ liệu của bạn giữa các Region.
 
 Số lượng Region và Availability Zone hiện tại được AWS công bố trên trang Global Infrastructure và luôn tăng, vì vậy đừng học thuộc con số. Hãy nhớ cấu trúc: một Region gồm nhiều Availability Zone cô lập (ít nhất ba trong các Region công khai).
 

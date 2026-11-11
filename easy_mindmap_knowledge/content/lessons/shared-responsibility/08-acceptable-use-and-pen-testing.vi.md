@@ -22,7 +22,7 @@ AWS có thể điều tra các vi phạm bị nghi ngờ, gỡ hoặc vô hiệu
 
 ## Kiểm thử xâm nhập (penetration testing)
 
-Bạn được kiểm thử bảo mật cho tài nguyên **của chính mình**. Với danh sách các dịch vụ được phép, AWS cho phép kiểm thử **không cần phê duyệt trước**. Danh sách gồm ví dụ Amazon EC2, Amazon RDS, Amazon Aurora, Amazon CloudFront, AWS Lambda, AWS Elastic Beanstalk và AWS Fargate. Danh sách thay đổi theo thời gian nên hãy kiểm tra trang hiện hành. Một số dịch vụ có giới hạn bổ sung, chẳng hạn kiểm thử chiều đi ra từ API Gateway.
+Bạn được kiểm thử bảo mật cho tài nguyên **của chính mình**. Với danh sách các dịch vụ được phép, AWS cho phép kiểm thử **không cần phê duyệt trước** (kiểm thử bảo mật có bao gồm Command and Control, và các sự kiện mô phỏng như DDoS hoặc thử nghiệm phishing, vẫn cần AWS phê duyệt hoặc đi theo quy trình sự kiện mô phỏng). Danh sách gồm ví dụ Amazon EC2, Amazon RDS, Amazon Aurora, Amazon CloudFront, AWS Lambda, AWS Elastic Beanstalk và AWS Fargate. Danh sách thay đổi theo thời gian nên hãy kiểm tra trang hiện hành. Một số dịch vụ có giới hạn bổ sung: kiểm thử xâm nhập chiều đi ra từ Amazon API Gateway bị cấm (trang AWS liệt kê API Gateway ở cả danh sách dịch vụ được phép và danh sách bị cấm đối với kiểm thử chiều đi ra, nên hãy kiểm tra trang hiện hành).
 
 Các hoạt động AWS liệt kê là **bị cấm**:
 
@@ -38,13 +38,13 @@ Nếu bạn phát hiện vấn đề bảo mật trong một dịch vụ AWS khi
 
 ### Góc nhìn khi thi
 
-- Khách hàng được pen test các dịch vụ được phép **mà không cần phê duyệt trước**.
+- Khách hàng được pen test các dịch vụ được phép **mà không cần phê duyệt trước** (kiểm thử Command and Control và các sự kiện mô phỏng là ngoại lệ).
 - Tấn công làm quá tải mục tiêu (DoS/DDoS) bị cấm, và mô phỏng DDoS phải theo đúng quy trình.
 - Bạn kiểm thử tài nguyên **của mình**; không được tấn công hạ tầng AWS hay khách hàng khác.
 
 ## Báo cáo lạm dụng
 
-Nếu bạn tin ai đó dùng tài nguyên AWS để lạm dụng (spam, lưu trữ mã độc, tấn công), hãy báo cáo qua **quy trình báo cáo lạm dụng của AWS** được liên kết từ trang chính sách. Nếu AWS nhận báo cáo lạm dụng về tài nguyên của bạn, AWS sẽ chuyển cho bạn và mong bạn phản hồi mô tả trường hợp sử dụng cùng đầu mối liên hệ.
+Nếu bạn tin ai đó dùng tài nguyên AWS để lạm dụng (spam, lưu trữ mã độc, tấn công), hãy báo cáo qua **quy trình báo cáo lạm dụng của AWS** được liên kết từ trang chính sách. Nếu AWS nhận báo cáo lạm dụng về các hoạt động liên quan đến kiểm thử bảo mật của bạn, AWS sẽ chuyển báo cáo cho bạn và mong bạn phản hồi bằng nội dung đã được AWS chấp thuận mô tả trường hợp sử dụng cùng đầu mối liên hệ.
 
 ## Bằng chứng tuân thủ
 

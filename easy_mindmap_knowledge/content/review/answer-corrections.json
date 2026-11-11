@@ -1,0 +1,115 @@
+[
+  {
+    "questionId": "q_7e665a1faa9c",
+    "oldCorrect": [
+      "C"
+    ],
+    "newCorrect": [
+      "A"
+    ],
+    "reason": "AWS App Runner is closed to new customers; Elastic Beanstalk Cluster mode builds container images from source code and is available to new customers.",
+    "sources": [
+      "https://docs.aws.amazon.com/apprunner/latest/dg/apprunner-availability-change.html",
+      "https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/Welcome.html"
+    ],
+    "confidence": "medium",
+    "approvedOn": "2026-11-11"
+  },
+  {
+    "questionId": "q_3979d8ab2d09",
+    "oldCorrect": [
+      "D"
+    ],
+    "newCorrect": [
+      "A"
+    ],
+    "reason": "The Lightsail guide describes launching a pre-configured application or development stack (WordPress, LAMP and others), which matches the question's wording about application stacks and pre-configured instances.",
+    "sources": [
+      "https://docs.aws.amazon.com/lightsail/latest/userguide/what-is-amazon-lightsail.html"
+    ],
+    "confidence": "medium",
+    "approvedOn": "2026-11-11"
+  },
+  {
+    "questionId": "q_79a6198b037a",
+    "oldCorrect": [
+      "A"
+    ],
+    "newCorrect": [
+      "B"
+    ],
+    "reason": "Data science is a Business perspective capability; Program and project management is a Governance perspective capability in AWS CAF.",
+    "sources": [
+      "https://docs.aws.amazon.com/whitepapers/latest/overview-aws-cloud-adoption-framework/business-perspective.html",
+      "https://docs.aws.amazon.com/whitepapers/latest/overview-aws-cloud-adoption-framework/governance-perspective.html"
+    ],
+    "confidence": "high",
+    "approvedOn": "2026-11-11"
+  },
+  {
+    "questionId": "q_af399656dd4d",
+    "oldCorrect": [
+      "C",
+      "D"
+    ],
+    "newCorrect": [
+      "A",
+      "D"
+    ],
+    "reason": "Program and project management and Risk management are Governance capabilities; Portfolio management is a Business capability (Governance has Application portfolio management).",
+    "sources": [
+      "https://docs.aws.amazon.com/whitepapers/latest/overview-aws-cloud-adoption-framework/governance-perspective.html",
+      "https://docs.aws.amazon.com/whitepapers/latest/overview-aws-cloud-adoption-framework/business-perspective.html"
+    ],
+    "confidence": "high",
+    "approvedOn": "2026-11-11"
+  },
+  {
+    "questionId": "q_170468ef4f96",
+    "oldCorrect": [
+      "B"
+    ],
+    "newCorrect": [
+      "A"
+    ],
+    "reason": "Use serverless architectures is a listed Performance efficiency design principle; scaling horizontally is a Reliability principle.",
+    "sources": [
+      "https://docs.aws.amazon.com/wellarchitected/latest/performance-efficiency-pillar/design-principles.html",
+      "https://docs.aws.amazon.com/wellarchitected/latest/reliability-pillar/design-principles.html"
+    ],
+    "confidence": "high",
+    "approvedOn": "2026-11-11"
+  },
+  {
+    "questionId": "q_5b0dac58ac8d",
+    "oldCorrect": [
+      "A"
+    ],
+    "newCorrect": [
+      "D"
+    ],
+    "reason": "Compute Savings Plans apply to EC2, AWS Fargate and AWS Lambda usage and can be paid up front, while Convertible Reserved Instances only discount EC2 usage.",
+    "sources": [
+      "https://docs.aws.amazon.com/savingsplans/latest/userguide/plan-types.html",
+      "https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-reserved-instances.html"
+    ],
+    "confidence": "high",
+    "approvedOn": "2026-11-11"
+  },
+  {
+    "questionId": "q_12fe20e3c20a",
+    "oldCorrect": [
+      "A"
+    ],
+    "newCorrect": [
+      "D"
+    ],
+    "reason": "Enterprise Support includes TAM-led readiness reviews and AWS Countdown event support; Business Support (now Business Support+) lists neither.",
+    "sources": [
+      "https://docs.aws.amazon.com/awssupport/latest/user/aws-support-plans.html",
+      "https://aws.amazon.com/premiumsupport/plans/enterprise/"
+    ],
+    "confidence": "high",
+    "approvedOn": "2026-11-11"
+  }
+]

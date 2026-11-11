@@ -23,7 +23,7 @@ Its main parts:
 | **Detective** | Detects and reports non-compliance | AWS Config rules |
 | **Proactive** | Blocks non-compliant resources before they are provisioned | AWS CloudFormation hooks |
 
-Controls also carry a guidance level: **mandatory** (baseline controls that protect the resources Control Tower deploys; since landing zone version 4.0 they are no longer applied by default), **strongly recommended** or **elective**.
+Controls also carry a guidance level: **mandatory** (baseline controls that protect the resources Control Tower deploys; they are applied to your OUs by default, although landing zone version 4.0 stopped deploying some of them), **strongly recommended** or **elective**.
 
 - **Account Factory**: a configurable template that standardizes creating new accounts with pre-approved settings, so teams can get an account quickly.
 - **Dashboard**: one view of provisioned accounts, enabled controls and non-compliant resources.

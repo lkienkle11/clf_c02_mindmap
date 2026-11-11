@@ -186,7 +186,7 @@
     ],
     "multi": true,
     "orderDependent": false,
-    "explanation": "Inbound internet access needs an internet gateway on the VPC and a route to it from the subnet's route table, which makes the subnet public. A NAT gateway only allows connections that start from inside the VPC, so it cannot accept requests from the internet.",
+    "explanation": "Inbound internet access needs an internet gateway on the VPC and a route to it from the subnet's route table, which makes the subnet public; instances also need a public IP address to be reachable from the internet. A NAT gateway only allows connections that start from inside the VPC, so it cannot accept requests from the internet.",
     "source": "authored"
   },
   {

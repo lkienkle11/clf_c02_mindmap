@@ -47,7 +47,7 @@ It is not a caching service and it does not change where your data is stored: th
 
 ## Common traps
 
-- "Caching" always points to CloudFront, never to Global Accelerator.
+- "Caching" of web content points to CloudFront; Global Accelerator does not cache content, it improves the network path to your application.
 - Route 53 answers a DNS question with an address; Global Accelerator gives you addresses that never change and then carries the traffic on the AWS network.
 - Transfer Acceleration is for S3 uploads and downloads. It does not speed up EC2 or database traffic.
 - None of these services replaces choosing a good Region.

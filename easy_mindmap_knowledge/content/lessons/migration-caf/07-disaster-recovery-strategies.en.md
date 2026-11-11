@@ -13,7 +13,7 @@ A **disaster** is any event that stops a workload from doing its job: a failed d
 - **Recovery Time Objective (RTO)**: the maximum acceptable delay between the interruption of service and its restoration. It answers "how long can we be down?"
 - **Recovery Point Objective (RPO)**: the maximum acceptable amount of time since the last recovery point. It answers "how much recent data can we lose?"
 
-Remember the pair as **T**ime to be back up and **P**oint in time of the data you get back. A tight RTO needs resources ready to run; a tight RPO needs data copied often or continuously. The business sets both numbers, and the cost of the recovery option should not exceed the cost of the failure.
+Remember the pair as **T**ime to be back up and **P**oint in time of the data you get back. A tight RTO needs resources ready to run; a tight RPO needs data copied often or continuously. The business sets both numbers, and the recovery option should not cost more than the failure it protects against, unless a secondary driver such as a regulatory requirement applies.
 
 ## Multi-AZ first, multi-Region when needed
 

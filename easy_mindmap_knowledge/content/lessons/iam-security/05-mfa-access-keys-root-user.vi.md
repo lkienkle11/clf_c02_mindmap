@@ -17,7 +17,7 @@ AWS đã ngừng hỗ trợ MFA bằng tin nhắn SMS cho IAM.
 
 ## Access key, CLI và SDK
 
-**Access key** gồm một access key ID và một secret access key. Hai thứ này cùng ký các yêu cầu lập trình từ **AWS Command Line Interface (AWS CLI)**, SDK và API. Chúng không dùng để đăng nhập console. Vì vậy khi câu hỏi nói developer cần CLI hoặc "truy cập lập trình (programmatic access)", đáp án là access key; user chỉ cần console thì dùng mật khẩu.
+**Access key** gồm một access key ID và một secret access key. Hai thứ này cùng ký các yêu cầu lập trình từ **AWS Command Line Interface (AWS CLI)**, SDK và API. Chúng không dùng để đăng nhập console. Vì vậy khi câu hỏi nói developer cần CLI hoặc "truy cập lập trình (programmatic access)", access key là thông tin đăng nhập dài hạn, dù AWS ưu tiên thông tin đăng nhập tạm thời (IAM Identity Center hoặc federation) cho con người; user chỉ cần console thì dùng mật khẩu.
 
 - Secret chỉ hiển thị một lần, lúc tạo. Mỗi user có tối đa hai key.
 - Không bao giờ đặt key trong mã nguồn hoặc trong các tệp chia sẻ cho người khác.

@@ -54,12 +54,12 @@
   }
  },
  "q_8848520dc9d5": {
-  "explanation": "When Free Tier usage expires or a limit is exceeded, the account is billed at the standard pay-as-you-go rate only for the usage beyond the Free Tier. Nothing is charged retroactively for usage that was within the Free Tier.",
+  "explanation": "On a Paid-plan account, when Free Tier usage expires or a limit is exceeded, the account is billed at the standard pay-as-you-go rate only for the usage beyond the Free Tier, and nothing is charged retroactively for usage that was within the Free Tier. On the newer Free plan AWS does not charge: the account is suspended or closed unless it is upgraded to the Paid plan.",
   "optionNotes": {
-   "A": "Usage beyond the Free Tier limits, or after it expires, is billed at standard pay-as-you-go rates.",
+   "A": "On a Paid-plan account, usage beyond the Free Tier limits, or after it expires, is billed at standard pay-as-you-go rates.",
    "B": "AWS does not need Support to set up charges; billing for usage above the Free Tier happens automatically.",
    "C": "Usage inside the Free Tier is not charged retroactively; only the excess or post-expiry usage is billed.",
-   "D": "On a standard paid account nothing is frozen; services keep running and the excess usage is simply billed (accounts on the newer Free plan are instead closed after the free period unless upgraded)."
+   "D": "Usage is not moved automatically to a different pricing model when the Free Tier ends."
   }
  },
  "q_d11ce823a152": {

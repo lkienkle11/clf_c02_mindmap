@@ -70,7 +70,7 @@
       },
       {
         "key": "B",
-        "text": "Identify which IAM user called the DeleteBucket API"
+        "text": "Rotate IAM access keys automatically"
       },
       {
         "key": "C",

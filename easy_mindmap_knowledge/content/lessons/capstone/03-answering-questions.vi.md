@@ -17,7 +17,7 @@ Phần lớn câu hỏi gồm một tình huống ngắn và một yêu cầu, n
 | "Fault tolerant" | Workload **vẫn chạy** khi một thành phần hỏng, nhờ có dự phòng sẵn |
 | "Disaster recovery", "data sovereignty" | Chọn **Region** có chủ đích |
 | "Loosely coupled", "decouple" | Amazon SQS, SNS hoặc EventBridge giữa các thành phần |
-| "Customer's responsibility" | Dữ liệu, IAM, vá guest OS, cấu hình |
+| "Customer's responsibility" | Dữ liệu, IAM, cấu hình; trên EC2 còn có vá guest OS (tùy dịch vụ) |
 
 ## Loại trừ rồi mới chọn
 

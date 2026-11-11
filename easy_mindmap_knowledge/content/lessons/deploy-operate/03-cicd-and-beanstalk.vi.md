@@ -31,7 +31,7 @@ required: true
 | Blue/green | Chạy phiên bản mới (green) bên cạnh phiên bản cũ (blue), rồi chuyển lưu lượng | Rollback nhanh và an toàn bằng cách chuyển ngược lại; tốn thêm tài nguyên trong một thời gian |
 | Canary | Gửi một phần nhỏ lưu lượng tới phiên bản mới trước, rồi mới tới phần còn lại | Sự cố chỉ ảnh hưởng tới ít người dùng |
 
-CodeDeploy hỗ trợ triển khai tại chỗ (từng đợt một hoặc tất cả cùng lúc, tùy deployment configuration) và blue/green (chỉ EC2); với Lambda và ECS, nó có thể chuyển lưu lượng theo kiểu **canary**, **linear** hoặc **all at once**. Elastic Beanstalk có các chính sách như all at once, rolling, immutable và **traffic splitting** (một cách triển khai canary).
+CodeDeploy hỗ trợ triển khai tại chỗ (từng đợt một hoặc tất cả cùng lúc, tùy deployment configuration) trên EC2 và máy chủ on-premises, và triển khai blue/green trên EC2, Lambda và ECS; với Lambda và ECS, nó chuyển lưu lượng theo kiểu **canary**, **linear** hoặc **all at once**. Elastic Beanstalk có các chính sách như all at once, rolling, immutable và **traffic splitting** (một cách triển khai canary).
 
 ## Bẫy thường gặp
 

@@ -17,7 +17,7 @@ required: true
 | --- | --- | --- | --- |
 | An ninh vật lý, phần cứng, host OS, hypervisor | AWS | AWS | AWS |
 | Cài đặt và vá guest OS | Khách hàng | AWS | AWS |
-| Vá phần mềm cơ sở dữ liệu hoặc runtime | Khách hàng (nếu tự cài) | AWS, trong maintenance window do khách hàng chọn | AWS (runtime được quản lý của Lambda) |
+| Vá phần mềm cơ sở dữ liệu hoặc runtime | Khách hàng (nếu tự cài) | AWS, trong maintenance window do khách hàng chọn (bản cập nhật bắt buộc vẫn có thể được áp dụng sau ngày áp dụng của nó) | AWS (runtime được quản lý của Lambda; được áp dụng tự động ở chế độ Auto mặc định) |
 | Mã ứng dụng và thư viện của nó | Khách hàng | Khách hàng (schema, truy vấn) | Khách hàng (mã function, thư viện phụ thuộc) |
 | Quy tắc truy cập mạng | Khách hàng (security group, NACL) | Khách hàng (security group của DB) | Khách hàng (bucket policy, quyền của function) |
 | Lựa chọn mã hóa (khóa, tùy chọn bổ sung, mã hóa khi truyền) | Khách hàng | Khách hàng | Khách hàng (S3 và DynamoDB mặc định mã hóa khi lưu trữ) |
@@ -29,7 +29,7 @@ EC2 gần giống tự chạy máy chủ của mình: bạn vá **hệ điều h
 
 ## Amazon RDS chi tiết
 
-AWS cài đặt và vá hệ điều hành và database engine, chạy sao lưu tự động và, với Multi-AZ, xử lý failover. **Bạn** chọn **maintenance window** hằng tuần để áp dụng các bản vá bắt buộc, kiểm soát truy cập mạng bằng security group, tạo người dùng cơ sở dữ liệu, quyết định có bật mã hóa khi lưu trữ hay không, và tối ưu truy vấn.
+AWS áp dụng các bản vá bắt buộc cho hệ điều hành và database engine (các bản cập nhật hệ điều hành tùy chọn chỉ được áp dụng khi bạn chọn), chạy sao lưu tự động và, với Multi-AZ, xử lý failover. **Bạn** chọn **maintenance window** hằng tuần để áp dụng các bản vá bắt buộc, kiểm soát truy cập mạng bằng security group, tạo người dùng cơ sở dữ liệu, quyết định có bật mã hóa khi lưu trữ hay không, và tối ưu truy vấn.
 
 ## AWS Lambda và Amazon S3 chi tiết
 
@@ -39,7 +39,7 @@ AWS cài đặt và vá hệ điều hành và database engine, chạy sao lưu 
 ## Bẫy thường gặp
 
 - "Ai vá guest OS trên EC2?" **Khách hàng**.
-- "Ai vá database engine trên RDS?" **AWS**, trong maintenance window do **khách hàng** chọn.
+- "Ai vá database engine trên RDS?" **AWS**, trong maintenance window do **khách hàng** chọn (bản cập nhật bắt buộc vẫn có thể được áp dụng sau ngày áp dụng của nó).
 - "Ai vá hệ điều hành bên dưới Lambda?" **AWS**.
 - "Ai cấu hình security group của một RDS instance?" **Khách hàng**, dù RDS là dịch vụ được quản lý.
 

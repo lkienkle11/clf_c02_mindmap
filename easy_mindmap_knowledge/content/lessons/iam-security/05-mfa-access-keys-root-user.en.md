@@ -18,7 +18,7 @@ AWS ended support for SMS text message MFA for IAM.
 
 ## Access keys, the CLI and SDKs
 
-An **access key** is an access key ID plus a secret access key. Together they sign programmatic requests from the **AWS Command Line Interface (AWS CLI)**, the SDKs and the API. They do not sign in to the console. So when a question says a developer needs the CLI or "programmatic access", the answer is access keys; a user needing only console access gets a password.
+An **access key** is an access key ID plus a secret access key. Together they sign programmatic requests from the **AWS Command Line Interface (AWS CLI)**, the SDKs and the API. They do not sign in to the console. So when a question says a developer needs the CLI or "programmatic access", access keys are the long-term credential, although AWS prefers temporary credentials (IAM Identity Center or federation) for people; a user needing only console access gets a password.
 
 - The secret is shown once, at creation. A user can have at most two keys.
 - Never place keys in code or in files shared with others.

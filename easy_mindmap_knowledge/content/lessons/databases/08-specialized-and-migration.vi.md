@@ -5,7 +5,7 @@ required: true
 ---
 ## Amazon Redshift: kho dữ liệu
 
-**Amazon Redshift** là một **kho dữ liệu (data warehouse)** được quản lý hoàn toàn, quy mô petabyte. Nó chạy **phân tích bằng SQL (OLAP)** trên lượng dữ liệu lớn, thường được nạp từ nhiều nguồn, và làm việc với các công cụ phân tích kinh doanh (BI). **Redshift Serverless** tự co giãn năng lực, và bạn không trả tiền khi nó rảnh.
+**Amazon Redshift** là một **kho dữ liệu (data warehouse)** được quản lý hoàn toàn, quy mô petabyte. Nó chạy **phân tích bằng SQL (OLAP)** trên lượng dữ liệu lớn, thường được nạp từ nhiều nguồn, và làm việc với các công cụ phân tích kinh doanh (BI). **Redshift Serverless** tự co giãn năng lực, và bạn không trả tiền cho phần tính toán khi không có truy vấn nào chạy (phần lưu trữ được quản lý vẫn bị tính phí).
 
 Redshift không thay thế cơ sở dữ liệu giao dịch của ứng dụng. Nếu câu hỏi nói "phân tích dữ liệu bán hàng nhiều năm" hoặc "báo cáo kinh doanh từ nhiều nguồn", hãy nghĩ tới Redshift. Nếu nói "lưu từng đơn hàng của khách ngay khi phát sinh", hãy nghĩ tới RDS, Aurora hoặc DynamoDB.
 

@@ -27,13 +27,13 @@
   }
  },
  "q_04a9f4df9512": {
-  "explanation": "The exam expects Amazon EC2 and Amazon SageMaker, which have long been covered by Savings Plans along with AWS Lambda and AWS Fargate. Newer Database Savings Plans also cover services such as RDS and DynamoDB, but Amazon Redshift uses reserved nodes.",
+  "explanation": "Savings Plans cover Amazon EC2 (Compute and EC2 Instance Savings Plans) and Amazon SageMaker (SageMaker AI Savings Plans), along with AWS Lambda and AWS Fargate. Amazon Redshift is not covered by Savings Plans; it uses reserved nodes. Amazon S3 and Amazon CloudFront are not covered either.",
   "optionNotes": {
    "A": "EC2 usage is covered by Compute and EC2 Instance Savings Plans.",
-   "B": "Classic Savings Plans did not cover RDS, so the exam expects Reserved Instances here, although newer Database Savings Plans now also cover RDS.",
+   "B": "Amazon S3 is billed by storage, requests and data transfer, and is not covered by Savings Plans.",
    "C": "SageMaker has its own Savings Plans, so it is supported.",
    "D": "Redshift discounts are offered through reserved nodes, and Redshift is not covered by Savings Plans.",
-   "E": "DynamoDB was traditionally discounted through reserved capacity, so the exam expects it as not covered, although newer Database Savings Plans now also cover DynamoDB."
+   "E": "Amazon CloudFront is a content delivery network and is not covered by Savings Plans."
   }
  },
  "q_54edb01c38ac": {
@@ -92,10 +92,10 @@
   }
  },
  "q_a9d4cd2d30b3": {
-  "explanation": "The AWS customer carbon footprint tool lets customers track, measure, review and forecast the carbon emissions from their AWS usage.",
+  "explanation": "The AWS customer carbon footprint tool lets customers track, measure, review and forecast the carbon emissions from their AWS usage. AWS now presents this capability as part of AWS Sustainability.",
   "optionNotes": {
    "A": "The AWS Health Dashboard reports on AWS service events and account health, not emissions.",
-   "B": "The customer carbon footprint tool reports and forecasts emissions from a company's AWS usage.",
+   "B": "The customer carbon footprint tool (now part of AWS Sustainability) reports and forecasts emissions from a company's AWS usage.",
    "C": "Support Center is where support cases are managed, and it does not report emissions.",
    "D": "QuickSight is a business intelligence service for dashboards and is not an emissions tracking tool."
   }
@@ -106,7 +106,7 @@
    "A": "CloudTrail records API activity for auditing and does not send CloudWatch alarm notifications.",
    "B": "SNS is the notification service that CloudWatch alarms use to send alerts to subscribers.",
    "C": "SQS queues messages for other applications to process and does not send alerts to people.",
-   "D": "EventBridge can also react to alarm state changes, but the exam expects SNS as the service that sends the alerts."
+   "D": "AWS Config records and evaluates resource configurations; it does not send alerts when a CloudWatch alarm is invoked."
   }
  },
  "q_e45f8fca1628": {

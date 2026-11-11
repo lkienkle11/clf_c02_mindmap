@@ -24,8 +24,8 @@ A company rarely moves every application the same way. During planning, each app
 | --- | --- |
 | Decommission, no longer needed | Retire |
 | Not ready yet, must stay on premises for now | Retain |
-| Move as-is, fastest, no code changes | Rehost |
-| Same hypervisor platform moved to its cloud version | Relocate |
+| Move as-is, no code changes | Rehost |
+| Quickest move: same hypervisor platform moved to its cloud version | Relocate |
 | Switch to a SaaS product | Repurchase |
 | Move to a managed service with small changes | Replatform |
 | Rebuild as microservices or serverless | Refactor |
