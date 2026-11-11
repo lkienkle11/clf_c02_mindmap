@@ -1,4 +1,4 @@
-/* WARNING: this script regenerates content/questions/imported.json from the card deck. Once answers were corrected by the audit (content/review/answer-corrections.json), do NOT re-run it over the corrected file: it would overwrite those corrections. Apply corrections with scripts/audit/apply-corrections.ts instead. */
+/* WARNING: this script regenerates content/questions/imported.json and content/review/import-exclusions.md from the card deck. After the audit the question bank is maintained by hand: answers were corrected (content/review/answer-corrections.json), options and stems were repaired, seven retired or skipped questions were restored, and the exclusions file has audit sections. Do NOT re-run this script over the current files: it would overwrite all of that and drop the restored cards again. Apply answer corrections with scripts/audit/apply-corrections.ts instead. */
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
