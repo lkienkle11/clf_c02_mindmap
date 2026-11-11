@@ -122,8 +122,23 @@ describe('start', () => {
     expect(s.questions.every((q) => q.multi)).toBe(true);
     expect(s.allowReview).toBe(true);
     expect(await loadLastOptions(services.repos.settings)).toEqual({
-      allowReview: true, limitMs: 60000, clockMode: 'run', onHidden: 'freeze', onReport: 'freeze', questionCount: 10,
+      allowReview: true, limitMs: 60000, clockMode: 'run', onHidden: 'freeze', onReport: 'freeze', questionCount: 10, unansweredDisplay: 'reveal',
     });
+  });
+});
+
+describe('unansweredDisplay on the session', () => {
+  it('start stores the chosen display on the attempt and the getter returns it', async () => {
+    const s = await start('compute', { unansweredDisplay: 'answersOnly' });
+    expect(s.unansweredDisplay).toBe('answersOnly');
+    expect((await services.repos.attempts.findInProgress())!.attempt.unansweredDisplay).toBe('answersOnly');
+  });
+  it('defaults to reveal and a resumed attempt keeps its stored choice', async () => {
+    expect((await start('compute')).unansweredDisplay).toBe('reveal');
+    await db.execute("UPDATE attempts SET unanswered_display = 'answersOnly'");
+    const found = (await services.repos.attempts.findInProgress())!;
+    const { session } = await PracticeSession.resume(services, found, onSubmitted);
+    expect(session.unansweredDisplay).toBe('answersOnly');
   });
 });
 
@@ -131,8 +146,8 @@ describe('options persistence', () => {
   it('defaults, round trip, invalid json and wrong shape', async () => {
     const st = services.repos.settings;
     expect(await loadLastOptions(st)).toEqual(DEFAULT_PRACTICE_OPTIONS);
-    await saveLastOptions(st, { allowReview: true, limitMs: 1000, clockMode: 'run', onHidden: 'freeze', onReport: 'run', questionCount: 20 });
-    expect(await loadLastOptions(st)).toEqual({ allowReview: true, limitMs: 1000, clockMode: 'run', onHidden: 'freeze', onReport: 'run', questionCount: 20 });
+    await saveLastOptions(st, { allowReview: true, limitMs: 1000, clockMode: 'run', onHidden: 'freeze', onReport: 'run', questionCount: 20, unansweredDisplay: 'answersOnly' });
+    expect(await loadLastOptions(st)).toEqual({ allowReview: true, limitMs: 1000, clockMode: 'run', onHidden: 'freeze', onReport: 'run', questionCount: 20, unansweredDisplay: 'answersOnly' });
     await st.set('practice_last_options', '{nope');
     expect(await loadLastOptions(st)).toEqual(DEFAULT_PRACTICE_OPTIONS);
     await st.set('practice_last_options', JSON.stringify({ allowReview: 'x', limitMs: 1, clockMode: 'freeze', onHidden: 'freeze' }));

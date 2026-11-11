@@ -3,6 +3,7 @@
   import type { AppState } from '@/app/app-state.svelte';
   import type { Services } from '@/app/composition';
   import { getI18n } from '@/i18n/i18n.svelte';
+  import type { UnansweredDisplay } from '@/persistence';
   import Button from '@/ui/Button.svelte';
   import { buildPool } from '../logic/pick-questions';
   import { MIN_PRACTICE_QUESTIONS, quickCounts, validateQuestionCount } from '../logic/question-count';
@@ -32,6 +33,7 @@
   let clock = $state<'freeze' | 'run'>('freeze');
   let onHidden = $state<'freeze' | 'run'>('freeze');
   let onReport = $state<'freeze' | 'run'>('freeze');
+  let unanswered = $state<UnansweredDisplay>('reveal');
   let questionInput = $state<number | null>(DEFAULT_PRACTICE_OPTIONS.questionCount);
   let minutes = $state<number | null>(10);
   let seconds = $state<number | null>(0);
@@ -66,6 +68,7 @@
           clock = o.clockMode;
           onHidden = o.onHidden;
           onReport = o.onReport;
+          unanswered = o.unansweredDisplay;
           // A saved count larger than the pool is clamped to it.
           questionInput = Math.min(o.questionCount, poolSize);
           if (o.limitMs !== null) {
@@ -110,7 +113,7 @@
         services,
         topicId,
         // A pool below the minimum saves the minimum; the session clamps the draw to the pool.
-        { allowReview: review === 'allow', limitMs, clockMode: clock, onHidden, onReport, questionCount: fixedCount ? MIN_PRACTICE_QUESTIONS : count },
+        { allowReview: review === 'allow', limitMs, clockMode: clock, onHidden, onReport, unansweredDisplay: unanswered, questionCount: fixedCount ? MIN_PRACTICE_QUESTIONS : count },
         () => appState.refresh(),
       );
       onstarted(session);
@@ -217,6 +220,12 @@
       <label class={radio}><input class="size-5" type="radio" name="report" value="run" bind:group={onReport} />{i18n.t('practice.setup.reportRun')}</label>
     </fieldset>
   {/if}
+
+  <fieldset class="flex flex-col gap-1">
+    <legend class="mb-1 text-lg font-medium">{i18n.t('practice.setup.unansweredLegend')}</legend>
+    <label class={radio}><input class="size-5" type="radio" name="unanswered" value="reveal" bind:group={unanswered} />{i18n.t('practice.setup.unansweredReveal')}</label>
+    <label class={radio}><input class="size-5" type="radio" name="unanswered" value="answersOnly" bind:group={unanswered} />{i18n.t('practice.setup.unansweredAnswersOnly')}</label>
+  </fieldset>
 
   {#if message}
     <p role="alert" class="rounded-lg border border-danger p-3 text-danger">{message}</p>

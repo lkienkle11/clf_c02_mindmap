@@ -9,14 +9,14 @@ describe('practice options', () => {
   it("legacy stored options without onHidden load with default 'freeze' and keep other fields", async () => {
     const raw = JSON.stringify({ allowReview: true, limitMs: 60000, clockMode: 'run' });
     expect(await loadLastOptions(repoWith(raw))).toEqual({
-      allowReview: true, limitMs: 60000, clockMode: 'run', onHidden: 'freeze', onReport: 'freeze', questionCount: 10,
+      allowReview: true, limitMs: 60000, clockMode: 'run', onHidden: 'freeze', onReport: 'freeze', questionCount: 10, unansweredDisplay: 'reveal',
     });
   });
 
   it('stored options without questionCount load as 10 and keep the other fields', async () => {
     const raw = JSON.stringify({ allowReview: true, limitMs: 60000, clockMode: 'run', onHidden: 'run' });
     expect(await loadLastOptions(repoWith(raw))).toEqual({
-      allowReview: true, limitMs: 60000, clockMode: 'run', onHidden: 'run', onReport: 'freeze', questionCount: 10,
+      allowReview: true, limitMs: 60000, clockMode: 'run', onHidden: 'run', onReport: 'freeze', questionCount: 10, unansweredDisplay: 'reveal',
     });
   });
 
@@ -54,9 +54,24 @@ describe('practice options', () => {
     let stored: string | null = null;
     const repo = { get: async () => stored, set: async (_k: string, v: string) => { stored = v; } } as unknown as SettingsRepo;
     const opts = {
-      allowReview: false, limitMs: 1000, clockMode: 'freeze' as const, onHidden: 'run' as const, onReport: 'run' as const, questionCount: 20,
+      allowReview: false, limitMs: 1000, clockMode: 'freeze' as const, onHidden: 'run' as const, onReport: 'run' as const, questionCount: 20, unansweredDisplay: 'answersOnly' as const,
     };
     await saveLastOptions(repo, opts);
     expect(await loadLastOptions(repo)).toEqual(opts);
+  });
+
+  it("options saved before unansweredDisplay existed load it as 'reveal'", async () => {
+    const raw = JSON.stringify({ allowReview: false, limitMs: null, clockMode: 'freeze', onHidden: 'freeze', onReport: 'freeze', questionCount: 10 });
+    expect((await loadLastOptions(repoWith(raw))).unansweredDisplay).toBe('reveal');
+  });
+
+  it('a stored unansweredDisplay is kept', async () => {
+    const raw = JSON.stringify({ allowReview: false, limitMs: null, clockMode: 'freeze', onHidden: 'freeze', onReport: 'freeze', questionCount: 10, unansweredDisplay: 'answersOnly' });
+    expect((await loadLastOptions(repoWith(raw))).unansweredDisplay).toBe('answersOnly');
+  });
+
+  it('an invalid unansweredDisplay falls back to the default options', async () => {
+    const raw = JSON.stringify({ allowReview: false, limitMs: null, clockMode: 'freeze', onHidden: 'freeze', onReport: 'freeze', questionCount: 10, unansweredDisplay: 'hide' });
+    expect(await loadLastOptions(repoWith(raw))).toEqual(DEFAULT_PRACTICE_OPTIONS);
   });
 });

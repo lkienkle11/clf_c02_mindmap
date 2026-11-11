@@ -31,6 +31,7 @@ async function mount(topicId = 'compute', seed: string | null = null, rawCatalog
 
 const HIDDEN_LEGEND = 'When you switch tabs or minimize';
 const REPORT_LEGEND = 'When you open a report during a session';
+const UNANSWERED_LEGEND = 'Unanswered questions after the attempt';
 const hiddenGroup = () => screen.getByRole('group', { name: HIDDEN_LEGEND });
 
 describe('PracticeSetup', () => {
@@ -99,7 +100,7 @@ describe('PracticeSetup', () => {
     const session = onstarted.mock.calls[0][0] as PracticeSession;
     expect(session).toBeInstanceOf(PracticeSession);
     expect(session.allowReview).toBe(true);
-    expect(await loadLastOptions(services.repos.settings)).toEqual({ allowReview: true, limitMs: 150_000, clockMode: 'run', onHidden: 'freeze', onReport: 'freeze', questionCount: 10 });
+    expect(await loadLastOptions(services.repos.settings)).toEqual({ allowReview: true, limitMs: 150_000, clockMode: 'run', onHidden: 'freeze', onReport: 'freeze', questionCount: 10, unansweredDisplay: 'reveal' });
   });
 
   it('starts from the last saved options', async () => {
@@ -348,5 +349,45 @@ describe('PracticeSetup question count', () => {
     await userEvent.click(screen.getByRole('radio', { name: 'Set a time' }));
     expect(minutes()).toHaveValue(1);
     expect(seconds()).toHaveValue(30);
+  });
+
+  describe('unanswered questions option', () => {
+    it('is shown with and without a time limit, defaulting to the correct answers and explanations', async () => {
+      await mount();
+      const group = screen.getByRole('group', { name: UNANSWERED_LEGEND });
+      expect(within(group).getByRole('radio', { name: 'Show the correct answers and explanations' })).toBeChecked();
+      expect(within(group).getByRole('radio', { name: 'Show the answers only, without the correct answer' })).not.toBeChecked();
+      await userEvent.click(screen.getByRole('radio', { name: 'Set a time' }));
+      expect(screen.getByRole('group', { name: UNANSWERED_LEGEND })).toBeInTheDocument();
+    });
+
+    it('sits directly under the report-clock option when a time is set', async () => {
+      await mount();
+      await userEvent.click(screen.getByRole('radio', { name: 'Set a time' }));
+      const report = screen.getByRole('group', { name: REPORT_LEGEND });
+      const unanswered = screen.getByRole('group', { name: UNANSWERED_LEGEND });
+      expect(report.compareDocumentPosition(unanswered) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    });
+
+    it('choosing answers only starts the attempt with it and remembers it', async () => {
+      const { services, onstarted } = await mount();
+      const create = vi.spyOn(services.repos.attempts, 'create');
+      await userEvent.click(within(screen.getByRole('group', { name: UNANSWERED_LEGEND })).getByRole('radio', { name: 'Show the answers only, without the correct answer' }));
+      await userEvent.click(screen.getByRole('button', { name: 'Start' }));
+      await waitFor(() => expect(onstarted).toHaveBeenCalledTimes(1));
+      expect(create.mock.calls[0][0].unansweredDisplay).toBe('answersOnly');
+      expect((await loadLastOptions(services.repos.settings)).unansweredDisplay).toBe('answersOnly');
+    });
+
+    it('restores the saved choice and treats an old save as reveal', async () => {
+      await mount('compute', JSON.stringify({ allowReview: false, limitMs: null, clockMode: 'freeze', onHidden: 'freeze', onReport: 'freeze', unansweredDisplay: 'answersOnly' }));
+      expect(within(screen.getByRole('group', { name: UNANSWERED_LEGEND })).getByRole('radio', { name: 'Show the answers only, without the correct answer' })).toBeChecked();
+    });
+
+    it('shows the legend in Vietnamese', async () => {
+      const env = await makePracticeEnv();
+      renderWithI18n(PracticeSetup, { services: env.services, appState: env.appState, topicId: 'compute', onstarted: vi.fn() }, 'vi');
+      await waitFor(() => expect(screen.getByRole('group', { name: 'Xử lý các câu chưa làm sau khi kết thúc bài' })).toBeInTheDocument());
+    });
   });
 });

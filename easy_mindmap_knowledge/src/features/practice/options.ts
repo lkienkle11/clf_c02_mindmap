@@ -1,5 +1,5 @@
 import type { SettingsRepo } from '@/persistence';
-import type { HiddenPolicy } from '@/persistence/records';
+import type { HiddenPolicy, UnansweredDisplay } from '@/persistence/records';
 import { DEFAULT_QUESTION_COUNT, validateQuestionCount } from './logic/question-count';
 
 export interface PracticeOptions {
@@ -11,10 +11,13 @@ export interface PracticeOptions {
   onReport: HiddenPolicy;
   /** Requested question count. The attempt draws at most the pool size, so a larger value is allowed here. */
   questionCount: number;
+  /** What the results show for questions left unanswered. */
+  unansweredDisplay: UnansweredDisplay;
 }
 
 export const DEFAULT_PRACTICE_OPTIONS: PracticeOptions = {
   allowReview: false, limitMs: null, clockMode: 'freeze', onHidden: 'freeze', onReport: 'freeze', questionCount: DEFAULT_QUESTION_COUNT,
+  unansweredDisplay: 'reveal',
 };
 
 const KEY = 'practice_last_options';
@@ -34,11 +37,12 @@ function parse(raw: string | null): PracticeOptions {
     const count = o.questionCount === undefined
       ? { ok: true as const, count: DEFAULT_QUESTION_COUNT }
       : validateQuestionCount(o.questionCount, Number.POSITIVE_INFINITY);
-    if (typeof o.allowReview !== 'boolean' || !limitOk || !modeOk || !hiddenOk || !reportOk || !count.ok) return { ...DEFAULT_PRACTICE_OPTIONS };
+    const unansweredOk = o.unansweredDisplay === undefined || o.unansweredDisplay === 'reveal' || o.unansweredDisplay === 'answersOnly';
+    if (typeof o.allowReview !== 'boolean' || !limitOk || !modeOk || !hiddenOk || !reportOk || !unansweredOk || !count.ok) return { ...DEFAULT_PRACTICE_OPTIONS };
     return {
       allowReview: o.allowReview, limitMs: o.limitMs as number | null, clockMode: o.clockMode as 'freeze' | 'run',
       onHidden: (o.onHidden ?? 'freeze') as HiddenPolicy, onReport: (o.onReport ?? 'freeze') as HiddenPolicy,
-      questionCount: count.count,
+      questionCount: count.count, unansweredDisplay: (o.unansweredDisplay ?? 'reveal') as UnansweredDisplay,
     };
   } catch {
     return { ...DEFAULT_PRACTICE_OPTIONS };
