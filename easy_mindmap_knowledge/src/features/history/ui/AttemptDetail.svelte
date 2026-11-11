@@ -1,6 +1,7 @@
 <script lang="ts">
   import type { Services } from '@/app/composition';
-  import { OptionReview, hidesAnswers } from '@/features/practice';
+  import { OptionReview, ResultSearchBar, filterResultItems, hidesAnswers } from '@/features/practice';
+  import type { ResultVerdict } from '@/features/practice';
   import { ReportButton } from '@/features/report';
   import { getI18n } from '@/i18n/i18n.svelte';
   import type { AttemptQuestionRow, AttemptRow } from '@/persistence';
@@ -28,6 +29,21 @@
         ? (services.catalog.topics.find((t) => t.id === attempt.topicId)?.title[locale] ?? attempt.topicId)
         : i18n.t('history.mixed'),
   );
+  let query = $state('');
+  let verdict = $state<ResultVerdict>('all');
+  // The numbers (1-based, as shown) of the questions that pass the search and the filter.
+  const visible = $derived(
+    new Set(
+      filterResultItems(
+        rows.map((row) => {
+          const q = questions.get(row.questionId);
+          return { number: row.position + 1, isCorrect: row.isCorrect === true, title: q?.text ?? row.questionId, optionTexts: q?.options.map((o) => o.text) ?? [] };
+        }),
+        query,
+        verdict,
+      ),
+    ),
+  );
   // Each <li> is a plain block holding the whole question (text, mark, options); it is the screenshot target.
   const frames: Record<number, HTMLElement | undefined> = {};
   const frame = (position: number) => (node: HTMLElement) => {
@@ -46,8 +62,12 @@
   {#if rows.length === 0}
     <p>{i18n.t('history.detail.noQuestions')}</p>
   {:else}
+    <div class="mb-3">
+      <ResultSearchBar bind:query bind:verdict shown={visible.size} total={rows.length} />
+    </div>
     <ol class="flex flex-col gap-3">
       {#each rows as row (row.position)}
+        {#if visible.has(row.position + 1)}
         {@const q = questions.get(row.questionId)}
         {@const ok = row.isCorrect === true}
         <li data-question={row.questionId} class="flex flex-col gap-1 rounded-lg border border-border-subtle p-3" {@attach frame(row.position)}>
@@ -69,6 +89,7 @@
             captureTarget={() => frames[row.position] ?? null}
           />
         </li>
+        {/if}
       {/each}
     </ol>
   {/if}

@@ -7,8 +7,11 @@
   import { getI18n } from '@/i18n/i18n.svelte';
   import Button from '@/ui/Button.svelte';
   import { cn } from '@/ui/cn';
+  import { filterResultItems } from '../logic/result-filter';
+  import type { ResultVerdict } from '../logic/result-filter';
   import { hidesAnswers } from '../logic/unanswered';
   import OptionReview from './OptionReview.svelte';
+  import ResultSearchBar from './ResultSearchBar.svelte';
   import type { SubmitResult } from '../session.svelte';
 
   interface Props {
@@ -46,6 +49,22 @@
   /** Item explanation is the fallback only when the catalog question lacks one. */
   const explained = (q: Question, fallback?: string): Question => (q.explanation || fallback === undefined ? q : { ...q, explanation: fallback });
 
+  let query = $state('');
+  let verdict = $state<ResultVerdict>('all');
+  // The numbers (1-based, as shown) of the questions that pass the search and the filter; a numbered item keeps its number.
+  const visible = $derived(
+    new Set(
+      filterResultItems(
+        result.items.map((item, i) => {
+          const q = questions.get(item.questionId);
+          return { number: i + 1, isCorrect: item.isCorrect, title: q?.text ?? item.questionId, optionTexts: q?.options.map((o) => o.text) ?? [] };
+        }),
+        query,
+        verdict,
+      ),
+    ),
+  );
+
   // Screen readers land on the result when it appears.
   // Each <li> is a plain block holding the whole question (text, marks, options, explanation); it is the screenshot target.
   const frames: Record<string, HTMLElement | undefined> = {};
@@ -81,8 +100,12 @@
 
   <section aria-labelledby="breakdown-title">
     <h2 id="breakdown-title" class="mb-3 text-xl font-semibold">{i18n.t('practice.result.breakdown')}</h2>
+    <div class="mb-4">
+      <ResultSearchBar bind:query bind:verdict shown={visible.size} total={result.items.length} />
+    </div>
     <ol class="flex flex-col gap-4">
       {#each result.items as item, i (item.questionId)}
+        {#if visible.has(i + 1)}
         {@const q = questions.get(item.questionId)}
         {@const hide = hidesAnswers(item.selected, unansweredDisplay)}
         <li data-question={item.questionId} class="flex flex-col gap-2 rounded-lg border border-border-subtle bg-surface p-4" {@attach frame(item.questionId)}>
@@ -115,6 +138,7 @@
             captureTarget={() => frames[item.questionId] ?? null}
           />
         </li>
+        {/if}
       {/each}
     </ol>
   </section>

@@ -17,3 +17,6 @@ export { default as PracticeSessionView } from './ui/PracticeSessionView.svelte'
 export { default as PracticeResult } from './ui/PracticeResult.svelte';
 export { default as OptionReview } from './ui/OptionReview.svelte';
 export { hidesAnswers } from './logic/unanswered';
+export { filterResultItems } from './logic/result-filter';
+export type { ResultVerdict, ResultFilterItem } from './logic/result-filter';
+export { default as ResultSearchBar } from './ui/ResultSearchBar.svelte';

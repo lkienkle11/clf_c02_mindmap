@@ -96,4 +96,17 @@ describe('AttemptDetail', () => {
     await mount({ rows: [makeRow('a2', 0, { questionId: 'q1', selected: [], isCorrect: false })] });
     expect(within(recordedItems()[0]).getByText('Because alpha.')).toBeInTheDocument();
   });
+
+  it('searches by number and filters by verdict inside the dialog', async () => {
+    await mount();
+    await userEvent.type(screen.getByRole('searchbox', { name: 'Search questions' }), '3');
+    expect(recordedItems().map((li) => li.getAttribute('data-question'))).toEqual(['q3']);
+    await userEvent.clear(screen.getByRole('searchbox', { name: 'Search questions' }));
+    await userEvent.selectOptions(screen.getByRole('combobox', { name: 'Show' }), 'correct');
+    expect(recordedItems().map((li) => li.getAttribute('data-question'))).toEqual(['q2']);
+    expect(screen.getByText('1 / 3 questions')).toBeInTheDocument();
+    await userEvent.selectOptions(screen.getByRole('combobox', { name: 'Show' }), 'all');
+    await userEvent.type(screen.getByRole('searchbox', { name: 'Search questions' }), 'zzzz');
+    expect(screen.getByText('No question matches.')).toBeInTheDocument();
+  });
 });
