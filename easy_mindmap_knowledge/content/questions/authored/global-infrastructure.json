@@ -276,7 +276,7 @@
     ],
     "multi": false,
     "orderDependent": false,
-    "explanation": "For regional services, resources and data created in one Region do not exist in another Region unless the customer explicitly copies or replicates them, which supports data residency. Public Regions are built with at least three Availability Zones, and service availability differs between Regions.",
+    "explanation": "For regional services, resources and data created in one Region do not exist in another Region unless the customer explicitly copies or replicates them, which supports data residency; AWS moves content only as needed to provide the services the customer chose or to comply with law. Public Regions are built with at least three Availability Zones, and service availability differs between Regions.",
     "source": "authored"
   },
   {

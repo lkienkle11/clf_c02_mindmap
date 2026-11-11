@@ -47,7 +47,7 @@ Nó không phải dịch vụ lưu đệm và không đổi nơi lưu dữ liệ
 
 ## Những cái bẫy thường gặp
 
-- "Lưu đệm (caching)" luôn chỉ tới CloudFront, không phải Global Accelerator.
+- "Lưu đệm (caching)" nội dung web chỉ tới CloudFront; Global Accelerator không lưu đệm nội dung, nó cải thiện đường mạng tới ứng dụng của bạn.
 - Route 53 trả lời câu hỏi DNS bằng một địa chỉ; Global Accelerator cho bạn các địa chỉ không đổi rồi chở lưu lượng trên mạng AWS.
 - Transfer Acceleration dành cho tải lên và tải xuống S3. Nó không tăng tốc lưu lượng EC2 hay cơ sở dữ liệu.
 - Không dịch vụ nào thay thế việc chọn một Region phù hợp.

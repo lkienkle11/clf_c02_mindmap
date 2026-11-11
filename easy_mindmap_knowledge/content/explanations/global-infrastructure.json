@@ -63,12 +63,12 @@
   }
  },
  "q_be38c294a4ef": {
-  "explanation": "AWS Outposts brings AWS infrastructure and services into the company's own site, giving low-latency access to on-premises systems and keeping data in place for residency needs.",
+  "explanation": "AWS Outposts brings AWS infrastructure and services into the company's own site, giving low-latency access to on-premises systems and keeping supported data in place for residency needs.",
   "optionNotes": {
-   "A": "Wavelength embeds AWS compute in telecom providers' networks for mobile 5G latency; it is not for on-premises systems or data residency.",
+   "A": "Wavelength embeds AWS compute in telecom providers' networks for ultra-low latency to mobile 5G devices; it does not place AWS infrastructure at the company's own site for on-premises systems.",
    "B": "Transit Gateway connects VPCs and on-premises networks; it does not run AWS infrastructure on site or address data residency.",
    "C": "Ground Station is a service for communicating with satellites and is unrelated to on-premises latency or data residency.",
-   "D": "Outposts runs AWS infrastructure on premises, giving low latency to local systems and keeping data on site."
+   "D": "Outposts runs AWS infrastructure on premises, giving low latency to local systems and keeping supported data on site."
   }
  },
  "q_58ea2edfaca4": {
@@ -220,10 +220,10 @@
   }
  },
  "auth-global-infrastructure-09": {
-  "explanation": "For regional services, data created in a Region stays there unless the customer copies or replicates it elsewhere, which supports data residency. Regions have multiple AZs, and services are not equally available in every Region.",
+  "explanation": "For regional services, data created in a Region stays there unless the customer copies or replicates it elsewhere, which supports data residency; AWS's exceptions are limited to what is needed to provide the services the customer chose or to comply with law. Regions have multiple AZs, and services are not equally available in every Region.",
   "optionNotes": {
    "A": "Public Regions are built with at least three Availability Zones, so the number is not fixed at two.",
-   "B": "Regional services keep data in the chosen Region unless the customer explicitly copies or replicates it elsewhere.",
+   "B": "Regional services keep data in the chosen Region unless the customer explicitly copies or replicates it elsewhere (AWS moves content only as needed to provide the services the customer chose or to comply with law).",
    "C": "Service availability differs between Regions, and new services often launch in some Regions first.",
    "D": "An edge location is a separate type of site for content delivery and is not a type of Region."
   }
