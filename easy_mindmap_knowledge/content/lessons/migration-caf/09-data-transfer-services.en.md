@@ -42,7 +42,7 @@ Different engines use different data types, code and table structures. **DMS Sch
 | A database to a managed engine | AWS DMS |
 | A commercial database to an open-source engine | DMS plus SCT or DMS Schema Conversion |
 | Partner uploads by SFTP into S3 | AWS Transfer Family (see the migration services lesson) |
-| Petabytes with weak networking | Snow family (storage topic) |
+| Petabytes with weak networking | AWS Data Transfer Terminal (the Snow family is closed to new customers; see the storage topic) |
 
 ## Common traps
 

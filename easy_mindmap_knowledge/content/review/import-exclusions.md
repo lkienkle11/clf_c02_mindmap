@@ -15,3 +15,6 @@ Skipped (no answer): 2. Duplicates dropped: 2. Mismatched multi flag (excluded):
 | id | text (first 80 chars) | reason | date |
 | --- | --- | --- | --- |
 | q_9e6c9d987920 | Which responsibility belongs to AWS when a company hosts its databases on Amazon EC | retired: no option is an AWS responsibility under current AWS documentation (shared responsibility model: the customer manages the guest operating system, the database software and backups on EC2) | 2026-11-11 |
+| q_8dbda4b2d28d | Which AWS Well-Architected Framework concept represents a system's ability to re | retired: no option matches the current AWS term (resiliency / fault tolerance); durability in AWS docs means data persistence | 2026-11-11 |
+| q_ea907910d5b1 | Which AWS Cloud Adoption Framework (AWS CAF) perspective will meet these require | retired: the stem refers to requirements that are missing, so no answer can be justified | 2026-11-11 |
+| q_677db91ace22 | A company is planning to migrate applications to the AWS Cloud. During a system  | retired: Retire decommissions rather than migrates and Rehost needs no change, which an incompatible app cannot satisfy; no second answer is established by AWS docs | 2026-11-11 |

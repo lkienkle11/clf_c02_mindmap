@@ -5712,35 +5712,6 @@
     "source": "imported"
   },
   {
-    "id": "q_ea907910d5b1",
-    "topicId": "migration-caf",
-    "text": "Which AWS Cloud Adoption Framework (AWS CAF) perspective will meet these requirements?",
-    "options": [
-      {
-        "key": "A",
-        "text": "Business"
-      },
-      {
-        "key": "B",
-        "text": "People"
-      },
-      {
-        "key": "C",
-        "text": "Platform"
-      },
-      {
-        "key": "D",
-        "text": "Operations"
-      }
-    ],
-    "correct": [
-      "B"
-    ],
-    "multi": false,
-    "orderDependent": false,
-    "source": "imported"
-  },
-  {
     "id": "q_ed55ad67e5df",
     "topicId": "migration-caf",
     "text": "A company wants to move its on-premises databases to managed cloud database services by using a simplified migration process. Which AWS service or tool can help the company meet this requirement?",
@@ -7819,7 +7790,7 @@
       }
     ],
     "correct": [
-      "A"
+      "B"
     ],
     "multi": false,
     "orderDependent": false,
@@ -8060,7 +8031,7 @@
       }
     ],
     "correct": [
-      "C",
+      "A",
       "D"
     ],
     "multi": true,
@@ -11077,40 +11048,6 @@
       "C"
     ],
     "multi": false,
-    "orderDependent": false,
-    "source": "imported"
-  },
-  {
-    "id": "q_677db91ace22",
-    "topicId": "migration-caf",
-    "text": "A company is planning to migrate applications to the AWS Cloud. During a system audit, the company finds that its content management system (CMS) application is incompatible with cloud environments. Which migration strategies will help the company to migrate the CMS application with the LEAST effort? (Choose two.)",
-    "options": [
-      {
-        "key": "A",
-        "text": "Retire"
-      },
-      {
-        "key": "B",
-        "text": "Rehost"
-      },
-      {
-        "key": "C",
-        "text": "Repurchase"
-      },
-      {
-        "key": "D",
-        "text": "Replatform"
-      },
-      {
-        "key": "E",
-        "text": "Refactor"
-      }
-    ],
-    "correct": [
-      "A",
-      "B"
-    ],
-    "multi": true,
     "orderDependent": false,
     "source": "imported"
   },
@@ -17504,35 +17441,6 @@
     "source": "imported"
   },
   {
-    "id": "q_8dbda4b2d28d",
-    "topicId": "migration-caf",
-    "text": "Which AWS Well-Architected Framework concept represents a system's ability to remain functional when the system encounters operational problems?",
-    "options": [
-      {
-        "key": "A",
-        "text": "Consistency"
-      },
-      {
-        "key": "B",
-        "text": "Elasticity"
-      },
-      {
-        "key": "C",
-        "text": "Durability"
-      },
-      {
-        "key": "D",
-        "text": "Latency"
-      }
-    ],
-    "correct": [
-      "C"
-    ],
-    "multi": false,
-    "orderDependent": false,
-    "source": "imported"
-  },
-  {
     "id": "q_a87d9b79c7c6",
     "topicId": "migration-caf",
     "text": "Which pillar of the AWS Well-Architected Framework focuses on the ability to recover automatically from service interruptions?",
@@ -17821,7 +17729,7 @@
       }
     ],
     "correct": [
-      "B"
+      "A"
     ],
     "multi": false,
     "orderDependent": false,

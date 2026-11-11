@@ -29,5 +29,55 @@
     ],
     "confidence": "medium",
     "approvedOn": "2026-11-11"
+  },
+  {
+    "questionId": "q_79a6198b037a",
+    "oldCorrect": [
+      "A"
+    ],
+    "newCorrect": [
+      "B"
+    ],
+    "reason": "Data science is a Business perspective capability; Program and project management is a Governance perspective capability in AWS CAF.",
+    "sources": [
+      "https://docs.aws.amazon.com/whitepapers/latest/overview-aws-cloud-adoption-framework/business-perspective.html",
+      "https://docs.aws.amazon.com/whitepapers/latest/overview-aws-cloud-adoption-framework/governance-perspective.html"
+    ],
+    "confidence": "high",
+    "approvedOn": "2026-11-11"
+  },
+  {
+    "questionId": "q_af399656dd4d",
+    "oldCorrect": [
+      "C",
+      "D"
+    ],
+    "newCorrect": [
+      "A",
+      "D"
+    ],
+    "reason": "Program and project management and Risk management are Governance capabilities; Portfolio management is a Business capability (Governance has Application portfolio management).",
+    "sources": [
+      "https://docs.aws.amazon.com/whitepapers/latest/overview-aws-cloud-adoption-framework/governance-perspective.html",
+      "https://docs.aws.amazon.com/whitepapers/latest/overview-aws-cloud-adoption-framework/business-perspective.html"
+    ],
+    "confidence": "high",
+    "approvedOn": "2026-11-11"
+  },
+  {
+    "questionId": "q_170468ef4f96",
+    "oldCorrect": [
+      "B"
+    ],
+    "newCorrect": [
+      "A"
+    ],
+    "reason": "Use serverless architectures is a listed Performance efficiency design principle; scaling horizontally is a Reliability principle.",
+    "sources": [
+      "https://docs.aws.amazon.com/wellarchitected/latest/performance-efficiency-pillar/design-principles.html",
+      "https://docs.aws.amazon.com/wellarchitected/latest/reliability-pillar/design-principles.html"
+    ],
+    "confidence": "high",
+    "approvedOn": "2026-11-11"
   }
 ]

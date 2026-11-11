@@ -12,7 +12,7 @@ required: true
 - **Recovery Time Objective (RTO)**: khoảng chờ tối đa chấp nhận được từ lúc dịch vụ gián đoạn đến lúc dịch vụ được khôi phục. Trả lời câu hỏi "chúng ta được phép ngừng hoạt động bao lâu?"
 - **Recovery Point Objective (RPO)**: khoảng thời gian tối đa chấp nhận được kể từ điểm khôi phục gần nhất. Trả lời câu hỏi "chúng ta được phép mất bao nhiêu dữ liệu gần đây?"
 
-Hãy nhớ: RTO là **thời gian** để chạy lại, RPO là **thời điểm** của dữ liệu lấy lại được. RTO chặt cần tài nguyên sẵn sàng chạy; RPO chặt cần sao chép dữ liệu thường xuyên hoặc liên tục. Doanh nghiệp đặt ra hai con số này, và chi phí của phương án khôi phục không nên vượt quá chi phí của sự cố.
+Hãy nhớ: RTO là **thời gian** để chạy lại, RPO là **thời điểm** của dữ liệu lấy lại được. RTO chặt cần tài nguyên sẵn sàng chạy; RPO chặt cần sao chép dữ liệu thường xuyên hoặc liên tục. Doanh nghiệp đặt ra hai con số này, và phương án khôi phục không nên tốn kém hơn sự cố mà nó bảo vệ, trừ khi có yêu cầu thứ cấp như quy định pháp lý.
 
 ## Multi-AZ trước, multi-Region khi cần
 

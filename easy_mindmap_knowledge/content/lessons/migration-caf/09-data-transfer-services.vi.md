@@ -41,7 +41,7 @@ Các engine khác nhau dùng kiểu dữ liệu, mã và cấu trúc bảng khá
 | Database sang engine được quản lý | AWS DMS |
 | Database thương mại sang engine mã nguồn mở | DMS cộng SCT hoặc DMS Schema Conversion |
 | Đối tác tải tệp lên S3 bằng SFTP | AWS Transfer Family (xem bài các dịch vụ di chuyển) |
-| Hàng petabyte với mạng yếu | Họ Snow (chủ đề lưu trữ) |
+| Hàng petabyte với mạng yếu | AWS Data Transfer Terminal (họ Snow đã đóng với khách hàng mới; xem chủ đề lưu trữ) |
 
 ## Bẫy thường gặp
 
