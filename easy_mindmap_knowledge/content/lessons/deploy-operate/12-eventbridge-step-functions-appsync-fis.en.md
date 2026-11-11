@@ -24,7 +24,7 @@ Typical example: when an EC2 instance enters the "stopping" state, an EventBridg
 
 | Workflow type | Runs for | Execution | Good for |
 | --- | --- | --- | --- |
-| Standard | Up to one year | Each step exactly once | Long-running, auditable workflows |
+| Standard | Up to one year | Exactly once (unless Retry is set) | Long-running, auditable workflows |
 | Express | Up to five minutes | At least once if asynchronous, at most once if synchronous | High-rate event processing, such as streaming data and IoT ingestion |
 
 Choose Step Functions to **orchestrate** several services in order, with error handling and branching, instead of chaining them with custom code. Standard workflows are priced by state transitions; Express workflows by number and duration of executions.

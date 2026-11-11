@@ -32,7 +32,7 @@ videoQuery: AWS CodePipeline CodeBuild CodeDeploy Elastic Beanstalk blue green d
 | Blue/green | Run the new version (green) next to the old one (blue), then switch traffic | Fast, safe rollback by switching back; costs extra resources for a while |
 | Canary | Send a small share of traffic to the new version first, then the rest | Problems affect only a few users |
 
-CodeDeploy supports in-place (one batch at a time or all at once, depending on the deployment configuration) and blue/green (EC2 only) deployments; for Lambda and ECS it can shift traffic as **canary**, **linear** or **all at once**. Elastic Beanstalk offers policies such as all at once, rolling, immutable and **traffic splitting** (a canary method).
+CodeDeploy supports in-place deployments (one batch at a time or all at once, depending on the deployment configuration) on EC2 and on-premises servers, and blue/green deployments on EC2, Lambda and ECS; for Lambda and ECS it shifts traffic as **canary**, **linear** or **all at once**. Elastic Beanstalk offers policies such as all at once, rolling, immutable and **traffic splitting** (a canary method).
 
 ## Common traps
 

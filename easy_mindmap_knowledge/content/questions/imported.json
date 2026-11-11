@@ -5440,7 +5440,7 @@
       },
       {
         "key": "D",
-        "text": "AWS CodeStar"
+        "text": "AWS CodePipeline"
       }
     ],
     "correct": [
@@ -6596,7 +6596,7 @@
       },
       {
         "key": "D",
-        "text": "AWS CLI"
+        "text": "AWS SDK"
       }
     ],
     "correct": [
@@ -14608,7 +14608,7 @@
     "options": [
       {
         "key": "A",
-        "text": "Amazon ElastiCache"
+        "text": "Amazon Cognito"
       },
       {
         "key": "B",

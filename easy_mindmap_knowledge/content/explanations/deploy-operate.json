@@ -154,12 +154,12 @@
   }
  },
  "q_900fc170ef5e": {
-  "explanation": "The exam expects AWS CodeStar, the service that quickly set up an application project with a ready-made CI/CD toolchain; note that AWS has since ended CodeStar support, and AWS CodePipeline is the current CI/CD pipeline service.",
+  "explanation": "AWS CodePipeline is the AWS continuous delivery service that automates the build, test and deploy phases of a release process, so it meets a CI/CD pipeline requirement. AWS CodeStar, which used to set up such a toolchain quickly, is no longer available.",
   "optionNotes": {
    "A": "AWS Config evaluates resource configuration and is not a CI/CD service.",
    "B": "Cognito handles user sign-up and sign-in, not CI/CD.",
    "C": "DataSync transfers data between storage systems, not a CI/CD pipeline.",
-   "D": "The exam expects CodeStar here, because it quickly set up a project with a CI/CD toolchain; it has since been discontinued, and CodePipeline is the current service for building a CI/CD pipeline."
+   "D": "CodePipeline models and automates the release pipeline (source, build, test and deploy) as a continuous delivery service."
   }
  },
  "q_b3172b72379e": {
@@ -190,12 +190,12 @@
   }
  },
  "q_b447fe78db1e": {
-  "explanation": "The exam expects the AWS CLI, a programmatic interface for interacting with AWS services, though an AWS SDK is the more typical choice inside a web application's code.",
+  "explanation": "An AWS SDK lets application code, such as a web application's backend or browser code, call AWS services programmatically.",
   "optionNotes": {
    "A": "CloudShell is a browser-based shell for people to run commands, not something a web application uses.",
    "B": "AWS Marketplace is a catalog for buying software and does not let an application call AWS services.",
-   "C": "The Management Console is a manual web interface for users, not for application-to-service interaction.",
-   "D": "The exam expects the AWS CLI here, as a programmatic way to interact with AWS services (an SDK is the more usual choice inside application code)."
+   "C": "The Management Console is a web interface for people to manage resources manually, not for application-to-service calls.",
+   "D": "AWS SDKs are the way application code calls AWS services programmatically."
   }
  },
  "q_e91a696a76e6": {
@@ -454,10 +454,10 @@
  "q_baa5e508c05c": {
   "explanation": "CloudFormation can deploy the same template to multiple Regions (for example with StackSets), creating copies of resources across Regions.",
   "optionNotes": {
-   "A": "ElastiCache provides in-memory caching and does not replicate resources across Regions in this sense.",
+   "A": "Amazon Cognito provides user sign-up, sign-in and access control for applications; it does not create copies of resources across Regions.",
    "B": "CloudFormation deploys the same template in multiple Regions to create copies of resources.",
    "C": "CloudTrail logs API activity and does not create resources.",
-   "D": "Systems Manager manages operational tasks, not creating copies of resources across Regions."
+   "D": "Systems Manager manages operational tasks on resources; deploying the same set of resources to several Regions is CloudFormation's role."
   }
  },
  "q_c3be02bc64cf": {
@@ -509,9 +509,9 @@
   "explanation": "CodeDeploy automates software deployments to EC2 instances and on-premises servers.",
   "optionNotes": {
    "A": "CodeCommit hosts source code repositories and does not deploy software.",
-   "B": "CodeBuild compiles and tests code and does not deploy it to instances.",
+   "B": "CodeBuild compiles and tests code; deploying software to instances is CodeDeploy's job.",
    "C": "CodeDeploy automates deployments to both EC2 and on-premises instances.",
-   "D": "CodePipeline orchestrates the release workflow but relies on a service like CodeDeploy to do the deployment."
+   "D": "CodePipeline orchestrates the release workflow and can include deploy actions, but CodeDeploy is the service dedicated to deploying to EC2 and on-premises instances."
   }
  },
  "q_9a47c2ac7d1e": {
