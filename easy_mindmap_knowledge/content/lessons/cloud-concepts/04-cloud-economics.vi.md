@@ -34,7 +34,7 @@ TCO so sánh **toàn bộ** chi phí vận hành một workload, không chỉ gi
 
 - Đám mây chuyển chi tiêu từ CapEx (trả trước, cố định) sang OpEx (biến đổi, trả theo mức dùng).
 - TCO bao gồm các chi phí ẩn của hạ tầng tại chỗ: điện, làm mát, mặt bằng, bảo trì và nhân sự.
-- Right-sizing làm kích cỡ tài nguyên khớp với nhu cầu thực, và không bao giờ "làm một lần là xong".
+- Right-sizing làm kích cỡ tài nguyên khớp với nhu cầu thực, và thường là một quá trình lặp lại, dù có thể chỉ làm một lần nếu công sức bỏ ra tốn hơn khoản tiết kiệm.
 - Tắt tài nguyên nhàn rỗi là một trong những cách tiết kiệm đơn giản nhất.
 
 ## Nguồn
