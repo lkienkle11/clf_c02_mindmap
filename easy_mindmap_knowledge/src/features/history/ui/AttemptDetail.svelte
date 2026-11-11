@@ -29,6 +29,12 @@
         ? (services.catalog.topics.find((t) => t.id === attempt.topicId)?.title[locale] ?? attempt.topicId)
         : i18n.t('history.mixed'),
   );
+  // Everything under the title (score, search, questions) is what an attempt report screenshots.
+  let content: HTMLElement | null = null;
+  const trackContent = (node: HTMLElement) => {
+    content = node;
+    return () => (content = null);
+  };
   let query = $state('');
   let verdict = $state<ResultVerdict>('all');
   // The numbers (1-based, as shown) of the questions that pass the search and the filter.
@@ -56,6 +62,7 @@
 </script>
 
 <Modal open {title} {onclose} closeOnBackdrop>
+  <div {@attach trackContent}>
   {#if attempt.scorePct !== null}
     <p class="mb-3 font-semibold tabular-nums">{i18n.t('history.detail.score', { score: formatPct(attempt.scorePct, locale) })}</p>
   {/if}
@@ -93,5 +100,13 @@
       {/each}
     </ol>
   {/if}
-  <div class="mt-4 flex justify-end"><Button variant="secondary" onclick={onclose}>{i18n.t('common.close')}</Button></div>
+  </div>
+  <div class="mt-4 flex flex-wrap justify-end gap-3">
+    <ReportButton
+      {services}
+      context={{ type: 'attempt', attemptId: attempt.id, sourceScreen: 'history' }}
+      captureTarget={() => content}
+    />
+    <Button variant="secondary" onclick={onclose}>{i18n.t('common.close')}</Button>
+  </div>
 </Modal>

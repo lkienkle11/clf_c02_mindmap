@@ -73,10 +73,17 @@
     return () => delete frames[id];
   };
 
+  // The whole result (score and every question) is what an attempt report screenshots.
+  let page: HTMLElement | null = null;
+  const trackPage = (node: HTMLElement) => {
+    page = node;
+    return () => (page = null);
+  };
+
   const focusOnMount = (node: HTMLElement) => node.focus();
 </script>
 
-<div class="mx-auto flex max-w-3xl flex-col gap-6 p-6">
+<div {@attach trackPage} class="mx-auto flex max-w-3xl flex-col gap-6 p-6">
   <header class="flex flex-col items-start gap-2">
     <h1 tabindex="-1" class="text-2xl font-semibold focus:outline-none" {@attach focusOnMount}>{i18n.t(titleKey)}</h1>
     {#if timedOut && !isReview}
@@ -151,6 +158,14 @@
       {#if canRetry && onretry}
         <Button variant="secondary" onclick={onretry}>{i18n.t('practice.result.tryAgain')}</Button>
       {/if}
+    {/if}
+    {#if attemptId !== undefined}
+      <ReportButton
+        {services}
+        class="ml-auto"
+        context={{ type: 'attempt', attemptId, sourceScreen: 'result' }}
+        captureTarget={() => page}
+      />
     {/if}
   </div>
 </div>
