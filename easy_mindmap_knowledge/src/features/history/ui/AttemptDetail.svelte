@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { Services } from '@/app/composition';
-  import { OptionReview } from '@/features/practice';
+  import { OptionReview, hidesAnswers } from '@/features/practice';
   import { ReportButton } from '@/features/report';
   import { getI18n } from '@/i18n/i18n.svelte';
   import type { AttemptQuestionRow, AttemptRow } from '@/persistence';
@@ -56,7 +56,7 @@
           <p class={cn('font-semibold', ok ? 'text-leaf-done-ink' : 'text-danger')}>
             {ok ? `✓ ${i18n.t('practice.result.correct')}` : `✗ ${i18n.t('practice.result.incorrect')}`}
           </p>
-          <OptionReview question={q} selected={row.selected} optionOrder={row.optionOrder} />
+          <OptionReview question={q} selected={row.selected} optionOrder={row.optionOrder} hideAnswers={hidesAnswers(row.selected, attempt.unansweredDisplay)} />
           <ReportButton
             {services}
             class="self-end"

@@ -66,4 +66,25 @@ describe('OptionReview', () => {
     renderWithI18n(OptionReview, { question: undefined, selected: [] });
     expect(rows()).toHaveLength(0);
   });
+
+  describe('hideAnswers', () => {
+    const question = () => makeQuestion({ options, correct: ['B'], optionNotes: notes, explanation: 'Because B.' });
+
+    it('lists every option as plain choices: no correct marking, no badges, no notes, no explanation', () => {
+      renderWithI18n(OptionReview, { question: question(), selected: [], hideAnswers: true });
+      expect(rows()).toHaveLength(4);
+      expect(screen.queryByText('Correct answer')).not.toBeInTheDocument();
+      expect(screen.queryByText(/note [A-D]/)).not.toBeInTheDocument();
+      expect(screen.queryByText('Explanation')).not.toBeInTheDocument();
+      expect(screen.queryByText('Because B.')).not.toBeInTheDocument();
+      expect(rows().some((r) => r.className.includes('border-leaf-done'))).toBe(false);
+      expect(screen.getByText('No answer')).toBeInTheDocument();
+    });
+
+    it('does not change anything when off', () => {
+      renderWithI18n(OptionReview, { question: question(), selected: [] });
+      expect(row('B').getByText('Correct answer')).toBeInTheDocument();
+      expect(screen.getByText('Because B.')).toBeInTheDocument();
+    });
+  });
 });

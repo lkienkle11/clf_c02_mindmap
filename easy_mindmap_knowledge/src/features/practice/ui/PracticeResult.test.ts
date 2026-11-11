@@ -149,4 +149,39 @@ describe('PracticeResult notice', () => {
     await mount({ scorePct: 90, correct: 9, total: 10, passed: true, items });
     expect(screen.queryByRole('status')).not.toBeInTheDocument();
   });
+
+  describe('unanswered questions with answersOnly', () => {
+    const unanswered: SubmitResult['items'] = [
+      { questionId: 'q1', selected: [], correct: ['A'], isCorrect: false, explanation: 'Because alpha.' },
+      { questionId: 'q2', selected: ['C'], correct: ['A', 'B'], isCorrect: false },
+    ];
+    const rowsOf = () => screen.getAllByRole('listitem').filter((li) => li.getAttribute('data-question'));
+
+    it('shows the unanswered question without correct marking or explanation, and still shows an answered wrong one in full', async () => {
+      await mount({ scorePct: 0, correct: 0, total: 2, passed: false, items: unanswered }, false, { unansweredDisplay: 'answersOnly' });
+      const [first, second] = rowsOf();
+      expect(within(first).getByText('No answer')).toBeInTheDocument();
+      expect(within(first).queryByText('Correct answer')).not.toBeInTheDocument();
+      expect(within(first).queryByText('Because alpha.')).not.toBeInTheDocument();
+      expect(within(first).getAllByText(/✗/)[0]).toHaveTextContent('Incorrect');
+      expect(within(second).getAllByText('Correct answer').length).toBeGreaterThan(0);
+    });
+
+    it('keeps everything with reveal (default)', async () => {
+      await mount({ scorePct: 0, correct: 0, total: 2, passed: false, items: unanswered });
+      const [first] = rowsOf();
+      expect(within(first).getByText('Correct answer')).toBeInTheDocument();
+      expect(within(first).getByText('Because alpha.')).toBeInTheDocument();
+    });
+
+    it('hides the kept explanation too when the question is missing from the catalog', async () => {
+      await mount(
+        { scorePct: 0, correct: 0, total: 1, passed: false, items: [{ questionId: 'gone', selected: [], correct: ['A'], isCorrect: false, explanation: 'Kept note.' }] },
+        false,
+        { unansweredDisplay: 'answersOnly' },
+      );
+      expect(screen.queryByText('Kept note.')).not.toBeInTheDocument();
+      expect(screen.getByText('No answer')).toBeInTheDocument();
+    });
+  });
 });

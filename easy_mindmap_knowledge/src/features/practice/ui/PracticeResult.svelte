@@ -2,10 +2,12 @@
   import type { Snippet } from 'svelte';
   import type { Question } from '@/content/types';
   import type { Services } from '@/app/composition';
+  import type { UnansweredDisplay } from '@/persistence';
   import { ReportButton } from '@/features/report';
   import { getI18n } from '@/i18n/i18n.svelte';
   import Button from '@/ui/Button.svelte';
   import { cn } from '@/ui/cn';
+  import { hidesAnswers } from '../logic/unanswered';
   import OptionReview from './OptionReview.svelte';
   import type { SubmitResult } from '../session.svelte';
 
@@ -20,6 +22,8 @@
     onretry?: () => void;
     /** True when this pass completed the topic for the first time and opened the next one. */
     unlocked?: boolean;
+    /** What to show for unanswered questions; 'reveal' (the default) shows everything. */
+    unansweredDisplay?: UnansweredDisplay;
     /**
      * 'review' shows the score and breakdown only: no pass mark, no unlock wording, no retry.
      * 'exam' uses the exam title and the pass mark, and never the unlock wording.
@@ -31,7 +35,7 @@
     actions?: Snippet;
   }
 
-  let { services, result, attemptId, onback, timedOut = false, canRetry = false, onretry, unlocked = false, mode = 'practice', notice, actions }: Props = $props();
+  let { services, result, attemptId, onback, timedOut = false, canRetry = false, onretry, unlocked = false, unansweredDisplay = 'reveal', mode = 'practice', notice, actions }: Props = $props();
   const isReview = $derived(mode === 'review');
   const isExam = $derived(mode === 'exam');
   const titleKey = $derived(isReview ? 'review.result.title' : isExam ? 'exam.result.title' : 'practice.result.title');
@@ -80,6 +84,7 @@
     <ol class="flex flex-col gap-4">
       {#each result.items as item, i (item.questionId)}
         {@const q = questions.get(item.questionId)}
+        {@const hide = hidesAnswers(item.selected, unansweredDisplay)}
         <li data-question={item.questionId} class="flex flex-col gap-2 rounded-lg border border-border-subtle bg-surface p-4" {@attach frame(item.questionId)}>
           <p class="text-sm text-muted-foreground">{i18n.t('practice.result.question', { n: i + 1 })}</p>
           <p lang="en" class="font-medium">{q?.text ?? item.questionId}</p>
@@ -87,12 +92,12 @@
             {item.isCorrect ? `✓ ${i18n.t('practice.result.correct')}` : `✗ ${i18n.t('practice.result.incorrect')}`}
           </p>
           {#if q}
-            <OptionReview question={explained(q, item.explanation)} selected={item.selected} optionOrder={item.optionOrder} />
+            <OptionReview question={explained(q, item.explanation)} selected={item.selected} optionOrder={item.optionOrder} hideAnswers={hide} />
           {:else}
             {#if item.selected.length === 0}
               <p class="text-sm text-muted-foreground">{i18n.t('practice.result.noAnswer')}</p>
             {/if}
-            {#if item.explanation}
+            {#if item.explanation && !hide}
               <p class="text-sm text-muted-foreground">{item.explanation}</p>
             {/if}
           {/if}

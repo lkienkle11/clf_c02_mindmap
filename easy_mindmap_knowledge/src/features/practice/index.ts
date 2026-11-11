@@ -16,3 +16,4 @@ export { default as ResumeGate } from './ui/ResumeGate.svelte';
 export { default as PracticeSessionView } from './ui/PracticeSessionView.svelte';
 export { default as PracticeResult } from './ui/PracticeResult.svelte';
 export { default as OptionReview } from './ui/OptionReview.svelte';
+export { hidesAnswers } from './logic/unanswered';
