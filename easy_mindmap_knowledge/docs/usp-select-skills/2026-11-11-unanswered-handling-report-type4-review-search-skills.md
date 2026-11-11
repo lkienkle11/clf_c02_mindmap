@@ -34,3 +34,9 @@
 - svelte-core-bestpractices
 - frontend-ui-engineering
 - ui-ux-pro-max
+
+## STEP 5:
+- superpowers:verification-before-completion
+
+## STEP 6:
+- superpowers:requesting-code-review
