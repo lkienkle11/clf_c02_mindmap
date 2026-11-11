@@ -12,6 +12,7 @@
   import ImageUpload from './ImageUpload.svelte';
   import RichTextInput from './RichTextInput.svelte';
   import ScreenshotPicker from './ScreenshotPicker.svelte';
+  import { toasts } from '@/ui/toast.svelte';
 
   interface Props {
     services: Services;
@@ -94,6 +95,7 @@
     }
     submitting = false;
     notifyReportSubmitted();
+    toasts.show('toast.reportSent');
     // The report is saved. A throwing parent callback must not look like a save failure or allow a duplicate.
     try {
       onsubmitted?.(id);

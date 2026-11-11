@@ -357,5 +357,8 @@
   "report.export.failed": "Không thể xuất báo cáo. Hãy kiểm tra thư mục có ghi được không rồi thử lại.",
   "report.export.syncFailed": "Không đọc được các tệp báo cáo trong thư mục xuất.",
   "report.export.folderInaccessible": "Ứng dụng không còn truy cập được thư mục xuất. Hãy chọn lại thư mục.",
-  "report.export.dismiss": "Đóng thông báo"
+  "report.export.dismiss": "Đóng thông báo",
+  "toast.attemptSubmitted": "Đã nộp bài. Kết quả đã sẵn sàng.",
+  "toast.lessonCompleted": "Đã hoàn thành bài học.",
+  "toast.reportSent": "Đã gửi báo cáo. Cảm ơn bạn!"
 }

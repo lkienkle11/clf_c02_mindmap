@@ -357,5 +357,8 @@
   "report.export.failed": "Could not export the reports. Check that the folder is writable, then try again.",
   "report.export.syncFailed": "Could not read the report files in the export folder.",
   "report.export.folderInaccessible": "The app can no longer access the export folder. Choose the folder again.",
-  "report.export.dismiss": "Dismiss"
+  "report.export.dismiss": "Dismiss",
+  "toast.attemptSubmitted": "Submitted. Your result is ready.",
+  "toast.lessonCompleted": "Lesson completed.",
+  "toast.reportSent": "Report sent. Thank you!"
 }
