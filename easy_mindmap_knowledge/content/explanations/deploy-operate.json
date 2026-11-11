@@ -27,10 +27,10 @@
   }
  },
  "q_c584da768fe8": {
-  "explanation": "Systems Manager Parameter Store can hold configuration data and secrets centrally, and standard parameters have no additional charge, making it the most cost-effective choice.",
+  "explanation": "Systems Manager Parameter Store can hold configuration data and encrypted values (SecureString) centrally, and standard parameters have no additional charge, making it the most cost-effective choice.",
   "optionNotes": {
    "A": "Parameter Store stores configuration values and passwords centrally, and standard parameters are free, so it is the cheapest fit.",
-   "B": "Secrets Manager also stores secrets and adds rotation, but it charges per secret, so it is less cost-effective here.",
+   "B": "AWS KMS creates and manages encryption keys; it is not a store for configuration data and passwords.",
    "C": "AWS Config tracks resource configuration changes; it is not a store for application configuration data or passwords.",
    "D": "Amazon S3 is object storage and is not designed as a managed, access-controlled store for passwords and configuration parameters."
   }
@@ -312,7 +312,7 @@
    "A": "Cognito manages user identity and authentication, not audit information.",
    "B": "FSx provides managed file systems and is not an audit service.",
    "C": "AWS Config records configuration history and compliance evaluations that auditors can review.",
-   "D": "Inspector finds vulnerabilities, but it is not the service that records configuration and compliance history for auditors."
+   "D": "Amazon Polly converts text to speech and does not produce audit information."
   }
  },
  "q_3ed64d52376b": {
@@ -475,7 +475,7 @@
    "A": "IAM manages permissions and does not keep a history of terminated instances.",
    "B": "CloudTrail logs the API call that terminated the instance, including the time.",
    "C": "Compute Optimizer recommends instance sizes and does not record terminations.",
-   "D": "EventBridge can react to events but is not the historical record of when it happened."
+   "D": "Amazon Rekognition analyzes images and video; it does not record EC2 instance events."
   }
  },
  "q_b3802c5eaf59": {
@@ -563,7 +563,7 @@
   "explanation": "CloudWatch can trigger alarm actions such as stopping an idle EC2 instance, and it collects and searches logs with CloudWatch Logs.",
   "optionNotes": {
    "A": "A CloudWatch alarm on low CPU can perform an action that stops the instance.",
-   "B": "Identifying who called an API is done by CloudTrail, not CloudWatch.",
+   "B": "Rotating IAM access keys automatically is not a CloudWatch task.",
    "C": "CloudWatch Logs collects and searches logs from applications and AWS services.",
    "D": "Evaluating configuration compliance over time is a task for AWS Config.",
    "E": "Accepting agreements such as a BAA is done in AWS Artifact."

@@ -103,8 +103,8 @@
  "q_acb80c2b7edb": {
   "explanation": "Amazon DynamoDB is a durable NoSQL database that stores key-value and document (flexible-schema) items without a fixed schema and lets you query them quickly by key.",
   "optionNotes": {
-   "A": "RDS is a relational database built around a defined schema, so it suits flexible-schema items less well than DynamoDB.",
-   "B": "Aurora is a relational database built around a defined schema, so it suits flexible-schema items less well than DynamoDB.",
+   "A": "Amazon Athena queries data stored elsewhere, such as in Amazon S3; it is not where the data is stored durably.",
+   "B": "AWS Glue prepares and catalogs data; it is not a durable data store.",
    "C": "QuickSight is a business intelligence and visualization service, not a data store.",
    "D": "DynamoDB stores flexible-schema items durably across multiple Availability Zones and supports fast queries by key."
   }
@@ -169,7 +169,7 @@
   "optionNotes": {
    "A": "DynamoDB scales horizontally to millions of requests per second, matching the requirement.",
    "B": "AWS Cloud9 is a cloud-based IDE for writing code, not a data store.",
-   "C": "ElastiCache for Memcached is an in-memory cache that sits in front of a data store; it is not the durable primary database for the application.",
+   "C": "AWS Glue is a data integration (ETL) service, not a data store for application queries.",
    "D": "Neptune is a graph database for connected data, not a general data store designed to scale to millions of key-based queries per second."
   }
  },

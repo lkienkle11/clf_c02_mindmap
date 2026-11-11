@@ -18,12 +18,12 @@
   }
  },
  "q_429ad5e33114": {
-  "explanation": "Running containers directly on Amazon EC2 instances gives the company full control of the underlying compute, including the instance type, OS, and patching. Amazon ECS and EKS can also run on EC2 instances that the customer manages, but Amazon EC2 is the most direct answer.",
+  "explanation": "Running containers directly on Amazon EC2 instances gives the company full control of the underlying compute, including the instance type, OS, and patching. AWS Fargate removes that control because AWS manages the servers.",
   "optionNotes": {
-   "A": "EKS is a managed Kubernetes control plane; with EC2 worker nodes you control the compute, with Fargate you do not.",
+   "A": "AWS Lambda runs functions without you managing the compute resources, so it does not give full control of the hosts.",
    "B": "Fargate is serverless compute for containers, so AWS manages the compute and the customer has less control.",
    "C": "With EC2 the company chooses and manages the instances that host the containers, giving full control of the compute resources.",
-   "D": "ECS can run on EC2 instances that you manage (full control) or on Fargate (managed by AWS); the plain wording of the question points to running the containers directly on EC2."
+   "D": "Amazon Athena is a serverless SQL query service, not a container hosting service."
   }
  },
  "q_ed4aff43991b": {
@@ -87,14 +87,14 @@
    "A": "Spot Instances offer the deepest discount, and stateless workloads can handle the possible interruption.",
    "B": "Dedicated Instances run on single-tenant hardware at a higher price and do not help optimize cost.",
    "C": "Reserved Instances require a commitment and the company does not use all its capacity, so it would pay for unused commitment.",
-   "D": "On-Demand has no discount and is not the cheapest for a workload that tolerates interruptions."
+   "D": "Dedicated Hosts are physical servers for your exclusive use; they do not lower the cost of unused capacity."
   }
  },
  "q_c96d5ce8ebfc": {
   "explanation": "Stateless services that scale for short-term use tolerate interruptions, so Spot Instances give the lowest cost.",
   "optionNotes": {
    "A": "Spot Instances provide the largest discount and suit stateless, short-term services that can be replaced if interrupted.",
-   "B": "On-Demand is flexible but priced higher than Spot, so it is not the most cost-efficient for interruptible work.",
+   "B": "Dedicated Instances run on single-tenant hardware, which costs more and is not the cheapest option for short-term stateless services.",
    "C": "Reserved Instances need a 1- or 3-year commitment, which does not fit short-term usage.",
    "D": "Dedicated Hosts are physical servers priced at a premium and are meant for licensing or compliance needs."
   }
@@ -312,7 +312,7 @@
  "q_f6b4e1761246": {
   "explanation": "Amazon EC2 offers many instance types with different combinations of CPU, memory, storage, and networking, so each application can run on the configuration it needs.",
   "optionNotes": {
-   "A": "Lambda does not let you pick instance types with specific CPU, memory, storage, and network configurations.",
+   "A": "AWS Step Functions orchestrates workflows and does not host applications on instance types that you select.",
    "B": "Amazon Cognito handles user sign-up and authentication, not application hosting.",
    "C": "Athena is a serverless query service for data in S3, not a place to run custom applications.",
    "D": "EC2 offers a wide range of instance types and sizes, matching different resource profiles."
@@ -447,7 +447,7 @@
  "q_e8576e00ad1a": {
   "explanation": "AWS Fargate runs containers without provisioning or managing servers and has no 15-minute limit, so it handles containers that run for 4 hours.",
   "optionNotes": {
-   "A": "Lambda functions are limited to 15 minutes, so a 4-hour run does not fit, and the company wants container-based services.",
+   "A": "Amazon Cognito handles user sign-up and sign-in; it does not run containers.",
    "B": "Fargate runs containers for as long as needed with no servers to manage.",
    "C": "EC2 requires provisioning and managing instances, which the company wants to avoid.",
    "D": "Elastic Beanstalk still provisions EC2 instances in the account, so server management is not fully removed."
@@ -474,7 +474,7 @@
  "q_7ebfaa2be391": {
   "explanation": "Elastic Load Balancing distributes incoming traffic across multiple targets such as EC2 instances, containers, and IP addresses.",
   "optionNotes": {
-   "A": "Scaling the application's compute resources is the job of Auto Scaling; ELB scales its own capacity automatically but does not add or remove your instances.",
+   "A": "An ELB distributes incoming traffic; it does not run application code on servers of its own.",
    "B": "An ELB balances traffic across multiple compute resources, improving availability.",
    "C": "A load balancer operates within a single Region and cannot span multiple Regions.",
    "D": "ELB distributes traffic to targets in a VPC, not between internet gateways."
@@ -490,11 +490,11 @@
   }
  },
  "q_8add147cbbf7": {
-  "explanation": "AWS Fargate and Amazon S3 are serverless because AWS manages the underlying servers. Provisioned Amazon MSK, classic Amazon EMR and Amazon EC2 use clusters or instances that you configure (MSK Serverless and EMR Serverless exist as separate options).",
+  "explanation": "AWS Fargate and Amazon S3 are serverless because AWS manages the underlying servers. Amazon EBS volumes attach to EC2 instances, Amazon Lightsail provides virtual servers that you manage, and Amazon EC2 uses instances that you configure, so those are not serverless.",
   "optionNotes": {
    "A": "Fargate runs containers without any servers to manage.",
-   "B": "Amazon MSK provisioned clusters run on brokers you size and configure, so it is not serverless in the classic sense (an MSK Serverless option exists but is not the intended answer here).",
-   "C": "Classic Amazon EMR runs on clusters of EC2 instances that you configure (EMR Serverless exists but is not the intended answer here).",
+   "B": "Amazon EBS provides block volumes that you attach to EC2 instances; it is not a serverless service.",
+   "C": "Amazon Lightsail provides preconfigured virtual servers that you manage, so it is not a serverless service.",
    "D": "S3 is a serverless storage service with no servers to provision or manage.",
    "E": "EC2 requires you to provision and manage instances."
   }

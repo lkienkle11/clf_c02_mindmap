@@ -721,7 +721,7 @@
       },
       {
         "key": "B",
-        "text": "AWS Secrets Manager"
+        "text": "AWS Key Management Service (AWS KMS)"
       },
       {
         "key": "C",
@@ -746,7 +746,7 @@
     "options": [
       {
         "key": "A",
-        "text": "Amazon Elastic Kubernetes Service (Amazon EKS)"
+        "text": "AWS Lambda"
       },
       {
         "key": "B",
@@ -758,7 +758,7 @@
       },
       {
         "key": "D",
-        "text": "Amazon Elastic Container Service (Amazon ECS)"
+        "text": "Amazon Athena"
       }
     ],
     "correct": [
@@ -2862,7 +2862,7 @@
       },
       {
         "key": "D",
-        "text": "Data transfer between Availability Zones"
+        "text": "Data transfer through a NAT gateway"
       }
     ],
     "correct": [
@@ -3626,7 +3626,7 @@
       },
       {
         "key": "D",
-        "text": "On-Demand Instances"
+        "text": "Dedicated Hosts"
       }
     ],
     "correct": [
@@ -3800,7 +3800,7 @@
       },
       {
         "key": "D",
-        "text": "The company's AWS account will be frozen and can be restarted after a payment plan is established."
+        "text": "The company's usage is automatically moved to the Reserved Instance pricing model."
       }
     ],
     "correct": [
@@ -4329,7 +4329,7 @@
       },
       {
         "key": "B",
-        "text": "On-Demand Instances"
+        "text": "Dedicated Instances"
       },
       {
         "key": "C",
@@ -9699,11 +9699,11 @@
     "options": [
       {
         "key": "A",
-        "text": "Amazon RDS"
+        "text": "Amazon Athena"
       },
       {
         "key": "B",
-        "text": "Amazon Aurora"
+        "text": "AWS Glue"
       },
       {
         "key": "C",
@@ -10584,7 +10584,7 @@
     "options": [
       {
         "key": "A",
-        "text": "AWS Lambda"
+        "text": "AWS Step Functions"
       },
       {
         "key": "B",
@@ -10717,7 +10717,7 @@
       },
       {
         "key": "D",
-        "text": "Amazon Inspector"
+        "text": "Amazon Polly"
       }
     ],
     "correct": [
@@ -12207,7 +12207,7 @@
       },
       {
         "key": "C",
-        "text": "Amazon ElastiCache for Memcached"
+        "text": "AWS Glue"
       },
       {
         "key": "D",
@@ -14579,7 +14579,7 @@
     "options": [
       {
         "key": "A",
-        "text": "AWS Lambda"
+        "text": "Amazon Cognito"
       },
       {
         "key": "B",
@@ -14910,7 +14910,7 @@
       },
       {
         "key": "D",
-        "text": "Amazon EventBridge"
+        "text": "Amazon Rekognition"
       }
     ],
     "correct": [
@@ -15604,7 +15604,7 @@
     "options": [
       {
         "key": "A",
-        "text": "An ELB will automatically scale resources to meet capacity needs."
+        "text": "An ELB can run application code on its own servers."
       },
       {
         "key": "B",
@@ -16411,11 +16411,11 @@
       },
       {
         "key": "B",
-        "text": "Amazon Managed Streaming for Apache Kafka"
+        "text": "Amazon Elastic Block Store (Amazon EBS)"
       },
       {
         "key": "C",
-        "text": "Amazon EMR"
+        "text": "Amazon Lightsail"
       },
       {
         "key": "D",

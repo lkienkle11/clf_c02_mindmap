@@ -14,7 +14,7 @@
    "A": "Data transferred in to AWS from the internet is not charged, so this is the no-cost transfer.",
    "B": "Data transferred out from AWS to the internet is charged per GB (after any free tier allowance).",
    "C": "Data transferred between AWS Regions is charged, because the traffic leaves the source Region.",
-   "D": "Data transferred between Availability Zones is generally charged, even though it stays within one Region."
+   "D": "Data processed by a NAT gateway is charged per GB, so it is not free."
   }
  },
  "q_a8cbe4ca36bb": {
