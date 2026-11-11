@@ -9,12 +9,12 @@
   }
  },
  "q_341570b0e614": {
-  "explanation": "Customers are responsible for security in the cloud, which includes protecting their own application data. AWS handles the hardware and the physical data centers.",
+  "explanation": "Customers are responsible for security in the cloud, which includes protecting their own application data. AWS handles the hardware, the physical data centers and the global network infrastructure.",
   "optionNotes": {
    "A": "AWS maintains the hardware that underlies EC2 instances.",
    "B": "The customer decides how its application data is classified, encrypted and accessed, so securing it is a customer responsibility.",
    "C": "AWS provides physical security for its data centers, so this is not left to the customer.",
-   "D": "AWS maintains the network infrastructure underneath Amazon VPC, but the customer creates and configures its own VPC components (subnets, route tables, security groups), so this option is not a clear-cut AWS task. The option about application data security is the unambiguous customer responsibility."
+   "D": "AWS maintains the global network infrastructure that connects its Regions and data centers, so this is an AWS responsibility."
   }
  },
  "q_b927dfd0a6af": {
@@ -32,7 +32,7 @@
    "A": "Software licensing depends on the service and model (for example license-included versus bring-your-own), so it is not something the customer always manages alone.",
    "B": "AWS runs the physical network, and the customer only configures the network settings it controls, so networking is split rather than always the customer's.",
    "C": "The customer owns its data and is always responsible for deciding how it is classified, protected and accessed.",
-   "D": "Key handling depends on the service: with AWS-managed options such as SSE-S3 AWS manages the keys, so the exam expects customer data, not keys, as the item that is always the customer's."
+   "D": "AWS maintains the hypervisor that runs customer instances, so this is not left to the customer."
   }
  },
  "q_4b4b61775da2": {

@@ -202,10 +202,10 @@
   }
  },
  "q_63c23e178263": {
-  "explanation": "AWS Compute Optimizer analyzes utilization metrics and recommends right-sized resources. Amazon EC2 is its classic target (instance types and sizes), and it also supports Amazon RDS and Aurora databases, so this question looks for EC2 as the answer.",
+  "explanation": "AWS Compute Optimizer analyzes utilization metrics and recommends right-sized resources. Amazon EC2 instance types and sizes are its classic target, so EC2 is the service that uses it to provide sizing recommendations.",
   "optionNotes": {
    "A": "Compute Optimizer recommends EC2 instance types and sizes based on workload metrics.",
-   "B": "Compute Optimizer also supports Amazon RDS and Aurora databases, so this option is not wrong in AWS documentation; EC2 is the classic target and the answer this question looks for.",
+   "B": "Amazon CloudFront is a content delivery network and is not a Compute Optimizer-supported resource type.",
    "C": "Lightsail uses fixed bundles and is not a Compute Optimizer-supported resource type.",
    "D": "Step Functions orchestrates workflows and has no instance sizing recommendations."
   }

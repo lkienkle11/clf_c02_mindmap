@@ -1566,7 +1566,7 @@
       },
       {
         "key": "D",
-        "text": "Maintenance of VPC components"
+        "text": "Maintenance of the AWS Global Infrastructure network"
       }
     ],
     "correct": [
@@ -2441,7 +2441,7 @@
       },
       {
         "key": "D",
-        "text": "Encryption keys"
+        "text": "Maintenance of the hypervisor"
       }
     ],
     "correct": [
@@ -7633,7 +7633,7 @@
       },
       {
         "key": "B",
-        "text": "Amazon RDS"
+        "text": "Amazon CloudFront"
       },
       {
         "key": "C",
@@ -11452,7 +11452,7 @@
       },
       {
         "key": "D",
-        "text": "Amazon EventBridge"
+        "text": "AWS Config"
       }
     ],
     "correct": [

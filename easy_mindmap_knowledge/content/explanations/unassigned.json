@@ -106,7 +106,7 @@
    "A": "CloudTrail records API activity for auditing and does not send CloudWatch alarm notifications.",
    "B": "SNS is the notification service that CloudWatch alarms use to send alerts to subscribers.",
    "C": "SQS queues messages for other applications to process and does not send alerts to people.",
-   "D": "EventBridge can also react to alarm state changes, but the exam expects SNS as the service that sends the alerts."
+   "D": "AWS Config records and evaluates resource configurations; it does not send alerts when a CloudWatch alarm is invoked."
   }
  },
  "q_e45f8fca1628": {
