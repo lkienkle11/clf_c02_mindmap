@@ -35,10 +35,16 @@
 
   const i18n = getI18n();
   const IGNORE = { 'data-report-ignore': '' } as const;
-  const TITLE = { question: 'report.title.question', lesson: 'report.title.lesson', system: 'report.title.system' } as const;
+  const TITLE = {
+    question: 'report.title.question',
+    lesson: 'report.title.lesson',
+    attempt: 'report.title.attempt',
+    system: 'report.title.system',
+  } as const;
   const PLACEHOLDER = {
     question: 'report.placeholder.question',
     lesson: 'report.placeholder.lesson',
+    attempt: 'report.placeholder.attempt',
     system: 'report.placeholder.system',
   } as const;
 
