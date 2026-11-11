@@ -14,7 +14,7 @@ Các cơ sở dữ liệu ứng dụng như RDS, Aurora và DynamoDB xử lý **
 
 - Kho dữ liệu gom dữ liệu từ nhiều nguồn, như hệ thống kho hàng, tài chính và bán hàng, về một định dạng chung và giữ lâu dài.
 - Nó rất mạnh với **truy vấn phức tạp join nhiều bảng lớn**.
-- Bạn có thể chạy **cluster provisioned** hoặc **Redshift Serverless**, tự cấp phát và co giãn năng lực, không tính phí khi nhàn rỗi.
+- Bạn có thể chạy **cluster provisioned** hoặc **Redshift Serverless**, tự cấp phát và co giãn năng lực, không tính phí phần tính toán khi nhàn rỗi (phần lưu trữ được quản lý vẫn bị tính phí).
 - **Redshift Spectrum** cho phép Redshift truy vấn các tệp trong Amazon S3 mà không cần nạp vào bảng.
 
 Redshift **không phải** cơ sở dữ liệu phía sau một ứng dụng đang chạy. Đây là nơi bạn phân tích dữ liệu, không phải nơi từng đơn hàng của khách được ghi lại lần đầu.

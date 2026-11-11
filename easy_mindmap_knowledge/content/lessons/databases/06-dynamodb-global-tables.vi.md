@@ -40,7 +40,7 @@ DAX **không** phù hợp với ứng dụng cần **đọc nhất quán mạnh 
 
 ## Time to Live (TTL)
 
-**TTL** cho phép bạn gán cho mỗi item một mốc hết hạn (một số theo Unix epoch tính bằng giây, lưu trong thuộc tính bạn chọn). DynamoDB tự động xóa các item đã hết hạn, thường trong vài ngày sau khi hết hạn, và việc xóa **không tiêu tốn dung lượng ghi**. Dùng nó cho phiên, token tạm, log và mọi thứ nên tự biến mất theo thời gian để giảm chi phí lưu trữ.
+**TTL** cho phép bạn gán cho mỗi item một mốc hết hạn (một số theo Unix epoch tính bằng giây, lưu trong thuộc tính bạn chọn). DynamoDB tự động xóa các item đã hết hạn, thường trong vài ngày sau khi hết hạn, và việc xóa **không tiêu tốn dung lượng ghi** ở Region nơi item hết hạn (với global table, mỗi lần xóa được nhân bản vẫn tiêu tốn dung lượng ghi ở các Region bản sao). Dùng nó cho phiên, token tạm, log và mọi thứ nên tự biến mất theo thời gian để giảm chi phí lưu trữ.
 
 ## Sao lưu và khôi phục
 

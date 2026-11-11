@@ -14,7 +14,7 @@ Application databases such as RDS, Aurora and DynamoDB handle **OLTP**: many sma
 
 - A warehouse brings data together from many sources, such as inventory, finance and sales systems, in a common format and keeps it for a long time.
 - It excels at **complex queries that join many large tables**.
-- You can run a **provisioned cluster** or **Redshift Serverless**, which provisions and scales capacity automatically and does not charge while idle.
+- You can run a **provisioned cluster** or **Redshift Serverless**, which provisions and scales capacity automatically and does not charge for compute while idle (managed storage is still billed).
 - **Redshift Spectrum** lets Redshift query files in Amazon S3 without loading them into tables.
 
 Redshift is **not** the database behind a live application. It is where you analyze data, not where each customer order is first recorded.
