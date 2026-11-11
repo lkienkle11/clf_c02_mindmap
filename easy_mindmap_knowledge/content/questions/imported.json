@@ -6196,7 +6196,7 @@
       },
       {
         "key": "B",
-        "text": "Amazon RDS"
+        "text": "Amazon S3"
       },
       {
         "key": "C",
@@ -6208,7 +6208,7 @@
       },
       {
         "key": "E",
-        "text": "Amazon DynamoDB"
+        "text": "Amazon CloudFront"
       }
     ],
     "correct": [
