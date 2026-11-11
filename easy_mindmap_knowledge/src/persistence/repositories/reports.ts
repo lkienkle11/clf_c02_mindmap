@@ -139,7 +139,7 @@ export function createReportsRepo(db: SqlExecutor) {
       const rows = await db.select<{ type: ReportType; status: ReportStatus; n: number }>(
         'SELECT type, status, COUNT(*) AS n FROM reports GROUP BY type, status',
       );
-      const out = { total: 0, newCount: 0, byType: { question: 0, lesson: 0, system: 0 } as Record<ReportType, number> };
+      const out = { total: 0, newCount: 0, byType: { question: 0, lesson: 0, system: 0, attempt: 0 } as Record<ReportType, number> };
       for (const r of rows) {
         out.total += r.n;
         out.byType[r.type] += r.n;

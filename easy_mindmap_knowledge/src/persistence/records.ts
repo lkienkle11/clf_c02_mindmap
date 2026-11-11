@@ -54,7 +54,7 @@ export interface QuestionStat {
   lastCorrect: boolean;
 }
 
-export type ReportType = 'question' | 'lesson' | 'system';
+export type ReportType = 'question' | 'lesson' | 'system' | 'attempt';
 export type ReportStatus = 'new' | 'handled';
 
 export interface ReportRow {
