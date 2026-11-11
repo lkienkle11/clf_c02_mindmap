@@ -13,6 +13,7 @@
   import QuestionPanel from './QuestionPanel.svelte';
   import SessionTimer from './SessionTimer.svelte';
   import { formatClock } from './time';
+  import { toasts } from '@/ui/toast.svelte';
 
   interface Props {
     services: Services;
@@ -69,9 +70,11 @@
     alert = null;
     try {
       await session.submit('manual');
+      toasts.show('toast.attemptSubmitted');
     } catch (e) {
       // A follow-up failure after a committed submit still shows the result; only report a real failure.
-      if (!session.submitted) {
+      if (session.submitted) toasts.show('toast.attemptSubmitted');
+      else {
         alert = i18n.t(e instanceof AttemptMissingError ? 'practice.attemptMissing' : 'practice.submitFailed');
       }
     } finally {

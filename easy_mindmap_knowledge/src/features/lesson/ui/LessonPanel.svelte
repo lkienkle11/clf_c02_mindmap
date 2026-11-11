@@ -7,6 +7,7 @@
   import { ReportButton } from '@/features/report';
   import Badge from '@/ui/Badge.svelte';
   import Button from '@/ui/Button.svelte';
+  import { toasts } from '@/ui/toast.svelte';
   import { isAllowedExternalUrl } from './external-url';
   import { renderLessonBody } from './markdown';
 
@@ -69,6 +70,7 @@
     try {
       await services.repos.lessonProgress.markRead(lesson.id, services.now());
       await appState.refresh();
+      toasts.show('toast.lessonCompleted');
     } catch {
       error = i18n.t('lesson.completeFailed');
     } finally {

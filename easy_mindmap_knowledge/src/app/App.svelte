@@ -13,6 +13,7 @@
   import AppHeader from './AppHeader.svelte';
   import NoticeStack from './NoticeStack.svelte';
   import type { Notice } from './NoticeStack.svelte';
+  import { toasts } from '@/ui/toast.svelte';
   import type { AppState } from './app-state.svelte';
   import type { Services } from './composition';
   import { openExternal } from './external-link';
@@ -51,6 +52,7 @@
       ? [{ id: 'review', text: i18n.t(reviewNoticeKeys[launcher.notice]), onclose: () => launcher.clearNotice() }]
       : []),
     ...(resumeNotice ? [{ id: 'resume', text: resumeNotice, onclose: () => (resumeNotice = null) }] : []),
+    ...toasts.items.map((t) => ({ id: `toast-${t.id}`, text: i18n.t(t.key), onclose: () => toasts.dismiss(t.id) })),
   ]);
 
   /** The checkpoint group this topic closes (when it is the group's last topic), or null. */
