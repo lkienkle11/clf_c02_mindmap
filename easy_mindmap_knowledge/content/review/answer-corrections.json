@@ -95,5 +95,21 @@
     ],
     "confidence": "high",
     "approvedOn": "2026-11-11"
+  },
+  {
+    "questionId": "q_12fe20e3c20a",
+    "oldCorrect": [
+      "A"
+    ],
+    "newCorrect": [
+      "D"
+    ],
+    "reason": "Enterprise Support includes TAM-led readiness reviews and AWS Countdown event support; Business Support (now Business Support+) lists neither.",
+    "sources": [
+      "https://docs.aws.amazon.com/awssupport/latest/user/aws-support-plans.html",
+      "https://aws.amazon.com/premiumsupport/plans/enterprise/"
+    ],
+    "confidence": "high",
+    "approvedOn": "2026-11-11"
   }
 ]

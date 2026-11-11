@@ -1203,7 +1203,7 @@
       },
       {
         "key": "D",
-        "text": "A consultative review and architecture guidance for the company’s applications"
+        "text": "A free voucher for an AWS certification exam"
       }
     ],
     "correct": [
@@ -5863,7 +5863,7 @@
     "options": [
       {
         "key": "A",
-        "text": "Amazon Kendra"
+        "text": "Amazon Bedrock Knowledge Bases"
       },
       {
         "key": "B",
@@ -7405,7 +7405,7 @@
       },
       {
         "key": "C",
-        "text": "Amazon QuickSight Q"
+        "text": "Amazon Q in QuickSight"
       },
       {
         "key": "D",
@@ -12290,7 +12290,7 @@
       },
       {
         "key": "B",
-        "text": "AWS Business Support."
+        "text": "AWS Business Support+"
       },
       {
         "key": "C",
@@ -13809,11 +13809,11 @@
       },
       {
         "key": "B",
-        "text": "AWS Developer Support"
+        "text": "AWS Business Support+"
       },
       {
         "key": "C",
-        "text": "AWS Business Support"
+        "text": "AWS Developer Support"
       },
       {
         "key": "D",
@@ -14079,7 +14079,7 @@
       },
       {
         "key": "C",
-        "text": "AWS Trusted Advisor with AWS Business Support"
+        "text": "AWS Trusted Advisor with AWS Business Support+"
       },
       {
         "key": "D",
@@ -14997,7 +14997,7 @@
       },
       {
         "key": "D",
-        "text": "Business"
+        "text": "Business Support+"
       }
     ],
     "correct": [
@@ -15641,7 +15641,7 @@
       },
       {
         "key": "C",
-        "text": "Amazon Elastic Transcoder"
+        "text": "AWS Elemental MediaConvert"
       },
       {
         "key": "D",
@@ -17609,7 +17609,7 @@
       },
       {
         "key": "D",
-        "text": "Amazon SageMaker"
+        "text": "Amazon Polly"
       }
     ],
     "correct": [
@@ -18094,7 +18094,7 @@
       },
       {
         "key": "B",
-        "text": "Amazon Kendra"
+        "text": "Amazon Bedrock Knowledge Bases"
       },
       {
         "key": "C",
@@ -18302,7 +18302,7 @@
       },
       {
         "key": "B",
-        "text": "Amazon AppStream 2.0"
+        "text": "Amazon Connect"
       },
       {
         "key": "C",
@@ -18472,7 +18472,7 @@
     "options": [
       {
         "key": "A",
-        "text": "AWS Business Support"
+        "text": "AWS Business Support+"
       },
       {
         "key": "B",
@@ -18488,7 +18488,7 @@
       }
     ],
     "correct": [
-      "A"
+      "D"
     ],
     "multi": false,
     "orderDependent": false,

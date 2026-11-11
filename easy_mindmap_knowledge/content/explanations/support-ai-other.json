@@ -33,7 +33,7 @@
    "A": "The full set of Trusted Advisor checks is already available on Business-level support, so it is not an additional benefit.",
    "B": "24x7 phone, email, and chat access to Cloud Support Engineers is already included in Business-level support.",
    "C": "A designated TAM is the distinguishing Enterprise Support benefit and gives proactive monitoring and optimization guidance.",
-   "D": "Architecture guidance is not what separates Enterprise from Business-level support here; the exam expects the designated TAM."
+   "D": "A free voucher for an AWS certification exam is not a benefit of any AWS Support plan."
   }
  },
  "q_9d9b868845a8": {
@@ -166,9 +166,9 @@
   }
  },
  "q_7880cdf20a82": {
-  "explanation": "Amazon Kendra is an intelligent, machine learning powered search service that can index documents, including those stored in Amazon S3, and answer natural language queries.",
+  "explanation": "Amazon Bedrock Knowledge Bases lets applications retrieve answers from documents, including documents stored in Amazon S3, using natural language queries.",
   "optionNotes": {
-   "A": "Kendra indexes documents in sources like S3 and lets users search them.",
+   "A": "Bedrock Knowledge Bases indexes documents in sources like S3 and lets users search and ask questions about them.",
    "B": "Amazon Rekognition analyzes images and videos, not text search across documents.",
    "C": "Amazon Polly turns text into speech; it does not search documents.",
    "D": "Amazon Lex builds conversational chatbots; it does not search a document store."
@@ -193,11 +193,11 @@
   }
  },
  "q_126ab4125066": {
-  "explanation": "Amazon QuickSight Q let business users ask questions about their data in natural language and get answers with relevant visualizations; it is what the exam expects. AWS has since retired the original Q add-on in favor of Amazon Q in QuickSight generative Q&A.",
+  "explanation": "Amazon Q in QuickSight lets business users ask questions about their data in natural language and get answers with relevant visualizations.",
   "optionNotes": {
    "A": "Amazon Macie discovers sensitive data in S3; it is not a BI question-and-answer tool.",
    "B": "Amazon Rekognition analyzes images and videos, not BI data.",
-   "C": "QuickSight Q adds natural language questions to BI dashboards and returns answers as visualizations (the original add-on is now replaced by Amazon Q in QuickSight).",
+   "C": "Amazon Q in QuickSight adds natural language questions to BI dashboards and returns answers as visualizations.",
    "D": "Amazon Lex builds chatbots but is not a BI tool that returns visualizations from your data."
   }
  },
@@ -293,11 +293,11 @@
   }
  },
  "q_19754cd5f1ee": {
-  "explanation": "The full set of Trusted Advisor checks starts at the Business-level plan (now Business Support+), which is the lowest-cost plan that includes them. Developer Support does not include the full set, and Enterprise plans cost more.",
+  "explanation": "The full set of Trusted Advisor checks starts at Business Support+, which is the lowest-cost plan that includes them. Developer Support does not include the full set, and the Enterprise plans cost more.",
   "optionNotes": {
    "A": "Developer Support does not include the full set of Trusted Advisor checks.",
-   "B": "Business-level support is the least expensive plan that includes the full set of Trusted Advisor checks.",
-   "C": "Enterprise On-Ramp includes the full checks but costs more than Business.",
+   "B": "Business Support+ is the least expensive plan that includes the full set of Trusted Advisor checks.",
+   "C": "Enterprise On-Ramp includes the full checks but costs more than Business Support+.",
    "D": "Enterprise Support includes the full checks but is the most expensive of these options."
   }
  },
@@ -338,20 +338,20 @@
   }
  },
  "q_4d61f5df0c2f": {
-  "explanation": "The exam expects Developer Support, the cheapest paid plan, since Basic Support has no technical support cases. Be aware that current AWS documentation lists the AWS Support API as available from Business-level plans (now Business Support+) upward, and that Developer Support is being discontinued on January 1, 2027.",
+  "explanation": "The AWS Support API is available with Business Support+, Enterprise Support or Unified Operations, so Business Support+ is the most cost-effective plan listed. Basic and Developer Support do not include the Support API.",
   "optionNotes": {
    "A": "Basic Support includes no technical support cases and no Support API access.",
-   "B": "The exam expects Developer Support as the lowest-cost paid plan; current AWS docs, however, list Support API access starting with Business-level plans.",
-   "C": "Current AWS docs list the Support API with Business Support+ and above, but it costs more than Developer Support, so the exam does not treat it as the most cost-effective choice.",
+   "B": "Business Support+ is the lowest-cost plan listed that includes the AWS Support API.",
+   "C": "Developer Support does not include the AWS Support API.",
    "D": "Enterprise Support covers the need but is the most expensive option."
   }
  },
  "q_147574dbaa2c": {
-  "explanation": "Trusted Advisor provides checks for cost optimization, security, fault tolerance, performance, and service quotas, and the full set of checks needs Business-level support or higher. The Health Dashboard reports AWS service events, not best practice checks.",
+  "explanation": "Trusted Advisor provides checks for cost optimization, security, fault tolerance, performance, and service quotas, and the full set of checks needs Business Support+ or higher. The Health Dashboard reports AWS service events, not best practice checks.",
   "optionNotes": {
    "A": "Developer Support does not include the full set of Trusted Advisor checks.",
    "B": "The AWS Health Dashboard reports events that affect your resources; it does not give best practice checks.",
-   "C": "Trusted Advisor with Business-level support gives the full set of best practice checks at a lower cost than Enterprise.",
+   "C": "Trusted Advisor with Business Support+ gives the full set of best practice checks at a lower cost than Enterprise.",
    "D": "The Health Dashboard is not the service that provides these best practice checks."
   }
  },
@@ -374,12 +374,12 @@
   }
  },
  "q_8bc907a66e58": {
-  "explanation": "AWS recommends Business-level support or higher for production workloads, and Business is the lowest-cost plan that meets this. Developer is meant for non-production, and the Enterprise plans cost more.",
+  "explanation": "AWS names Business Support+ as the minimum recommended plan for production workloads, and it is the lowest-cost plan that meets this. Developer is meant for non-production, and the Enterprise plans cost more.",
   "optionNotes": {
    "A": "Developer Support is intended for testing and non-production workloads, not production.",
-   "B": "Enterprise On-Ramp meets the need but is more expensive than Business.",
+   "B": "Enterprise On-Ramp meets the need but is more expensive than Business Support+.",
    "C": "Enterprise Support meets the need but is the most expensive option.",
-   "D": "Business-level support is the lowest-cost plan recommended for production workloads."
+   "D": "Business Support+ is the lowest-cost plan recommended for production workloads."
   }
  },
  "q_a55ce0ead984": {
@@ -401,11 +401,11 @@
   }
  },
  "q_72e2c61d3ddd": {
-  "explanation": "Amazon Elastic Transcoder converts video and audio files into formats that play on smartphones, and the exam expects it. Note that AWS ended support for Elastic Transcoder on November 13, 2025 and recommends AWS Elemental MediaConvert for new work.",
+  "explanation": "AWS Elemental MediaConvert converts video and audio files into formats that play on smartphones and other devices. It replaces Amazon Elastic Transcoder, which AWS ended support for on November 13, 2025.",
   "optionNotes": {
    "A": "Amazon Comprehend analyzes text; it does not convert media formats.",
    "B": "Amazon Rekognition analyzes the content of images and video; it does not convert formats.",
-   "C": "Elastic Transcoder converts media files to formats suited for phones, which is what the exam expects; AWS has since ended support for it in favor of AWS Elemental MediaConvert.",
+   "C": "AWS Elemental MediaConvert converts media files to formats suited for phones and other devices.",
    "D": "Amazon Polly turns text into speech; it does not convert existing media files."
   }
  },
@@ -468,9 +468,9 @@
   "explanation": "Amazon Athena lets you explore and analyze data in Amazon S3 by running queries in standard SQL, with no servers to set up.",
   "optionNotes": {
    "A": "Amazon Kendra is an intelligent search service, not a service for analyzing data in S3 with queries.",
-   "B": "Athena analyzes data directly in S3 using SQL; the exam expects Athena.",
+   "B": "Athena analyzes data directly in S3 using SQL (and Apache Spark in notebooks), with no servers to set up.",
    "C": "Amazon Comprehend performs NLP on text, not general data exploration.",
-   "D": "SageMaker is for building and training ML models rather than for exploring S3 data with queries."
+   "D": "Amazon Polly converts text to speech and does not analyze data in S3."
   }
  },
  "q_5b2d383458ce": {
@@ -483,10 +483,10 @@
   }
  },
  "q_7fa6e2082917": {
-  "explanation": "Amazon Kendra is an intelligent enterprise search service that lets employees ask questions and get specific answers through a single search interface.",
+  "explanation": "Amazon Bedrock Knowledge Bases lets employees ask questions and retrieve specific answers from company documents through a single interface.",
   "optionNotes": {
    "A": "Amazon Connect is a contact center, not an enterprise search tool.",
-   "B": "Kendra provides a single intelligent search interface that returns specific answers.",
+   "B": "Bedrock Knowledge Bases retrieves specific answers from company content through a single interface.",
    "C": "Amazon Lex builds chatbots; it does not index company content for search.",
    "D": "Amazon Comprehend analyzes text for insights but is not a search interface."
   }
@@ -495,18 +495,18 @@
   "explanation": "Amazon WorkSpaces provides Windows or Linux virtual desktops that employees can reach from anywhere on supported devices.",
   "optionNotes": {
    "A": "WorkSpaces provides persistent Windows and Linux cloud desktops accessible from supported devices.",
-   "B": "AppStream 2.0 streams individual applications rather than full desktops.",
+   "B": "Amazon Connect is a contact center service, not a virtual desktop service.",
    "C": "Amazon Keyspaces is a managed Cassandra-compatible database, not a desktop service.",
    "D": "AWS Cloud9 is a cloud IDE for developers, not a desktop for all employees."
   }
  },
  "q_12fe20e3c20a": {
-  "explanation": "The exam expects Business-level support for this question. Be aware that current AWS documentation ties launch readiness work to higher plans: Enterprise Support includes a TAM who reviews readiness and capacity before events plus AWS Countdown event management, and Unified Operations adds critical workload reviews.",
+  "explanation": "Enterprise Support includes TAM-led readiness reviews before events and AWS Countdown event support at no additional charge, which fits assessing operational readiness before a launch. Business Support+ lists neither, and Unified Operations adds critical workload reviews.",
   "optionNotes": {
-   "A": "The exam expects Business-level support as the plan offering this guidance.",
+   "A": "Business Support+ offers 24/7 access to engineers but no readiness reviews or event management, so it does not fit.",
    "B": "Basic Support covers only account and billing help and self-service resources, not launch readiness guidance.",
    "C": "Developer Support gives general guidance during business hours but not operational readiness for a launch.",
-   "D": "Enterprise Support includes TAM-led readiness reviews and AWS Countdown event support, so it fits this need in current AWS docs, but the exam does not select it for this question."
+   "D": "Enterprise Support includes TAM-led readiness reviews and AWS Countdown event support, which matches this need."
   }
  },
  "q_b64dc24b949c": {

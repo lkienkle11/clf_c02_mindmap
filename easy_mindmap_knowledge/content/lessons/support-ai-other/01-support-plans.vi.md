@@ -52,11 +52,11 @@ Nhiều câu hỏi thi dùng các gói trước đây: **Developer**, **Business
 | AWS Enterprise On-Ramp Support | Có TAM, phản hồi dưới 30 phút cho case trọng yếu, Well-Architected review với số lượng giới hạn, một lần AWS Countdown mỗi năm | Enterprise Support |
 | Enterprise | TAM được chỉ định riêng, phản hồi dưới 15 phút, Well-Architected Review do TAM dẫn dắt | Enterprise Support |
 
-Khi một câu hỏi cũ hỏi "gói rẻ nhất có toàn bộ check Trusted Advisor", đáp án khi đó là Business; ngày nay gói tương ứng là Business Support+. Câu hỏi "những gói nào có **TAM**" mong đợi Enterprise On-Ramp và Enterprise. Developer và Business đã đóng đăng ký mới từ ngày 2 tháng 12 năm 2025. AWS nói khách hàng Developer không chọn chuyển sang Business Support+ trước ngày 1 tháng 1 năm 2027 sẽ bị hạ về Basic.
+Khi một câu hỏi cũ hỏi "gói rẻ nhất có toàn bộ check Trusted Advisor", đáp án là Business Support+ (gói thay thế Business). Câu hỏi "những gói nào có **TAM**" mong đợi Enterprise On-Ramp và Enterprise. Developer và Business đã đóng đăng ký mới từ ngày 2 tháng 12 năm 2025. AWS nói khách hàng Developer không chọn chuyển sang Business Support+ trước ngày 1 tháng 1 năm 2027 sẽ bị hạ về Basic.
 
 ## Khi cách ra đề và tài liệu AWS khác nhau
 
-- Một số câu hỏi hỏi gói nào cho phép gọi API tới AWS Support với chi phí thấp nhất và chọn **Developer**. Nếu một câu hỏi đưa Developer làm gói rẻ nhất có quản lý case bằng chương trình, Developer là đáp án của đề. Tài liệu AWS hiện nay nói Support API cần Business Support+, Enterprise Support hoặc Unified Operations, nên đừng dựa vào đáp án Developer trong dự án thực tế.
+- Support API cần Business Support+, Enterprise Support hoặc Unified Operations, nên gói rẻ nhất có quyền dùng API là Business Support+. Developer và Basic không có.
 - "Developer Forums luôn miễn phí với mọi gói" nói về các diễn đàn cộng đồng mà **AWS re:Post** đã thay thế.
 
 ## Bẫy thường gặp

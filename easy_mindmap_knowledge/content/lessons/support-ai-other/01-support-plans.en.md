@@ -53,11 +53,11 @@ Many exam questions use the previous plans: **Developer**, **Business**, **Enter
 | AWS Enterprise On-Ramp Support | TAMs, business-critical response under 30 minutes, Well-Architected reviews in limited numbers, one AWS Countdown engagement a year | Enterprise Support |
 | Enterprise | Designated TAM, response under 15 minutes, TAM-led Well-Architected Reviews | Enterprise Support |
 
-When an older question asks for "the lowest-cost plan with the full set of Trusted Advisor checks", its answer was Business; today the matching plan is Business Support+. A question that asks which plans provide a **TAM** expects Enterprise On-Ramp and Enterprise. Developer and Business closed to new subscriptions on December 2, 2025. AWS says Developer customers who do not opt in to Business Support+ by January 1, 2027 fall back to Basic.
+When an older question asks for "the lowest-cost plan with the full set of Trusted Advisor checks", the answer is Business Support+ (the plan that replaced Business). A question that asks which plans provide a **TAM** expects Enterprise On-Ramp and Enterprise. Developer and Business closed to new subscriptions on December 2, 2025. AWS says Developer customers who do not opt in to Business Support+ by January 1, 2027 fall back to Basic.
 
 ## Where exam wording and AWS documentation differ
 
-- Some exam questions ask which plan gives API access to AWS Support most cost-effectively and key **Developer**. If an item offers Developer as the cheapest plan with programmatic case management, Developer is the keyed answer. Current AWS documentation says the Support API needs Business Support+, Enterprise Support or Unified Operations, so do not rely on the Developer key in real projects.
+- The AWS Support API needs Business Support+, Enterprise Support or Unified Operations, so the lowest-cost plan with API access is Business Support+. Developer and Basic do not include it.
 - "Developer Forums are free with any plan" refers to the community forums that **AWS re:Post** replaced.
 
 ## Common traps
