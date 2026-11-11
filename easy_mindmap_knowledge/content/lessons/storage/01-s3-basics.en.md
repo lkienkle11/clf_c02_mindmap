@@ -26,6 +26,10 @@ Data stored in a Region stays in that Region unless you copy or replicate it els
 
 **S3 Versioning** keeps every version of an object in the bucket. Overwriting an object creates a new version, and deleting it adds a **delete marker** instead of removing the data, so you can restore earlier versions. This protects against accidental deletion or overwrite. Versioning is off by default; once enabled it can only be **suspended**, not removed, and every stored version is billed.
 
+## S3 Metadata: find and query your objects
+
+**Amazon S3 Metadata** automatically captures metadata for the objects in a general purpose bucket and stores it in read-only, fully managed **Apache Iceberg** tables that you can query with SQL. It records system-defined metadata (such as creation time and storage class), custom metadata (such as tags) and event metadata (such as when an object was updated or deleted). A **journal table** records changes in near real time, and an optional **live inventory table** lists all objects and their latest state. You can query the tables with analytics services such as Amazon Athena, Amazon EMR and Amazon Redshift. Clue: "quickly find and analyze large numbers of objects by tags, size or storage class".
+
 ## Static website hosting
 
 A bucket can host a **static website** (HTML, CSS, images and client-side scripts, with no server-side code). The content must be publicly readable. S3 website endpoints do not support HTTPS, so for HTTPS you put Amazon CloudFront in front of the bucket.
@@ -45,11 +49,12 @@ A bucket can host a **static website** (HTML, CSS, images and client-side script
 
 - S3 stores objects (data plus metadata) in buckets; each object has a key.
 - Durability = data is not lost; availability = data can be reached.
+- S3 Metadata keeps queryable (SQL) tables of your objects' metadata, updated automatically.
 - Versioning protects against accidental deletes and overwrites.
 - Private by default, Block Public Access, and default SSE-S3 encryption.
 
 ## Sources
 
 - [What is Amazon S3?](https://docs.aws.amazon.com/AmazonS3/latest/userguide/Welcome.html)
-- [Understanding and managing Amazon S3 storage classes](https://docs.aws.amazon.com/AmazonS3/latest/userguide/storage-class-intro.html)
+- [Discovering your data with S3 Metadata tables](https://docs.aws.amazon.com/AmazonS3/latest/userguide/metadata-tables-overview.html)
 - [Default encryption FAQ](https://docs.aws.amazon.com/AmazonS3/latest/userguide/default-encryption-faq.html)

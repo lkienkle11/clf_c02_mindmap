@@ -12,6 +12,10 @@ This lesson is optional. Each service here is easy to recognize from a single cl
 
 **AWS IoT Core** connects **IoT devices** such as factory sensors to AWS services and to each other. Devices talk to a managed **message broker** over protocols such as **MQTT**, MQTT over WebSockets and HTTPS, and AWS IoT Core for **LoRaWAN** supports low-power wide-area devices. Rules can route device messages to other AWS services for processing, and certificates and policies control which device can do what. Clue: "thousands of sensors must connect securely and send readings that other AWS services process".
 
+## AWS IoT Greengrass: process data on the device
+
+**AWS IoT Greengrass** is an open source **edge runtime** and cloud service that you install on your own devices (a gateway, a ship's onboard computer, a factory controller). It lets the device **act locally on the data it generates**: filter and aggregate sensor readings, run machine learning predictions, and react to local events, using components, AWS Lambda functions or Docker containers. The device can then export the results to AWS IoT Core and the AWS Cloud. Clue: "collect, format and process sensor data at the edge (for example at sea), then send it to AWS later". Compare: IoT Core is the cloud-side broker that devices connect to; Greengrass is software that runs processing on the device itself. Storage Gateway is not the answer here, because it only links on-premises storage to AWS and does not run your own processing.
+
 ## AWS Ground Station: satellite data
 
 **AWS Ground Station** is a fully managed service for controlling satellite communications, **downlinking satellite data** and processing it. You do not build or maintain your own antennas, and you pay per minute of use. Clue: "communicate with satellites" or "receive earth-observation data".
@@ -25,6 +29,7 @@ This lesson is optional. Each service here is easy to recognize from a single cl
 | Clue | Service |
 | --- | --- |
 | Sensors, MQTT, device messages | AWS IoT Core |
+| Process sensor data on the device itself, then sync to AWS | AWS IoT Greengrass |
 | Satellite contact, downlinked data | AWS Ground Station |
 | Marketing email or transactional email | Amazon SES |
 | Cloud contact center with outbound campaigns | Amazon Connect (Connect Customer) |
@@ -33,11 +38,12 @@ This lesson is optional. Each service here is easy to recognize from a single cl
 ## Key points
 
 - IoT Core connects devices to AWS through a managed message broker.
+- IoT Greengrass runs processing on the device itself (edge), then exports data to AWS.
 - Ground Station controls satellite communications and downlinks data, billed per minute.
 - Pinpoint's engagement features ended on October 30, 2026; use SES, End User Messaging or Connect Customer.
 
 ## Sources
 
 - [What is AWS IoT?](https://docs.aws.amazon.com/iot/latest/developerguide/what-is-aws-iot.html)
-- [What is AWS Ground Station?](https://docs.aws.amazon.com/ground-station/latest/ug/what-is-aws-ground-station.html)
+- [What is AWS IoT Greengrass?](https://docs.aws.amazon.com/greengrass/v2/developerguide/what-is-iot-greengrass.html)
 - [Amazon Pinpoint end of support](https://docs.aws.amazon.com/pinpoint/latest/userguide/migrate.html)

@@ -11,6 +11,10 @@ Bài này không bắt buộc. Mỗi dịch vụ ở đây đều dễ nhận ra
 
 **AWS IoT Core** kết nối **thiết bị IoT** như cảm biến trong nhà máy với các dịch vụ AWS và với nhau. Thiết bị trao đổi với một **message broker** được quản lý qua các giao thức như **MQTT**, MQTT qua WebSockets và HTTPS, còn AWS IoT Core for **LoRaWAN** hỗ trợ thiết bị mạng diện rộng công suất thấp. Các rule có thể chuyển tin nhắn của thiết bị tới dịch vụ AWS khác để xử lý, còn chứng chỉ và chính sách quy định thiết bị nào được làm gì. Gợi ý: "hàng nghìn cảm biến cần kết nối an toàn và gửi số đo để các dịch vụ AWS khác xử lý".
 
+## AWS IoT Greengrass: xử lý dữ liệu ngay trên thiết bị
+
+**AWS IoT Greengrass** là **edge runtime** mã nguồn mở kèm dịch vụ đám mây, bạn cài lên chính thiết bị của mình (gateway, máy tính trên tàu, bộ điều khiển trong nhà máy). Nó cho phép thiết bị **xử lý ngay tại chỗ dữ liệu mà nó tạo ra**: lọc và tổng hợp số đo cảm biến, chạy dự đoán machine learning và phản ứng với sự kiện cục bộ, bằng component, hàm AWS Lambda hoặc container Docker. Sau đó thiết bị có thể xuất kết quả lên AWS IoT Core và AWS Cloud. Gợi ý: "thu thập, định dạng và xử lý dữ liệu cảm biến ở biên (ví dụ ngoài biển), rồi gửi lên AWS sau". So sánh: IoT Core là message broker phía đám mây mà thiết bị kết nối tới; Greengrass là phần mềm chạy xử lý trên chính thiết bị. Storage Gateway không phải đáp án ở đây, vì nó chỉ nối lưu trữ tại chỗ với AWS và không chạy xử lý của bạn.
+
 ## AWS Ground Station: dữ liệu vệ tinh
 
 **AWS Ground Station** là dịch vụ được quản lý hoàn toàn để điều khiển liên lạc vệ tinh, **nhận dữ liệu vệ tinh (downlink)** và xử lý nó. Bạn không phải tự xây hay bảo trì ăng-ten, và trả tiền theo phút sử dụng. Gợi ý: "liên lạc với vệ tinh" hoặc "nhận dữ liệu quan sát Trái Đất".
@@ -24,6 +28,7 @@ Bài này không bắt buộc. Mỗi dịch vụ ở đây đều dễ nhận ra
 | Gợi ý | Dịch vụ |
 | --- | --- |
 | Cảm biến, MQTT, tin nhắn thiết bị | AWS IoT Core |
+| Xử lý dữ liệu cảm biến ngay trên thiết bị rồi đồng bộ lên AWS | AWS IoT Greengrass |
 | Liên lạc vệ tinh, dữ liệu downlink | AWS Ground Station |
 | Email tiếp thị hoặc email giao dịch | Amazon SES |
 | Trung tâm liên lạc đám mây có chiến dịch outbound | Amazon Connect (Connect Customer) |
@@ -32,11 +37,12 @@ Bài này không bắt buộc. Mỗi dịch vụ ở đây đều dễ nhận ra
 ## Ý chính
 
 - IoT Core kết nối thiết bị với AWS qua message broker được quản lý.
+- IoT Greengrass chạy xử lý ngay trên thiết bị (biên), rồi xuất dữ liệu lên AWS.
 - Ground Station điều khiển liên lạc vệ tinh và nhận dữ liệu, tính tiền theo phút.
 - Tính năng engagement của Pinpoint đã kết thúc ngày 30 tháng 10 năm 2026; dùng SES, End User Messaging hoặc Connect Customer.
 
 ## Nguồn
 
 - [What is AWS IoT?](https://docs.aws.amazon.com/iot/latest/developerguide/what-is-aws-iot.html)
-- [What is AWS Ground Station?](https://docs.aws.amazon.com/ground-station/latest/ug/what-is-aws-ground-station.html)
+- [What is AWS IoT Greengrass?](https://docs.aws.amazon.com/greengrass/v2/developerguide/what-is-iot-greengrass.html)
 - [Amazon Pinpoint end of support](https://docs.aws.amazon.com/pinpoint/latest/userguide/migrate.html)

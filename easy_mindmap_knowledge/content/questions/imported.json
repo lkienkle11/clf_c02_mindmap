@@ -3024,7 +3024,7 @@
   },
   {
     "id": "q_9e69f4c2c3ed",
-    "topicId": "storage",
+    "topicId": "support-ai-other",
     "text": "A company has a fleet of cargo ships. The cargo ships have sensors that collect data at sea, where there is intermittent or no internet connectivity. The company needs to collect, format, and process the data at sea and move the data to AWS later. Which AWS service should the company use to meet these requirements?",
     "options": [
       {

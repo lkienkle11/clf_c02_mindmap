@@ -89,15 +89,6 @@
    "D": "Server-side encryption protects data at rest but does not prevent or undo deletion or overwriting."
   }
  },
- "q_9e69f4c2c3ed": {
-  "explanation": "AWS IoT Greengrass runs local compute on the ship, so the company can collect, format and process the sensor data offline and sync it to AWS when connectivity returns.",
-  "optionNotes": {
-   "A": "AWS IoT Core relies on internet connectivity to connect devices to the cloud, which is not available at sea.",
-   "B": "Amazon Lightsail is a simple cloud hosting service and cannot run on a ship offline.",
-   "C": "Storage Gateway needs ongoing network connectivity to AWS to sync data.",
-   "D": "AWS IoT Greengrass processes data locally on the device while offline and syncs it to AWS later."
-  }
- },
  "q_8d0cef14475d": {
   "explanation": "Amazon FSx for Windows File Server is fully managed file storage accessed over the SMB protocol.",
   "optionNotes": {

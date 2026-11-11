@@ -25,6 +25,10 @@ Dữ liệu lưu trong một Region sẽ ở lại Region đó trừ khi bạn s
 
 **S3 Versioning** giữ lại mọi phiên bản của một object trong bucket. Ghi đè một object sẽ tạo phiên bản mới, còn xóa object thì thêm một **delete marker** thay vì xóa dữ liệu, nên bạn có thể khôi phục các phiên bản trước. Tính năng này bảo vệ khỏi việc xóa hoặc ghi đè do nhầm lẫn. Versioning tắt theo mặc định; khi đã bật thì chỉ có thể **tạm ngưng (suspend)**, không gỡ bỏ được, và mọi phiên bản được lưu đều bị tính phí.
 
+## S3 Metadata: tìm và truy vấn các object
+
+**Amazon S3 Metadata** tự động thu thập siêu dữ liệu (metadata) của các object trong một general purpose bucket và lưu vào các bảng **Apache Iceberg** chỉ đọc, do AWS quản lý hoàn toàn, để bạn truy vấn bằng SQL. Nó ghi lại metadata do hệ thống định nghĩa (như thời điểm tạo và storage class), metadata tùy chỉnh (như tag) và metadata sự kiện (như khi object bị cập nhật hoặc xóa). **Journal table** ghi lại thay đổi gần thời gian thực, còn **live inventory table** (tùy chọn) liệt kê mọi object và trạng thái mới nhất của chúng. Bạn truy vấn các bảng bằng các dịch vụ phân tích như Amazon Athena, Amazon EMR và Amazon Redshift. Gợi ý: "tìm và phân tích nhanh một lượng lớn object theo tag, kích thước hoặc storage class".
+
 ## Lưu trữ website tĩnh
 
 Một bucket có thể lưu trữ **website tĩnh** (HTML, CSS, hình ảnh và script chạy phía trình duyệt, không có mã chạy phía máy chủ). Nội dung phải cho phép đọc công khai. Website endpoint của S3 không hỗ trợ HTTPS, nên muốn dùng HTTPS bạn đặt Amazon CloudFront phía trước bucket.
@@ -44,11 +48,12 @@ Một bucket có thể lưu trữ **website tĩnh** (HTML, CSS, hình ảnh và 
 
 - S3 lưu object (dữ liệu cộng metadata) trong bucket; mỗi object có một key.
 - Độ bền = dữ liệu không bị mất; tính sẵn sàng = dữ liệu truy cập được.
+- S3 Metadata giữ các bảng metadata của object có thể truy vấn bằng SQL, tự động cập nhật.
 - Versioning bảo vệ khỏi việc xóa và ghi đè do nhầm lẫn.
 - Riêng tư theo mặc định, có Block Public Access và mã hóa SSE-S3 mặc định.
 
 ## Nguồn
 
 - [What is Amazon S3?](https://docs.aws.amazon.com/AmazonS3/latest/userguide/Welcome.html)
-- [Understanding and managing Amazon S3 storage classes](https://docs.aws.amazon.com/AmazonS3/latest/userguide/storage-class-intro.html)
+- [Discovering your data with S3 Metadata tables](https://docs.aws.amazon.com/AmazonS3/latest/userguide/metadata-tables-overview.html)
 - [Default encryption FAQ](https://docs.aws.amazon.com/AmazonS3/latest/userguide/default-encryption-faq.html)
