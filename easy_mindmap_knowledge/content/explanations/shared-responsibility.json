@@ -267,5 +267,15 @@
    "D": "AWS maintains the network hardware inside its facilities.",
    "E": "Controlling who can access resources with IAM is always the customer's responsibility."
   }
- }
+ },
+  "q_26c6c9e1d58a": {
+    "explanation": "Under the shared responsibility model, customers configure the security groups they use and classify their own assets and data. AWS operates the managed services and underlying infrastructure.",
+    "optionNotes": {
+      "A": "Although the security group firewall is provided by AWS, the customer decides and configures its rules, which is a customer responsibility.",
+      "B": "Customers are responsible for classifying and protecting their own assets and data in the cloud.",
+      "C": "AWS is responsible for the physical security of its data centers, not the customer.",
+      "D": "DynamoDB is a managed service, so AWS patches and upgrades it.",
+      "E": "AWS operates the global network infrastructure that connects its Regions and data centers; this is not a customer task."
+    }
+  }
 }
