@@ -63,16 +63,6 @@
       "D": "Security groups are stateful, not stateless; stateless filtering is what network ACLs do."
     }
   },
-  "q_26c6c9e1d58a": {
-    "explanation": "Under the shared responsibility model, customers configure the security groups they use and classify their own assets and data. AWS operates the managed services and underlying infrastructure.",
-    "optionNotes": {
-      "A": "Although the security group firewall is provided by AWS, the customer decides and configures its rules, which is a customer responsibility.",
-      "B": "Customers are responsible for classifying and protecting their own assets and data in the cloud.",
-      "C": "AWS is responsible for the physical security of its data centers, not the customer.",
-      "D": "DynamoDB is a managed service, so AWS patches and upgrades it.",
-      "E": "AWS operates the global network infrastructure that connects its Regions and data centers; this is not a customer task."
-    }
-  },
   "q_32d8c7e3e05e": {
     "explanation": "Network ACLs are stateless and evaluate their numbered rules in order starting from the lowest number, applying the first match.",
     "optionNotes": {
@@ -155,15 +145,6 @@
       "B": "This is the description of CloudFront as a content delivery network.",
       "C": "Latency-based, geo, geoproximity, and weighted routing are Amazon Route 53 routing policies.",
       "D": "Distributing traffic across EC2 instances, containers, IPs, and Lambda functions describes Elastic Load Balancing."
-    }
-  },
-  "q_6618bfe4df85": {
-    "explanation": "AWS Managed Services operates your AWS environment for you, including operational monitoring, incident management and patch management. Developing applications, building pipelines and monitoring application logs remain the customer's work.",
-    "optionNotes": {
-      "A": "Operational monitoring, incident management and patch management are part of the operations that AMS provides.",
-      "B": "Developing customer applications is the customer's responsibility and is not in the AMS scope.",
-      "C": "Configuring DevSecOps pipelines for application delivery is customer work, not an AMS operational feature.",
-      "D": "Monitoring application logs belongs to the customer's application operations; AMS focuses on the infrastructure."
     }
   },
   "q_2ed663e44158": {
@@ -437,15 +418,6 @@
       "B": "Security groups are stateful, which is the opposite of stateless filtering.",
       "C": "Network ACLs are stateless and evaluate inbound and outbound traffic separately.",
       "D": "AWS WAF filters web requests at the application layer; it is not the VPC stateless filtering feature."
-    }
-  },
-  "q_5b31b517c950": {
-    "explanation": "Amazon WorkSpaces provides managed Windows (or Linux) virtual desktops that users can access from anywhere using a client application or a web browser.",
-    "optionNotes": {
-      "A": "Dedicated Hosts are physical EC2 servers for licensing or compliance needs, not virtual desktops.",
-      "B": "Global Accelerator improves network routing for applications and does not provide desktops.",
-      "C": "WorkSpaces is the managed virtual desktop service accessible from a computer or a web browser.",
-      "D": "CloudFront is a content delivery network and does not provide virtual desktops."
     }
   },
   "q_e5ecccd387d8": {

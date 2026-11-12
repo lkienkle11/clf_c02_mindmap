@@ -628,5 +628,23 @@
    "C": "Storage Gateway needs ongoing network connectivity to AWS to sync data.",
    "D": "AWS IoT Greengrass processes data locally on the device while offline and syncs it to AWS later."
   }
- }
+ },
+  "q_6618bfe4df85": {
+    "explanation": "AWS Managed Services operates your AWS environment for you, including operational monitoring, incident management and patch management. Developing applications, building pipelines and monitoring application logs remain the customer's work.",
+    "optionNotes": {
+      "A": "Operational monitoring, incident management and patch management are part of the operations that AMS provides.",
+      "B": "Developing customer applications is the customer's responsibility and is not in the AMS scope.",
+      "C": "Configuring DevSecOps pipelines for application delivery is customer work, not an AMS operational feature.",
+      "D": "Monitoring application logs belongs to the customer's application operations; AMS focuses on the infrastructure."
+    }
+  },
+  "q_5b31b517c950": {
+    "explanation": "Amazon WorkSpaces provides managed Windows (or Linux) virtual desktops that users can access from anywhere using a client application or a web browser.",
+    "optionNotes": {
+      "A": "Dedicated Hosts are physical EC2 servers for licensing or compliance needs, not virtual desktops.",
+      "B": "Global Accelerator improves network routing for applications and does not provide desktops.",
+      "C": "WorkSpaces is the managed virtual desktop service accessible from a computer or a web browser.",
+      "D": "CloudFront is a content delivery network and does not provide virtual desktops."
+    }
+  }
 }

@@ -4881,7 +4881,7 @@
   },
   {
     "id": "q_26c6c9e1d58a",
-    "topicId": "networking",
+    "topicId": "shared-responsibility",
     "text": "Which tasks are customer responsibilities, according to the AWS shared responsibility model? (Choose two.)",
     "options": [
       {
@@ -8040,7 +8040,7 @@
   },
   {
     "id": "q_6618bfe4df85",
-    "topicId": "networking",
+    "topicId": "support-ai-other",
     "text": "A company wants to use AWS Managed Services (AMS) for operational support and wants to understand the scope of AMS. Which AMS feature will meet these requirements?",
     "options": [
       {
@@ -17940,7 +17940,7 @@
   },
   {
     "id": "q_5b31b517c950",
-    "topicId": "networking",
+    "topicId": "support-ai-other",
     "text": "A company plans to onboard new employees that will be working remotely. The company needs to set up Windows virtual desktops to create a working environment for the new employees. The employees must be able access the working environment from anywhere and by using their computer or a web browser. Which AWS service or feature will meet these requirements?",
     "options": [
       {
