@@ -307,6 +307,11 @@ Status of this section: written on 2026-11-10 for the user to check. Items marke
   - On a machine whose installed CLIs are unknown, or when the user lists other CLIs, discover them with the steps in "Installed CLIs" and then **update this table** (step 6 there).
   - On every use, compare the live model list (pre-flight check 2) with the table. A model that is missing from the table gets a new row (effort and quota marked **[Unverified]** until checked). A row whose model no longer exists, or whose CLI version changed, is re-verified, then corrected or removed.
   - Never rely on a row without a check date, and never use a model that is not in the table without first adding and verifying it.
+- **How to write into the table [Proposed 2026-11-12, awaiting the user's confirmation].**
+  - **Append** a new row for a new CLI or a new model: place it at the end of that vendor's group, or at the end of the table when the vendor is new. Keep every existing row unchanged.
+  - **Replace** an existing row only when pre-flight check 2 shows a mismatch (model gone, CLI version changed, effort levels changed). Correct or remove only the mismatching row and update the check date of that row only. Rows that did not mismatch keep their text and their date. Git history is the record of old values; do not keep old text in the file.
+  - **Row format:** put the CLI version and the check date in the first column, for example `opencode CLI 1.4.2 (2026-11-12)`. Existing rows that only carry the table's heading date stay as they are until they are re-verified.
+  - **Show the diff first.** Show the user the diff of CLAUDE.md before writing it as final, and commit only when the user allows it.
 - Never use effort `ultra` (Codex automatically delegates tasks, which raises cost and makes the agent wander) or `max`, unless the user asks.
 - Prices are **[Unverified]**, taken from third-party sites (not the vendors' pages): Haiku 5.5 about $0.10 input / $0.50 output per million tokens; Gemini 3.8 Flash $0.75 / $3.75 (promotional until 2026-12-31, then reported to double); GPT-6.1 Sol $2 / $10 (one site says $1 / $5). The user's Codex and Agy accounts are subscriptions (ChatGPT login, Google AI Pro), so the real cost is usage quota, not money per token. Prices only show which model uses more quota relatively.
 
