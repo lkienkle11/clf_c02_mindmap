@@ -43,6 +43,17 @@ This file holds machine data (the models table, worker capabilities as tested on
 
 ## Session visibility
 
+**Session-list commands per CLI** (one row per CLI; a CLI is added here at Gate 1B and re-checked at Gate 1A). The rule in `SKILL.md` ("Every worker session must be listed") uses these rows.
+
+| CLI | Command that lists every worker session | Running session followable in real time | Status |
+|---|---|---|---|
+| Codex CLI 0.167.1 (2026-11-18) | `codex resume --include-non-interactive --all` | not checked | **[Verified 2026-11-18]** the combined command runs and its picker lists non-interactive (`codex exec`) worker sessions. Both flags exist in `codex resume --help`. **[Unverified]** that `--all` shows sessions started in another directory (every listed session was started in this project directory, and no CWD column appeared on screen) |
+| Agy CLI | not known | not checked | **[Unverified]** whether `agy --print` sessions appear in Agy's `/resume`; Agy has `--continue` and `--conversation <id>` |
+| Claude Code | `claude --resume` | not checked | **[Unverified]** |
+| Subagent of the host's own mechanism (for example the Agent tool) | not known | not checked | **[Unverified]** whether it has a session list of its own |
+
+Notes from the first test (2026-11-10):
+
 - `codex exec` and `agy --print` create non-interactive sessions.
 - **Codex:** `/resume` hides `exec` sessions by default. To see them, run `codex resume --include-non-interactive` in the project directory **[Verified 2026-11-10]**. The filter `Cwd` shows only sessions started in the current directory; use `--all` (or the `All` filter) for sessions started elsewhere, such as an isolated worktree. The flag `--thread-source cli` does **not** make an `exec` session visible; do not use it for this.
 - **Agy:** both Agy and Codex tie a session to the working directory. Whether `agy --print` sessions appear in Agy's `/resume` is **[Unverified]**; check before relying on it.
