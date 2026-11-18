@@ -16,7 +16,7 @@ The orchestrator is the agent session that runs this skill, whatever its vendor.
 - Never use a flag that bypasses approvals or the sandbox (for example `--dangerously-bypass-approvals-and-sandbox` or `--dangerously-skip-permissions`). Never use an effort level above the policy's effort ceiling unless the user asks.
 - Read-only unless the user explicitly allowed writes for this task. Writes happen only inside an isolated worktree or branch that the user allowed.
 - **Every worker session must be listed.** For every worker of any vendor and every task (implement or read-only, finished or running), the session must appear in full in the session list of that worker's own CLI when the user runs that CLI's resume command, including sessions that CLI hides by default (non-interactive sessions, sessions started in another directory). The user must be able to pick a session from that list and see what the worker is doing, in real time while it runs. The exact list command for each CLI is recorded in the models table; a CLI whose list command is not recorded and verified is not used.
-- Workers do not see project rule files (CLAUDE.md, AGENTS.md, GEMINI.md and similar) or the host's skills. Everything a worker needs is in its `brief.md`.
+- Workers do not see project rule files (CLAUDE.md, AGENTS.md, GEMINI.md and similar) or the host's skills. This holds for workers of the same vendor as the orchestrator and for workers of any other vendor. Everything a worker needs is in its `brief.md`: so the skills that apply to a task are named in its brief by file path, the worker must read them, and the orchestrator checks that it did (Gate 4 step 2a, Gate 5).
 - Worker results are leads until the orchestrator verifies them. Sources must be official documentation; blogs and study sites are leads only.
 
 ## The gates (do them in this order; do not skip because the task "looks small")
@@ -59,10 +59,24 @@ A subagent of the host's own mechanism, and the orchestrator rules, do not depen
 
 ### Gate 2: Delegation plan and approval (before the first delegation, and whenever anything changes)
 
-1. Before the first delegation, create `<handoff-root>/YYYY-MM-DD-<topic>/assignments.md` with one row per task: `work item | worker | model | effort | read-only or write | allowed paths | CLI verified | why`. `<handoff-root>` is the handoff folder from `references/policy.md`; it must be ignored by git.
+1. Before the first delegation, create `<handoff-root>/YYYY-MM-DD-<topic>/assignments.md` with one row per task: `work item | worker | model | effort | read-only or write | allowed paths (plan files + ripple list) | ripple classes | CLI verified | skills the worker must read | why`. `<handoff-root>` is the handoff folder from `references/policy.md`; it must be ignored by git. For each task, "skills the worker must read" lists every skill that applies to that task: the skills the user selected for the workflow step this task belongs to (if the user keeps a selection file), plus any other skill the orchestrator judges relevant to the code or files the task touches (for example a language or framework skill, a testing skill, a UI skill). Write "none" only when no skill applies, and say why. The user can add or remove skills when confirming the table.
 2. Assign only a CLI and model that passed Gate 1A or Gate 1B and appear in the models table. A subagent of the host's own mechanism needs no CLI check but must be a row in the table.
 3. Pick the cheapest model that is accurate enough for the kind of task. When accuracy for that kind of task is not known, the first item is a small read-only pilot, measured before the choice is relied on. Use a script instead of a model for mechanical work. Which model does which task is decided per task, in that task's own spec or plan.
-4. Show the table to the user and **stop until the user confirms it**.
+3a. **Ripple scan (before the table is shown).** For every task that writes, find what its change will break elsewhere BEFORE the allowed paths are fixed. Use read-only means only (search, the compiler or type checker's view, the project's schema and contract tools, reading the guard checks); a read-only worker may do it. List, per task:
+   - **Consumers** of whatever the task changes: code that calls, imports, queries or builds it (a type, a function, a table or column, an endpoint, a message or event, a config key, a public contract), plus generated artifacts derived from it (clients, ORM models, schema files, API docs).
+   - **Tests, fixtures and seed or sample data** whose assertions or values describe the behavior the task changes on purpose.
+   - **Guard checks** that cover the touched area (type check, lint, architecture or boundary rules, schema or migration validation, contract tests, translation key checks) and what they require.
+   - **Ordering and compatibility:** whether the change makes a check red, or breaks a running consumer, between this task and a later one (a new required field, a removed export or column, a migration that a deployed version does not yet understand). Reorder the tasks, or split the change in compatible steps, so every commit stays green and, where it matters, every step is safe to deploy.
+   The result is the task's ripple list. Allowed paths = the files the plan names + the ripple list.
+3b. **Pre-approved ripple classes (the user chooses them when confirming the table).** A class is a kind of mechanical edit a worker may make without stopping, only in files of the ripple list:
+   - propagate a change to the places the compiler, type checker or schema validator flags (for example a new field or parameter, a renamed column in queries);
+   - update an existing test or fixture so it asserts the behavior this task changes on purpose (never delete, skip or weaken it);
+   - regenerate a generated artifact with the project's own command;
+   - satisfy a guard rule the project already enforces (public entry point, declared key list, naming).
+   The brief's "Allowed paths" section names each class and the exact files it covers, so WORKER RULES item 2 stays word for word true. The worker reports these edits under a heading "Ripple edits", and the orchestrator reviews them like any other change. An edit outside the classes, or in a file that is not in the list, is a stop (CODE WORKER RULES item 4 applies unchanged).
+3b-bis. **Never a ripple class; always a stop and a question to the user:** anything irreversible or destructive or touching real data (dropping or rewriting data, editing a migration that has already shipped or run, a data backfill, changing a contract consumed outside the repository, deleting a resource, touching production or a user's live database). For these the orchestrator also shows the plan first and asks for a backup or a dry run before anything is carried out.
+3c. A small correction of the same task may resume the same worker session instead of opening a new one.
+4. Show the table to the user and **stop until the user confirms it**. Confirming the table also confirms the ripple lists and the ripple classes in it.
 5. If any worker needs write access, ask the user whether it writes on the current branch or in an isolated worktree. Never assume.
 6. Any change of worker, model, effort, write permission or scope updates `assignments.md` and needs the user's approval again before it is carried out.
 7. Do not delegate just because a task is simple or a worker is available.
@@ -84,7 +98,11 @@ Before each step of the workflow in use (for example, with Superpowers: brainsto
    └── results/
        └── batch-NN.json one result file per batch, written as soon as the batch finishes
    ```
-2. `brief.md` starts with the WORKER RULES block from `references/worker-rules.md`, copied word for word, for every worker. For a worker that writes code, the CODE WORKER RULES block follows it, also word for word, then the plan task's own steps (they carry the exact test names, signatures and commands). Then the task, its allowed paths, its output file and its stop condition. Never write "follow CLAUDE.md" (or any project rule file) or "use the skill" in a brief. Commands in a brief carry the command prefix from the policy, if any.
+2. `brief.md` starts with the WORKER RULES block from `references/worker-rules.md`, copied word for word, for every worker. For a worker that writes code, the CODE WORKER RULES block follows it, also word for word, then the plan task's own steps (they carry the exact test names, signatures and commands). Then the task, its allowed paths, its output file and its stop condition. Never write "follow CLAUDE.md" (or any project rule file) or "use the skill" in a brief; name each skill by its file path as step 2a says. Commands in a brief carry the command prefix from the policy, if any.
+2a. **Skills for the worker (every worker, whether of the same vendor as the orchestrator or another).** A worker does not see skills, so for every skill listed for this task in `assignments.md`:
+   - Put the absolute path of that skill's `SKILL.md` in the brief (the base directory shown when the skill is loaded), with this sentence: "Read this file first and follow its method: <path>. Read only this file and the files it links; change nothing else." Name every skill that applies, one path each. Never write only a skill's name, and never a summary in place of the path.
+   - Also copy into the brief, in short form, the parts the worker cannot do without (the exact commands, and the rules that decide pass or fail), so that a worker that cannot read the path still has them.
+   - Reading a skill file by path is verified only for Codex ([Partly verified 2026-11-10], see `references/worker-rules.md`). For a CLI whose worker cannot read files outside its own folder (for example Agy headless), pass the needed parts inline and say in the brief that the file could not be read; record in the models table whether the CLI can read a file by path.
 3. **Where a worker may write:**
    - A code worker may modify the source files listed under the user-approved "Allowed paths", and only those.
    - Reports and results go only to the output path named in the brief. A read-only worker's result goes back to the orchestrator (for example Codex `-o <file>` inside the task folder, or redirecting the CLI's output into it).
@@ -97,6 +115,8 @@ Before each step of the workflow in use (for example, with Superpowers: brainsto
 ### Gate 5: Compliance check after every worker run (mandatory, by the orchestrator)
 
 `git status --porcelain`, the commit count and head hash unchanged, and `git diff --name-only` inside the allowed paths (add the command prefix from the policy, if any). On any violation: stop, show the user exactly what happened, undo only what the worker changed outside its allowed paths after the user agrees, and do not treat that run's output as valid. A worker's own statement that it followed the rules is never evidence.
+
+**Skill-read check (same gate, every run).** For every skill named in the brief (step 2a), the worker's log or session must show that it opened that skill's `SKILL.md` before its first change to a file. If a named skill was not read, the run is invalid: tell the user which skill was skipped, and rerun in a new session with the path stated more plainly, or with another worker. A worker's statement that it followed a skill is never evidence.
 
 ### Gate 6: Review, quota, fallback and recovery
 
@@ -115,6 +135,9 @@ Before each step of the workflow in use (for example, with Superpowers: brainsto
 | "The user already approved the plan, so the assignment is approved" | Approval of a spec or plan is not approval of the assignment. |
 | "I'll switch the model, it's a small change" | Any change of worker, model, effort, write permission or scope needs approval again. |
 | "I'll tell the worker to follow CLAUDE.md" | It cannot see it. Read `references/worker-rules.md` and put the blocks in `brief.md`. |
+| "The plan steps are enough, the worker doesn't need the skills" | A worker sees no skill. If a skill applies, name its path in the brief (Gate 4 step 2a) and check the log (Gate 5). |
+| "The skills the user selected for this step are for me, not for the workers" | They apply to whoever does the step's tasks. Put them in the assignments table and in each brief. |
+| "A worker of my own vendor surely has the skills too" | Never assume. A same-vendor worker is a fresh session with no skills until its brief names them. |
 | "The worker ran fine, its session list doesn't matter" | Every worker session must be listed and checkable by the user. Run the session check (Gate 4, step 7). |
 | "I'll write this model or vendor name into the rules" | Machine and user settings live only in `references/policy.md`. The rules stay vendor-neutral. |
 | "The worker said it passed" | Run the command yourself (Gate 6). |
