@@ -135,7 +135,7 @@ export class PracticeSession {
     };
     const rows: AttemptQuestionRow[] = plan.map((p, position) => ({
       attemptId: attempt.id, position, questionId: p.questionId, optionOrder: p.optionOrder,
-      selected: [], isCorrect: null,
+      selected: [], isCorrect: null, unscored: false,
     }));
     await saveLastOptions(services.repos.settings, options);
     await services.repos.attempts.create(attempt, rows);
@@ -165,7 +165,7 @@ export class PracticeSession {
       const keys = q.options.map((o) => o.key);
       rows.push({
         attemptId: id, position, questionId, optionOrder: q.orderDependent ? keys : shuffle(keys, rng),
-        selected: [], isCorrect: null,
+        selected: [], isCorrect: null, unscored: false,
       });
     });
     const clock = startClock(null, 'freeze', now, 'freeze');
@@ -209,7 +209,7 @@ export class PracticeSession {
     };
     const rows: AttemptQuestionRow[] = input.plan.map((p, position) => ({
       attemptId: id, position, questionId: p.questionId, optionOrder: [...p.optionOrder],
-      selected: [], isCorrect: null,
+      selected: [], isCorrect: null, unscored: false,
     }));
     await services.repos.attempts.create(attempt, rows);
     return new PracticeSession(services, onSubmitted, attempt, rows, clock);

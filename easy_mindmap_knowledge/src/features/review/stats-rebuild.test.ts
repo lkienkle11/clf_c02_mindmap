@@ -18,7 +18,7 @@ async function submit(
 ) {
   const repo = createAttemptsRepo(db);
   const qs = Object.keys(answers).map((questionId, position) => ({
-    attemptId: id, position, questionId, optionOrder: ['A', 'B'], selected: ['A'], isCorrect: null,
+    attemptId: id, position, questionId, optionOrder: ['A', 'B'], selected: ['A'], isCorrect: null, unscored: false,
   }));
   await repo.create(
     {
@@ -67,7 +67,7 @@ describe('rebuildStatsFor', () => {
         clock: { mode: 'freeze', limitMs: null, remainingMs: null, deadlineAt: null, onHidden: 'freeze', onReport: 'freeze' },
         heartbeatAt: null, scorePct: null, passed: null, groupIndex: null, plannedCount: null, unansweredDisplay: 'reveal',
       },
-      [{ attemptId: 'ip', position: 0, questionId: 'q1', optionOrder: ['A'], selected: ['A'], isCorrect: null }],
+      [{ attemptId: 'ip', position: 0, questionId: 'q1', optionOrder: ['A'], selected: ['A'], isCorrect: null, unscored: false }],
     );
     await rebuildStatsFor(deps, ['q1']);
     expect((await stats().get('q1'))?.timesSeen).toBe(1);

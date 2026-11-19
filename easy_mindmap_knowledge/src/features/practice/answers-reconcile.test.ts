@@ -32,8 +32,8 @@ const attempt = (id = 'a1'): AttemptRow => ({
 });
 
 const questions = (attemptId = 'a1'): AttemptQuestionRow[] => [
-  { attemptId, position: 0, questionId: 'q1', optionOrder: ['B', 'A'], selected: ['A'], isCorrect: true },
-  { attemptId, position: 1, questionId: 'q2', optionOrder: ['A', 'B'], selected: ['A'], isCorrect: true },
+  { attemptId, position: 0, questionId: 'q1', optionOrder: ['B', 'A'], selected: ['A'], isCorrect: true, unscored: false },
+  { attemptId, position: 1, questionId: 'q2', optionOrder: ['A', 'B'], selected: ['A'], isCorrect: true, unscored: false },
 ];
 
 describe('reconcileAnswers', () => {
@@ -123,6 +123,7 @@ describe('reconcileAnswers', () => {
       optionOrder: ['B', 'A'],
       selected: ['A'],
       isCorrect: position === 4 ? null : true,
+      unscored: false,
     }));
     const risingRows = fallingRows.map((row) => ({
       ...row,
@@ -305,6 +306,7 @@ describe('reconcileAnswers', () => {
       optionOrder: ['A', 'B'],
       selected: ['A'],
       isCorrect: position !== 4,
+      unscored: false,
     }));
     await repo.create({ ...attempt(), status: 'submitted', submittedAt: 2000, scorePct: 80, passed: false }, rows);
     const catalog = {

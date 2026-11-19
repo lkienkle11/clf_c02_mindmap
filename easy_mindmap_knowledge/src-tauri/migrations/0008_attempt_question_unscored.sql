@@ -1,0 +1,1 @@
+ALTER TABLE attempt_questions ADD COLUMN unscored INTEGER NOT NULL DEFAULT 0;

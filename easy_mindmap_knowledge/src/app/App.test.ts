@@ -84,7 +84,7 @@ describe('App shell', () => {
       heartbeatAt: null, scorePct: null, passed: null, groupIndex: 1, plannedCount: 3, unansweredDisplay: 'reveal' as const,
     };
     const questions = ['e0', 'e1', 'e2'].map((questionId, position) => ({
-      attemptId: 'cp', position, questionId, optionOrder: ['A', 'B', 'C', 'D'], selected: [], isCorrect: null,
+      attemptId: 'cp', position, questionId, optionOrder: ['A', 'B', 'C', 'D'], selected: [], isCorrect: null, unscored: false,
     }));
     const env = await makeExamEnv([], { inProgress: { attempt, questions }, now: () => 1000 });
     await env.appState.refresh();
@@ -148,7 +148,7 @@ async function mountWithUnfinished() {
     heartbeatAt: null, scorePct: null, passed: null, groupIndex: null, plannedCount: null, unansweredDisplay: 'reveal' as const,
   };
   const questions = ['q1', 'q2', 'q3'].map((questionId, position) => ({
-    attemptId: 'old', position, questionId, optionOrder: ['A', 'B', 'C', 'D'], selected: [], isCorrect: null,
+    attemptId: 'old', position, questionId, optionOrder: ['A', 'B', 'C', 'D'], selected: [], isCorrect: null, unscored: false,
   }));
   const env = await makePracticeEnv({ inProgress: { attempt, questions } });
   await env.appState.refresh();

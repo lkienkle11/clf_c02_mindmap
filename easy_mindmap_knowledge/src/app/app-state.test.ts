@@ -34,7 +34,7 @@ const attempt = (over: Partial<AttemptRow>): AttemptRow => ({
   heartbeatAt: null, scorePct: 90, passed: true, groupIndex: null, plannedCount: null, unansweredDisplay: 'reveal', ...over,
 });
 const question = (attemptId: string, questionId: string, isCorrect: boolean | null) => ({
-  attemptId, position: 0, questionId, optionOrder: ['A', 'B'], selected: ['A'], isCorrect,
+  attemptId, position: 0, questionId, optionOrder: ['A', 'B'], selected: ['A'], isCorrect, unscored: false,
 });
 const dueStat = (over: Partial<QuestionStat> = {}): QuestionStat => ({
   questionId: 'q-cloud', topicId: 'cloud-concepts', box: 1, dueAt: NOW - 2 * DAY, timesSeen: 1,

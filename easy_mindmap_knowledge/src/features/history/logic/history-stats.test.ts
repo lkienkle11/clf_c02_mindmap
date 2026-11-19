@@ -124,7 +124,7 @@ describe('mostMissed', () => {
 });
 
 function qrow(p: Partial<AttemptQuestionRow> & { attemptId: string; questionId: string }): AttemptQuestionRow {
-  return { position: 0, optionOrder: ['A', 'B', 'C'], selected: ['A'], isCorrect: false, ...p };
+  return { position: 0, optionOrder: ['A', 'B', 'C'], selected: ['A'], isCorrect: false, unscored: false, ...p };
 }
 
 describe('missedDetails', () => {

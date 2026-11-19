@@ -12,7 +12,7 @@ const attempt = (over: Partial<AttemptRow> = {}): AttemptRow => ({
   heartbeatAt: null, scorePct: null, passed: null, groupIndex: null, plannedCount: null, unansweredDisplay: 'reveal', ...over,
 });
 const rows = (ids = ['q1', 'q2', 'q3']): AttemptQuestionRow[] =>
-  ids.map((questionId, position) => ({ attemptId: 'old', position, questionId, optionOrder: ['A', 'B', 'C', 'D'], selected: [], isCorrect: null }));
+  ids.map((questionId, position) => ({ attemptId: 'old', position, questionId, optionOrder: ['A', 'B', 'C', 'D'], selected: [], isCorrect: null, unscored: false }));
 
 async function mount(found: { attempt: AttemptRow; questions: AttemptQuestionRow[] } | null) {
   const env = await makePracticeEnv({ inProgress: found });

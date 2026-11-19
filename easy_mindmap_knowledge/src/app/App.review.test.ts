@@ -116,7 +116,7 @@ describe('App resume of a review attempt', () => {
     heartbeatAt: null, scorePct: null, passed: null, groupIndex: null, plannedCount: null, unansweredDisplay: 'reveal',
   };
   const rows = (ids: string[]): AttemptQuestionRow[] =>
-    ids.map((questionId, position) => ({ attemptId: 'old-review', position, questionId, optionOrder: ['A', 'B'], selected: [], isCorrect: null }));
+    ids.map((questionId, position) => ({ attemptId: 'old-review', position, questionId, optionOrder: ['A', 'B'], selected: [], isCorrect: null, unscored: false }));
 
   async function mountResume(): Promise<Env> {
     const env = await makeReviewEnv({ due: { compute: 3 }, inProgress: { attempt, questions: rows(['compute-0', 'compute-1']) } });

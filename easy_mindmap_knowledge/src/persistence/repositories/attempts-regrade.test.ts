@@ -31,8 +31,8 @@ const attempt = (): AttemptRow => ({
 });
 
 const questions = (): AttemptQuestionRow[] => [
-  { attemptId: 'a1', position: 0, questionId: 'q1', optionOrder: ['B', 'A', 'C'], selected: [], isCorrect: null },
-  { attemptId: 'a1', position: 1, questionId: 'q2', optionOrder: ['D', 'C', 'A', 'B'], selected: ['A'], isCorrect: null },
+  { attemptId: 'a1', position: 0, questionId: 'q1', optionOrder: ['B', 'A', 'C'], selected: [], isCorrect: null, unscored: false },
+  { attemptId: 'a1', position: 1, questionId: 'q2', optionOrder: ['D', 'C', 'A', 'B'], selected: ['A'], isCorrect: null, unscored: false },
 ];
 
 describe('attempts.applyRegrade', () => {
