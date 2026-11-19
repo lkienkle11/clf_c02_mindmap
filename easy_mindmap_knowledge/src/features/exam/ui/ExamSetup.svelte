@@ -66,7 +66,8 @@
       const options = { extraTime };
       const refresh = () => appState.refresh();
       const session = groupIndex === null
-        ? await startCapstoneExam(services, options, refresh)
+        // temporary: the exam screens task passes the real topic
+        ? await startCapstoneExam(services, 'capstone-exam-1', options, refresh)
         : await startCheckpoint(services, groupIndex, options, refresh);
       onstarted(session);
     } catch (error) {

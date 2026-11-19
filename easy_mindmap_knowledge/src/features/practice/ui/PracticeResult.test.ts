@@ -7,9 +7,9 @@ import type { SubmitResult } from '../index';
 import PracticeResult from './PracticeResult.svelte';
 
 const items: SubmitResult['items'] = [
-  { questionId: 'q1', selected: ['A'], correct: ['A'], isCorrect: true, explanation: 'Because alpha.' },
-  { questionId: 'q2', selected: ['C', 'A'], correct: ['B', 'A'], isCorrect: false },
-  { questionId: 'q3', selected: [], correct: ['C'], isCorrect: false },
+  { questionId: 'q1', selected: ['A'], correct: ['A'], isCorrect: true, unscored: false, explanation: 'Because alpha.' },
+  { questionId: 'q2', selected: ['C', 'A'], correct: ['B', 'A'], isCorrect: false, unscored: false },
+  { questionId: 'q3', selected: [], correct: ['C'], isCorrect: false, unscored: false },
 ];
 
 async function mount(result: SubmitResult, timedOut = false, extra: Record<string, unknown> = {}) {
@@ -62,8 +62,8 @@ describe('PracticeResult', () => {
       total: 2,
       passed: false,
       items: [
-        { questionId: 'gone-1', selected: [], correct: ['A'], isCorrect: false },
-        { questionId: 'gone-2', selected: ['B'], correct: ['A'], isCorrect: false, explanation: 'Kept note.' },
+        { questionId: 'gone-1', selected: [], correct: ['A'], isCorrect: false, unscored: false },
+        { questionId: 'gone-2', selected: ['B'], correct: ['A'], isCorrect: false, unscored: false, explanation: 'Kept note.' },
       ],
     });
     const [bare, noted] = screen.getAllByRole('listitem').filter((li) => li.getAttribute('data-question'));
@@ -152,8 +152,8 @@ describe('PracticeResult notice', () => {
 
   describe('unanswered questions with answersOnly', () => {
     const unanswered: SubmitResult['items'] = [
-      { questionId: 'q1', selected: [], correct: ['A'], isCorrect: false, explanation: 'Because alpha.' },
-      { questionId: 'q2', selected: ['C'], correct: ['A', 'B'], isCorrect: false },
+      { questionId: 'q1', selected: [], correct: ['A'], isCorrect: false, unscored: false, explanation: 'Because alpha.' },
+      { questionId: 'q2', selected: ['C'], correct: ['A', 'B'], isCorrect: false, unscored: false },
     ];
     const rowsOf = () => screen.getAllByRole('listitem').filter((li) => li.getAttribute('data-question'));
 
@@ -176,7 +176,7 @@ describe('PracticeResult notice', () => {
 
     it('hides the kept explanation too when the question is missing from the catalog', async () => {
       await mount(
-        { scorePct: 0, correct: 0, total: 1, passed: false, items: [{ questionId: 'gone', selected: [], correct: ['A'], isCorrect: false, explanation: 'Kept note.' }] },
+        { scorePct: 0, correct: 0, total: 1, passed: false, items: [{ questionId: 'gone', selected: [], correct: ['A'], isCorrect: false, unscored: false, explanation: 'Kept note.' }] },
         false,
         { unansweredDisplay: 'answersOnly' },
       );

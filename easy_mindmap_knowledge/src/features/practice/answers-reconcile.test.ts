@@ -37,6 +37,29 @@ const questions = (attemptId = 'a1'): AttemptQuestionRow[] => [
 ];
 
 describe('reconcileAnswers', () => {
+  it.each(['capstone-exam-1', 'capstone-exam-2'])('keeps %s passing with 35/50 scored correct and 15 wrong unscored', async (topicId) => {
+    const rows: AttemptQuestionRow[] = Array.from({ length: 65 }, (_, position) => ({
+      attemptId: 'a1', position, questionId: `q${position}`, optionOrder: ['A', 'B'],
+      selected: position < 35 ? ['A'] : ['B'], isCorrect: position < 35, unscored: position >= 50,
+    }));
+    await repo.create({ ...attempt(), topicId, status: 'submitted', submittedAt: 2000, scorePct: 70, passed: true }, rows);
+    const catalog = { questions: rows.map((row) => makeQuestion({ id: row.questionId, correct: ['A'] })) };
+    expect(await reconcileAnswers({ attempts: repo, catalog })).toEqual({ attempts: 0, answers: 0 });
+    expect(await repo.listSubmitted()).toEqual([expect.objectContaining({ scorePct: 70, passed: true })]);
+    expect(await repo.questionsOf('a1')).toEqual(rows);
+  });
+
+  it.each(['capstone', 'compute'])('keeps the normal pass threshold for %s', async (topicId) => {
+    const rows: AttemptQuestionRow[] = Array.from({ length: 10 }, (_, position) => ({
+      attemptId: 'a1', position, questionId: `q${position}`, optionOrder: ['A', 'B'],
+      selected: position < 7 ? ['A'] : ['B'], isCorrect: position < 7, unscored: false,
+    }));
+    await repo.create({ ...attempt(), topicId, status: 'submitted', submittedAt: 2000, scorePct: 70, passed: true }, rows);
+    const catalog = { questions: rows.map((row) => makeQuestion({ id: row.questionId, correct: ['A'] })) };
+    expect(await reconcileAnswers({ attempts: repo, catalog })).toEqual({ attempts: 1, answers: 0 });
+    expect(await repo.listSubmitted()).toEqual([expect.objectContaining({ scorePct: 70, passed: false })]);
+  });
+
   it('flips an old tick when the bank answer changed, and recomputes score and passed', async () => {
     await repo.create({ ...attempt(), status: 'submitted', submittedAt: 2000, scorePct: 100, passed: true }, questions());
     const catalog = { questions: [makeQuestion({ id: 'q1', correct: ['B'] }), makeQuestion({ id: 'q2' })] };

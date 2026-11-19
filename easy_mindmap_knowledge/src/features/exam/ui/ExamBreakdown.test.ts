@@ -7,7 +7,7 @@ import type { SubmitResult } from '@/features/practice';
 import ExamBreakdown from './ExamBreakdown.svelte';
 
 const item = (questionId: string, isCorrect: boolean): SubmitResult['items'][number] => ({
-  questionId, selected: isCorrect ? ['A'] : ['B'], correct: ['A'], isCorrect,
+  questionId, selected: isCorrect ? ['A'] : ['B'], correct: ['A'], isCorrect, unscored: false,
 });
 
 async function mount(items: SubmitResult['items']) {
