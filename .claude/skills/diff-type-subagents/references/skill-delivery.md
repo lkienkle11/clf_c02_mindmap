@@ -12,7 +12,7 @@ Input: a skill name from the cell "skills the worker must read" of `assignments.
 
 1. Expand each root pattern (`~` is the user's home, a project-relative pattern starts at the project root). Visit the roots in the policy's order; order is precedence, project level first.
 2. In each root, look for a folder named exactly as the skill, with a `SKILL.md` inside. The name may contain a space: quote every path in every command, or pass paths null-delimited (`find ... -print0`, `xargs -0`). Never split a path on spaces.
-3. Turn each hit into its real path with `realpath` (this follows symlinks). If the link is dangling or loops, stop and say so: "dangling symlink" or "symlink loop", with the link path. Do not skip it and do not take the next root silently.
+3. Turn each hit into its real path, the path after every link is followed, with the tool recorded in the `Environment` table of `references/policy.md` (for example `realpath`). If the link is dangling or loops, stop and say so: "dangling symlink" or "symlink loop", with the link path. Do not skip it and do not take the next root silently.
 4. Hits whose real paths are equal are one skill reached twice (for example a project link into the user folder). Record the real path once. This is not a conflict.
 5. Compute the combined hash of each distinct real path (below). Two distinct real paths with the same name and the same combined hash are identical copies: record the first one by root order. Two with different combined hashes are a conflict: stop and tell the user, naming both roots, both real paths and both hashes. Never pick one ("first root wins" is not allowed); the user decides.
 6. No hit in any root: stop and ask the user where the skill lives. Do not guess a path.
@@ -21,8 +21,8 @@ Input: a skill name from the cell "skills the worker must read" of `assignments.
 
 1. Covered files = `SKILL.md` plus every file it references by a relative path in one of three forms: (a) a markdown link target, (b) a backticked path, (c) a bare token that contains a `/` and starts with `references/`, `scripts/`, `assets/`, `templates/` or `examples/`. Ignore anything inside a fenced code block, URLs, absolute paths and anchors (strip the `#fragment`); strip trailing punctuation; resolve each path against the skill's own folder. One level deep: files named inside those files are not followed. A path that resolves outside the folder is reported but not covered, and is not a stop. A symlinked covered file is hashed by its content.
 2. If a covered file does not exist inside the folder, stop: report the missing file and the skill. Do not publish a combined hash for that skill as if it were complete.
-3. For each covered file run `shasum -a 256 "<file>"` (use `sha256sum` where `shasum` is missing), from inside the skill folder, so the path is relative.
-4. Sort the lines `<sha256>  <relative path>` by relative path (byte order). The combined hash is the SHA-256 of that text, one line per file, each ending with a newline.
+3. For each covered file get the SHA-256 of the file bytes with the tool recorded in the `Environment` table of `references/policy.md` (for example `shasum -a 256 "<file>"`, or `sha256sum`), from inside the skill folder, so the path is relative.
+4. Sort the lines `<sha256>  <relative path>` by relative path (byte order). The combined hash is the SHA-256 of that text (the same tool), one line per file, each ending with a newline.
 
 **Stop cases** (each stops and tells the user; none is guessed):
 
@@ -82,7 +82,7 @@ The checklist sits in the brief, right after the rules blocks. Its first line is
 
 1. Source: the skill's real path and combined hash from `Skill resolution`.
 2. Ordered steps, numbered. One action per step.
-3. For each step, the exact command (with the command prefix of the policy, if any), and the evidence the worker returns (command and its output, or the value found). A skill with no verification commands is written as the line `Commands: none`.
+3. For each step, the exact command (without the command prefix of the policy, which is never part of a command given to a worker), and the evidence the worker returns (command and its output, or the value found). A skill with no verification commands is written as the line `Commands: none`.
 4. Pass or fail rule for each step, stated so that no judgment is needed.
 5. Stop conditions: what makes the worker stop and report instead of going on.
 6. A line telling the worker to quote the nonce and return the evidence per step.

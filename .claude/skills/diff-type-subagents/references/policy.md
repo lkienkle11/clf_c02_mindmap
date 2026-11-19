@@ -15,6 +15,22 @@ Read at Gate 1. If this file is missing, or the user says the setup changed, ask
 | Command prefix | `rtk` |
 | Handoff root | `.superpowers/diff-agents/` (must be ignored by git) |
 
+## Environment
+
+What the machine offers. The rules state the result they need; any tool that gives the same result may be used and is recorded here. Gate 1 probes each item read-only (first run on a machine, a missing table, or the user saying the setup changed), shows the user the diff, and writes it after the user confirms. The skill never installs anything: a missing tool is reported to the user, who decides.
+
+| Item | Value | How checked | Date | Status |
+|---|---|---|---|---|
+| Operating system and shell | macOS (Darwin 25.6.0), zsh | read from the session's own environment | 2026-11-19 | Verified |
+| Tool that gives the SHA-256 of a file | `shasum -a 256` (`sha256sum` is also present) | run on a file in this session | 2026-11-19 | Verified |
+| Tool that gives a real path (links followed) | `realpath` | run on a path in this session | 2026-11-19 | Verified |
+| How to close a process's standard input | `</dev/null` | used by the worker runs of this session | 2026-11-19 | Verified |
+| How to start a background process | the host's own background facility (see the item `Completion signal`) | a background shell command and a background subagent each woke the session | 2026-11-19 | Verified |
+| Terminal multiplexer | yes (tmux 3.6a) | version printed in this session | 2026-11-19 | Verified |
+| Scripting runtime for parsing JSON | yes (python3) | found in this session | 2026-11-19 | Verified |
+
+Other systems need the SAME results. Suggested equivalents, none tested on a real run (the only real runs were on macOS): on Linux, `sha256sum`, `realpath`, `</dev/null`, `&` or the host's background facility, `tmux` if present; on Windows (PowerShell), a file-hash cmdlet (`Get-FileHash -Algorithm SHA256`), a path-resolution cmdlet (`Resolve-Path`, which does not by itself follow every kind of link), a null input redirection (`< NUL` in `cmd`, or no redirection with an explicit empty input in PowerShell), `Start-Process` or the host's background facility, and usually no multiplexer. All of these are [Unverified] (2026-11-19). On any machine the Gate 1 probe fills this table with what it finds, with its own date and status.
+
 ## Tier map
 
 Used by `references/allocation.md` (steps 4 and 5): a row's tier is compared with the weight of the task. Tier labels: Small, Medium, Heavy, Very heavy. Family means the vendor line. The Haiku and Sonnet rows are the user's decision of 2026-11-19; the Codex and Agy rows are a proposal to be checked by the user. Listed rows take the tier shown (a tier that is [Proposed] is used as written). A row that is NOT listed in this map starts at Small until a pilot passes and the user approves a higher tier at Gate 1A or 1B. A measured result matters for the pilot flag (`references/allocation.md` step 5), not for the tier of a listed row. This map gives tiers and families only; the tie-break order is the order of the models table in `references/models-and-commands.md`.

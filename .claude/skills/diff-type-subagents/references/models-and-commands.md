@@ -59,6 +59,16 @@ A worker command below is run through the launch wrapper of `references/running-
 - Haiku: Agent tool with `model: haiku`.
 - If writes are needed: Codex `-s workspace-write` and Agy `--mode accept-edits`, only inside an isolated worktree or branch that the user allowed.
 
+## Pre-flight check commands
+
+Data for Gate 1A in `SKILL.md`: one row per CLI, the commands that were verified for it. Gate 1A runs the checks recorded here for each CLI in the models table; a CLI with no row is not re-checked from memory but goes through Gate 1B. Commands run read-only, without the command prefix of `policy.md` inside any wrapper.
+
+| CLI | Login check | Live model list | Effort validity | Quota read | Session-list command |
+|---|---|---|---|---|---|
+| Codex CLI 0.170.0 (2026-11-19) | `codex login status` must print "Logged in" | `codex debug models`: parse the JSON and never print it whole | as recorded in the models table (a model's effort levels are listed there) | none found (2026-11-10, see "Quota notes") | see "Session visibility" |
+| Agy CLI 1.5.11 (2026-11-19) | no login-status command exists; `agy models` returning the model list is the evidence (an inference) | `agy models` | as recorded in the models table (some models reject `--effort`) | none found (2026-11-10, see "Quota notes") | see "Session visibility" |
+| Any other CLI | its own login-status command, or a successful query as an inference, found at Gate 1B | its own model-list command, found at Gate 1B | as recorded in the models table | [Unverified] until found | as recorded in "Session visibility" |
+
 ## Session visibility
 
 **Session-list commands per CLI** (one row per CLI; a CLI is added here at Gate 1B and re-checked at Gate 1A). The rule in `SKILL.md` ("Every worker session must be listed") uses these rows.
@@ -76,7 +86,7 @@ Notes from the first test (2026-11-10):
 - **Codex:** `/resume` hides `exec` sessions by default. To see them, run `codex resume --include-non-interactive` in the project directory **[Verified 2026-11-10]**. The filter `Cwd` shows only sessions started in the current directory; use `--all` (or the `All` filter) for sessions started elsewhere, such as an isolated worktree. The flag `--thread-source cli` does **not** make an `exec` session visible; do not use it for this.
 - **Agy:** both Agy and Codex tie a session to the working directory. `agy --print` sessions started in the same directory appear in Agy's `/resume` **[Verified 2026-11-19]**; sessions started in another directory are **[Unverified]**.
 - Run a worker from the directory the user will look in (`-C "$(pwd)"` for Codex) when the work is read-only. Work that writes runs in an isolated worktree, so its sessions are found with `--all`.
-- Only when the user wants to watch a whole live conversation, run an interactive session in the project directory through `tmux`, exit it cleanly, and give the user the session ID and the captured screen.
+- Only when the user wants to watch a whole live conversation, run an interactive session in the project directory through a terminal multiplexer, if the `Environment` table of `policy.md` says one exists (otherwise use the CLI's non-interactive command, or ask the user to run the interactive session in their own terminal and report what they see), exit it cleanly, and give the user the session ID and the captured screen. Never install a multiplexer.
 - Resuming a CLI session non-interactively was not verified for Codex or Agy (Agy has `--continue` and `--conversation <id>`; Codex has `resume`). Check before relying on it.
 
 ## Quota notes
