@@ -38,7 +38,7 @@ Input: a skill name from the cell "skills the worker must read" of `assignments.
 | skill | real path | root | combined hash | covered files |
 |---|---|---|---|---|
 
-`root` is the policy root whose folder holds the real path; when no policy root holds it (the real path lies elsewhere), it is the first root that reaches it. `covered files` lists the relative paths that went into the hash. The table is shown to the user with the rest of `assignments.md` at Gate 2.
+`root` is decided by the REAL path only, never by where the link was found. Resolve each policy root's own folder to its real path, then take the policy root whose real folder is a prefix of the skill's real path (if several roots match, the one with the longest real folder). Example: `project/alpha` is a link to `../user/alpha`; the real path is `<user root>/alpha`, so `root` is the user root, not the project root, even though the walk found the link under the project root first. Write the root that reached it (here the project root) only in a note, never in `root`. If no policy root's real folder is a prefix of the real path, write `outside` in `root` and name the root through which it was reached in the note. `covered files` lists the relative paths that went into the hash. The table is shown to the user with the rest of `assignments.md` at Gate 2.
 
 **Re-check.** Right before a brief is written (Gate 4 step 2a), recompute the combined hash of every skill the brief names and compare it with the table. A different hash is a stop: tell the user, and update the row only after the user agrees.
 
