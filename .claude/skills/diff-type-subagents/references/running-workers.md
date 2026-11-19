@@ -64,10 +64,11 @@ One entry per run, in `ledger.json` of the task folder, written by the orchestra
 |---|---|
 | `task` | the task id |
 | `worker` | the row (CLI, model, effort) that runs it |
+| `mode` | the mode of the chosen row, same text as the capability table's row; the launch wrapper's command is built from it. A run whose log or command shows another mode is `failed` with reason `wrong-mode`; Gate 6 step 2 handles it like any failed run, and it does not count as a pilot result |
 | `status` | `pending`, `running`, `done` or `failed`; `done` means only that the process finished |
 | `compliance` | `pending`, `passed` or `failed`: the result of Gate 5 for this run |
 | `review` | `pending`, `passed` or `failed`: the result of the review of this run (Gate 6 step 1) |
-| `reason` | for `failed` only, for example `stuck`, `quota`, `error`, `launch` |
+| `reason` | for `failed` only, for example `stuck`, `quota`, `error`, `launch`, `wrong-mode` |
 | `launched_at` | the launch time, set when the entry becomes `running` (right after the launch call returns, with `process_id`) |
 | `host_task_id` | for a host background subagent: the host's task identifier |
 | `process_id` | the process id of the launch, as in `launch.pid` |
