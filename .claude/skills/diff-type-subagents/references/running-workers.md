@@ -6,7 +6,7 @@ Read at Gate 4 (launch) and at every pause point while a worker runs. Every dele
 
 - BEFORE the launch call, the baseline of the run's working folder is written to its ledger entry (see "Ledger entry"). Right after the launch call returns, the ledger entry of the run (see "Ledger entry") is marked `running` with the launch time and the process id. If the launch call fails, the entry is marked `failed` with reason `launch`.
 - A CLI worker is started through a wrapper that does these things in this order:
-  1. runs the worker command with stdin closed, in a process that first writes its own process id to `launch.pid` in the task folder and then replaces itself with the worker (an `exec` form), so the id is the worker's, never the pid of a parent shell;
+  1. runs the worker command with stdin closed, in a process that first writes its own process id to `launch.pid` in the task folder and then replaces itself with the worker (an `exec` form), so the id is the worker's, never the pid of a parent shell; a worker command that is a pipeline is started as one `sh -c '<pipeline>'` whose own process id goes to `launch.pid`, and stopping it then stops that shell's children as the Hang detection step says;
   2. sends its output to a log file in the task folder;
   3. writes the worker's exit code (an integer) to `exit.code` in the task folder;
   4. creates an empty file `done` in the task folder, LAST.
