@@ -38,7 +38,7 @@ Capabilities belong to the CLI, not to the model. Each cell is `yes`, `no` or `[
 
 Agy's `--version` printed 1.5.11 while its interactive banner showed 1.5.12 (discrepancy noted). On 2026-11-19 a skill file copied into the worker's own working folder was read correctly by `agy --print` (check g), which supports the `workspace-copy` delivery mode.
 
-Note: the session-list command of the host's own subagent mechanism is [Unverified] until it is probed.
+Note: the session-list command of the host's own subagent mechanism is [Unverified] until the user confirms how the host shows its subagent runs (see the Session-list table below).
 
 ## What each worker can and cannot do (tested on 2026-11-10)
 
@@ -79,7 +79,7 @@ Data for Gate 1A in `SKILL.md`: one row per CLI, the commands that were verified
 | Codex CLI 0.170.0 (2026-11-19) | `codex resume --include-non-interactive --all` | not checked | **[Verified 2026-11-19]** the combined command runs and its picker lists non-interactive (`codex exec`) worker sessions. Both flags exist in `codex resume --help`. **[Unverified]** that `--all` shows sessions started in another directory (every listed session was started in this project directory, and no CWD column appeared on screen) |
 | Agy CLI 1.5.11 (2026-11-19) | `/resume` typed inside an interactive `agy` started in the project directory (Agy has no list subcommand: `agy --help` shows `--continue` and `--conversation <id>` only; it keeps conversations under its own data folder) | not checked | **[Verified 2026-11-19]** by the user: an interactive session and a non-interactive `agy --print` session, both started in the project directory, appeared in that list with content matching what was run. **[Unverified]**: sessions started in another directory; whether a running session can be followed in real time |
 | Claude Code | `claude --resume` | not checked | **[Unverified]** |
-| Subagent of the host's own mechanism (for example the Agent tool) | not known | not checked | **[Unverified]** whether it has a session list of its own |
+| Subagent of the host's own mechanism (for example the Agent tool) | how the host shows the runs of its subagents, as confirmed by the user | not checked | **[Unverified]** until the user has confirmed, one time, how the host shows these runs; record the confirmation and the way to see them here with a date. After it the row counts as session-list verified (user decision 2026-11-20) |
 
 Notes from the first test (2026-11-10):
 

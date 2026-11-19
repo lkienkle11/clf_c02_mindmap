@@ -34,7 +34,7 @@ Orientation: for (a) and (b) the task listed first goes first; for (c) the produ
 3. A read-only task follows the same rule, using only edges (b) and (c). Read-only tasks never conflict with one another.
 4. Name the groups `G1`, `G2` and so on, in order.
 
-The members of one group start together. Write members of one group run at the same time only in separate worktrees or branches that the user allowed; without them, the write members run one after the other in group order (a group is then run one write member at a time). A later group starts when the tasks it depends on are done and reviewed (Gate 6 step 1).
+The members of one group start together. Write members of one group run at the same time only in separate worktrees (each its own working folder) or clones that the user allowed; without them, the write members run one after the other in group order (a group is then run one write member at a time). A later group starts when the tasks it depends on are done and reviewed (Gate 6 step 1).
 
 ## Splitting
 
@@ -48,7 +48,7 @@ The own-file part of a task X is the set of files X writes that no task listed B
 ## Limits
 
 - `Parallel limit` in `references/policy.md` ([Proposed 2026-11-19] 3; the user may change it) is the most tasks that run at the same time. The quota thresholds of the policy bound it further: at 5% to 20% left the limit is 1 run at a time; below 5% none starts.
-- Tasks that write at the same time need separate worktrees or branches that the user allowed (ask at Gate 2 step 5), because in a shared working tree one task's checks would read another's half-written files. Without that permission they run one after the other. Read-only tasks need none.
+- Tasks that write at the same time need separate worktrees (each its own working folder) or clones that the user allowed (ask at Gate 2 step 5), because in a shared working tree one task's checks would read another's half-written files. Without that permission they run one after the other. Read-only tasks need none.
 - Each run has its own task folder, log, `exit.code` and `done` (`references/running-workers.md`, Parallel runs).
 - Parallelism does not depend on the vendor: the members of a group may be of one family or of several. Allocation (`references/allocation.md`) is run group by group, in order, so that the Spread step counts the members of one group together.
 

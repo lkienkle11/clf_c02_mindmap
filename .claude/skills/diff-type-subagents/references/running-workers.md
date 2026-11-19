@@ -49,7 +49,7 @@ Read at Gate 4 (launch) and at every pause point while a worker runs. Every dele
 
 ## Parallel runs
 
-- Only read-only tasks, or write tasks whose allowed paths do not overlap, run at the same time (in separate worktrees or branches that the user allowed, see below). Tasks whose allowed paths overlap run one after the other, in the order of the main table. Write tasks run at the same time only in separate worktrees or branches that the user allowed; without them, write tasks run one after the other in group order (a group whose write members have no allowed worktree is run one member at a time).
+- Only read-only tasks, or write tasks whose allowed paths do not overlap, run at the same time (in separate worktrees, each its own working folder, or clones that the user allowed, see below). Tasks whose allowed paths overlap run one after the other, in the order of the main table. Write tasks run at the same time only in separate worktrees (each its own working folder) or clones that the user allowed; a branch alone does not give a second working folder; without them, write tasks run one after the other in group order (a group whose write members have no allowed worktree is run one member at a time).
 - The groups of tasks that start together, and the order of the later groups, come from `references/parallel-groups.md` (Gate 2 step 3f); this list applies inside that result. Parallelism does not depend on the vendor: runs of one family or of several may overlap under the same rules.
 - Each run has its own task folder, its own log, its own `exit.code` and its own `done`.
 - Gate 5 is run per run, after that run's own `done`, and compares the changes with that run's allowed paths. This is how a violation is attributed to one worker.
@@ -71,5 +71,7 @@ One entry per run, in `ledger.json` of the task folder, written by the orchestra
 | `session_id` | the worker's session id, if it has one |
 | `exit_code` | the integer read from `exit.code` |
 | `nonces` | the nonces of the skills delivered by `compiled` or `workspace-copy` (`references/skill-delivery.md`) |
+| `working_folder` | the working folder the run uses; for a concurrent writer it is its own worktree or clone |
+| `baseline` | recorded at launch: the `git status --porcelain` output, the head hash, a fingerprint of the tracked changes and the list of untracked files of that working folder, so that any change since launch is detectable (Gate 5) |
 
 A run stopped for being stuck is `failed` with reason `stuck`. The status value `done` and the marker file `done` are different things: the status is a field in the ledger, the marker is a file in the task folder.
