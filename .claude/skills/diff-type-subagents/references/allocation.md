@@ -8,8 +8,12 @@ Inputs, all from files: the tasks (kind, files, plan steps, risk flag, needs, in
 
 - The orchestrator is not a row. It never writes or reviews as a worker; its own review (Gate 6 step 1a) runs in every case and is separate from row R. Independence below is compared between worker rows only.
 - "Family" means the vendor line, as the user uses the word (several models of one vendor are one family; each other vendor is another family). Which row belongs to which family is recorded in the models table and the policy's tier map.
-- A "row" is one model at one effort level of one CLI (or of the host's own subagent mechanism), as listed in the tier map. The same row may be given several tasks, one fresh session each (Gate 4 step 4).
+- A "row" is one model at one effort level of one CLI (or of the host's own subagent mechanism). The same row may be given several tasks, one fresh session each (Gate 4 step 4).
+- "Table order" means the order of the Worker rows table of the input; on a real machine, the order of the models table in `references/models-and-commands.md` (not the tier map).
 - The price per token is information only: it is shown in the table and never used to rank (the user's accounts are subscriptions, so the real cost is quota).
+- Kinds of task (used by the pilot rule): `research` (read-only), `write` (with or without tests), `review` (a review or an arbitration).
+- A model fixed by the task's own spec or plan is an input: check that row against steps 2 to 4 and keep it if it passes; if it fails, stop and ask the user.
+- An arbiter-only row named in the policy is a user-approved exception outside this algorithm: arbitration by it is chosen by the user, never by the steps, and it is never a writer or a member of a chain.
 
 ## Task weight
 
@@ -19,38 +23,43 @@ Labels: Small, Medium, Heavy, Very heavy (in this order, one level = one step up
 2. If the plan gives no exact steps for the task, add one level.
 3. If the task already failed once, add one level. (Never go above Very heavy.)
 4. If the task has the high-risk flag (data, security, public contract), the weight is at least Heavy.
-5. If the task is hard, the weight is Very heavy. Hard means: the task needs a design decision that the plan does not give, or it already failed twice. This is the orchestrator's call; write the reason.
-6. A review or an arbitration takes exactly the weight of the task it reviews, and none of the signals above.
+5. If the task is hard, the weight is Very heavy. Hard means: the task needs a design decision that the plan does not give, or it already failed twice; this is the orchestrator's call, and the reason is written down.
+6. A review or an arbitration takes exactly the weight of the task it reviews, and none of the signals above. Row R (whole-branch review), and an arbitration of a whole-branch finding, take the weight of the highest-risk task of the branch.
 
 Write the weight and the signals that made it into the Allocation record.
 
 ## Algorithm
 
-Run steps 0 to 8 for each task. "Out" means the row is dropped for this task; write the step and the reason for every row that goes out.
+Run steps 0 to 8 for each task, in plan order, counting the tasks already given earlier in this table. "Out" means the row is dropped for this task; write the step and the reason for every row that goes out.
 
 0. **Weight.** Find the task's weight (section above).
-1. **Mechanical work.** If a script can do the task, use a script, write that in the record, and stop for this task.
-2. **Hard filter.** Keep a row only if all of these are true: it is not forbidden by the policy; its session-list command is verified (Gate 1); its quota is normal (a low quota passes only for small preparation work, by the policy's thresholds); every capability column the task needs is `yes` in the capability table (`no` and `[Unverified]` are both out); and at least one delivery mode works for every skill of the task (`references/skill-delivery.md` section 2). If no row is left, stop and ask the user (step 4 gives the message).
-3. **Independence filter.** This step applies to a review or an arbitration of work W (a task, or the whole branch for row R). Drop every row of the same family as the row that wrote W. For row R (whole-branch review), W is the task with the highest risk (the high-risk flag first, then the larger weight, then the earlier task); row R must differ in family from the writer of that task. If no row is left, relax to "different session, same family": keep rows of the writer's family, label the independence `low`, and tell the user. Never the same session as the writer. A task that is not a review or arbitration skips this step.
-4. **Tier filter.** Keep rows whose tier is at least the task's weight. If no row is left, stop and ask the user (change a worker, relax a need, or accept a lower tier). Never downgrade silently. Say the reason in one sentence: for example "no row has the needed tier", "no row can run commands", or, when every task ends with rows of one family only, "only one family passes step 2" (and then Spread cannot be applied; say so too).
-5. **Rank.** Rank by tier only: the lowest tier that is at least the weight goes first. Keep the rows of that lowest tier; they tie. If one row is left, it is chosen. Pilot rule: a row with no recorded result in `ledger.json` for this kind of task may be chosen; the task is marked `pilot` and gets a closer review, and no further task of that kind goes to that row before the pilot's review passes (a later task of that kind may be assigned in the table but is queued, and starts only after that review). There is no separate pilot task.
-6. **Tie-break** (only among the rows that tie after step 5, applied in this order; stop at the first that leaves one row):
+1. **Mechanical work.** Work is mechanical when a command or a fixed transformation fully determines it, with no judgment (formatting, counting, merging reports). Then use a script, write that in the record, and stop for this task. Anything else is not mechanical.
+2. **Hard filter.** Keep a row only if all of these are true: it is not forbidden by the policy; its session-list command is verified (Gate 1); its quota is normal (a low quota passes only for small preparation work, that is, a task whose weight is Small, by the policy's thresholds); every capability column the task needs is `yes` in the capability table (`no` and `[Unverified]` are both out); and at least one delivery mode works for every skill of the task (`references/skill-delivery.md` section 2). If no row is left, stop and ask the user.
+   If the rows left for all the tasks of this run belong to one family, say "only one family passes step 2" to the user and go on; Spread then does not apply, and the report says so.
+3. **Independence filter.** Applies only to a review or an arbitration of work W (a task, or the whole branch for row R); any other task skips it. Drop every row of the same family as the row that wrote W. For row R, W is the highest-risk task of the branch (the high-risk flag first, then the larger weight, then the earlier task): row R must differ in family from the writer of that task.
+4. **Tier filter.** Keep rows whose tier is at least the task's weight. If no row is left, stop and ask the user (change a worker, relax a need, or accept a lower tier). Never downgrade silently. Say why in one sentence, for example "no row has the needed tier" or "no row can run commands".
+   Relaxation of independence: if steps 3 and 4 together leave no row (step 3 leaves none, or step 3 leaves rows and step 4 removes them all), repeat steps 3 and 4 without the family exclusion, that is, allow rows of the writer's family in a different session. Label the independence `low` and tell the user. Never the same session as the writer. If still no row is left, stop and ask the user.
+5. **Rank.** Rank by tier only: keep the rows of the lowest tier that is at least the weight; they tie. If one row is left, it is chosen. Pilot rule: a row with no recorded result for this kind of task may be chosen. "No recorded result" means no passed review for that row and that kind, recorded in the models table notes or in `ledger.json`. The task is then marked `pilot` and gets a closer review, and no further task of that kind goes to that row before the pilot's review passes (such a task may be assigned in the table but is queued, and starts only after that review). There is no separate pilot task. If a pilot's review fails, the flagged task and every queued task of that kind move to the next row of the chain.
+6. **Tie-break** (only among the rows that tie after step 5, applied in this order; stop at the first part that leaves one row):
    - Affinity: if the task shares ripple files with a task that is already assigned, keep the rows of that task's family, unless Spread is `require`.
-   - Spread (`references/policy.md`): `prefer` = keep the rows whose family has the fewest tasks in this run (count from `ledger.json` and the tasks already given in this table), then the rows with the most quota. `require` = when two or more families remain after step 5, the task goes to a family not yet used in this run, unless the reason is recorded. `off` = skip this part.
-   - Table order: the row listed first in the tier map.
-7. **Escalation chain.** For the chosen row, name its next rows now (section "Escalation chain") and write them into the record.
-8. **Record.** Write one line in the `Allocation record` (section below): the chosen row, the step that decided, and every dropped alternative with its reason. The user approves the whole table, chains included, before anything is delegated (Gate 2 step 4).
+   - Spread (`references/policy.md`): `prefer` = keep the rows whose family has the fewest tasks in this run (count per family, from `ledger.json` and the tasks already given in this table), then the rows with the most quota; quota values that are only `normal`, or that cannot be read, do not separate rows. `require` = when two or more families remain after step 5, the task goes to a family not yet used in this run, unless the reason is recorded. `off` = skip this part.
+   - Table order: the row listed first in the table order defined above.
+7. **Escalation chain.** For the chosen row, build its chain now (section "Escalation chain") and write it into the record.
+8. **Record.** Write one line in the `Allocation record`: the chosen row, the step that decided, and every dropped alternative with its reason. The user approves the whole table, chains included, before anything is delegated (Gate 2 step 4).
 
 ## Escalation chain
 
-Each row of the Allocation record names its next rows in advance. Build the chain from the chosen row:
+Build the chain as one loop. Start with the chosen row as the first row of the chain. Repeat until three rows are listed:
 
-1. The same family, one tier up (the row of that family with the next higher tier, ties by table order), if it still passes steps 2 to 4 for this task.
-2. Then the lowest-tier row of another family that passes steps 2 to 4 for this task (ties by table order). For a review, step 3 applies against the original writer, so the chain never contains a row that fails independence.
-3. Then continue the same way from the last row added (same family one tier up first, then another family), without repeating a row.
-4. Stop at three rows including the chosen one [Proposed 2026-11-19, the orchestrator's call; the user may lengthen it], or when no row qualifies. The last item of every chain is "ask the user".
+1. From the last row added, take the same family one tier up: the next row of that family by tier, among the rows that pass steps 2 to 4 for this task (for a review, step 3 against the original writer, with the same relaxation).
+2. If there is none, take the lowest-tier row of another family that passes steps 2 to 4 for this task (ties by table order).
+3. Never repeat a row. If no row can be added, stop the loop.
 
-Use: a run that fails (tests still red after the allowed attempts, or the review rejects it) moves to the next row of its chain. A stuck run counts as a failed attempt. The user approves the whole chain with the table, so a move along it needs no new approval, but it is told to the user and written to the record and the ledger. Any other change (a row not in the chain, a changed effort, write permission or scope) follows Gate 2 step 6. A failure raises the task's weight by one level (step 3 of "Task weight"); the next row must still pass step 4 at the new weight.
+The chain always ends with the item "ask the user". Three rows is a proposal [Proposed 2026-11-19]; the user may lengthen it.
+
+Weight along the chain (R22): rows are chosen at the task's current weight and keep it along the chain. The extra level for a failed attempt (Task weight step 3) applies only if the task is planned again through steps 0 to 8.
+
+Use: a run that fails (tests still red after the allowed attempts, or the review rejects it) moves to the next row of its chain. A stuck run counts as a failed attempt. The user approves the whole chain with the table, so a move along it needs no new approval, but it is told to the user and written to the record and the ledger. A fallback caused by quota or an error follows the same chain. Any other change (a row not in the chain, a changed effort, write permission or scope) follows Gate 2 step 6.
 
 ## Allocation record
 
@@ -63,6 +72,6 @@ A section of `assignments.md` (git-ignored), written as decisions are made, one 
 - `chosen row`: the row, with the marks `(pilot)` and, for a review, `(independence low)` when they apply. A queued task also says "starts after the pilot review of <task>".
 - `deciding step`: the step number that left one row, plus the earlier steps that dropped rows.
 - `alternatives dropped and why`: every other row, with the step and the reason (for example "step 2: Web is `no`"). Show the price per token in a note, as information.
-- `escalation chain`: the next rows in order, ending with "ask the user".
+- `escalation chain`: the rows in order, ending with "ask the user".
 
 Show the table and the chains to the user with the Delivery table. Nothing is delegated before the user confirms.
