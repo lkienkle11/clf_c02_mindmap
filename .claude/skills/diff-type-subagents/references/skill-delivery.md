@@ -21,14 +21,14 @@ Input: a skill name from the cell "skills the worker must read" of `assignments.
 
 1. Covered files = `SKILL.md` plus every file it references by a relative path in one of three forms: (a) a markdown link target, (b) a backticked path, (c) a bare token that contains a `/` and starts with `references/`, `scripts/`, `assets/`, `templates/` or `examples/`. Ignore anything inside a fenced code block, URLs, absolute paths and anchors (strip the `#fragment`); strip trailing punctuation; resolve each path against the skill's own folder. One level deep: files named inside those files are not followed. A path that resolves outside the folder is reported but not covered, and is not a stop. A symlinked covered file is hashed by its content.
 2. If a covered file does not exist inside the folder, stop: report the missing file and the skill. Do not publish a combined hash for that skill as if it were complete.
-3. For each covered file get the SHA-256 of the file bytes with the tool recorded in the `Environment` table of `references/policy.md` (for example `shasum -a 256 "<file>"`, or `sha256sum`), from inside the skill folder, so the path is relative.
+3. For each covered file get the SHA-256 of the file bytes with the tool recorded in the `Environment` table of `references/policy.md` (for example `shasum -a 256 "<file>"`, or `sha256sum`), from inside the skill folder, so the path is relative. Record the SHA-256 digest only (the 64 hexadecimal characters), without a trailing file name or dash.
 4. Sort the lines `<sha256>  <relative path>` by relative path (byte order). The combined hash is the SHA-256 of that text (the same tool), one line per file, each ending with a newline.
 
 **Stop cases** (each stops and tells the user; none is guessed):
 
 1. Same name, different combined hashes: name both roots.
 2. Not found in any root: ask the user.
-3. Dangling or looping symlink: say so.
+3. Dangling or looping symlink: say so. A dangling link is a link whose target does not exist; the target must exist (for example `test -e` after `test -L`).
 4. `SKILL.md` of any candidate names a file inside its folder that does not exist: report the file. The whole resolution of that name stops and no combined hash is published for it, even if another candidate was already hashed.
 5. No "Skill source roots" section in `references/policy.md`: ask the user and run the Gate 1B skill-folder probe.
 6. The machine has no SHA-256 tool or no real-path tool (see the `Environment` table of `references/policy.md`): report it to the user and stop skill resolution. Never invent a method.
@@ -38,7 +38,7 @@ Input: a skill name from the cell "skills the worker must read" of `assignments.
 | skill | real path | root | combined hash | covered files |
 |---|---|---|---|---|
 
-`root` is the policy entry that holds the real path. `covered files` lists the relative paths that went into the hash. The table is shown to the user with the rest of `assignments.md` at Gate 2.
+`root` is the policy root whose folder holds the real path; when no policy root holds it (the real path lies elsewhere), it is the first root that reaches it. `covered files` lists the relative paths that went into the hash. The table is shown to the user with the rest of `assignments.md` at Gate 2.
 
 **Re-check.** Right before a brief is written (Gate 4 step 2a), recompute the combined hash of every skill the brief names and compare it with the table. A different hash is a stop: tell the user, and update the row only after the user agrees.
 

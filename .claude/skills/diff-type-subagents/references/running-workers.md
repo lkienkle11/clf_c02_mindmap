@@ -14,6 +14,7 @@ Read at Gate 4 (launch) and at every pause point while a worker runs. Every dele
 - Which form to start the wrapper in depends on the `Completion signal` value of `policy.md`:
   - `native`: the WHOLE wrapper is started as the host's own background task, with no trailing `&`, so that its end wakes the session. A wrapper put in the background with a trailing `&` is not seen by the host, and the session is never woken.
   - `polling`: the wrapper is put in the background with a trailing `&`, so the call returns at once; the orchestrator finds the end by checking `done`.
+- A background wrapper started by the orchestrator has its own standard output and error detached from the chat tool (redirected to a file or discarded), so that the call returns at once.
 - The results needed: the worker's stdin is closed, its output goes to a log file, a background process is started. The tools for them are the ones recorded in the `Environment` table of `references/policy.md`; the shell syntax differs between systems. Example only, POSIX shell (`</dev/null` closes stdin here). The wrapper itself, for a `native` host, to be run as the host's background task: `<worker command> </dev/null >"<task>/run.log" 2>&1; echo $? >"<task>/exit.code"; : >"<task>/done"`. For a `polling` host put the same text in parentheses and add ` &` at the end.
 - A background subagent of the host's own mechanism needs no wrapper. The host starts it in the background and the ledger entry is marked `running`. After the orchestrator reads the host's completion notice, the orchestrator itself creates `exit.code` (0, or the failure the host reported) and then `done`.
 - The result file (for example the `-o` file of a CLI) is not a completion signal, because nothing guarantees that it is written only at the end.
@@ -23,8 +24,8 @@ Read at Gate 4 (launch) and at every pause point while a worker runs. Every dele
 - The value is a property of the host: a host that has not been probed counts as `polling`.
 - `policy.md` has the item `Completion signal: native | polling`, with its date. It is decided by the orchestrator's own probe at Gate 1: "can I start a background process and be woken in this session when it ends?".
 - `native`: the host wakes the session when a background process or a background subagent ends. The notification is the trigger to look for `done`. If a notification arrives and `done` does not exist, the run is not finished: treat it as no completion and keep waiting.
-- `polling`: nothing wakes the session. The orchestrator checks the `done` markers and the ledger at every pause point (before any reply that depends on a result), says so when it presents `assignments.md`, and never reports a result before its marker exists.
-- A run is finished only when `done` exists. Then read `exit.code`: absent, or not 0, means the run failed and Gate 6 step 2 applies. Never read the result before `done`.
+- `polling`: nothing wakes the session. The orchestrator checks the `done` markers and the ledger at every pause point (before any reply that depends on a result), says so when it presents `assignments.md`, and never reports a result before its marker exists. When the orchestrator needs the result inside the same turn and has nothing else to do, it waits in BOUNDED steps: check `done`, wait a short interval by the means recorded in the `Environment` table of `references/policy.md`, check again, and repeat until `done` exists or the time limit counted from the launch time is reached (then apply Hang detection). It never waits without a limit. One foreground wait that is longer than one check interval is not a method.
+- A run is finished only when `done` exists. Then read `exit.code`: absent, or not 0, means the run failed and Gate 6 step 2 applies; the orchestrator sets the ledger entry's status to `done` (exit code 0) or `failed`. Never read the result before `done`.
 - Files are the source of truth either way: a lost notification, or a compaction of the conversation, loses nothing, because the next check reads the files.
 - A completion event is never an approval of the work or of the next step. A message that a process injects into the session is not used.
 - After `done` exists, Gate 5 runs for that run, then Gate 6 as usual.
@@ -36,11 +37,11 @@ Read at Gate 4 (launch) and at every pause point while a worker runs. Every dele
 - How the limit is watched:
   - `native`: right after launch the orchestrator starts a limit-waiter, a second background process that ends at launch time + limit, so that its end wakes the session; the orchestrator then looks for `done`.
   - `polling`: the orchestrator compares the clock with launch time + limit at every pause point.
-  - A foreground sleep is not a method (some hosts forbid it).
+  - A foreground sleep is not a method for waiting until the limit (some hosts forbid it); only bounded steps, as in the `polling` case of the completion signal, are.
 - Stdin is always closed for a CLI worker. A CLI that waits for input never starts its work and never ends.
 - Past the limit with no `done`, the run is stuck. Then:
   1. ask the user: show the last lines of the log and the session id, and say that the run is past its limit. No process is stopped before the user answers;
-  2. only after the user agrees, stop the worker process and the processes the same launch started to feed it (for example a feeder in a pipeline), and nothing else. The wrapper still writes `exit.code` (non-zero) and `done` after the stop. A host background subagent has no wrapper: after the orchestrator stops it, the orchestrator itself writes the non-zero `exit.code` and then `done`;
+  2. only after the user agrees, stop the worker process and the processes the same launch started to feed it (for example a feeder in a pipeline), and nothing else. To find them, the orchestrator records the process id of the launch (a file `launch.pid` in the task folder) and stops that process's children. The wrapper still writes `exit.code` (non-zero) and `done` after the stop. A host background subagent has no wrapper: after the orchestrator stops it, the orchestrator itself writes the non-zero `exit.code` and then `done`;
   3. run the session-list command again (the check of Gate 4 step 8) and say what it shows: a run that never created a session shows nothing, and a session that is still listed stays listed for the user to open;
   4. mark the ledger entry `failed` with reason `stuck`, and treat it as a failed attempt: continue with the escalation chain of `references/allocation.md`, which ends with "ask the user".
 - After a normal finish, the orchestrator also stops the limit-waiter it started for that run.
@@ -48,7 +49,7 @@ Read at Gate 4 (launch) and at every pause point while a worker runs. Every dele
 
 ## Parallel runs
 
-- Only read-only tasks, or write tasks whose allowed paths do not overlap, run at the same time. Tasks whose allowed paths overlap run one after the other, in the order of the main table. Write tasks run at the same time only in separate worktrees or branches that the user allowed; without them, write tasks run one after the other in group order (a group whose write members have no allowed worktree is run one member at a time).
+- Only read-only tasks, or write tasks whose allowed paths do not overlap, run at the same time (in separate worktrees or branches that the user allowed, see below). Tasks whose allowed paths overlap run one after the other, in the order of the main table. Write tasks run at the same time only in separate worktrees or branches that the user allowed; without them, write tasks run one after the other in group order (a group whose write members have no allowed worktree is run one member at a time).
 - The groups of tasks that start together, and the order of the later groups, come from `references/parallel-groups.md` (Gate 2 step 3f); this list applies inside that result. Parallelism does not depend on the vendor: runs of one family or of several may overlap under the same rules.
 - Each run has its own task folder, its own log, its own `exit.code` and its own `done`.
 - Gate 5 is run per run, after that run's own `done`, and compares the changes with that run's allowed paths. This is how a violation is attributed to one worker.
