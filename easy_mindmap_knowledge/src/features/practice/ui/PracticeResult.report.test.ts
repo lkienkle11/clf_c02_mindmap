@@ -7,9 +7,9 @@ import type { SubmitResult } from '../index';
 import PracticeResult from './PracticeResult.svelte';
 
 const items: SubmitResult['items'] = [
-  { questionId: 'q1', selected: ['A'], correct: ['A'], isCorrect: true, optionOrder: ['A', 'B', 'C', 'D'] },
-  { questionId: 'q2', selected: ['C', 'A'], correct: ['B', 'A'], isCorrect: false, optionOrder: ['D', 'C', 'B', 'A'] },
-  { questionId: 'q3', selected: [], correct: ['C'], isCorrect: false, optionOrder: ['A', 'B', 'C', 'D'] },
+  { questionId: 'q1', selected: ['A'], correct: ['A'], isCorrect: true, unscored: false, optionOrder: ['A', 'B', 'C', 'D'] },
+  { questionId: 'q2', selected: ['C', 'A'], correct: ['B', 'A'], isCorrect: false, unscored: false, optionOrder: ['D', 'C', 'B', 'A'] },
+  { questionId: 'q3', selected: [], correct: ['C'], isCorrect: false, unscored: false, optionOrder: ['A', 'B', 'C', 'D'] },
 ];
 const result: SubmitResult = { scorePct: 33, correct: 1, total: 3, passed: false, items };
 

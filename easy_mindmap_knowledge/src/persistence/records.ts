@@ -41,6 +41,7 @@ export interface AttemptQuestionRow {
   optionOrder: string[];
   selected: string[];
   isCorrect: boolean | null;
+  unscored: boolean;
 }
 
 export interface QuestionStat {

@@ -32,6 +32,29 @@ describe('stopLeafId', () => {
 });
 
 describe('waterPath', () => {
+  it('stops at the last summary lesson when there is no practice leaf', () => {
+    const topic = makeTopic({ id: 'capstone', tier: 'capstone', lessonIds: ['summary-a', 'summary-b'] });
+    const layout = layoutTree([topic], { expandedTopicId: topic.id });
+    const branch = layout.branches[0];
+    branch.leaves = branch.leaves.filter((leaf) => leaf.kind === 'lesson');
+    const { head, segments } = waterPath(layout, {
+      statuses: new Map([[topic.id, 'current']]), currentTopicId: topic.id, stopLeafId: 'practice',
+    });
+    expect(head).toEqual({ x: branch.leaves[1].x, y: branch.y });
+    expect(segments).toContainEqual({ x1: branch.far, y1: branch.y, x2: branch.leaves[1].x, y2: branch.y, tone: 'next' });
+  });
+
+  it('stops at an exam node when it has no leaves', () => {
+    const topic = makeTopic({ id: 'capstone-exam-1', tier: 'exam' });
+    const layout = layoutTree([topic], { expandedTopicId: null });
+    const branch = layout.branches[0];
+    const { head, segments } = waterPath(layout, {
+      statuses: new Map([[topic.id, 'current']]), currentTopicId: topic.id, stopLeafId: 'practice',
+    });
+    expect(head).toEqual({ x: branch.near, y: branch.y });
+    expect(segments.some((segment) => segment.x1 === branch.far)).toBe(false);
+  });
+
   it('no progress: head sits on the first lesson of the expanded current topic', () => {
     const { layout, segments, head } = run([], ts[0].id, ts[0].lessonIds[0]);
     const b = layout.branches[0];

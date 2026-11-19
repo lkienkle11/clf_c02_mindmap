@@ -13,7 +13,7 @@ async function seedSubmitted(services: ReturnType<typeof buildServices>) {
       submitReason: null, reviewAllowed: false, clock: { mode: 'freeze', limitMs: null, remainingMs: null, deadlineAt: null, onHidden: 'freeze', onReport: 'freeze' },
       heartbeatAt: null, scorePct: null, passed: null, groupIndex: null, plannedCount: null, unansweredDisplay: 'reveal',
     },
-    [{ attemptId: 'a1', position: 0, questionId: 'q1', optionOrder: ['A', 'B'], selected: ['A'], isCorrect: null }],
+    [{ attemptId: 'a1', position: 0, questionId: 'q1', optionOrder: ['A', 'B'], selected: ['A'], isCorrect: null, unscored: false }],
   );
   await a.markSubmitted('a1', { scorePct: 100, passed: true, reason: 'manual', at: 1000, grades: [{ position: 0, isCorrect: true, selected: ['A'] }] });
 }

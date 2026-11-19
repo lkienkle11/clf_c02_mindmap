@@ -1,6 +1,7 @@
 export const feature = 'mindmap' as const;
 export {
   completedTopicIds,
+  withSummaryCompleted,
   currentLesson,
   practiceUnlocked,
   topicStatuses

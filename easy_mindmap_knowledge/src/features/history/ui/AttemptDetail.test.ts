@@ -29,6 +29,22 @@ const optionOf = (item: HTMLElement, key: string) =>
   within(item.querySelector(`li[data-option="${key}"]`) as HTMLElement);
 
 describe('AttemptDetail', () => {
+  it('labels exactly the unscored rows while keeping their right or wrong marks', async () => {
+    await mount({ rows: [
+      makeRow('a2', 0, { questionId: 'q1', isCorrect: false, unscored: true }),
+      makeRow('a2', 1, { questionId: 'q2', isCorrect: true, unscored: true }),
+      makeRow('a2', 2, { questionId: 'q3', isCorrect: false, unscored: false }),
+    ] });
+    const items = recordedItems();
+    expect(items).toHaveLength(3);
+    expect(screen.getAllByText('Not scored')).toHaveLength(2);
+    expect(within(items[0]).getByText('Not scored')).toBeInTheDocument();
+    expect(within(items[1]).getByText('Not scored')).toBeInTheDocument();
+    expect(within(items[2]).queryByText('Not scored')).not.toBeInTheDocument();
+    expect(within(items[0]).getByText('✗ Incorrect')).toBeInTheDocument();
+    expect(within(items[1]).getByText('✓ Correct')).toBeInTheDocument();
+  });
+
   it('lists every option of each recorded question in the stored order, with picked and correct badges', async () => {
     await mount();
     const items = recordedItems();

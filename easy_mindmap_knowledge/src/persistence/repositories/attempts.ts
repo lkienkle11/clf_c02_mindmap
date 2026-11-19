@@ -31,6 +31,7 @@ interface QuestionDb {
   option_order: string;
   selected: string;
   is_correct: number | null;
+  unscored: number;
 }
 
 const bool = (v: number | null): boolean | null => (v === null ? null : v === 1);
@@ -60,6 +61,7 @@ const toQuestion = (r: QuestionDb): AttemptQuestionRow => ({
   optionOrder: JSON.parse(r.option_order) as string[],
   selected: JSON.parse(r.selected) as string[],
   isCorrect: bool(r.is_correct),
+  unscored: r.unscored === 1,
 });
 
 /** The attempt row is gone, so nothing can be submitted or kept; callers must not report a result. */
@@ -125,11 +127,12 @@ export function createAttemptsRepo(db: SqlExecutor) {
     async create(a: AttemptRow, questions: AttemptQuestionRow[]): Promise<void> {
       for (const q of questions) {
         await db.execute(
-          `INSERT INTO attempt_questions (attempt_id, position, question_id, option_order, selected, is_correct)
-           VALUES ($1, $2, $3, $4, $5, $6)`,
+          `INSERT INTO attempt_questions (attempt_id, position, question_id, option_order, selected, is_correct, unscored)
+           VALUES ($1, $2, $3, $4, $5, $6, $7)`,
           [
             a.id, q.position, q.questionId, JSON.stringify(q.optionOrder), JSON.stringify(q.selected),
             q.isCorrect === null ? null : q.isCorrect ? 1 : 0,
+            q.unscored ? 1 : 0,
           ],
         );
       }

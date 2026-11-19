@@ -56,6 +56,12 @@ pub fn run() {
               sql: include_str!("../migrations/0007_reports_attempt_type.sql"),
               kind: MigrationKind::Up,
             },
+            Migration {
+              version: 8,
+              description: "attempt_question_unscored",
+              sql: include_str!("../migrations/0008_attempt_question_unscored.sql"),
+              kind: MigrationKind::Up,
+            },
           ],
         )
         .build(),

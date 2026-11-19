@@ -40,7 +40,7 @@ xattr -dr com.apple.quarantine "src-tauri/target/release/bundle/macos/AWS CLF-C0
 
 - **Practice**: choose the number of questions per attempt, from 10 up to the number of questions in the topic (quick buttons 10, 20, 50 and All; default 10). A topic with fewer than 10 questions uses all of them.
 - **Checkpoint exams**: topics are grouped in threes by order (1-3, 4-6, 7-9, 10-12). After you finish the three topics of a group, each with a practice attempt of at least 80%, a 65-question checkpoint exam appears on the tree. It must be passed (80%) before the next group unlocks.
-- **Capstone exam**: a 65-question exam split by the real exam domain weights: Cloud Concepts 24%, Security and Compliance 30%, Cloud Technology and Services 34%, Billing, Pricing and Support 12%. It unlocks after the last group's checkpoint is passed. The Capstone draws 16, 19, 22 and 8 questions per domain (24/30/34/12), and the ten authored Capstone questions are mapped to domains (`CAPSTONE_QUESTION_DOMAIN`) so they are drawn like any other question.
+- **Capstone exams**: two 65-question exams, each with 50 scored questions split by the real domain weights (12 Cloud Concepts, 15 Security and Compliance, 17 Cloud Technology and Services, 6 Billing, Pricing and Support) and 15 unscored questions. Pass at 70% of the scored questions (35/50), with 90 minutes (120 with extra time). Exam 1 opens after checkpoint 4 is passed, exam 2 after exam 1 is passed, and the Tổng kết topic after both are passed; Tổng kết has no practice node.
 - **Exam rules** (checkpoint and Capstone):
   - 65 questions, or fewer if the pool is smaller; an exam does not start with fewer than 10.
   - 90 minutes, or 120 minutes with the "extra 30 minutes" option (the ESL accommodation of the real exam). With fewer than 65 questions the time is scaled per question.
@@ -49,7 +49,7 @@ xattr -dr com.apple.quarantine "src-tauri/target/release/bundle/macos/AWS CLF-C0
   - Leaving the exam abandons the attempt. After a crash the attempt is kept; resuming after the deadline submits it automatically.
 - A few lessons keep one inline source link outside the Sources section; these are volatile status claims (for example a service's retirement or availability date) where the reader should be able to check the page directly.
 - **Retakes** draw questions you have never seen first, then questions you got wrong (most misses first), then the rest.
-- The real exam facts used by the app come from the official AWS pages: 65 questions (50 scored and 15 unscored), 90 minutes, passing score 700/1000. The app uses a simpler 80% pass mark and counts every question.
+- The real exam facts used by the app come from the official AWS pages: 65 questions (50 scored and 15 unscored), 90 minutes, passing score 700/1000. Topics and checkpoint exams use a simpler 80% pass mark and count every question; the two Capstone exams follow the real structure (50 scored and 15 unscored questions) with a 70% pass mark on the scored questions.
 
 ## Reports
 
@@ -87,7 +87,7 @@ Never edit a migration that has shipped (for example `0001_init.sql`): installed
 
 ```
 content/
-  topics.json                      the 13 topics
+  topics.json                      the 15 topics (13 with lessons plus two Capstone exams)
   lessons/<topic>/<NN>-slug.{en,vi}.md   lessons (front matter + Markdown)
   questions/authored/<topic>.json  hand-authored questions
   questions/imported.json          questions generated from the card deck

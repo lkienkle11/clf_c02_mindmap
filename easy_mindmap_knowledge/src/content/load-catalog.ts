@@ -1,7 +1,7 @@
 import type { Catalog, Lesson, Question, Topic } from './types';
 
-const TOPIC_COUNT = 13;
-const TIERS = ['introduction', 'core', 'advanced', 'capstone'];
+const MIN_TOPIC_COUNT = 13;
+const TIERS = ['introduction', 'core', 'advanced', 'exam', 'capstone'];
 
 const isObj = (v: unknown): v is Record<string, unknown> => typeof v === 'object' && v !== null && !Array.isArray(v);
 const isStr = (v: unknown): v is string => typeof v === 'string';
@@ -71,9 +71,9 @@ function validateTopics(topics: Topic[], lessons: Lesson[]): void {
   const lessonById = new Map(lessons.map((l) => [l.id, l]));
   assertUnique('topic', topics.map((t) => t.id));
   const orders = topics.map((t) => t.order).sort((a, b) => a - b);
-  const contiguous = orders.length === TOPIC_COUNT && orders.every((o, i) => o === i + 1);
+  const contiguous = orders.length >= MIN_TOPIC_COUNT && orders.every((o, i) => o === i + 1);
   if (!contiguous) {
-    throw new Error(`topic order must be contiguous 1..${TOPIC_COUNT}, got [${orders.join(', ')}]`);
+    throw new Error(`topic order must be contiguous 1..${topics.length} with at least ${MIN_TOPIC_COUNT} topics, got [${orders.join(', ')}]`);
   }
   for (const t of topics) {
     for (const lid of t.lessonIds) {

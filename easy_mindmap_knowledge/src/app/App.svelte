@@ -1,6 +1,7 @@
 <script lang="ts">
   import { setI18n } from '@/i18n/i18n.svelte';
   import type { I18n } from '@/i18n/i18n.svelte';
+  import { isCapstoneExamTopic } from '@/content/capstone-exams';
   import { LessonScreen } from '@/features/lesson';
   import { TreeScreen, practiceUnlocked } from '@/features/mindmap';
   import { ExamScreen, checkpointGroups } from '@/features/exam';
@@ -94,10 +95,12 @@
     />
   {:else if appState.route.view === 'checkpoint'}
     {#key appState.route.groupIndex}
-      <ExamScreen {services} {appState} groupIndex={appState.route.groupIndex} initialSession={resumed} />
+      <ExamScreen {services} {appState} groupIndex={appState.route.groupIndex} capstoneTopicId={null} initialSession={resumed} />
     {/key}
-  {:else if appState.route.view === 'practice' && appState.route.topicId === 'capstone'}
-    <ExamScreen {services} {appState} groupIndex={null} initialSession={resumed} />
+  {:else if appState.route.view === 'practice' && isCapstoneExamTopic(appState.route.topicId)}
+    {#key appState.route.topicId}
+      <ExamScreen {services} {appState} groupIndex={null} capstoneTopicId={appState.route.topicId} initialSession={resumed} />
+    {/key}
   {:else if appState.route.view === 'practice'}
     {#key appState.route.topicId}
       <PracticeScreen {services} {appState} topicId={appState.route.topicId} checkpointAfter={checkpointAfter(appState.route.topicId)} checkpointOpensCapstone={checkpointOpensCapstone(appState.route.topicId)} initialSession={resumed} />

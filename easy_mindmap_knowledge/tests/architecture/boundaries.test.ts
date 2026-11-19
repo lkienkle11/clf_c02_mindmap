@@ -36,7 +36,7 @@ const stripExt = (p: string) => p.replace(/\.ts$/, '');
 
 /**
  * Whitelist for files under src/features/<f>/logic/: relative imports inside the same logic folder,
- * `@/content/types`, `@/random/*`, and `import type` from `@/persistence/records`. Anything else
+ * `@/content/types`, `@/content/capstone-exams`, `@/random/*`, and `import type` from `@/persistence/records`. Anything else
  * (packages, Svelte, Tauri, other features, other persistence modules) is a violation.
  */
 function logicViolations(code: string, file: string): string[] {
@@ -48,6 +48,7 @@ function logicViolations(code: string, file: string): string[] {
     const t = stripExt(target);
     if (t.startsWith(logicRoot + sep)) return true;
     if (t === join(src, 'content', 'types')) return true;
+    if (t === join(src, 'content', 'capstone-exams')) return true;
     if (t.startsWith(join(src, 'random') + sep)) return true;
     return typeOnly && t === join(src, 'persistence', 'records');
   };
@@ -86,6 +87,10 @@ describe('logicViolations fixtures (whitelist)', () => {
     expect(v(`import { x } from '../stats-rebuild';`)).toEqual(['../stats-rebuild']);
     expect(v(`import { x } from '@/content/load-catalog';`)).toEqual(['@/content/load-catalog']);
     expect(v(`import { x } from '@/i18n/i18n.svelte';`)).toHaveLength(1);
+  });
+  it('allows shared Capstone exam constants but rejects other content modules', () => {
+    expect(v(`import { isCapstoneExamTopic } from '@/content/capstone-exams';`)).toEqual([]);
+    expect(v(`import { loadBundledCatalog } from '@/content/bundled';`)).toEqual(['@/content/bundled']);
   });
   it('catches multi-line imports, export-from and dynamic imports', () => {
     expect(v(`import {\n  a,\n  b,\n} from '@/persistence/x';`)).toHaveLength(1);

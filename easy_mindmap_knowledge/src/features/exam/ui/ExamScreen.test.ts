@@ -7,6 +7,8 @@ import type { AttemptRow } from '@/persistence';
 import { makeQuestion, makeRawCatalog, makeTopics } from '@/testing/fixtures';
 import { checkpointGroups } from '../logic/groups';
 import { startCheckpoint } from '../start-exam';
+import { startCapstoneExam } from '../start-exam';
+import { loadBundledCatalog } from '@/content/bundled';
 import ExamScreen from './ExamScreen.svelte';
 
 const GROUP1 = ['cloud-concepts', 'global-infrastructure', 'compute'];
@@ -21,7 +23,7 @@ const passedTopic = (topicId: string): AttemptRow => ({
 async function startExam() {
   const env = await makeExamEnv(GROUP1);
   env.appState.open({ view: 'checkpoint', groupIndex: 1 });
-  renderWithI18n(ExamScreen, { services: env.services, appState: env.appState, groupIndex: 1 });
+  renderWithI18n(ExamScreen, { services: env.services, appState: env.appState, groupIndex: 1, capstoneTopicId: null });
   await waitFor(() => expect(screen.getByRole('button', { name: 'Start exam' })).toBeEnabled());
   await userEvent.click(screen.getByRole('button', { name: 'Start exam' }));
   return env;
@@ -54,7 +56,7 @@ describe('ExamScreen', () => {
   it('the Start after Try again draws a new attempt with a new id', async () => {
     const env = await makeExamEnv(GROUP1, { submitted: GROUP1.map(passedTopic) });
     env.appState.open({ view: 'checkpoint', groupIndex: 1 });
-    renderWithI18n(ExamScreen, { services: env.services, appState: env.appState, groupIndex: 1 });
+    renderWithI18n(ExamScreen, { services: env.services, appState: env.appState, groupIndex: 1, capstoneTopicId: null });
     await waitFor(() => expect(screen.getByRole('button', { name: 'Start exam' })).toBeEnabled());
     await userEvent.click(screen.getByRole('button', { name: 'Start exam' }));
     await userEvent.click(await screen.findByRole('button', { name: 'Submit' }));
@@ -73,7 +75,7 @@ describe('ExamScreen', () => {
     const s = await startCheckpoint(env.services, 1, { extraTime: false }, () => env.appState.refresh());
     const byId = new Map(env.services.catalog.questions.map((q) => [q.id, q]));
     for (const q of s.questions) await s.select(q.position, byId.get(q.questionId)!.correct);
-    renderWithI18n(ExamScreen, { services: env.services, appState: env.appState, groupIndex: 1, initialSession: s });
+    renderWithI18n(ExamScreen, { services: env.services, appState: env.appState, groupIndex: 1, capstoneTopicId: null, initialSession: s });
     await s.submit('manual');
     expect(await screen.findByText('Passed!')).toBeInTheDocument();
     expect(screen.getByRole('status')).toHaveTextContent('Next group unlocked');
@@ -87,7 +89,7 @@ describe('ExamScreen', () => {
     const s = await startCheckpoint(env.services, 1, { extraTime: false }, () => env.appState.refresh());
     const byId = new Map(env.services.catalog.questions.map((q) => [q.id, q]));
     for (const q of s.questions) await s.select(q.position, byId.get(q.questionId)!.correct);
-    renderWithI18n(ExamScreen, { services: env.services, appState: env.appState, groupIndex: 1, initialSession: s });
+    renderWithI18n(ExamScreen, { services: env.services, appState: env.appState, groupIndex: 1, capstoneTopicId: null, initialSession: s });
     await s.submit('manual');
     expect(await screen.findByText('Passed!')).toBeInTheDocument();
     expect(screen.queryByText('Next group unlocked')).not.toBeInTheDocument();
@@ -102,10 +104,46 @@ describe('ExamScreen', () => {
     const s = await startCheckpoint(env.services, last.index, { extraTime: false }, () => env.appState.refresh());
     const byId = new Map(env.services.catalog.questions.map((q) => [q.id, q]));
     for (const q of s.questions) await s.select(q.position, byId.get(q.questionId)!.correct);
-    renderWithI18n(ExamScreen, { services: env.services, appState: env.appState, groupIndex: last.index, initialSession: s });
+    renderWithI18n(ExamScreen, { services: env.services, appState: env.appState, groupIndex: last.index, capstoneTopicId: null, initialSession: s });
     await s.submit('manual');
     expect(await screen.findByText('Passed!')).toBeInTheDocument();
     expect(screen.getByRole('status')).toHaveTextContent('Capstone exam unlocked');
     expect(screen.queryByText('Next group unlocked')).not.toBeInTheDocument();
+  });
+
+  it.each([
+    ['capstone-exam-1', 'Capstone - Exam 2 unlocked', false],
+    ['capstone-exam-2', 'Summary unlocked', false],
+    ['capstone-exam-2', 'Summary unlocked', true],
+  ] as const)('%s shows scored results and the first-pass notice (retake %s)', async (topicId, notice, retake) => {
+    const catalog = loadBundledCatalog();
+    const env = await makeExamEnv(retake ? [topicId] : [], { rawCatalog: { topics: catalog.topics, lessons: catalog.lessons, questions: catalog.questions } });
+    const s = await startCapstoneExam(env.services, topicId, { extraTime: false }, () => env.appState.refresh());
+    // Answer exactly 35 scored questions correctly and all 15 unscored incorrectly.
+    const byId = new Map(catalog.questions.map((q) => [q.id, q]));
+    let scored = 0;
+    for (const q of s.questions) {
+      if (!q.unscored && scored++ < 35) await s.select(q.position, byId.get(q.questionId)!.correct);
+    }
+    renderWithI18n(ExamScreen, { services: env.services, appState: env.appState, groupIndex: null, capstoneTopicId: topicId, initialSession: s });
+    expect(screen.queryByText('Not scored')).not.toBeInTheDocument();
+    expect(screen.getByRole('navigation', { name: 'Questions' })).not.toHaveTextContent(/not scored/i);
+    await s.submit('manual');
+    expect(await screen.findByText('35 of 50 correct')).toBeInTheDocument();
+    expect(screen.getByText('70%')).toBeInTheDocument();
+    expect(screen.getByText('Passed!')).toBeInTheDocument();
+    expect(screen.getByText('Pass mark: 70% of the 50 scored questions')).toBeInTheDocument();
+    expect(screen.getAllByText('Not scored')).toHaveLength(15);
+    if (retake) expect(screen.queryByText(notice)).not.toBeInTheDocument();
+    else expect(screen.getByText(notice)).toHaveAttribute('role', 'status');
+    await userEvent.click(screen.getByRole('button', { name: 'Try again' }));
+    expect(await screen.findByRole('heading', { name: catalog.topic(topicId).title.en })).toBeInTheDocument();
+    env.appState.statuses = new Map([[topicId, 'current']]);
+    await waitFor(() => expect(screen.getByRole('button', { name: 'Start exam' })).toBeEnabled());
+    await userEvent.click(screen.getByRole('button', { name: 'Start exam' }));
+    expect(await screen.findByRole('timer')).toBeInTheDocument();
+    expect(env.created).toHaveLength(2);
+    expect(env.created[1]).not.toBe(env.created[0]);
+    expect(screen.queryByText('Not scored')).not.toBeInTheDocument();
   });
 });

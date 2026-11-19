@@ -52,8 +52,18 @@ function sourcesSection(body: string): string | null {
 }
 
 describe('loadBundledCatalog (real content folder)', () => {
-  it('loads 13 topics without throwing', () => {
-    expect(catalog.topics).toHaveLength(13);
+  it('loads 15 topics without throwing', () => {
+    expect(catalog.topics).toHaveLength(15);
+  });
+
+  it('places two bilingual lesson-less exams before the summary', () => {
+    expect(catalog.topics.slice(12, 14)).toEqual([
+      { id: 'capstone-exam-1', order: 13, tier: 'exam', lessonIds: [], title: { en: 'Capstone - Exam 1', vi: 'Capstone - Bài kiểm tra thứ nhất' } },
+      { id: 'capstone-exam-2', order: 14, tier: 'exam', lessonIds: [], title: { en: 'Capstone - Exam 2', vi: 'Capstone - Bài kiểm tra thứ hai' } },
+    ]);
+    expect(catalog.topic('capstone').order).toBe(15);
+    expect(catalog.topic('capstone').title.en).toBe('Summary');
+    expect(catalog.topic('capstone').lessonIds).toHaveLength(6);
   });
 
   it('runs the content contract on every topic that has lessons (CONTENT_TOPICS has not drifted)', () => {

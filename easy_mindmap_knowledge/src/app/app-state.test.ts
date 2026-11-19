@@ -1,7 +1,7 @@
 // @vitest-environment node
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { loadCatalog } from '@/content/load-catalog';
-import { makeRawCatalog, makeQuestion } from '@/testing/fixtures';
+import { makeRawCatalog, makeQuestion, makeTopic, makeLesson } from '@/testing/fixtures';
 import { createNodeSqliteExecutor } from '@/testing/node-sqlite-executor';
 import type { AttemptRow, QuestionStat } from '@/persistence';
 import { buildReviewPlan, localDateString } from '@/features/review';
@@ -34,7 +34,7 @@ const attempt = (over: Partial<AttemptRow>): AttemptRow => ({
   heartbeatAt: null, scorePct: 90, passed: true, groupIndex: null, plannedCount: null, unansweredDisplay: 'reveal', ...over,
 });
 const question = (attemptId: string, questionId: string, isCorrect: boolean | null) => ({
-  attemptId, position: 0, questionId, optionOrder: ['A', 'B'], selected: ['A'], isCorrect,
+  attemptId, position: 0, questionId, optionOrder: ['A', 'B'], selected: ['A'], isCorrect, unscored: false,
 });
 const dueStat = (over: Partial<QuestionStat> = {}): QuestionStat => ({
   questionId: 'q-cloud', topicId: 'cloud-concepts', box: 1, dueAt: NOW - 2 * DAY, timesSeen: 1,
@@ -42,6 +42,48 @@ const dueStat = (over: Partial<QuestionStat> = {}): QuestionStat => ({
 });
 
 describe('AppState', () => {
+  it('refresh derives exam order and summary completion from stored attempts and read ids', async () => {
+    const raw = makeRawCatalog();
+    raw.topics = raw.topics.filter((t) => t.id !== 'capstone');
+    raw.topics.push(
+      makeTopic({ id: 'capstone-exam-1', order: 13, tier: 'exam' }),
+      makeTopic({ id: 'capstone-exam-2', order: 14, tier: 'exam' }),
+      makeTopic({ id: 'capstone', order: 15, tier: 'capstone', lessonIds: ['summary-1', 'summary-2', 'summary-optional'] }),
+    );
+    raw.lessons.push(
+      makeLesson({ id: 'summary-1', topicId: 'capstone', order: 1 }),
+      makeLesson({ id: 'summary-2', topicId: 'capstone', order: 2 }),
+      makeLesson({ id: 'summary-optional', topicId: 'capstone', order: 3, required: false }),
+    );
+    const env = buildServices({ executor: await createNodeSqliteExecutor(), catalog: loadCatalog(raw), now: () => NOW });
+    const app = new AppState(env);
+    for (const t of raw.topics.slice(0, 12)) {
+      await env.repos.attempts.create(attempt({ id: t.id, topicId: t.id }), []);
+    }
+    await env.repos.attempts.create(attempt({ id: 'legacy', topicId: 'capstone' }), []);
+    const tail = () => ['capstone-exam-1', 'capstone-exam-2', 'capstone'].map((id) => app.statuses.get(id));
+    await app.refresh();
+    expect(tail()).toEqual(['locked', 'locked', 'locked']);
+    expect(app.completed.has('capstone')).toBe(false);
+    expect(app.submittedAttempts.some((a) => a.id === 'legacy')).toBe(true);
+    await env.repos.attempts.create(attempt({ id: 'cp4', kind: 'checkpoint', topicId: null, groupIndex: 4 }), []);
+    await app.refresh();
+    expect(tail()).toEqual(['current', 'locked', 'locked']);
+    await env.repos.attempts.create(attempt({ id: 'exam1', topicId: 'capstone-exam-1' }), []);
+    await app.refresh();
+    expect(tail()).toEqual(['done', 'current', 'locked']);
+    await env.repos.attempts.create(attempt({ id: 'exam2', topicId: 'capstone-exam-2' }), []);
+    await app.refresh();
+    expect(tail()).toEqual(['done', 'done', 'current']);
+    await env.repos.lessonProgress.markRead('summary-1', NOW);
+    await app.refresh();
+    expect(app.statuses.get('capstone')).toBe('current');
+    await env.repos.lessonProgress.markRead('summary-2', NOW);
+    await app.refresh();
+    expect(tail()).toEqual(['done', 'done', 'done']);
+    expect(app.completed.has('capstone')).toBe(true);
+  });
+
   it('empty DB: topic 1 current, rest locked, no prompt, no resume', async () => {
     await state.load();
     expect(state.statuses.get('cloud-concepts')).toBe('current');

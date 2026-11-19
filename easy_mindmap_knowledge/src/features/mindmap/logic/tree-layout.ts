@@ -87,7 +87,12 @@ export function layoutTree(
     const right = cx + NODE_W / 2;
     const near = side === 'left' ? right : left;
     const far = side === 'left' ? left : right;
-    const ids = expanded ? [...topic.lessonIds.map((id) => ({ id, kind: 'lesson' as const })), { id: 'practice', kind: 'practice' as const }] : [];
+    const ids = expanded && topic.tier !== 'exam'
+      ? [
+          ...topic.lessonIds.map((id) => ({ id, kind: 'lesson' as const })),
+          ...(topic.tier !== 'capstone' ? [{ id: 'practice', kind: 'practice' as const }] : []),
+        ]
+      : [];
     const leaves: Leaf[] = ids.map((l, index) => {
       const above = index % 2 === 0;
       return {

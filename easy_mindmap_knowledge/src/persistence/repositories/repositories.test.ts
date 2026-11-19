@@ -32,8 +32,8 @@ const attempt = (over: Partial<AttemptRow> = {}): AttemptRow => ({
   ...over,
 });
 const questions = (attemptId = 'a1'): AttemptQuestionRow[] => [
-  { attemptId, position: 0, questionId: 'q1', optionOrder: ['B', 'A', 'C'], selected: [], isCorrect: null },
-  { attemptId, position: 1, questionId: 'q2', optionOrder: ['D', 'C', 'A', 'B'], selected: ['A'], isCorrect: null },
+  { attemptId, position: 0, questionId: 'q1', optionOrder: ['B', 'A', 'C'], selected: [], isCorrect: null, unscored: false },
+  { attemptId, position: 1, questionId: 'q2', optionOrder: ['D', 'C', 'A', 'B'], selected: ['A'], isCorrect: null, unscored: false },
 ];
 
 describe('translatePlaceholders', () => {
@@ -67,6 +67,22 @@ describe('lessonProgress', () => {
 });
 
 describe('attempts', () => {
+  it.each(['questionsOf', 'questionsOfMany'] as const)('%s round-trips unscored true and false', async (reader) => {
+    const repo = createAttemptsRepo(db);
+    await repo.create(attempt(), questions().map((q, i) => ({ ...q, unscored: i === 0 })));
+    const rows = reader === 'questionsOf' ? await repo.questionsOf('a1') : (await repo.questionsOfMany(['a1'])).get('a1')!;
+    expect(rows.map((q) => q.unscored)).toEqual([true, false]);
+  });
+
+  it.each(['questionsOf', 'questionsOfMany'] as const)('%s defaults an omitted unscored flag to false', async (reader) => {
+    const repo = createAttemptsRepo(db);
+    const row = { attemptId: 'a1', position: 0, questionId: 'q1', optionOrder: ['A'], selected: [], isCorrect: null };
+    // Older runtime callers can omit the now-required field.
+    await repo.create(attempt(), [row as unknown as AttemptQuestionRow]);
+    const rows = reader === 'questionsOf' ? await repo.questionsOf('a1') : (await repo.questionsOfMany(['a1'])).get('a1')!;
+    expect(rows.map((q) => q.unscored)).toEqual([false]);
+  });
+
   it('stores and reads back clock.onHidden', async () => {
     const repo = createAttemptsRepo(db);
     const a = attempt();

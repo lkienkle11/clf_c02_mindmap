@@ -7,7 +7,8 @@ import { loadCatalog } from '@/content/load-catalog';
 import type { Catalog } from '@/content/types';
 import { makeQuestion, makeRawCatalog } from '@/testing/fixtures';
 import { createNodeSqliteExecutor } from '@/testing/node-sqlite-executor';
-import { CAPSTONE_QUESTION_DOMAIN, DOMAIN_OF_TOPIC, examLimitMs, ExamNotAvailableError, loadExamOptions, startCapstoneExam, startCheckpoint } from './index';
+import { CAPSTONE_QUESTION_DOMAIN, DOMAIN_OF_TOPIC } from './logic/domains';
+import { examLimitMs, ExamNotAvailableError, loadExamOptions, startCapstoneExam, startCheckpoint } from './index';
 
 let n = 0;
 async function env(catalog: Catalog): Promise<Services> {
@@ -78,29 +79,43 @@ describe('startCheckpoint', () => {
 });
 
 describe('startCapstoneExam', () => {
-  it('starts a 65-question Capstone exam with the domain split', async () => {
+  it('starts a 65-question Capstone exam', async () => {
     const catalog = loadBundledCatalog();
     const services = await env(catalog);
-    await startCapstoneExam(services, { extraTime: false }, noop);
+    await startCapstoneExam(services, 'capstone-exam-1', { extraTime: false }, noop);
     const found = (await services.repos.attempts.findInProgress())!;
     expect(found.attempt.kind).toBe('practice');
-    expect(found.attempt.topicId).toBe('capstone');
+    expect(found.attempt.topicId).toBe('capstone-exam-1');
+    expect(found.attempt.plannedCount).toBe(65);
     expect(found.attempt.groupIndex).toBeNull();
     expect(found.attempt.clock.limitMs).toBe(5_400_000);
     expect(found.attempt.clock.onReport).toBe('run');
     expect(found.questions).toHaveLength(65);
-    const byId = new Map(catalog.questions.map((q) => [q.id, q]));
-    const counts: Record<string, number> = {};
-    for (const row of found.questions) {
-      const q = byId.get(row.questionId)!;
-      const d = DOMAIN_OF_TOPIC[q.topicId!] ?? CAPSTONE_QUESTION_DOMAIN[q.id];
-      counts[d] = (counts[d] ?? 0) + 1;
+    const scored = found.questions.filter((q) => !q.unscored);
+    const unscored = found.questions.filter((q) => q.unscored);
+    expect(scored).toHaveLength(50);
+    expect(unscored).toHaveLength(15);
+    expect(unscored.map((q) => q.position)).not.toEqual(Array.from({ length: 15 }, (_, i) => 50 + i));
+    const counts = { concepts: 0, security: 0, technology: 0, billing: 0 };
+    for (const row of scored) {
+      const q = catalog.questions.find((q) => q.id === row.questionId)!;
+      const domain = DOMAIN_OF_TOPIC[q.topicId!] ?? CAPSTONE_QUESTION_DOMAIN[q.id];
+      counts[domain]++;
     }
-    expect(counts).toEqual({ concepts: 16, security: 19, technology: 22, billing: 8 });
+    expect(counts).toEqual({ concepts: 12, security: 15, technology: 17, billing: 6 });
+  });
+
+  it('gives the second Capstone exam 120 minutes with extra time', async () => {
+    const services = await env(loadBundledCatalog());
+    await startCapstoneExam(services, 'capstone-exam-2', { extraTime: true }, noop);
+    const found = (await services.repos.attempts.findInProgress())!;
+    expect(found.attempt.clock.limitMs).toBe(7_200_000);
+    expect(found.attempt.topicId).toBe('capstone-exam-2');
+    expect(await loadExamOptions(services.repos.settings)).toEqual({ extraTime: true });
   });
 
   it('throws ExamNotAvailableError for too few questions', async () => {
     const services = await env(smallCatalog(7));
-    await expect(startCapstoneExam(services, { extraTime: false }, noop)).rejects.toBeInstanceOf(ExamNotAvailableError);
+    await expect(startCapstoneExam(services, 'capstone-exam-1', { extraTime: false }, noop)).rejects.toBeInstanceOf(ExamNotAvailableError);
   });
 });

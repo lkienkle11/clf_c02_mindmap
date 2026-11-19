@@ -1,7 +1,9 @@
 import { describe, expect, it } from 'vitest';
 import type { Lesson, Topic } from '@/content/types';
 import type { AttemptRow } from '@/persistence/records';
-import { completedTopicIds, currentLesson, practiceUnlocked, topicStatuses } from './topic-status';
+import { loadBundledCatalog } from '@/content/bundled';
+import { isGateOpen } from '@/features/exam';
+import { completedTopicIds, currentLesson, practiceUnlocked, topicStatuses, withSummaryCompleted } from './topic-status';
 
 const topic = (id: string, order: number): Topic => ({
   id,
@@ -41,6 +43,15 @@ const attempt = (over: Partial<AttemptRow>): AttemptRow => ({
 const topics = [topic('t1', 1), topic('t2', 2), topic('t3', 3)];
 
 describe('completedTopicIds', () => {
+  it('ignores passed legacy summary attempts without ignoring passed exams', () => {
+    expect([...completedTopicIds([
+      attempt({ topicId: 'capstone' }),
+      attempt({ topicId: 'capstone-exam-1' }),
+      attempt({ topicId: 'capstone-exam-2', passed: false }),
+      attempt({ topicId: 'capstone-exam-2', kind: 'review' }),
+      attempt({ topicId: 'capstone-exam-2', status: 'in_progress' }),
+    ])]).toEqual(['capstone-exam-1']);
+  });
   it('counts submitted passed practice attempts', () => {
     expect([...completedTopicIds([attempt({})])]).toEqual(['t1']);
   });
@@ -121,6 +132,44 @@ describe('topicStatuses injected gate', () => {
     expect(closed.get('cap')).toBe('locked');
     expect([...closed.values()]).not.toContain('current');
     expect(topicStatuses(list, done, gate({ t4: false, cap: true })).get('cap')).toBe('current');
+  });
+});
+
+describe('Capstone exam and summary progression', () => {
+  const catalog = loadBundledCatalog();
+  const core = catalog.topics.filter((t) => t.tier !== 'exam' && t.tier !== 'capstone').map((t) => t.id);
+  const summaryLessons = [lesson('summary-1', 1, true), lesson('summary-2', 2, true), lesson('optional', 3, false)];
+  const lessonsOf = (id: string) => id === 'capstone' ? summaryLessons : [];
+  const statuses = (done: Set<string>) => {
+    const m = topicStatuses(catalog.topics, done, isGateOpen(catalog.topics, new Set([1, 2, 3, 4])));
+    return ['capstone-exam-1', 'capstone-exam-2', 'capstone'].map((id) => m.get(id));
+  };
+
+  it('legacy summary attempts never unlock the exams', () => {
+    const done = completedTopicIds([attempt({ topicId: 'capstone' })]);
+    const m = topicStatuses(catalog.topics, done, isGateOpen(catalog.topics, new Set()));
+    expect(['capstone-exam-1', 'capstone-exam-2', 'capstone'].map((id) => m.get(id))).toEqual(['locked', 'locked', 'locked']);
+  });
+
+  it('opens exam 2 after exam 1 and keeps the summary locked even when lessons are read', () => {
+    const done = new Set([...core, 'capstone-exam-1']);
+    expect(statuses(withSummaryCompleted(done, catalog.topics, lessonsOf, new Set(['summary-1', 'summary-2']))))
+      .toEqual(['done', 'current', 'locked']);
+  });
+
+  it('completes the summary only after both exams and every required lesson', () => {
+    const done = new Set([...core, 'capstone-exam-1', 'capstone-exam-2']);
+    expect(statuses(withSummaryCompleted(done, catalog.topics, lessonsOf, new Set()))).toEqual(['done', 'done', 'current']);
+    expect(statuses(withSummaryCompleted(done, catalog.topics, lessonsOf, new Set(['summary-1'])))).toEqual(['done', 'done', 'current']);
+    const completed = withSummaryCompleted(done, catalog.topics, lessonsOf, new Set(['summary-1', 'summary-2']));
+    expect(statuses(completed)).toEqual(['done', 'done', 'done']);
+    expect(done.has('capstone')).toBe(false);
+  });
+
+  it('requires both exams even when the summary has no required lessons', () => {
+    expect(withSummaryCompleted(new Set(['capstone-exam-1']), catalog.topics, () => [], new Set()).has('capstone')).toBe(false);
+    expect(withSummaryCompleted(new Set(['capstone-exam-1', 'capstone-exam-2']), catalog.topics, () => [], new Set()).has('capstone')).toBe(true);
+    expect(withSummaryCompleted(new Set(['capstone-exam-1', 'capstone-exam-2']), [], () => [], new Set()).has('capstone')).toBe(false);
   });
 });
 

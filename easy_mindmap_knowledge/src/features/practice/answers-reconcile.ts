@@ -1,5 +1,6 @@
 import type { Catalog } from '@/content/types';
 import type { AttemptsRepo } from '@/persistence';
+import { passThresholdPct } from './logic/grading';
 import { attemptScore, regradeAnswers } from './logic/regrade';
 import type { StoredAnswer } from './logic/regrade';
 
@@ -41,8 +42,9 @@ export async function reconcileAnswers(deps: ReconcileAnswersDeps): Promise<Reco
     if (rows.length === 0) return [];
     const grades = changesByAttempt.get(attempt.id) ?? [];
     const gradeByPosition = new Map(grades.map((grade) => [grade.position, grade.isCorrect]));
-    const correctCount = rows.filter((row) => (gradeByPosition.get(row.position) ?? row.isCorrect) === true).length;
-    const score = attemptScore(correctCount, rows.length);
+    const scored = rows.filter((row) => row.unscored === false);
+    const correctCount = scored.filter((row) => (gradeByPosition.get(row.position) ?? row.isCorrect) === true).length;
+    const score = attemptScore(correctCount, scored.length, passThresholdPct(attempt.topicId));
     if (grades.length === 0 && attempt.scorePct === score.scorePct && attempt.passed === score.passed) return [];
     return [{ attemptId: attempt.id, grades, ...score }];
   });

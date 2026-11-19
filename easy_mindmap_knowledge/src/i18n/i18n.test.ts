@@ -7,6 +7,14 @@ import en from './en.json';
 import vi from './vi.json';
 
 describe('I18n', () => {
+  it.each([
+    'exam.setup.ruleCapstoneQuestions', 'exam.setup.capstonePassMark', 'exam.setup.lockedExam1',
+    'exam.setup.lockedExam2', 'exam.setup.examPassed', 'exam.result.passMark', 'exam.result.notScored',
+    'exam.result.exam2Unlocked', 'exam.result.summaryUnlocked', 'mindmap.lockedByExams',
+  ])('defines the capstone UI key %s in both languages', (key) => {
+    expect(en).toHaveProperty(key);
+    expect(vi).toHaveProperty(key);
+  });
   it('replaces {name} params', () => {
     const i = createI18n('en');
     i.messages.en['x'] = 'Got {n} of {m} {n}';
@@ -56,7 +64,7 @@ function keysMissingFrom(a: Record<string, unknown>, b: Record<string, unknown>)
 const DYNAMIC: Record<string, string[]> = {
   'nav.': ['nav.tree', 'nav.history', 'nav.settings'],
   'history.kind.': ['history.kind.practice', 'history.kind.review', 'history.kind.checkpoint'],
-  'mindmap.tier.': ['mindmap.tier.introduction', 'mindmap.tier.core', 'mindmap.tier.advanced', 'mindmap.tier.capstone'],
+  'mindmap.tier.': ['mindmap.tier.introduction', 'mindmap.tier.core', 'mindmap.tier.advanced', 'mindmap.tier.capstone', 'mindmap.tier.exam'],
   'practice.announce.': ['practice.announce.m5', 'practice.announce.m1', 'practice.announce.s10'],
 };
 

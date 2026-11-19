@@ -8,7 +8,13 @@ export function gradeQuestion(correct: readonly string[], selected: readonly str
   return true;
 }
 
-/** 80% inclusive, integer math. */
-export function passes(correctCount: number, total: number): boolean {
-  return total > 0 && correctCount * 100 >= 80 * total;
+/** Inclusive threshold, default 80%, integer math. */
+export function passes(correctCount: number, total: number, thresholdPct: number = 80): boolean {
+  return total > 0 && correctCount * 100 >= thresholdPct * total;
 }
+import { isCapstoneExamTopic } from '@/content/capstone-exams';
+
+export function passThresholdPct(topicId: string | null): 70 | 80 {
+  return isCapstoneExamTopic(topicId) ? 70 : 80;
+}
+

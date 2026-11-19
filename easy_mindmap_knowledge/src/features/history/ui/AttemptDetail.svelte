@@ -78,7 +78,10 @@
         {@const q = questions.get(row.questionId)}
         {@const ok = row.isCorrect === true}
         <li data-question={row.questionId} class="flex flex-col gap-1 rounded-lg border border-border-subtle p-3" {@attach frame(row.position)}>
-          <p class="text-sm text-muted-foreground">{i18n.t('practice.result.question', { n: row.position + 1 })}</p>
+          <p class="text-sm text-muted-foreground">
+            {i18n.t('practice.result.question', { n: row.position + 1 })}
+            {#if row.unscored === true}<span class="ml-2 rounded border border-border px-2 py-0.5 font-medium">{i18n.t('exam.result.notScored')}</span>{/if}
+          </p>
           <p lang="en" class="font-medium">{q?.text ?? row.questionId}</p>
           <p class={cn('font-semibold', ok ? 'text-leaf-done-ink' : 'text-danger')}>
             {ok ? `✓ ${i18n.t('practice.result.correct')}` : `✗ ${i18n.t('practice.result.incorrect')}`}

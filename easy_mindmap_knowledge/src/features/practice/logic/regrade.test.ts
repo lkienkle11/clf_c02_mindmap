@@ -5,10 +5,10 @@ import type { StoredAnswer } from './regrade';
 describe('regradeAnswers', () => {
   it('returns only the answers whose live grade differs from the stored grade', () => {
     const rows: StoredAnswer[] = [
-      { attemptId: 'attempt-1', position: 0, questionId: 'unchanged-right', selected: ['C', 'B'], isCorrect: true },
-      { attemptId: 'attempt-1', position: 1, questionId: 'unchanged-wrong', selected: [], isCorrect: false },
-      { attemptId: 'attempt-1', position: 2, questionId: 'now-wrong', selected: ['A'], isCorrect: true },
-      { attemptId: 'attempt-2', position: 0, questionId: 'now-right', selected: ['B'], isCorrect: false },
+      { attemptId: 'attempt-1', position: 0, questionId: 'unchanged-right', selected: ['C', 'B'], isCorrect: true, unscored: false },
+      { attemptId: 'attempt-1', position: 1, questionId: 'unchanged-wrong', selected: [], isCorrect: false, unscored: false },
+      { attemptId: 'attempt-1', position: 2, questionId: 'now-wrong', selected: ['A'], isCorrect: true, unscored: false },
+      { attemptId: 'attempt-2', position: 0, questionId: 'now-right', selected: ['B'], isCorrect: false, unscored: false },
     ];
     const bank: Record<string, readonly string[]> = {
       'unchanged-right': ['B', 'C'],
@@ -25,7 +25,7 @@ describe('regradeAnswers', () => {
 
   it('flips a stored wrong grade to right when the bank answer now matches the selection', () => {
     const rows: StoredAnswer[] = [
-      { attemptId: 'attempt-1', position: 3, questionId: 'question-1', selected: ['B'], isCorrect: false },
+      { attemptId: 'attempt-1', position: 3, questionId: 'question-1', selected: ['B'], isCorrect: false, unscored: false },
     ];
 
     expect(regradeAnswers(rows, () => ['B'])).toEqual([
@@ -35,7 +35,7 @@ describe('regradeAnswers', () => {
 
   it('skips answers that were never graded (isCorrect null)', () => {
     const rows: StoredAnswer[] = [
-      { attemptId: 'attempt-1', position: 0, questionId: 'question-1', selected: ['B'], isCorrect: null },
+      { attemptId: 'attempt-1', position: 0, questionId: 'question-1', selected: ['B'], isCorrect: null, unscored: false },
     ];
 
     expect(regradeAnswers(rows, () => ['B'])).toEqual([]);
@@ -43,7 +43,7 @@ describe('regradeAnswers', () => {
 
   it('skips answers whose question is no longer in the bank', () => {
     const rows: StoredAnswer[] = [
-      { attemptId: 'attempt-1', position: 0, questionId: 'removed', selected: ['B'], isCorrect: true },
+      { attemptId: 'attempt-1', position: 0, questionId: 'removed', selected: ['B'], isCorrect: true, unscored: false },
     ];
 
     expect(regradeAnswers(rows, () => null)).toEqual([]);
@@ -51,7 +51,7 @@ describe('regradeAnswers', () => {
 
   it('a question changed from single to multiple answers grades a one-key selection wrong', () => {
     const rows: StoredAnswer[] = [
-      { attemptId: 'attempt-1', position: 0, questionId: 'question-1', selected: ['B'], isCorrect: true },
+      { attemptId: 'attempt-1', position: 0, questionId: 'question-1', selected: ['B'], isCorrect: true, unscored: false },
     ];
 
     expect(regradeAnswers(rows, () => ['B', 'C'])).toEqual([
@@ -61,7 +61,7 @@ describe('regradeAnswers', () => {
 
   it('a question changed from multiple to single answer grades a two-key selection wrong', () => {
     const rows: StoredAnswer[] = [
-      { attemptId: 'attempt-1', position: 0, questionId: 'question-1', selected: ['B', 'C'], isCorrect: true },
+      { attemptId: 'attempt-1', position: 0, questionId: 'question-1', selected: ['B', 'C'], isCorrect: true, unscored: false },
     ];
 
     expect(regradeAnswers(rows, () => ['B'])).toEqual([
@@ -71,6 +71,11 @@ describe('regradeAnswers', () => {
 });
 
 describe('attemptScore', () => {
+  it('uses the supplied 70% threshold without changing the percentage', () => {
+    expect(attemptScore(35, 50, 70)).toEqual({ scorePct: 70, passed: true });
+    expect(attemptScore(34, 50, 70)).toEqual({ scorePct: 68, passed: false });
+  });
+
   it('attemptScore rounds to the nearest whole percent', () => {
     expect(attemptScore(1, 3).scorePct).toBe(33);
     expect(attemptScore(2, 3).scorePct).toBe(67);

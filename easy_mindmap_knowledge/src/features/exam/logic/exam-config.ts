@@ -1,4 +1,6 @@
 export const EXAM_QUESTION_COUNT = 65;
+export const CAPSTONE_SCORED_COUNT = 50;
+export const CAPSTONE_UNSCORED_COUNT = 15;
 export const EXAM_MINUTES = 90;
 export const EXAM_MINUTES_EXTRA = 120;
 export const EXAM_MIN_QUESTIONS = 10;

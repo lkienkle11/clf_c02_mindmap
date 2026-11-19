@@ -242,6 +242,31 @@ describe('migrations', () => {
     });
   });
 
+  describe('0008 attempt question unscored', () => {
+    const MIGRATION = '0008_attempt_question_unscored.sql';
+
+    it('is the eighth migration file', () => {
+      expect(files[7]).toBe(MIGRATION);
+    });
+
+    it('is registered with version 8 in lib.rs', () => {
+      const lib = readFileSync(join(ROOT, 'src-tauri', 'src', 'lib.rs'), 'utf8');
+      expect(lib).toMatch(/Migration\s*\{\s*version:\s*8,\s*description:\s*"attempt_question_unscored",\s*sql:\s*include_str!\("\.\.\/migrations\/0008_attempt_question_unscored\.sql"\),\s*kind:\s*MigrationKind::Up,?\s*\}/);
+    });
+
+    it('keeps version-7 question rows and defaults unscored to 0', () => {
+      const db = new DatabaseSync(':memory:');
+      for (const f of files.slice(0, 7)) db.exec(sql(f));
+      db.exec("INSERT INTO attempts (id, kind, topic_id, status, started_at, clock_mode) VALUES ('a1', 'practice', 't', 'submitted', 1, 'freeze')");
+      db.exec(`INSERT INTO attempt_questions (attempt_id, position, question_id, option_order, selected, is_correct) VALUES ('a1', 0, 'q1', '["A","B"]', '["A"]', 1)`);
+      const before = db.prepare('SELECT * FROM attempt_questions').all();
+      for (const f of files.slice(7, 8)) db.exec(sql(f));
+      expect(db.prepare('SELECT * FROM attempt_questions').all()).toEqual([
+        { ...before[0], unscored: 0 },
+      ]);
+    });
+  });
+
   describe('report record types', () => {
     it('ReportRow mirrors the reports columns, with images as ordered relative paths', () => {
       expectTypeOf<ReportType>().toEqualTypeOf<'question' | 'lesson' | 'system' | 'attempt'>();

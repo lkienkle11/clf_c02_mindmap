@@ -47,8 +47,8 @@
       stopLeafId: currentTopicId ? stopLeafId(catalog.lessonsOf(currentTopicId), appState.readIds) : null,
     }),
   );
-  // The practice pool decides, so Capstone (no own questions, pools every topic) counts as practisable.
-  const withQuestions = $derived(new Set(topics.filter((t) => buildPool(catalog, t.id).length > 0).map((t) => t.id)));
+  // Exams draw from the whole bank rather than their own topic pool.
+  const withQuestions = $derived(new Set(topics.filter((t) => t.tier === 'exam' || buildPool(catalog, t.id).length > 0).map((t) => t.id)));
   const summaryById = $derived(new Map(appState.summaries.map((s) => [s.topicId, s])));
   const topicById = $derived(new Map(topics.map((t, i) => [t.id, { topic: t, prev: i > 0 ? topics[i - 1] : null }])));
 

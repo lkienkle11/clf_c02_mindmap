@@ -4,6 +4,7 @@ import userEvent from '@testing-library/user-event';
 import { makePracticeEnv } from '@/testing/practice-env';
 import { makeExamEnv } from '@/testing/exam-env';
 import { loadCatalog } from '@/content/load-catalog';
+import { loadBundledCatalog } from '@/content/bundled';
 import { makeRawCatalog } from '@/testing/fixtures';
 import type { SqlExecutor } from '@/persistence';
 import { createI18n } from '@/i18n/i18n.svelte';
@@ -70,11 +71,16 @@ describe('App shell', () => {
     expect(screen.queryByRole('navigation', { name: 'Main navigation' })).not.toBeInTheDocument();
   });
 
-  it('renders the exam screen for the Capstone practice route', async () => {
-    const env = await makeExamEnv([]);
-    env.appState.open({ view: 'practice', topicId: 'capstone' });
+  it('routes exam 2 to its exam setup and the legacy capstone to ordinary practice', async () => {
+    const catalog = loadBundledCatalog();
+    const env = await makeExamEnv([], { rawCatalog: { topics: catalog.topics, lessons: catalog.lessons, questions: catalog.questions } });
+    env.appState.open({ view: 'practice', topicId: 'capstone-exam-2' });
     render(App, { services: env.services, appState: env.appState, i18n: createI18n('en') });
-    expect(await screen.findByRole('heading', { name: 'Capstone exam' })).toBeInTheDocument();
+    expect(await screen.findByRole('heading', { name: 'Capstone - Exam 2' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Start exam' })).toBeDisabled();
+    env.appState.open({ view: 'practice', topicId: 'capstone' });
+    expect(await screen.findByRole('button', { name: 'Start' })).toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: 'Start exam' })).not.toBeInTheDocument();
   });
 
   it('a resumed in-progress checkpoint opens the checkpoint route', async () => {
@@ -84,7 +90,7 @@ describe('App shell', () => {
       heartbeatAt: null, scorePct: null, passed: null, groupIndex: 1, plannedCount: 3, unansweredDisplay: 'reveal' as const,
     };
     const questions = ['e0', 'e1', 'e2'].map((questionId, position) => ({
-      attemptId: 'cp', position, questionId, optionOrder: ['A', 'B', 'C', 'D'], selected: [], isCorrect: null,
+      attemptId: 'cp', position, questionId, optionOrder: ['A', 'B', 'C', 'D'], selected: [], isCorrect: null, unscored: false,
     }));
     const env = await makeExamEnv([], { inProgress: { attempt, questions }, now: () => 1000 });
     await env.appState.refresh();
@@ -148,7 +154,7 @@ async function mountWithUnfinished() {
     heartbeatAt: null, scorePct: null, passed: null, groupIndex: null, plannedCount: null, unansweredDisplay: 'reveal' as const,
   };
   const questions = ['q1', 'q2', 'q3'].map((questionId, position) => ({
-    attemptId: 'old', position, questionId, optionOrder: ['A', 'B', 'C', 'D'], selected: [], isCorrect: null,
+    attemptId: 'old', position, questionId, optionOrder: ['A', 'B', 'C', 'D'], selected: [], isCorrect: null, unscored: false,
   }));
   const env = await makePracticeEnv({ inProgress: { attempt, questions } });
   await env.appState.refresh();

@@ -1,0 +1,161 @@
+---
+name: diff-type-subagents
+description: Delegate work to subagents of different vendors (CLI agents such as Codex or Agy, a subagent of the host's own mechanism, and any CLI the user lists after the flag) with the current agent session as orchestrator and reviewer. Use when the user types /diff-type-subagents, with or without a list of installed CLIs, or asks to delegate work to other agents. Load it at Step 0, before any other action, and apply it at every workflow step.
+---
+
+# Diff-Type Subagents
+
+The orchestrator is the agent session that runs this skill, whatever its vendor. It coordinates, writes task briefs, talks to the user and reviews every task and the whole branch. Workers are the agents recorded in the models table and verified at Gate 1: CLI agents, and a subagent of the host's own mechanism if the host has one. Never assume that any CLI or model is available. This skill never replaces or weakens the approval gates of the workflow in use (spec, plan, branch, commit, merge, push). Settings that depend on the machine or the user (which agent orchestrates, which models are forbidden, effort ceiling, fallback order, quota thresholds, command prefix, handoff folder) are not written in these rules; they live in `references/policy.md`.
+
+**Announce:** "I'm using the diff-type-subagents skill."
+
+## Hard rules
+
+- A model, a model family or an effort level that `references/policy.md` forbids is never used as a worker. The orchestrator's own model family is a worker only if the policy allows it.
+- A worker never reviews its own output. Whoever writes a change does not approve it. A worker's "verified" or "done" is never evidence.
+- Never use a flag that bypasses approvals or the sandbox (for example `--dangerously-bypass-approvals-and-sandbox` or `--dangerously-skip-permissions`). Never use an effort level above the policy's effort ceiling unless the user asks.
+- Read-only unless the user explicitly allowed writes for this task. Writes happen only inside an isolated worktree or branch that the user allowed.
+- **Every worker session must be listed.** For every worker of any vendor and every task (implement or read-only, finished or running), the session must appear in full in the session list of that worker's own CLI when the user runs that CLI's resume command, including sessions that CLI hides by default (non-interactive sessions, sessions started in another directory). The user must be able to pick a session from that list and see what the worker is doing, in real time while it runs. The exact list command for each CLI is recorded in the models table; a CLI whose list command is not recorded and verified is not used.
+- Workers do not see project rule files (CLAUDE.md, AGENTS.md, GEMINI.md and similar) or the host's skills. This holds for workers of the same vendor as the orchestrator and for workers of any other vendor. Everything a worker needs is in its `brief.md`: so the skills that apply to a task are named in its brief by file path, the worker must read them, and the orchestrator checks that it did (Gate 4 step 2a, Gate 5).
+- Worker results are leads until the orchestrator verifies them. Sources must be official documentation; blogs and study sites are leads only.
+
+## The gates (do them in this order; do not skip because the task "looks small")
+
+### Gate 1: Which CLIs exist on this machine (once per session, before any assignment)
+
+The models table in `references/models-and-commands.md` is the record of the CLIs and models that were discovered and verified on a machine. Never assume that Codex, Agy or any other CLI is installed. Choose the path by what the user typed and by whether the table has rows:
+
+- **Flag with no list, and the table has rows:** trust the table, then re-check it against the live CLIs: Gate 1A.
+- **Flag with no list, and the table is missing or empty:** ask the user which CLIs are installed on this machine. Then run Gate 1B for every CLI the user names. The table is created from what is discovered.
+- **Flag with a list** (example: `/diff-type-subagents I installed: opencode CLI, minimax CLI, AGY CLI`): run Gate 1B for every CLI on the list.
+
+Then read `references/policy.md`. If it is missing, or the user says the setup changed, ask the user for each item in it, write the answers there, and show the diff before saving. Nothing in these rules overrides the policy, and nothing in the policy overrides the hard rules above. Compare the policy's "Orchestrator" item with the agent session that is actually running this skill; if they differ, ask the user which is right, and update the policy (diff first).
+
+### Gate 1A: Re-check the CLIs recorded in the table
+
+Run these checks for the CLIs that the table names (read-only, no user question needed). The commands below are the ones verified for Codex and Agy; for any other CLI in the table use the commands recorded for it.
+
+1. Check login. Codex: `codex login status` must print "Logged in". Agy: `agy models` must return the model list (Agy has no login-status command; a successful query is the evidence). A CLI named in the table that is missing, or not logged in, on this machine is reported to the user and is not used.
+2. List the live models (Codex: `codex debug models`, parse the JSON and never print it whole; Agy: `agy models`). Compare with the models table in `references/models-and-commands.md` and update the table if they differ (see "Keeping this table current" and "How to write into the table" there).
+3. Effort must be valid for the model, as recorded in the models table (for example, some models have a fixed effort and reject an effort flag).
+4. Run in the intended working directory, not a temp directory, when the user wants to see the session later.
+5. Read the quota percentage if a way exists (record in the table whether one was found).
+6. Check that the session-list command recorded for each CLI in the table still works (it runs and lists sessions). A CLI whose recorded list command no longer works is reported to the user and is not used.
+
+Report the result in one short block. A subagent of the host's own mechanism needs no CLI check, but it must still be a row in the table.
+
+### Gate 1B: Any other CLI the user listed
+
+Used when the user adds a list to the flag (example: `/diff-type-subagents I installed: opencode CLI, minimax CLI, AGY CLI`), or when the table was missing or empty and the user named the installed CLIs. Do not reuse the models table for any CLI on the list. Treat every one as unverified and go through these steps in order, per CLI:
+
+1. **Check auth.** Find that CLI's own way to show login status. If it has none, use a successful query (for example listing its models) as the evidence, and say that this is an inference. Do not assume it is logged in.
+2. **Ask the user whether to spawn a "Hello" test task**, and state the purpose in the question: to confirm that the CLI is logged in, that its non-interactive command works, and that the session is saved and visible in that CLI's `/resume`. Do not spawn the test before the user agrees. If the user declines, do not use that CLI as a subagent until it has been verified, unless the user explicitly says to skip verification.
+3. **If the user agrees, run the test.** Run an interactive session in the intended working directory (through `tmux`), in the safest mode (read-only, no dangerous or bypass flags), send `Hello`, and exit cleanly. Give the user the exact input, the exact output and the session ID, so the user can compare them with what that CLI's `/resume` shows. Wait for the user to confirm that the session is visible and matches. Also find, from the CLI's own help or official documentation, the exact command that lists every worker session of that CLI, including non-interactive sessions and sessions started in another directory, and test it. Check whether a session that is still running can be opened and followed in real time.
+4. **After the user confirms, list that CLI's models and effort levels** from the CLI's own commands or official documentation: the models, the minimum and maximum effort, which models have a fixed or non-adjustable effort, and whether quota or usage can be read. Say which facts are verified and which are not.
+5. **Only then may that CLI's agents be used as subagents.** Add a new CLI to the fallback order in the policy and to a task's assignment only by the user's decision: propose a place for it and ask, never invent its position.
+6. **Record what was discovered. This step is mandatory.** Before the CLI's agents are used for real work, add a row for every discovered model to the models table in `references/models-and-commands.md` (vendor and CLI version, model id, effort levels, notes such as "effort fixed" or "not adjustable"), record the CLI's session-list command and whether a running session can be followed in real time, and update the commands, pre-flight checks and quota notes if this CLI differs from the CLIs already in the table. Mark anything not verified as **[Unverified]**, and write the date. Tell the user which rows were added. Do not leave discovered models only in the conversation. Show the user the diff before writing it as final, and commit only when the user allows it.
+
+A subagent of the host's own mechanism, and the orchestrator rules, do not depend on any CLI. They are available whenever the host has them.
+
+### Gate 2: Delegation plan and approval (before the first delegation, and whenever anything changes)
+
+1. Before the first delegation, create `<handoff-root>/YYYY-MM-DD-<topic>/assignments.md` with one row per task: `work item | worker | model | effort | read-only or write | allowed paths (plan files + ripple list) | ripple classes | CLI verified | skills the worker must read | why`. `<handoff-root>` is the handoff folder from `references/policy.md`; it must be ignored by git. For each task, "skills the worker must read" lists every skill that applies to that task: the skills the user selected for the workflow step this task belongs to (if the user keeps a selection file), plus any other skill the orchestrator judges relevant to the code or files the task touches (for example a language or framework skill, a testing skill, a UI skill). Write "none" only when no skill applies, and say why. The user can add or remove skills when confirming the table. The table always ends with a row "R" for the final whole-branch review (Gate 6 step 1a): it says which review mechanism the orchestrator will use, and asks the user whether to add an independent read-only reviewer worker (with its model, effort and the review skill it must read).
+2. Assign only a CLI and model that passed Gate 1A or Gate 1B and appear in the models table. A subagent of the host's own mechanism needs no CLI check but must be a row in the table.
+3. Pick the cheapest model that is accurate enough for the kind of task. When accuracy for that kind of task is not known, the first item is a small read-only pilot, measured before the choice is relied on. Use a script instead of a model for mechanical work. Which model does which task is decided per task, in that task's own spec or plan.
+3a. **Ripple scan (before the table is shown).** For every task that writes, find what its change will break elsewhere BEFORE the allowed paths are fixed. Use read-only means only (search, the compiler or type checker's view, the project's schema and contract tools, reading the guard checks); a read-only worker may do it. List, per task:
+   - **Consumers** of whatever the task changes: code that calls, imports, queries or builds it (a type, a function, a table or column, an endpoint, a message or event, a config key, a public contract), plus generated artifacts derived from it (clients, ORM models, schema files, API docs).
+   - **Tests, fixtures and seed or sample data** whose assertions or values describe the behavior the task changes on purpose.
+   - **Guard checks** that cover the touched area (type check, lint, architecture or boundary rules, schema or migration validation, contract tests, translation key checks) and what they require.
+   - **Ordering and compatibility:** whether the change makes a check red, or breaks a running consumer, between this task and a later one (a new required field, a removed export or column, a migration that a deployed version does not yet understand). Reorder the tasks, or split the change in compatible steps, so every commit stays green and, where it matters, every step is safe to deploy.
+   The result is the task's ripple list. Allowed paths = the files the plan names + the ripple list.
+3b. **Pre-approved ripple classes (the user chooses them when confirming the table).** A class is a kind of mechanical edit a worker may make without stopping, only in files of the ripple list:
+   - propagate a change to the places the compiler, type checker or schema validator flags (for example a new field or parameter, a renamed column in queries);
+   - update an existing test or fixture so it asserts the behavior this task changes on purpose (never delete, skip or weaken it);
+   - regenerate a generated artifact with the project's own command;
+   - satisfy a guard rule the project already enforces (public entry point, declared key list, naming).
+   The brief's "Allowed paths" section names each class and the exact files it covers, so WORKER RULES item 2 stays word for word true. The worker reports these edits under a heading "Ripple edits", and the orchestrator reviews them like any other change. An edit outside the classes, or in a file that is not in the list, is a stop (CODE WORKER RULES item 4 applies unchanged).
+3b-bis. **Never a ripple class; always a stop and a question to the user:** anything irreversible or destructive or touching real data (dropping or rewriting data, editing a migration that has already shipped or run, a data backfill, changing a contract consumed outside the repository, deleting a resource, touching production or a user's live database). For these the orchestrator also shows the plan first and asks for a backup or a dry run before anything is carried out.
+3c. A small correction of the same task may resume the same worker session instead of opening a new one.
+4. Show the table to the user and **stop until the user confirms it**. Confirming the table also confirms the ripple lists and the ripple classes in it.
+5. If any worker needs write access, ask the user whether it writes on the current branch or in an isolated worktree. Never assume.
+6. Any change of worker, model, effort, write permission or scope updates `assignments.md` and needs the user's approval again before it is carried out.
+7. Do not delegate just because a task is simple or a worker is available.
+
+### Gate 3: Delegation check before every step of the workflow in use
+
+Before each step of the workflow in use (for example, with Superpowers: brainstorming, research, spec, plan, implementation, verification, review), answer in one line: "Delegable? yes/no, worker or reason". Default is **yes** for research, codebase reconnaissance, builder checks, plan-task code and independent review; **no** for talking to the user, approval gates, git commits, merges and pushes. If the answer is yes and the step has no row in `assignments.md`, go back to Gate 2 and get approval first. Nothing is delegated before approval.
+
+### Gate 4: Brief and handoff (every delegated run)
+
+**Before creating any brief, read `references/worker-rules.md`.**
+
+1. The orchestrator creates the task folder under `<handoff-root>` (from `references/policy.md`, ignored by git):
+   ```
+   <handoff-root>/YYYY-MM-DD-<topic>/<task-id>/
+   ├── brief.md          goal, scope, allowed paths, output format, stop condition
+   ├── ledger.json       each batch marked pending, running, done, or failed, with the agent and model that ran it
+   ├── notes.md          sources found, items still unsure, decisions taken
+   └── results/
+       └── batch-NN.json one result file per batch, written as soon as the batch finishes
+   ```
+2. `brief.md` starts with the WORKER RULES block from `references/worker-rules.md`, copied word for word, for every worker. For a worker that writes code, the CODE WORKER RULES block follows it, also word for word, then the plan task's own steps (they carry the exact test names, signatures and commands). Then the task, its allowed paths, its output file and its stop condition. Never write "follow CLAUDE.md" (or any project rule file) or "use the skill" in a brief; name each skill by its file path as step 2a says. Commands in a brief carry the command prefix from the policy, if any.
+2a. **Skills for the worker (every worker, whether of the same vendor as the orchestrator or another).** A worker does not see skills, so for every skill listed for this task in `assignments.md`:
+   - Put the absolute path of that skill's `SKILL.md` in the brief (the base directory shown when the skill is loaded), with this sentence: "Read this file first and follow its method: <path>. Read only this file and the files it links; change nothing else." Name every skill that applies, one path each. Never write only a skill's name, and never a summary in place of the path.
+   - Also copy into the brief, in short form, the parts the worker cannot do without (the exact commands, and the rules that decide pass or fail), so that a worker that cannot read the path still has them.
+   - Reading a skill file by path is verified only for Codex ([Partly verified 2026-11-10], see `references/worker-rules.md`). For a CLI whose worker cannot read files outside its own folder (for example Agy headless), pass the needed parts inline and say in the brief that the file could not be read; record in the models table whether the CLI can read a file by path.
+3. **Where a worker may write:**
+   - A code worker may modify the source files listed under the user-approved "Allowed paths", and only those.
+   - Reports and results go only to the output path named in the brief. A read-only worker's result goes back to the orchestrator (for example Codex `-o <file>` inside the task folder, or redirecting the CLI's output into it).
+   - "Inside its own task folder" applies to state and result files (`ledger.json`, `notes.md`, `results/`), which the orchestrator writes. It never blocks a code worker from editing its allowed source paths.
+4. **One task, one fresh session.** Do not carry one chat from task A to task B: no anchoring on earlier conclusions, the rules sit at the top of a short context, a short context uses less quota, and each task may use a different model and effort. Reusing a session is allowed only for a retry or a small correction of the same task while the context is still small. The files stay the source of truth.
+5. **Keep workers on task:** one output file with a fixed schema; list the paths a worker may read and write, a stop condition, and "do nothing outside this list"; run non-interactive so workers cannot ask questions back; small batches that finish quickly, with results written to disk after every batch; constrain prompts tightly, because some models add follow-up work on their own.
+6. Deliverables that the user reviews or that belong in the project (reports, specs, plans) go to the tracked location the task's spec or plan names, built from the `results/` files. A task folder that lies under a path ignored by git (by any `.gitignore` in the project) needs no cleanup: leave it in place and do not ask about it; delete it only if the user asks. If a task folder is NOT ignored by git, tell the user that it is not ignored (so it would show in `git status` and could be committed by mistake), never commit it, and let the user choose: add its path to a `.gitignore`, move it to an ignored path, or delete it.
+7. **Session check after every launch.** Right after starting a worker, run that CLI's session-list command from the models table and confirm that the new session is listed. Give the user the session name or ID and the exact command to open it. If the session is not listed, stop that run, tell the user exactly what you saw, and let the user decide what to do (for example another run mode, or another CLI). Do not continue the task with an unlisted session.
+
+### Gate 5: Compliance check after every worker run (mandatory, by the orchestrator)
+
+`git status --porcelain`, the commit count and head hash unchanged, and `git diff --name-only` inside the allowed paths (add the command prefix from the policy, if any). On any violation: stop, show the user exactly what happened, undo only what the worker changed outside its allowed paths after the user agrees, and do not treat that run's output as valid. A worker's own statement that it followed the rules is never evidence.
+
+**Skill-read check (same gate, every run).** For every skill named in the brief (step 2a), the worker's log or session must show that it opened that skill's `SKILL.md` before its first change to a file. If a named skill was not read, the run is invalid: tell the user which skill was skipped, and rerun in a new session with the path stated more plainly, or with another worker. A worker's statement that it followed a skill is never evidence.
+
+### Gate 6: Review, quota, fallback and recovery
+
+1. **Review.** Read the diff, run the verification commands yourself and read their output. For every disputed item and for a sample of "verified" ones, read the newest official page yourself. Review every task and the whole branch. Record the result in `ledger.json`. This reading is the first step of review, never the whole of it: step 1a adds the final review.
+1a. **Final review, when every task is done and before the branch is offered for merge (mandatory).** Reading the diff yourself does not replace it. Run both of these, in this order, and record each result in the ledger:
+   - **The orchestrator's own review mechanism on the whole branch.** Use the review capability the orchestrator's host provides (for example a code-review skill or command, or a requesting-code-review skill), at the effort level the user allows and never above the policy's effort ceiling. Choose the effort from the size and risk of the diff being reviewed: **low** for a small mechanical or documentation-only diff; **medium** for a small diff that changes logic; **high** for a large diff, or one that touches scoring, persistence, migrations, security or a public contract. A final whole-branch review is sized by the whole branch, not by the last commit. Record the level and the reason in the ledger. Name which mechanism was used. If the host has none, say so, and the independent reviewer below becomes mandatory.
+   - **An independent reviewer when the user wants one (row "R" of `assignments.md`).** A read-only worker, in a fresh session, that is not the session that wrote the code and, when more than one vendor is verified, preferably of a different vendor or model than the writer. It follows Gate 4 and Gate 5 like any worker: a brief that starts with WORKER RULES, the review skill or method named by absolute path ("read and follow", step 2a), the diff range to review, and a single output. Its findings are leads: verify each one yourself before acting, re-grade by effect, fix Critical and Important findings with a failing test first (through a worker, under Gates 2 to 5), and record Minor findings as deferred.
+   Do not tell the user that the work is reviewed until both applicable steps are recorded. If the user chose "orchestrator reviews, no independent reviewer", record that choice and still run the orchestrator's own review mechanism.
+2. **When a worker stops** (quota, error, timeout): read the ledger, check the last "done" batch for truncation, then give the successor the brief, the finished results and the notes with the instruction "continue from the first batch that is not done; do not redo done batches". A batch that was being written when the old agent stopped counts as not done and is redone. The orchestrator does not take the task over itself and does not restart it from zero.
+3. **Fallback goes through files.** The new agent never receives the old agent's session. Build a new brief from the files, never by retelling from memory. `notes.md` must record sources found, items still unsure and conventions agreed, because the old agent's private reasoning is lost.
+4. **Quota and fallback:** the fallback order, the equivalent model to switch to, and the quota thresholds are in `references/policy.md`. After the last entry in the fallback order is exhausted: stop, save the ledger, report the state to the user, and do not continue. A result produced after a fallback to a weaker model gets a lower confidence label and a more careful review. For high-value work where accuracy matters, tell the user that waiting for the quota to reset may be better than a weaker model, and let the user choose. Detect running out of quota reactively: a non-zero exit code, a rate-limit or usage-limit message in the output, or HTTP 429. Tell the user each time a fallback happens: which agent, which task, which batch, and why.
+5. **When the orchestrator itself stops** (quota, error, closed session): all state is in the task folder (`brief.md`, `ledger.json`, `notes.md`, `results/`). A new orchestrator session, started by the user with an agent the user chooses, reads those files and the assignments, runs Gate 1, and continues from the first batch that is not done. The user decides which agent takes over; the orchestrator never appoints its own successor.
+
+## Red flags
+
+| Thought | Reality |
+|---------|---------|
+| "I'll just do this one myself, it's quick" | Run Gate 3. The default for delegable work is to delegate. |
+| "The task is simple, I'll delegate without the table" | Nothing is delegated before the user approves `assignments.md` (Gate 2). |
+| "The user already approved the plan, so the assignment is approved" | Approval of a spec or plan is not approval of the assignment. |
+| "I'll switch the model, it's a small change" | Any change of worker, model, effort, write permission or scope needs approval again. |
+| "I'll tell the worker to follow CLAUDE.md" | It cannot see it. Read `references/worker-rules.md` and put the blocks in `brief.md`. |
+| "The plan steps are enough, the worker doesn't need the skills" | A worker sees no skill. If a skill applies, name its path in the brief (Gate 4 step 2a) and check the log (Gate 5). |
+| "The skills the user selected for this step are for me, not for the workers" | They apply to whoever does the step's tasks. Put them in the assignments table and in each brief. |
+| "A worker of my own vendor surely has the skills too" | Never assume. A same-vendor worker is a fresh session with no skills until its brief names them. |
+| "The worker ran fine, its session list doesn't matter" | Every worker session must be listed and checkable by the user. Run the session check (Gate 4, step 7). |
+| "I'll write this model or vendor name into the rules" | Machine and user settings live only in `references/policy.md`. The rules stay vendor-neutral. |
+| "The worker said it passed" | Run the command yourself (Gate 6). |
+| "I read the whole diff and the tests are green, so the branch is reviewed" | That is step 1 only. Run the final review (Gate 6 step 1a): the host's own review mechanism, and an independent reviewer if the user wants one. |
+| "The user chose 'orchestrator reviews', so no review tool is needed" | The choice removes the independent reviewer, not the host's review mechanism. Run it and record it. |
+| "Codex and Agy are surely installed, skip asking" | Never assume. Table has rows: re-check it (Gate 1A). No table: ask the user, then discover (Gate 1B). |
+| "The table lists this model, no need to check the machine" | Re-check the live CLI against the table every session (Gate 1A). |
+| "This listed CLI is probably logged in" | Unverified until Gate 1B is done. |
+| "I found a new model, I'll remember it" | Write it into the models table, or the next session loses it. |
+| "Task A and task B can share one chat" | One task, one fresh session. State goes through files. |
+| "The worker is stuck, I'll finish it myself" | Hand the files to a fallback agent: continue from the first batch that is not done. |
+
+## Reference files
+
+- `references/policy.md`: machine and user settings (orchestrator, forbidden models, effort ceiling, fallback order, equivalents, quota thresholds, command prefix, handoff folder). Read at Gate 1.
+- `references/models-and-commands.md`: models table and how to keep it current, worker capabilities, command shapes, session visibility.
+- `references/worker-rules.md`: the WORKER RULES and CODE WORKER RULES blocks, to copy word for word into briefs.

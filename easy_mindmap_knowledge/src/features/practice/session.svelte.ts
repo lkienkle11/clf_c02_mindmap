@@ -2,7 +2,7 @@ import type { Services } from '@/app/composition';
 import { AttemptMissingError } from '@/persistence';
 import type { AttemptQuestionRow, AttemptRow, ClockState, UnansweredDisplay } from '@/persistence';
 import { advanceFreeze, isExpired, pauseForReport, remainingAt, resolveOnResume, settleHidden as settleClockHidden, startClock } from './logic/attempt-clock';
-import { gradeQuestion } from './logic/grading';
+import { gradeQuestion, passThresholdPct } from './logic/grading';
 import { attemptScore } from './logic/regrade';
 import { buildPool, planAttempt } from './logic/pick-questions';
 import type { PlannedQuestion } from './logic/pick-questions';
@@ -17,7 +17,7 @@ export interface SubmitResult {
   correct: number;
   total: number;
   passed: boolean;
-  items: { questionId: string; selected: string[]; correct: string[]; isCorrect: boolean; explanation?: string; optionOrder?: string[] }[];
+  items: { questionId: string; selected: string[]; correct: string[]; isCorrect: boolean; unscored: boolean; explanation?: string; optionOrder?: string[] }[];
 }
 
 export interface SessionQuestion {
@@ -26,6 +26,7 @@ export interface SessionQuestion {
   optionOrder: string[];
   multi: boolean;
   selected: string[];
+  unscored: boolean;
 }
 
 type Reason = 'manual' | 'timeout';
@@ -98,6 +99,7 @@ export class PracticeSession {
         optionOrder: q.optionOrder,
         multi: byId.get(q.questionId)?.multi ?? false,
         selected: q.selected,
+        unscored: q.unscored,
       }),
     );
   }
@@ -135,7 +137,7 @@ export class PracticeSession {
     };
     const rows: AttemptQuestionRow[] = plan.map((p, position) => ({
       attemptId: attempt.id, position, questionId: p.questionId, optionOrder: p.optionOrder,
-      selected: [], isCorrect: null,
+      selected: [], isCorrect: null, unscored: false,
     }));
     await saveLastOptions(services.repos.settings, options);
     await services.repos.attempts.create(attempt, rows);
@@ -165,7 +167,7 @@ export class PracticeSession {
       const keys = q.options.map((o) => o.key);
       rows.push({
         attemptId: id, position, questionId, optionOrder: q.orderDependent ? keys : shuffle(keys, rng),
-        selected: [], isCorrect: null,
+        selected: [], isCorrect: null, unscored: false,
       });
     });
     const clock = startClock(null, 'freeze', now, 'freeze');
@@ -190,6 +192,7 @@ export class PracticeSession {
       topicId: string | null;
       groupIndex: number | null;
       plan: PlannedQuestion[];
+      unscoredIds?: ReadonlySet<string>;
       limitMs: number;
     },
     onSubmitted: () => Promise<void>,
@@ -209,7 +212,7 @@ export class PracticeSession {
     };
     const rows: AttemptQuestionRow[] = input.plan.map((p, position) => ({
       attemptId: id, position, questionId: p.questionId, optionOrder: [...p.optionOrder],
-      selected: [], isCorrect: null,
+      selected: [], isCorrect: null, unscored: input.unscoredIds?.has(p.questionId) ?? false,
     }));
     await services.repos.attempts.create(attempt, rows);
     return new PracticeSession(services, onSubmitted, attempt, rows, clock);
@@ -357,13 +360,15 @@ export class PracticeSession {
         selected: [...sq.selected],
         correct: [...correct],
         isCorrect: gradeQuestion(correct, sq.selected),
+        unscored: sq.unscored,
         optionOrder: [...sq.optionOrder],
         ...(cq?.explanation !== undefined ? { explanation: cq.explanation } : {}),
       };
     });
-    const total = items.length;
-    const correctCount = items.filter((i) => i.isCorrect).length;
-    const { scorePct, passed } = attemptScore(correctCount, total);
+    const scored = items.filter((i) => i.unscored === false);
+    const total = scored.length;
+    const correctCount = scored.filter((i) => i.isCorrect).length;
+    const { scorePct, passed } = attemptScore(correctCount, total, passThresholdPct(this.topicId));
     const result: SubmitResult = {
       scorePct,
       correct: correctCount,

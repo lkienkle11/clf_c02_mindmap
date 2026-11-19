@@ -107,6 +107,57 @@ describe('PracticeSession.startExam', () => {
   });
 });
 
+describe('Capstone scored questions', () => {
+  async function startCapstone() {
+    const raw = makeRawCatalog();
+    raw.questions = Array.from({ length: 65 }, (_, i) => makeQuestion({ id: `exam-${i}`, correct: ['A'] }));
+    const examServices = buildServices({ executor, catalog: loadCatalog(raw), now: () => clock, newId: () => `id-${++idN}` });
+    const examPlan = raw.questions.map((q) => ({ questionId: q.id, optionOrder: ['A', 'B'] }));
+    const session = await PracticeSession.startExam(examServices, input({
+      kind: 'practice', topicId: 'capstone-exam-1', groupIndex: null, plan: examPlan,
+      unscoredIds: new Set(raw.questions.slice(50).map((q) => q.id)),
+    }), onSubmitted);
+    return { session, examServices };
+  }
+
+  it.each([
+    { correct: 35, scorePct: 70, passed: true },
+    { correct: 34, scorePct: 68, passed: false },
+  ])('grades $correct/50 scored correct with all 15 unscored wrong', async ({ correct, scorePct, passed }) => {
+    const { session, examServices } = await startCapstone();
+    const found = (await examServices.repos.attempts.findInProgress())!;
+    expect(found.questions.filter((q) => q.unscored)).toHaveLength(15);
+    for (let i = 0; i < 65; i++) await session.select(i, i < correct ? ['A'] : ['B']);
+    const result = await session.submit('manual');
+    expect(result).toMatchObject({ correct, total: 50, scorePct, passed });
+    expect(result.items).toHaveLength(65);
+    expect(result.items.slice(50)).toEqual(Array.from({ length: 15 }, () => expect.objectContaining({ unscored: true, isCorrect: false })));
+    const stored = await examServices.repos.attempts.questionsOf(session.attemptId);
+    expect(stored.map((q) => q.isCorrect)).toEqual(Array.from({ length: 65 }, (_, i) => i < correct));
+    expect(await examServices.repos.attempts.listSubmitted()).toEqual([expect.objectContaining({ scorePct, passed })]);
+  });
+
+  it('counts unanswered scored questions wrong and ignores correct unscored answers in the score', async () => {
+    const { session } = await startCapstone();
+    for (let i = 0; i < 34; i++) await session.select(i, ['A']);
+    for (let i = 50; i < 65; i++) await session.select(i, ['A']);
+    const result = await session.submit('manual');
+    expect(result).toMatchObject({ correct: 34, total: 50, scorePct: 68, passed: false });
+    expect(result.items.slice(34, 50)).toEqual(Array.from({ length: 16 }, () => expect.objectContaining({ selected: [], isCorrect: false, unscored: false })));
+    expect(result.items.slice(50)).toEqual(Array.from({ length: 15 }, () => expect.objectContaining({ isCorrect: true, unscored: true })));
+  });
+
+  it('resumes stored unscored rows and preserves a 35/50 passing score', async () => {
+    const { session, examServices } = await startCapstone();
+    for (let i = 0; i < 65; i++) await session.select(i, i < 35 ? ['A'] : ['B']);
+    const found = (await examServices.repos.attempts.findInProgress())!;
+    const { session: resumed } = await PracticeSession.resume(examServices, found, onSubmitted);
+    const result = await resumed.submit('manual');
+    expect(result).toMatchObject({ correct: 35, total: 50, scorePct: 70, passed: true });
+    expect(result.items.map((q) => q.unscored)).toEqual(Array.from({ length: 65 }, (_, i) => i >= 50));
+  });
+});
+
 describe('PracticeSession.resume for exams', () => {
   it('restores a running checkpoint with the remaining time', async () => {
     const s = await PracticeSession.startExam(services, input({ groupIndex: 1 }), onSubmitted);

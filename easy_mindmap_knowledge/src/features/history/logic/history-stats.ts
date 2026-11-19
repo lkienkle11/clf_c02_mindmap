@@ -46,12 +46,13 @@ export function weakTopics(
 }
 
 export function mostMissed(
-  rows: { questionId: string; isCorrect: boolean }[],
+  rows: { questionId: string; isCorrect: boolean; unscored?: boolean }[],
   limit: number,
 ): { questionId: string; misses: number; seen: number }[] {
   if (limit <= 0) return [];
   const acc = new Map<string, { misses: number; seen: number }>();
   for (const r of rows) {
+    if (r.unscored === true) continue;
     const cur = acc.get(r.questionId) ?? { misses: 0, seen: 0 };
     cur.seen += 1;
     if (!r.isCorrect) cur.misses += 1;
@@ -94,6 +95,7 @@ export function missedDetails(
     if (a.status !== 'submitted') continue;
     const at = a.submittedAt ?? 0;
     for (const r of rowsByAttempt.get(a.id) ?? []) {
+      if (r.unscored === true) continue;
       const cur = acc.get(r.questionId) ?? { misses: 0, seen: 0, latest: null, answers: new Set() };
       cur.seen += 1;
       if (r.isCorrect !== true) {

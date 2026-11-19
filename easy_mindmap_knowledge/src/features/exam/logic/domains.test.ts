@@ -4,7 +4,7 @@ import { CAPSTONE_QUESTION_DOMAIN, DOMAIN_OF_TOPIC, DOMAIN_WEIGHTS } from './dom
 
 describe('exam domains', () => {
   it('maps every non-capstone topic of the real catalog to a domain', () => {
-    const topics = loadBundledCatalog().topics.filter((t) => t.tier !== 'capstone');
+    const topics = loadBundledCatalog().topics.filter((t) => t.tier !== 'capstone' && t.tier !== 'exam');
     expect(topics.length).toBe(12);
     for (const topic of topics) {
       expect(DOMAIN_OF_TOPIC[topic.id], topic.id).toBeDefined();

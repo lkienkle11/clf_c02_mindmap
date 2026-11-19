@@ -21,6 +21,7 @@
     const topicOf = new Map(services.catalog.questions.map((q) => [q.id, q.topicId]));
     const tally = new SvelteMap<string, { correct: number; total: number }>();
     for (const item of items) {
+      if (item.unscored !== false) continue;
       const topicId = topicOf.get(item.questionId);
       if (!topicId) continue;
       const count = tally.get(topicId) ?? { correct: 0, total: 0 };
