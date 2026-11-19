@@ -26,7 +26,7 @@ export async function rebuildStatsFor(deps: RebuildDeps, questionIds: string[]):
       `SELECT a.submitted_at AS submitted_at, aq.is_correct AS is_correct
          FROM attempt_questions aq
          JOIN attempts a ON a.id = aq.attempt_id
-        WHERE aq.question_id = $1 AND a.status = 'submitted' AND aq.is_correct IS NOT NULL
+        WHERE aq.question_id = $1 AND a.status = 'submitted' AND aq.is_correct IS NOT NULL AND aq.unscored = 0
         ORDER BY a.submitted_at ASC, a.id ASC, aq.position ASC`,
       [questionId],
     );
@@ -60,7 +60,7 @@ export async function reconcileStats(deps: RebuildDeps): Promise<void> {
     `SELECT aq.question_id AS question_id, a.submitted_at AS submitted_at, aq.is_correct AS is_correct
        FROM attempt_questions aq
        JOIN attempts a ON a.id = aq.attempt_id
-      WHERE a.status = 'submitted' AND aq.is_correct IS NOT NULL
+      WHERE a.status = 'submitted' AND aq.is_correct IS NOT NULL AND aq.unscored = 0
       ORDER BY a.submitted_at ASC, a.id ASC, aq.position ASC`,
   );
   const repo = createQuestionStatsRepo(executor);

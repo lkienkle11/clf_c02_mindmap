@@ -15,10 +15,11 @@ beforeEach(async () => {
 
 async function submit(
   id: string, at: number, answers: Record<string, boolean>, kind: AttemptRow['kind'] = 'practice',
+  unscored = false,
 ) {
   const repo = createAttemptsRepo(db);
   const qs = Object.keys(answers).map((questionId, position) => ({
-    attemptId: id, position, questionId, optionOrder: ['A', 'B'], selected: ['A'], isCorrect: null, unscored: false,
+    attemptId: id, position, questionId, optionOrder: ['A', 'B'], selected: ['A'], isCorrect: null, unscored,
   }));
   await repo.create(
     {
@@ -36,6 +37,24 @@ async function submit(
 const stats = () => createQuestionStatsRepo(db);
 
 describe('rebuildStatsFor', () => {
+  it('writes no stat for unscored-only history and deletes an existing stat', async () => {
+    await submit('u1', 1000, { q1: true, q2: true }, 'practice', true);
+    await stats().upsert({
+      questionId: 'q2', topicId: 'topic-1', box: 2, dueAt: 1, timesSeen: 4, timesCorrect: 4, lastSeenAt: 1, lastCorrect: true,
+    });
+    await rebuildStatsFor(deps, ['q1', 'q2']);
+    expect(await stats().get('q1')).toBeNull();
+    expect(await stats().get('q2')).toBeNull();
+  });
+  it('replays only the scored row in mixed scored and unscored history', async () => {
+    await submit('s1', 1000, { q1: true });
+    await submit('u1', 2000, { q1: false }, 'practice', true);
+    await rebuildStatsFor(deps, ['q1']);
+    expect(await stats().get('q1')).toEqual({
+      questionId: 'q1', topicId: 'topic-1', box: 1, dueAt: 1000 + 3 * DAY,
+      timesSeen: 1, timesCorrect: 1, lastSeenAt: 1000, lastCorrect: true,
+    });
+  });
   it('replays three attempts in submitted_at order', async () => {
     await submit('a2', 2000, { q1: false });
     await submit('a1', 1000, { q1: true });
@@ -85,6 +104,24 @@ describe('rebuildStatsFor', () => {
 });
 
 describe('reconcileStats (crash safety)', () => {
+  it('writes no stat for unscored-only history and deletes an existing stat', async () => {
+    await submit('u1', 1000, { q1: true, q2: true }, 'practice', true);
+    await stats().upsert({
+      questionId: 'q2', topicId: 'topic-1', box: 2, dueAt: 1, timesSeen: 4, timesCorrect: 4, lastSeenAt: 1, lastCorrect: true,
+    });
+    await reconcileStats(deps);
+    expect(await stats().get('q1')).toBeNull();
+    expect(await stats().get('q2')).toBeNull();
+  });
+  it('replays only the scored row in mixed scored and unscored history', async () => {
+    await submit('s1', 1000, { q1: true });
+    await submit('u1', 2000, { q1: false }, 'practice', true);
+    await reconcileStats(deps);
+    expect(await stats().get('q1')).toEqual({
+      questionId: 'q1', topicId: 'topic-1', box: 1, dueAt: 1000 + 3 * DAY,
+      timesSeen: 1, timesCorrect: 1, lastSeenAt: 1000, lastCorrect: true,
+    });
+  });
   it('rebuilds stats missing after a crash, and is idempotent', async () => {
     await submit('a1', 1000, { q1: true, q2: false });
     await submit('a2', 2000, { q1: true });
