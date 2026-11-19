@@ -1,4 +1,4 @@
-export type Tier = 'introduction' | 'core' | 'advanced' | 'capstone';
+export type Tier = 'introduction' | 'core' | 'advanced' | 'exam' | 'capstone';
 export type Localized = { en: string; vi: string };
 
 export interface Topic {

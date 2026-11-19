@@ -1,5 +1,5 @@
 import { isGateOpen, passedCheckpointGroups } from '@/features/exam';
-import { completedTopicIds, topicStatuses } from '@/features/mindmap';
+import { completedTopicIds, topicStatuses, withSummaryCompleted } from '@/features/mindmap';
 import type { TopicStatus } from '@/features/mindmap';
 import { reconcileAnswers } from '@/features/practice';
 import { onReportSubmitted } from '@/features/report';
@@ -103,7 +103,7 @@ export class AppState {
       this.#readNewReportCount(),
     ]);
     if (seq !== this.refreshSeq) return;
-    const completed = completedTopicIds(submitted);
+    const completed = withSummaryCompleted(completedTopicIds(submitted), catalog.topics, (id) => catalog.lessonsOf(id), readIds);
     const passedGroups = passedCheckpointGroups(submitted);
     const summaries = reviewSummaries(stats, completed, now);
     this.readIds = readIds;

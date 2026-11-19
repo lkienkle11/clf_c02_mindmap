@@ -1,15 +1,32 @@
 import type { Lesson, Topic } from '@/content/types';
+import { CAPSTONE_EXAM_TOPIC_IDS } from '@/content/capstone-exams';
 import type { AttemptRow } from '@/persistence/records';
 
 export type TopicStatus = 'done' | 'current' | 'locked';
 
-/** Topics with at least one submitted, passed practice attempt. Review attempts never count. */
+/** Topics with a submitted, passed practice attempt, excluding legacy summary attempts. */
 export function completedTopicIds(attempts: AttemptRow[]): Set<string> {
   const done = new Set<string>();
   for (const a of attempts) {
-    if (a.kind === 'practice' && a.status === 'submitted' && a.passed === true && a.topicId !== null) {
+    if (a.kind === 'practice' && a.status === 'submitted' && a.passed === true && a.topicId !== null && a.topicId !== 'capstone') {
       done.add(a.topicId);
     }
+  }
+  return done;
+}
+
+/** The summary completes after both exams and every required summary lesson. */
+export function withSummaryCompleted(
+  completed: Set<string>,
+  topics: Topic[],
+  lessonsOf: (topicId: string) => Lesson[],
+  readIds: Set<string>,
+): Set<string> {
+  const done = new Set(completed);
+  if (topics.some((t) => t.id === 'capstone')
+    && CAPSTONE_EXAM_TOPIC_IDS.every((id) => completed.has(id))
+    && practiceUnlocked(lessonsOf('capstone'), readIds)) {
+    done.add('capstone');
   }
   return done;
 }

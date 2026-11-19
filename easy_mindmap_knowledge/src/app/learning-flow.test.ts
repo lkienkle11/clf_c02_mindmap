@@ -126,8 +126,11 @@ describe('learning flow (ruling R17: topics without lessons can be practised)', 
       await passWithSession(services, appState, topicId);
       if (position % 3 === 0) {
         const next = TOPIC_IDS[position];
-        expect(appState.statuses.get(next)).toBe('locked');
-        await passCheckpoint(services, appState, position / 3);
+        // The summary has no checkpoint gate; this fixture omits the exam topics.
+        if (next !== 'capstone') {
+          expect(appState.statuses.get(next)).toBe('locked');
+          await passCheckpoint(services, appState, position / 3);
+        }
         expect(appState.statuses.get(next)).toBe('current');
       }
     }

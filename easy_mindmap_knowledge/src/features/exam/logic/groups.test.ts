@@ -34,9 +34,12 @@ describe('checkpoint groups', () => {
     expect(new Set(groups[3].topicIds)).toEqual(new Set(['pricing-billing', 'migration-caf', 'support-ai-other']));
   });
 
-  it('never places the capstone topic in a group', () => {
+  it('never places summary or exam topics in a group', () => {
     const allIds = checkpointGroups(realTopics).flatMap((g) => g.topicIds);
     expect(allIds).not.toContain('capstone');
+    expect(allIds).not.toContain('capstone-exam-1');
+    expect(allIds).not.toContain('capstone-exam-2');
+    expect(checkpointGroups(realTopics).map((g) => g.topicIds.length)).toEqual([3, 3, 3, 3]);
   });
 
   it('chunks synthetic topics by order into groups of 3, 3 and 1, covering each id once', () => {
@@ -63,7 +66,9 @@ describe('checkpoint groups', () => {
     expect(gateBefore(realTopics, 'cloud-concepts')).toBeNull();
   });
 
-  it('gates the capstone on the last group', () => {
-    expect(gateBefore(realTopics, 'capstone')?.index).toBe(4);
+  it('gates only exam 1 on the last group', () => {
+    expect(gateBefore(realTopics, 'capstone-exam-1')?.index).toBe(4);
+    expect(gateBefore(realTopics, 'capstone-exam-2')).toBeNull();
+    expect(gateBefore(realTopics, 'capstone')).toBeNull();
   });
 });

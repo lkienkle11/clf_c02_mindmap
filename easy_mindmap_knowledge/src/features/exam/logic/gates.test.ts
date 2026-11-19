@@ -75,8 +75,12 @@ describe('isGateOpen', () => {
     expect(isGateOpen(topics, new Set([1]))('storage')).toBe(true);
     expect(isGateOpen(topics, new Set([1]))('deploy-operate')).toBe(false);
   });
-  it('closes the capstone until the last group is passed', () => {
-    expect(isGateOpen(topics, new Set([1, 2, 3]))('capstone')).toBe(false);
-    expect(isGateOpen(topics, new Set([1, 2, 3, 4]))('capstone')).toBe(true);
+  it('closes exam 1 until the last group is passed', () => {
+    expect(isGateOpen(topics, new Set([1, 2, 3]))('capstone-exam-1')).toBe(false);
+    expect(isGateOpen(topics, new Set([1, 2, 3, 4]))('capstone-exam-1')).toBe(true);
+  });
+  it('has no checkpoint gate for exam 2 or the summary', () => {
+    expect(isGateOpen(topics, new Set())('capstone-exam-2')).toBe(true);
+    expect(isGateOpen(topics, new Set())('capstone')).toBe(true);
   });
 });

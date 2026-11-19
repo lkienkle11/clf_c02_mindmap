@@ -3,6 +3,13 @@ import { loadCatalog } from './load-catalog';
 import { makeLesson, makeQuestion, makeRawCatalog } from '@/testing/fixtures';
 
 describe('loadCatalog', () => {
+  it('loads 15 contiguous topics including the exam tier', () => {
+    const raw = makeRawCatalog();
+    const topics = [...raw.topics, ...[14, 15].map((order) => ({
+      id: `exam-${order}`, order, tier: 'exam', title: { en: 'Exam', vi: 'Kiểm tra' }, lessonIds: [],
+    }))];
+    expect(loadCatalog({ ...raw, topics }).topics).toHaveLength(15);
+  });
   it('loads a valid small catalog', () => {
     const c = loadCatalog(makeRawCatalog());
     expect(c.topics).toHaveLength(13);
