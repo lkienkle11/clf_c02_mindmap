@@ -33,7 +33,10 @@ Capabilities belong to the CLI, not to the model. Each cell is `yes`, `no` or `[
 | CLI | Reads path | Reads outside folder | Runs commands | Web | Sees skills itself |
 |---|---|---|---|---|---|
 | Codex CLI 0.170.0 (2026-11-19) | yes (2026-11-19, read-only sandbox (`-s read-only`), gpt-6.1-sol low) | yes (2026-11-19, read-only sandbox (`-s read-only`), gpt-6.1-sol low) | yes (2026-11-19, read-only sandbox (`-s read-only`), gpt-6.1-sol low) | no (2026-11-19, read-only sandbox (`-s read-only`), gpt-6.1-sol low; read-only sandbox with default flags; [Unverified] whether a flag or another mode enables web access) | yes (2026-11-19, read-only sandbox (`-s read-only`), gpt-6.1-sol low; user-level skills and rule files only, listed from its catalog without opening them; project-level skills of the repository are not seen, so a brief must still name each project skill by path) |
+| Agy CLI 1.5.11 (2026-11-19) | yes (2026-11-19, `--mode plan`, headless; only inside the working folder) | no (2026-11-19, `--mode plan`, headless; the read tool's permission is auto-denied in headless mode; [Unverified] whether another mode allows it; no bypass flag was tried) | no (2026-11-19, `--mode plan`, headless; the command permission is auto-denied headless; same caveat) | no (2026-11-19, `--mode plan`, headless; the agent replied CANNOT) | [Unverified] (2026-11-19, `--mode plan`, headless; the check was blocked by a command-permission denial, with no listing and no "none" reply) |
 | The host's own subagent mechanism (row template, valid for any host) | [Unverified] | [Unverified] | [Unverified] | [Unverified] | [Unverified] |
+
+Agy's `--version` printed 1.5.11 while its interactive banner showed 1.5.12 (discrepancy noted). On 2026-11-19 a skill file copied into the worker's own working folder was read correctly by `agy --print` (check g), which supports the `workspace-copy` delivery mode.
 
 Note: the session-list command of the host's own subagent mechanism is [Unverified] until it is probed.
 
@@ -61,7 +64,7 @@ The per-CLI results of the Gate 1B probe are in the table "Worker capabilities (
 | CLI | Command that lists every worker session | Running session followable in real time | Status |
 |---|---|---|---|
 | Codex CLI 0.170.0 (2026-11-19) | `codex resume --include-non-interactive --all` | not checked | **[Verified 2026-11-19]** the combined command runs and its picker lists non-interactive (`codex exec`) worker sessions. Both flags exist in `codex resume --help`. **[Unverified]** that `--all` shows sessions started in another directory (every listed session was started in this project directory, and no CWD column appeared on screen) |
-| Agy CLI | not known | not checked | **[Unverified]** whether `agy --print` sessions appear in Agy's `/resume`; Agy has `--continue` and `--conversation <id>` |
+| Agy CLI 1.5.11 (2026-11-19) | `/resume` typed inside an interactive `agy` started in the project directory (Agy has no list subcommand: `agy --help` shows `--continue` and `--conversation <id>` only; it keeps conversations under its own data folder) | not checked | **[Verified 2026-11-19]** by the user: an interactive session and a non-interactive `agy --print` session, both started in the project directory, appeared in that list with content matching what was run. **[Unverified]**: sessions started in another directory; whether a running session can be followed in real time |
 | Claude Code | `claude --resume` | not checked | **[Unverified]** |
 | Subagent of the host's own mechanism (for example the Agent tool) | not known | not checked | **[Unverified]** whether it has a session list of its own |
 
@@ -69,7 +72,7 @@ Notes from the first test (2026-11-10):
 
 - `codex exec` and `agy --print` create non-interactive sessions.
 - **Codex:** `/resume` hides `exec` sessions by default. To see them, run `codex resume --include-non-interactive` in the project directory **[Verified 2026-11-10]**. The filter `Cwd` shows only sessions started in the current directory; use `--all` (or the `All` filter) for sessions started elsewhere, such as an isolated worktree. The flag `--thread-source cli` does **not** make an `exec` session visible; do not use it for this.
-- **Agy:** both Agy and Codex tie a session to the working directory. Whether `agy --print` sessions appear in Agy's `/resume` is **[Unverified]**; check before relying on it.
+- **Agy:** both Agy and Codex tie a session to the working directory. `agy --print` sessions started in the same directory appear in Agy's `/resume` **[Verified 2026-11-19]**; sessions started in another directory are **[Unverified]**.
 - Run a worker from the directory the user will look in (`-C "$(pwd)"` for Codex) when the work is read-only. Work that writes runs in an isolated worktree, so its sessions are found with `--all`.
 - Only when the user wants to watch a whole live conversation, run an interactive session in the project directory through `tmux`, exit it cleanly, and give the user the session ID and the captured screen.
 - Resuming a CLI session non-interactively was not verified for Codex or Agy (Agy has `--continue` and `--conversation <id>`; Codex has `resume`). Check before relying on it.
