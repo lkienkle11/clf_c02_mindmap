@@ -25,7 +25,7 @@ The file is the unit: two tasks that edit different parts of one file still conf
 - (d) **ordering constraint** of the ripple scan (a change that would make a check red or break a running consumer if it ran earlier or alone).
 - (e) both touch the same irreversible resource, or both need a guard check that cannot run twice at once.
 
-Orientation: for (a) and (b) the task listed first goes first; for (c) the producer goes first; for (d) the order the ripple scan gives; for (e) the task listed first goes first. A task queued behind a pilot (`references/allocation.md` step 5) has an edge to the REVIEW of that pilot, so it goes to a later group than that review. An edge (e) applies to read-only tasks too (a shared guard that cannot run twice at once).
+Orientation: for (a) and (b) the task listed first goes first; for (c) the producer goes first; for (d) the order the ripple scan gives; for (e) the task listed first goes first. A task queued behind a pilot (`references/allocation.md` step 5) has an edge to the PILOT TASK itself (done AND reviewed, Gate 6 step 1), so it goes to a later group than the pilot. Pilot flags are known only at allocation step 5, so the groups are provisional until allocation has run group by group, and they are re-evaluated for the queued tasks before the table is shown. An edge (e) applies to read-only tasks too (a shared guard that cannot run twice at once).
 
 ## Groups
 
@@ -34,7 +34,7 @@ Orientation: for (a) and (b) the task listed first goes first; for (c) the produ
 3. A read-only task follows the same rule, using only edges (b), (c) and (e). Read-only tasks never conflict with one another otherwise.
 4. Name the groups `G1`, `G2` and so on, in order.
 
-The members of one group start together. Write members of one group run at the same time only in separate worktrees (each its own working folder) or clones that the user allowed; without them, the write members run one after the other in group order (a group is then run one write member at a time). A later group starts when the tasks it depends on are done and reviewed (Gate 6 step 1).
+The members of one group start together, unless the parallel limit forces them to start in parts. Write members of one group run at the same time only in separate worktrees (each its own working folder) or clones that the user allowed; without them, the write members run one after the other in group order (a group is then run one write member at a time). A later group starts when the tasks it depends on are done and reviewed (Gate 6 step 1).
 
 ## Splitting
 
@@ -48,7 +48,7 @@ The own-file part of a task X is the set of files X writes that no task listed B
 ## Limits
 
 - `Parallel limit` in `references/policy.md` ([Proposed 2026-11-19] 3; the user may change it) is the most tasks that run at the same time, counting ALL active runs at launch: a member of a group starts when the number of active runs is below `Parallel limit`, so a group may start in parts, in the order of the table. The quota thresholds of the policy bound it further: at 5% to 20% left the limit is 1 run at a time; below 5% none starts.
-- Tasks that write at the same time need separate worktrees (each its own working folder) or clones that the user allowed (ask at Gate 2 step 5), because in a shared working tree one task's checks would read another's half-written files. Without that permission they run one after the other. Read-only tasks need none.
+- Tasks that write at the same time need separate worktrees (each its own working folder) or clones that the user allowed (ask at Gate 2 step 5), because in a shared working tree one task's checks would read another's half-written files. Without that permission they run one after the other. A read-only task that is active at the same time as a write task needs its own working folder (a separate worktree or a copy of the committed state) or goes to a different group, so that its "no change" check (Gate 5) is not disturbed by the writer.
 - Each run has its own task folder, log, `exit.code` and `done` (`references/running-workers.md`, Parallel runs).
 - Parallelism does not depend on the vendor: the members of a group may be of one family or of several. Allocation (`references/allocation.md`) is run group by group, in order, so that the Spread step counts the members of one group together.
 
