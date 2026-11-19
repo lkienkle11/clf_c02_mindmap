@@ -20,6 +20,7 @@ Read at Gate 4 (launch) and at every pause point while a worker runs. Every dele
 
 ## Completion signal
 
+- The value is a property of the host: a host that has not been probed counts as `polling`.
 - `policy.md` has the item `Completion signal: native | polling`, with its date. It is decided by the orchestrator's own probe at Gate 1: "can I start a background process and be woken in this session when it ends?".
 - `native`: the host wakes the session when a background process or a background subagent ends. The notification is the trigger to look for `done`. If a notification arrives and `done` does not exist, the run is not finished: treat it as no completion and keep waiting.
 - `polling`: nothing wakes the session. The orchestrator checks the `done` markers and the ledger at every pause point (before any reply that depends on a result), says so when it presents `assignments.md`, and never reports a result before its marker exists.

@@ -49,11 +49,12 @@ The per-CLI results of the Gate 1B probe are in the table "Worker capabilities (
 - **Haiku 5.5 (Agent tool):** has WebSearch and WebFetch. A batch took about 200 s and 100k to 133k tokens. In 1 of 2 runs one JSON item was syntactically broken (a missing key name), so always parse a worker's JSON and ask again when it fails.
 - **No worker's "verified" is evidence.** In a control batch of 8 known-defective questions, two of three workers said "verified" with high confidence on the same outdated question (they cited an older page of the AWS documentation, while a newer page of the same documentation said otherwise). AWS pages can disagree with each other, so for every disputed item, and for a sample of "verified" ones, the orchestrator reads the newest official page itself.
 
-## Command shapes (add the command prefix from `policy.md`, if any)
+## Command shapes (the command prefix of `policy.md` is never part of them)
 
 A worker command below is run through the launch wrapper of `references/running-workers.md` (own process, log file, `exit.code`, `done` last), never as a blocking command in the chat. Inside the wrapper the worker command already has stdin closed and its output goes to the log file, so the shapes below need no extra stdin redirection or output capture there; the user's command prefix is not applied inside the wrapper, because its output is not read from the terminal.
 
 - Codex: `codex exec -m <model> -c model_reasoning_effort=<effort> -s read-only --skip-git-repo-check -o <last-message-file> "<prompt>" </dev/null`. Always close stdin with `</dev/null` when it is started from an automated shell: on 2026-11-10 two runs without it hung for 7+ minutes at "Reading additional input from stdin..." and never started a session, while the same runs with it finished normally. Add `-C <dir>` to choose the working directory.
+- Flags that bypass approvals or the sandbox, never to be used (data, as seen on 2026-11-19): `--dangerously-bypass-approvals-and-sandbox` and `--dangerously-skip-permissions`; which CLI accepts which is [Unverified].
 - Agy headless runs (`--print`) cannot ask for permission: a tool that needs the "command" permission is denied automatically and the run ends with a "no output produced" message. This is a safe default for read-only audits. Do not add `--dangerously-skip-permissions` to work around it.
 - Agy: `agy --print "<prompt>" --model <model-id> [--effort <effort>] --output-format text` (Agy supports `--json-schema` to force a structured result, and exits with code 3 when `--print-timeout` cuts a turn short)
 - Haiku: Agent tool with `model: haiku`.
