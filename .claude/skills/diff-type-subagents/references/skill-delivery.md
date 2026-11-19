@@ -45,12 +45,12 @@ Input: a skill name from the cell "skills the worker must read" of `assignments.
 
 Input: a (worker, skill) pair, the skill's row in `Skill resolution`, and the worker's cells in the table `Worker capabilities (per CLI)` of `references/models-and-commands.md`. Output: one row in the section `Delivery table` of `assignments.md` (`worker | skill | mode | proof | confidence`). Choose the first mode in this order that the cells allow. A cell that is `no` or `[Unverified]` does not allow a mode; never assume.
 
-1. **`path`.** Allowed when `Reads path` is `yes`, AND (`Reads outside folder` is `yes` OR the skill's real path is inside the worker's working folder), AND the worker's log shows file opens (a log that cannot show them rules `path` out for a skill whose reading must be proved). The brief names the real path with the sentence "Read this file first and follow its method: <path>. Read only this file and the files it links; change nothing else."
-2. **`workspace-copy`.** The orchestrator copies the skill folder (`SKILL.md` plus every covered file, same relative layout) into `<task folder>/skills/<skill name>/`, inside the worker's working folder. The copy must equal the original except one planted line `NONCE: SKILLNONCE-<12 hex>` as the first body line after the front matter. Check: hash the copy with the nonce line removed (section 1, same procedure) and compare with the combined hash of the table; a difference is a stop. The worker must quote the nonce in its report. The brief names the copy's path with the same sentence as `path`.
-3. **`compiled`.** The orchestrator turns the skill into a checklist inside the brief, in the format of section 4. The worker returns evidence per step and quotes the nonce; the orchestrator re-runs the skill's verification commands itself.
-4. **`orchestrator-keeps`.** The part of the work that needs the skill, and that the worker cannot do, stays with the orchestrator or goes to another agent that can, and is verified there. The delivery table records who holds it.
+1. **`path`.** Allowed when `Reads path` is `yes`, AND (`Reads outside folder` is `yes` OR the skill's real path is inside the worker's working folder), AND the worker's log shows file opens. That last fact is not a table cell: it is judged per run from the worker's log format (a CLI whose log shows reads in a structured mode may note that in the notes of the capability table). A log that cannot show opens, or cannot show their order, rules `path` out. An **open event** is a log entry showing that the worker read the skill file: a read-file tool event naming the path, or a command event whose command text contains the skill's real path (a read-type command, whatever prefix or wrapper surrounds it). The brief names the real path with the sentence "Read this file first and follow its method: <path>. Read only this file and the files it links; change nothing else."
+2. **`workspace-copy`.** Allowed when `Reads path` is `yes` AND the copy's folder `<task folder>/skills/<skill name>/` lies inside the worker's working folder (if false, fall through to `compiled`). The orchestrator copies the skill folder (`SKILL.md` plus every covered file, same relative layout) there. The copy must equal the original except one planted line `NONCE: SKILLNONCE-<12 hex>` as the first body line after the front matter. Check: remove only the line that begins `NONCE: SKILLNONCE-`; the result must equal the original file byte for byte, so the combined hash (section 1) equals the table's; a difference is a stop. The worker must quote the NONCE line of the copy in its report. The brief names the copy's path with the same sentence as `path`, and says only "quote the NONCE line of the copy"; it never states the nonce.
+3. **`compiled`.** Allowed when the skill has verification commands, or only instructions the worker can follow in text; any step that runs a command needs `Runs commands` = `yes`. A skill that needs judgment the orchestrator cannot spell out as steps is not compiled: it goes to `orchestrator-keeps`. The orchestrator turns the skill into a checklist inside the brief, in the format of section 4. The worker returns evidence per step and quotes the nonce; the orchestrator re-runs the skill's verification commands itself.
+4. **`orchestrator-keeps`.** Always allowed. The part of the work that needs the skill, and that the worker cannot do, stays with the orchestrator or goes to another agent that can, and is verified there. The delivery table records who holds it.
 
-**Nonce.** `SKILLNONCE-` plus 12 hex characters, fresh per worker, per skill and per run, never reused. The orchestrator keeps it with the run records, to check the report against.
+**Nonce.** `SKILLNONCE-` plus 12 hex characters, fresh per worker, per skill and per run, never reused. The orchestrator writes it to `<task folder>/ledger.json` in the run's entry as `"nonces": {"<skill>": "SKILLNONCE-<12 hex>"}`, to check the report against. `ledger.json` is not in the worker's list of readable paths.
 
 **When no mode works.** Stop and ask the user: change the worker, or allow the work without that skill. Never drop the skill by default.
 
@@ -60,16 +60,21 @@ A worker's own statement that it followed a skill is never evidence. Proof depen
 
 | Mode | Proof | Confidence |
 |---|---|---|
-| `path` | An open event for the skill file in the worker's log, before the first step of the work (see below). | high |
-| `workspace-copy` | The nonce quoted in the report, no open event needed; the copy's hash (nonce line removed) equals the table. | medium |
-| `compiled` | Evidence per step, the nonce quoted, and the orchestrator re-ran the verification commands. | lower |
-| `orchestrator-keeps` | Verified by whoever holds the work. | that holder's proof |
+| `path` | An open event (section 2) for the skill file in the worker's log, before the first step of the work. | high |
+| `workspace-copy` | The NONCE line of the copy quoted in the report, no open event needed; the copy's integrity check (section 2) passed. | medium |
+| `compiled` | Evidence for every step, and the orchestrator's re-run of the verification commands agrees. The nonce is in the brief, so quoting it proves only that the worker saw the brief; the rank rests on the per-step evidence and the re-run. | lower |
+| `orchestrator-keeps` | Verified by whoever holds the work. | the label of the holder's own mode (high, medium or lower), recorded in the Delivery table |
 
-**"Before the first step."** In a run that changes files: before the first change. In a read-only run: before the first step of the work in log order; when the worker's log cannot show order, the nonce must appear in the answer, and the run is judged as `workspace-copy`.
+**"Before the first step of the work."** Before the first action that is part of the task's work. Reading the brief, or a user-level rule file, earlier does not count as work. A `path` run whose log cannot show the order of events is not allowed: the orchestrator chooses `workspace-copy` at Gate 2 (label medium). A `path` skill has no planted nonce.
 
 **Closer review.** A result from `workspace-copy` or `compiled` gets a closer review by the orchestrator, like a fallback to a weaker model.
 
-**Failure.** A `path` skill with no open event, or a required nonce that is missing, makes the run invalid (Gate 5). Then: stop; tell the user which skill; mark the capability that failed [Unverified] in the capability table, with the date, showing the diff first; choose the next mode of section 2; ask the user to approve the changed delivery table before the run is repeated. If no mode is left, follow "When no mode works".
+**Failure.** The run is invalid; stop and tell the user which skill. Then the next step depends on the mode:
+- `path` with no open event: mark `Reads path` [Unverified] in the capability table with the date, showing the diff first; take the next mode of section 2.
+- `workspace-copy` with a missing nonce: mark `Reads path` [Unverified] (same rule); take `compiled`.
+- `compiled` with a step lacking evidence, a missing nonce, or a re-run that disagrees: the result does not stand; take `orchestrator-keeps`.
+- `orchestrator-keeps` has no next mode: if its holder cannot verify, apply "When no mode works".
+In every case ask the user to approve the changed delivery table before the run is repeated.
 
 ## 4. Compiled checklist format
 
@@ -77,7 +82,7 @@ The checklist sits in the brief, right after the rules blocks. Its first line is
 
 1. Source: the skill's real path and combined hash from `Skill resolution`.
 2. Ordered steps, numbered. One action per step.
-3. For each step, the exact command (with the command prefix of the policy, if any), and the evidence the worker returns (command and its output, or the value found).
+3. For each step, the exact command (with the command prefix of the policy, if any), and the evidence the worker returns (command and its output, or the value found). A skill with no verification commands is written as the line `Commands: none`.
 4. Pass or fail rule for each step, stated so that no judgment is needed.
 5. Stop conditions: what makes the worker stop and report instead of going on.
 6. A line telling the worker to quote the nonce and return the evidence per step.
