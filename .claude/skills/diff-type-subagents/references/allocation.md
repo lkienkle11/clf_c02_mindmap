@@ -59,7 +59,7 @@ The chain always ends with the item "ask the user". Three rows is a proposal [Pr
 
 Weight along the chain: rows are chosen at the task's current weight and keep it along the chain. The extra level for a failed attempt (Task weight step 3) applies only if the task is planned again through steps 0 to 8.
 
-Use: a run that fails (tests still red after the allowed attempts, or the review rejects it) moves to the next row of its chain. A stuck run counts as a failed attempt. The user approves the whole chain with the table, so a move along it needs no new approval, but it is told to the user and written to the record and the ledger. A fallback caused by quota or an error follows the same chain. Any other change (a row not in the chain, a changed effort, write permission or scope) follows Gate 2 step 6.
+Use: a run that fails (tests still red after the allowed attempts, or the review rejects it) moves to the next row of its chain. A stuck run counts as a failed attempt; its ledger value is status `failed` with reason `stuck` (`references/running-workers.md`). The user approves the whole chain with the table, so a move along it needs no new approval, but it is told to the user and written to the record and the ledger. A fallback caused by quota or an error follows the same chain. Any other change (a row not in the chain, a changed effort, write permission or scope) follows Gate 2 step 6.
 
 ## Allocation record
 
