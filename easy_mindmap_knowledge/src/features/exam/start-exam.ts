@@ -58,5 +58,8 @@ export async function startCapstoneExam(
 ): Promise<PracticeSession> {
   const catalog = services.catalog;
   return start(services, { kind: 'practice', topicId: 'capstone' }, options, onSubmitted,
-    (history, rng) => drawCapstone(catalog, history, rng));
+    (history, rng) => {
+      const { scored, unscored } = drawCapstone(catalog, history, rng);
+      return [...scored, ...unscored];
+    });
 }

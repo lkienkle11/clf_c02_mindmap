@@ -171,7 +171,7 @@ describe('drawCapstone', () => {
   const domainCount = (drawn: Question[], domain: string) =>
     drawn.filter((q) => q.topicId !== null && DOMAIN_OF_TOPIC[q.topicId] === domain).length;
 
-  it('draws 16/19/22/8 per domain from big pools, distinct, never from unassigned questions', () => {
+  it('draws 12/15/17/6 scored per domain and 15 distinct unscored questions, with no unassigned scored questions', () => {
     const catalog = catalogOf([
       ...qs(domainTopic.concepts, 100, 'a'),
       ...qs(domainTopic.security, 100, 'b'),
@@ -179,17 +179,18 @@ describe('drawCapstone', () => {
       ...qs(domainTopic.billing, 100, 'd'),
       ...qs(null, 17, 'u'),
     ]);
-    const drawn = drawCapstone(catalog, historyOf([]), makeRng(8));
-    expect(drawn).toHaveLength(65);
-    expect(new Set(ids(drawn)).size).toBe(65);
+    const { scored: drawn, unscored } = drawCapstone(catalog, historyOf([]), makeRng(8));
+    expect(drawn).toHaveLength(50);
+    expect(unscored).toHaveLength(15);
+    expect(new Set(ids([...drawn, ...unscored])).size).toBe(65);
     expect(drawn.every((q) => q.topicId !== null)).toBe(true);
-    expect(domainCount(drawn, 'concepts')).toBe(16);
-    expect(domainCount(drawn, 'security')).toBe(19);
-    expect(domainCount(drawn, 'technology')).toBe(22);
-    expect(domainCount(drawn, 'billing')).toBe(8);
+    expect(domainCount(drawn, 'concepts')).toBe(12);
+    expect(domainCount(drawn, 'security')).toBe(15);
+    expect(domainCount(drawn, 'technology')).toBe(17);
+    expect(domainCount(drawn, 'billing')).toBe(6);
   });
 
-  it('tops up from unassigned questions only when the domains cannot supply 65, never exceeding pools', () => {
+  it('tops up scored from unassigned questions only when the domains cannot supply 50, never exceeding pools', () => {
     const catalog = catalogOf([
       ...qs(domainTopic.concepts, 5, 'a'),
       ...qs(domainTopic.security, 5, 'b'),
@@ -197,17 +198,20 @@ describe('drawCapstone', () => {
       ...qs(domainTopic.billing, 5, 'd'),
       ...qs(null, 50, 'u'),
     ]);
-    const drawn = drawCapstone(catalog, historyOf([]), makeRng(12));
-    expect(drawn).toHaveLength(65);
-    expect(new Set(ids(drawn)).size).toBe(65);
+    const { scored: drawn, unscored } = drawCapstone(catalog, historyOf([]), makeRng(12));
+    expect(drawn).toHaveLength(50);
+    expect(unscored).toHaveLength(15);
+    expect(new Set(ids([...drawn, ...unscored])).size).toBe(65);
     expect(drawn.filter((q) => q.topicId !== null)).toHaveLength(20);
-    expect(drawn.filter((q) => q.topicId === null)).toHaveLength(45);
+    expect(drawn.filter((q) => q.topicId === null)).toHaveLength(30);
+    expect(unscored.every((q) => q.topicId === null)).toBe(true);
   });
 
   it('returns 65 questions on the real bundled catalog', () => {
-    const drawn = drawCapstone(loadBundledCatalog(), historyOf([]), makeRng(7));
-    expect(drawn).toHaveLength(65);
-    expect(new Set(ids(drawn)).size).toBe(65);
+    const { scored, unscored } = drawCapstone(loadBundledCatalog(), historyOf([]), makeRng(7));
+    expect(scored).toHaveLength(50);
+    expect(unscored).toHaveLength(15);
+    expect(new Set(ids([...scored, ...unscored])).size).toBe(65);
   });
 
   it('draws the authored Capstone questions on the real catalog when they are the only never-seen ones', () => {
@@ -217,13 +221,13 @@ describe('drawCapstone', () => {
     const history = historyOf(
       catalog.questions.filter((q) => !q.id.startsWith('auth-capstone-')).flatMap((q) => answers(q.id, true)),
     );
-    const drawn = drawCapstone(catalog, history, makeRng(23));
-    expect(drawn).toHaveLength(65);
+    const { scored: drawn } = drawCapstone(catalog, history, makeRng(23));
+    expect(drawn).toHaveLength(50);
     const drawnIds = new Set(ids(drawn));
     expect(authored.filter((q) => !drawnIds.has(q.id)).map((q) => q.id)).toEqual([]);
     const domainOf = (q: Question) => (q.topicId === null ? undefined : DOMAIN_OF_TOPIC[q.topicId] ?? CAPSTONE_QUESTION_DOMAIN[q.id]);
     const perDomain = (d: string) => drawn.filter((q) => domainOf(q) === d).length;
-    expect([perDomain('concepts'), perDomain('security'), perDomain('technology'), perDomain('billing')]).toEqual([16, 19, 22, 8]);
+    expect([perDomain('concepts'), perDomain('security'), perDomain('technology'), perDomain('billing')]).toEqual([12, 15, 17, 6]);
   });
 
   it('keeps a Capstone-topic question without a mapped domain in the unassigned top-up only', () => {
@@ -235,9 +239,13 @@ describe('drawCapstone', () => {
       ...qs(null, 10, 'u'),
       makeQuestion({ id: 'cap-unmapped', topicId: 'capstone' }),
     ]);
-    const drawn = drawCapstone(catalog, historyOf([]), makeRng(2));
-    expect(drawn).toHaveLength(65);
-    expect(drawn.filter((q) => q.topicId === null || q.id === 'cap-unmapped')).toHaveLength(5);
+    const { scored: drawn, unscored } = drawCapstone(catalog, historyOf([]), makeRng(2));
+    expect(drawn).toHaveLength(50);
+    expect(drawn.filter((q) => q.topicId === null || q.id === 'cap-unmapped')).toHaveLength(0);
+    // The 15 unscored draws share a pool of 10 remaining domain questions and 11 unassigned questions.
+    const unassignedCount = [...drawn, ...unscored].filter((q) => q.topicId === null || q.id === 'cap-unmapped').length;
+    expect(unassignedCount).toBeGreaterThanOrEqual(5);
+    expect(unassignedCount).toBeLessThanOrEqual(11);
     const shortCatalog = catalogOf([
       ...qs(domainTopic.concepts, 100, 'a'),
       ...qs(domainTopic.security, 100, 'b'),
@@ -245,16 +253,21 @@ describe('drawCapstone', () => {
       ...qs(domainTopic.billing, 100, 'd'),
       makeQuestion({ id: 'cap-unmapped', topicId: 'capstone' }),
     ]);
-    expect(ids(drawCapstone(shortCatalog, historyOf([]), makeRng(2)))).not.toContain('cap-unmapped');
+    expect(ids(drawCapstone(shortCatalog, historyOf([]), makeRng(2)).scored)).not.toContain('cap-unmapped');
+    const topUpCatalog = catalogOf([
+      ...qs(domainTopic.concepts, 49, 'a'),
+      makeQuestion({ id: 'cap-unmapped', topicId: 'capstone' }),
+    ]);
+    expect(ids(drawCapstone(topUpCatalog, historyOf([]), makeRng(2)).scored)).toContain('cap-unmapped');
   });
 
   it('with history, per domain draws every unseen and seen-wrong question and leaves out the seen-right ones', () => {
-    // Domain pools of 30 allocate 16/19/22/8, so the questions past each allocation are seen-right.
+    // Domain pools of 30 allocate 12/15/17/6 scored, so questions past each allocation are seen-right.
     const perDomain = [
-      { prefix: 'a', topic: domainTopic.concepts, count: 16 },
-      { prefix: 'b', topic: domainTopic.security, count: 19 },
-      { prefix: 'c', topic: domainTopic.technology, count: 22 },
-      { prefix: 'd', topic: domainTopic.billing, count: 8 },
+      { prefix: 'a', topic: domainTopic.concepts, count: 12 },
+      { prefix: 'b', topic: domainTopic.security, count: 15 },
+      { prefix: 'c', topic: domainTopic.technology, count: 17 },
+      { prefix: 'd', topic: domainTopic.billing, count: 6 },
     ];
     const catalog = catalogOf([
       ...perDomain.flatMap(({ prefix, topic }) => qs(topic, 30, prefix)),
@@ -267,12 +280,59 @@ describe('drawCapstone', () => {
       ...seenRight.flatMap((id) => answers(id, true)),
       ...seenWrong.flatMap((id) => answers(id, false)),
     ]);
-    const drawn = drawCapstone(catalog, history, makeRng(19));
+    const { scored: drawn } = drawCapstone(catalog, history, makeRng(19));
     const drawnIds = new Set(ids(drawn));
-    expect(drawn).toHaveLength(65);
+    expect(drawn).toHaveLength(50);
     expect(drawn.every((q) => q.topicId !== null)).toBe(true);
     expect(expected.filter((id) => !drawnIds.has(id))).toEqual([]);
     expect(seenWrong.filter((id) => !drawnIds.has(id))).toEqual([]);
     expect(seenRight.filter((id) => drawnIds.has(id))).toEqual([]);
+  });
+
+  it('redistributes a billing shortfall across other scored domains before drawing unscored', () => {
+    const catalog = catalogOf([
+      ...qs(domainTopic.concepts, 30, 'a'),
+      ...qs(domainTopic.security, 30, 'b'),
+      ...qs(domainTopic.technology, 30, 'c'),
+      ...qs(domainTopic.billing, 4, 'd'),
+      ...qs(null, 10, 'u'),
+    ]);
+    const { scored, unscored } = drawCapstone(catalog, historyOf([]), makeRng(31));
+    expect(scored).toHaveLength(50);
+    expect(domainCount(scored, 'billing')).toBe(4);
+    expect(scored.every((q) => q.topicId !== null)).toBe(true);
+    expect(unscored).toHaveLength(15);
+    expect(new Set(ids([...scored, ...unscored])).size).toBe(65);
+  });
+
+  it('fills scored first when only 30 questions are available', () => {
+    const catalog = catalogOf([...qs(domainTopic.billing, 4, 'b'), ...qs(null, 26, 'u')]);
+    const { scored, unscored } = drawCapstone(catalog, historyOf([]), makeRng(32));
+    expect(scored).toHaveLength(30);
+    expect(unscored).toEqual([]);
+    expect(scored.length + unscored.length).toBe(30);
+    expect(new Set(ids(scored)).size).toBe(30);
+  });
+
+  it('draws unscored by history priority across all remaining domains and unassigned questions', () => {
+    const catalog = catalogOf([
+      ...qs(domainTopic.concepts, 12, 'a'),
+      ...qs(domainTopic.security, 15, 'b'),
+      ...qs(domainTopic.technology, 17, 'c'),
+      ...qs(domainTopic.billing, 6, 'd'),
+      ...qs(null, 10, 'u'),
+      ...qs(domainTopic.billing, 10, 'r'),
+    ]);
+    const history = historyOf([
+      ...range('r', 0, 10).flatMap((id) => answers(id, true)),
+      ...range('u', 5, 10).flatMap((id) => answers(id, false)),
+    ]);
+    const { scored, unscored } = drawCapstone(catalog, history, makeRng(33));
+    expect(scored).toHaveLength(50);
+    expect(unscored).toHaveLength(15);
+    expect(new Set(ids(unscored.slice(0, 5)))).toEqual(new Set(range('u', 0, 5)));
+    expect(new Set(ids(unscored.slice(5, 10)))).toEqual(new Set(range('u', 5, 10)));
+    expect(unscored.slice(10).every((q) => q.id.startsWith('r'))).toBe(true);
+    expect(new Set(ids([...scored, ...unscored])).size).toBe(65);
   });
 });

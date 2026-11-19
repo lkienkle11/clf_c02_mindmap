@@ -7,7 +7,7 @@ import { loadCatalog } from '@/content/load-catalog';
 import type { Catalog } from '@/content/types';
 import { makeQuestion, makeRawCatalog } from '@/testing/fixtures';
 import { createNodeSqliteExecutor } from '@/testing/node-sqlite-executor';
-import { CAPSTONE_QUESTION_DOMAIN, DOMAIN_OF_TOPIC, examLimitMs, ExamNotAvailableError, loadExamOptions, startCapstoneExam, startCheckpoint } from './index';
+import { examLimitMs, ExamNotAvailableError, loadExamOptions, startCapstoneExam, startCheckpoint } from './index';
 
 let n = 0;
 async function env(catalog: Catalog): Promise<Services> {
@@ -78,7 +78,7 @@ describe('startCheckpoint', () => {
 });
 
 describe('startCapstoneExam', () => {
-  it('starts a 65-question Capstone exam with the domain split', async () => {
+  it('starts a 65-question Capstone exam', async () => {
     const catalog = loadBundledCatalog();
     const services = await env(catalog);
     await startCapstoneExam(services, { extraTime: false }, noop);
@@ -89,14 +89,7 @@ describe('startCapstoneExam', () => {
     expect(found.attempt.clock.limitMs).toBe(5_400_000);
     expect(found.attempt.clock.onReport).toBe('run');
     expect(found.questions).toHaveLength(65);
-    const byId = new Map(catalog.questions.map((q) => [q.id, q]));
-    const counts: Record<string, number> = {};
-    for (const row of found.questions) {
-      const q = byId.get(row.questionId)!;
-      const d = DOMAIN_OF_TOPIC[q.topicId!] ?? CAPSTONE_QUESTION_DOMAIN[q.id];
-      counts[d] = (counts[d] ?? 0) + 1;
-    }
-    expect(counts).toEqual({ concepts: 16, security: 19, technology: 22, billing: 8 });
+    // draw-exam.test.ts covers the 12/15/17/6 split of the 50 scored questions; a later task rewrites this transitional test.
   });
 
   it('throws ExamNotAvailableError for too few questions', async () => {

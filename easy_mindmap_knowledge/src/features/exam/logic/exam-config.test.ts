@@ -1,7 +1,13 @@
 import { describe, expect, it } from 'vitest';
-import { EXAM_MIN_QUESTIONS, EXAM_MINUTES, EXAM_MINUTES_EXTRA, EXAM_QUESTION_COUNT, examLimitMs } from './exam-config';
+import { CAPSTONE_SCORED_COUNT, CAPSTONE_UNSCORED_COUNT, EXAM_MIN_QUESTIONS, EXAM_MINUTES, EXAM_MINUTES_EXTRA, EXAM_QUESTION_COUNT, examLimitMs } from './exam-config';
 
 describe('exam config', () => {
+  it('splits the 65-question Capstone into 50 scored and 15 unscored questions', () => {
+    expect(CAPSTONE_SCORED_COUNT).toBe(50);
+    expect(CAPSTONE_UNSCORED_COUNT).toBe(15);
+    expect(CAPSTONE_SCORED_COUNT + CAPSTONE_UNSCORED_COUNT).toBe(EXAM_QUESTION_COUNT);
+  });
+
   it('exposes the exam constants', () => {
     expect(EXAM_QUESTION_COUNT).toBe(65);
     expect(EXAM_MINUTES).toBe(90);

@@ -3,7 +3,7 @@ import { shuffle } from '@/random/seeded-random';
 import { allocate } from './allocate';
 import { CAPSTONE_QUESTION_DOMAIN, DOMAIN_OF_TOPIC, DOMAIN_WEIGHTS } from './domains';
 import type { DomainId } from './domains';
-import { EXAM_QUESTION_COUNT } from './exam-config';
+import { CAPSTONE_SCORED_COUNT, CAPSTONE_UNSCORED_COUNT, EXAM_QUESTION_COUNT } from './exam-config';
 import type { CheckpointGroup } from './groups';
 
 /** Submitted-attempt history: which questions were ever answered, and how often each was answered wrong. */
@@ -52,10 +52,10 @@ export function drawCheckpoint(
 const DOMAINS = Object.keys(DOMAIN_WEIGHTS) as DomainId[];
 
 /**
- * Capstone exam: 65 questions split across the exam domains by weight. Questions without a domain
- * (no topic, or an unmapped one that is not a known authored Capstone question) are used only when the domains together cannot supply 65.
+ * Capstone exam: 50 scored questions split across domains by weight, then 15 unscored from the remainder.
+ * Questions without a domain fill scored shortfalls only, and are eligible for the unscored draw.
  */
-export function drawCapstone(catalog: Catalog, history: AnswerHistory, rng: () => number): Question[] {
+export function drawCapstone(catalog: Catalog, history: AnswerHistory, rng: () => number): { scored: Question[]; unscored: Question[] } {
   const pools: Record<DomainId, Question[]> = { concepts: [], security: [], technology: [], billing: [] };
   const unassigned: Question[] = [];
   for (const q of catalog.questions) {
@@ -64,9 +64,12 @@ export function drawCapstone(catalog: Catalog, history: AnswerHistory, rng: () =
     else pools[domain].push(q);
   }
   const sizes = Object.fromEntries(DOMAINS.map((d) => [d, pools[d].length]));
-  const counts = allocate(DOMAIN_WEIGHTS, sizes, EXAM_QUESTION_COUNT);
+  const counts = allocate(DOMAIN_WEIGHTS, sizes, CAPSTONE_SCORED_COUNT);
   const drawn = DOMAINS.flatMap((d) => drawBucket(pools[d], counts[d], history, rng));
-  const short = EXAM_QUESTION_COUNT - drawn.length;
+  const short = CAPSTONE_SCORED_COUNT - drawn.length;
   if (short > 0) drawn.push(...drawBucket(unassigned, short, history, rng));
-  return shuffle(drawn, rng);
+  const scored = shuffle(drawn, rng);
+  const scoredIds = new Set(scored.map((q) => q.id));
+  const unscored = drawBucket(catalog.questions.filter((q) => !scoredIds.has(q.id)), CAPSTONE_UNSCORED_COUNT, history, rng);
+  return { scored, unscored };
 }
