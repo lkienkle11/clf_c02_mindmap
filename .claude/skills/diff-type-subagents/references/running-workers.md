@@ -43,7 +43,7 @@ Read at Gate 4 (launch) and at every pause point while a worker runs. Every dele
   1. ask the user: show the last lines of the log and the session id, and say that the run is past its limit. No process is stopped before the user answers;
   2. only after the user agrees, stop the worker process and the processes the same launch started to feed it (for example a feeder in a pipeline), and nothing else. To find them, the orchestrator records the process id of the launch (a file `launch.pid` in the task folder) and stops that process's children. The wrapper still writes `exit.code` (non-zero) and `done` after the stop. A host background subagent has no wrapper: after the orchestrator stops it, the orchestrator itself writes the non-zero `exit.code` and then `done`;
   3. run the session-list command again (the check of Gate 4 step 8) and say what it shows: a run that never created a session shows nothing, and a session that is still listed stays listed for the user to open;
-  4. mark the ledger entry `failed` with reason `stuck`, and treat it as a failed attempt: continue with the escalation chain of `references/allocation.md`, which ends with "ask the user".
+  4. mark the ledger entry `failed` with reason `stuck` (reasons such as `quota`, `error`, `launch` and `wrong-mode` are handled the same way), and treat it as a failed attempt: continue with the escalation chain of `references/allocation.md`, which ends with "ask the user".
 - After a normal finish, the orchestrator also stops the limit-waiter it started for that run.
 - Do not extend the limit silently, and do not finish the task yourself.
 
