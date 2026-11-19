@@ -13,6 +13,7 @@ Read at Gate 1. If this file is missing, or the user says the setup changed, ask
 | Spread | prefer (default) \| require \| off. Used at step 6 of `references/allocation.md`: `prefer` spreads equal choices across families and quota, `require` sends a task to a family not yet used in this run when two or more remain, `off` skips spreading |
 | Completion signal | `native` (verified 2026-11-19 only for the host that ran this design session: a background shell command and a background subagent each woke the main session when they finished). The value is a property of the host, not of the machine: for any other host it is unknown until that host's own Gate 1 probe, and a host that has not been probed counts as `polling`. Note: `native` \| `polling`; and the orchestrator's own Gate 1 probe ("can I start a background process and be woken in this session when it ends?") decides it, with the date. See `references/running-workers.md` |
 | Parallel limit | 3 [Proposed 2026-11-19]. The most delegated runs that may be active at the same time; it is also the largest size of a group in `references/parallel-groups.md`. The quota thresholds above bound it further. The user may change it |
+| Liveness window | 5 minutes [Proposed 2026-11-20]. A run's log counts as still being written when its modification time is within this window of now (`references/running-workers.md`, resume) |
 | Command prefix | `rtk` |
 | Handoff root | `.superpowers/diff-agents/` (must be ignored by git) |
 
