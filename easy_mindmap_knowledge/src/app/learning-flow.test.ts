@@ -8,7 +8,7 @@ import type { Lesson, Question } from '@/content/types';
 import { createI18n } from '@/i18n/i18n.svelte';
 import { makeLesson, makeRawCatalog, TOPIC_IDS } from '@/testing/fixtures';
 import { createNodeSqliteExecutor } from '@/testing/node-sqlite-executor';
-import { startCheckpoint } from '@/features/exam';
+import { DOMAIN_OF_TOPIC, startCapstoneExam, startCheckpoint } from '@/features/exam';
 import { PracticeSession } from '@/features/practice';
 import { AppState } from './app-state.svelte';
 import { buildServices } from './composition';
@@ -257,5 +257,147 @@ describe('checkpoint flow (a real checkpoint attempt through PracticeSession)', 
     await env.appState.refresh();
     expect(env.appState.passedGroups.has(1)).toBe(false);
     expect(env.appState.statuses.get(TOPIC_IDS[3])).toBe('locked');
+  });
+});
+
+describe('Capstone learning flow with stored attempts and real exams', () => {
+  function capstoneCatalog() {
+    const raw = makeRawCatalog();
+    raw.lessons = ['cap-l1', 'cap-l2'].map((id, i) =>
+      makeLesson({ id, topicId: 'capstone', order: i + 1, required: true }));
+    raw.topics = raw.topics.map((topic) => topic.id === 'capstone'
+      ? { ...topic, order: 15, lessonIds: ['cap-l1', 'cap-l2'] }
+      : { ...topic, lessonIds: [] });
+    raw.topics.push(...(['capstone-exam-1', 'capstone-exam-2'] as const).map((id, i) => ({
+      id, order: 13 + i, tier: 'exam' as const, lessonIds: [], title: { en: id, vi: id },
+    })));
+    raw.topics.sort((a, b) => a.order - b.order);
+    raw.questions = Object.keys(DOMAIN_OF_TOPIC).flatMap((topicId) =>
+      Array.from({ length: 8 }, (_, i): Question => ({
+        id: `${topicId}-q${i}`, topicId, text: `${topicId} question ${i}?`,
+        options: [{ key: 'A', text: RIGHT }, { key: 'B', text: 'Wrong answer' }],
+        correct: ['A'], multi: false, orderDependent: false, source: 'authored',
+      })));
+    return loadCatalog(raw);
+  }
+
+  async function makeCapstoneEnv(executor?: Services['executor']) {
+    let n = 0;
+    const services = buildServices({
+      executor: executor ?? await createNodeSqliteExecutor(), catalog: capstoneCatalog(),
+      now: () => T0, newId: () => `cap-att-${++n}`,
+    });
+    const appState = new AppState(services);
+    await appState.load();
+    return { services, appState };
+  }
+
+  async function finishGroups(env: Awaited<ReturnType<typeof makeCapstoneEnv>>, checkpointFour = true) {
+    for (const [i, topicId] of TOPIC_IDS.slice(0, 12).entries()) {
+      await passWithSession(env.services, env.appState, topicId);
+      if ((i + 1) % 3 === 0 && (i < 11 || checkpointFour)) {
+        await passCheckpoint(env.services, env.appState, (i + 1) / 3);
+      }
+    }
+  }
+
+  async function storePass(env: Awaited<ReturnType<typeof makeCapstoneEnv>>, topicId: string) {
+    await env.services.repos.attempts.create({
+      id: `stored-${topicId}`, kind: 'practice', topicId, status: 'submitted',
+      startedAt: T0, submittedAt: T0 + 1, submitReason: 'manual', reviewAllowed: false,
+      clock: { mode: 'run', limitMs: 5_400_000, remainingMs: null, deadlineAt: T0 + 5_400_000, onHidden: 'run', onReport: 'run' },
+      heartbeatAt: null, scorePct: 70, passed: true, groupIndex: null,
+      plannedCount: 65, unansweredDisplay: 'reveal',
+    }, []);
+    await env.appState.refresh();
+  }
+
+  async function submitExam(env: Awaited<ReturnType<typeof makeCapstoneEnv>>, topicId: 'capstone-exam-1' | 'capstone-exam-2', correctCount: number) {
+    const session = await startCapstoneExam(env.services, topicId, { extraTime: false }, () => env.appState.refresh());
+    const rows = await env.services.repos.attempts.questionsOf(session.attemptId);
+    expect(rows).toHaveLength(65);
+    expect(rows.filter((q) => q.unscored)).toHaveLength(15);
+    const unscored = new Set(rows.filter((q) => q.unscored).map((q) => q.questionId));
+    let scored = 0;
+    for (const q of session.questions) {
+      const right = !unscored.has(q.questionId) && scored++ < correctCount;
+      await session.select(q.position, right ? ['A'] : ['B']);
+    }
+    return session.submit('manual');
+  }
+
+  it('unlocks exam 1, exam 2, then the lesson-only summary from stored passes', async () => {
+    const env = await makeCapstoneEnv();
+    await finishGroups(env);
+    expect(env.appState.statuses.get('capstone-exam-1')).toBe('current');
+    expect(env.appState.statuses.get('capstone-exam-2')).toBe('locked');
+    expect(env.appState.statuses.get('capstone')).toBe('locked');
+    await storePass(env, 'capstone-exam-1');
+    expect(env.appState.statuses.get('capstone-exam-1')).toBe('done');
+    expect(env.appState.statuses.get('capstone-exam-2')).toBe('current');
+    expect(env.appState.statuses.get('capstone')).toBe('locked');
+    await storePass(env, 'capstone-exam-2');
+    expect(env.appState.statuses.get('capstone-exam-2')).toBe('done');
+    expect(env.appState.statuses.get('capstone')).toBe('current');
+    await env.services.repos.lessonProgress.markRead('cap-l1', T0);
+    await env.appState.refresh();
+    expect(env.appState.statuses.get('capstone')).toBe('current');
+    await env.services.repos.lessonProgress.markRead('cap-l2', T0);
+    await env.appState.refresh();
+    expect(env.appState.statuses.get('capstone')).toBe('done');
+  });
+
+  it('keeps exam 1 locked until checkpoint 4 passes even with topics 10 to 12 done', async () => {
+    const env = await makeCapstoneEnv();
+    await finishGroups(env, false);
+    for (const id of TOPIC_IDS.slice(9, 12)) expect(env.appState.statuses.get(id)).toBe('done');
+    expect(env.appState.statuses.get('capstone-exam-1')).toBe('locked');
+    await passCheckpoint(env.services, env.appState, 4);
+    expect(env.appState.statuses.get('capstone-exam-1')).toBe('current');
+  });
+
+  it('ignores a legacy capstone pass before and after each exam gate', async () => {
+    const env = await makeCapstoneEnv();
+    await finishGroups(env, false);
+    const before = new Map(env.appState.statuses);
+    await storePass(env, 'capstone');
+    expect(env.appState.statuses).toEqual(before);
+    expect(env.appState.statuses.get('capstone-exam-1')).toBe('locked');
+    expect(env.appState.statuses.get('capstone')).toBe('locked');
+    await passCheckpoint(env.services, env.appState, 4);
+    expect(env.appState.statuses.get('capstone-exam-1')).toBe('current');
+    expect(env.appState.statuses.get('capstone-exam-2')).toBe('locked');
+    expect(env.appState.statuses.get('capstone')).toBe('locked');
+    await storePass(env, 'capstone-exam-1');
+    expect(env.appState.statuses.get('capstone-exam-2')).toBe('current');
+    expect(env.appState.statuses.get('capstone')).toBe('locked');
+    await storePass(env, 'capstone-exam-2');
+    expect(env.appState.statuses.get('capstone')).toBe('current');
+    expect(env.appState.completed.has('capstone')).toBe(false);
+  });
+
+  it('passes at 35/50, preserves that pass on restart, and fails exam 2 at 34/50', async () => {
+    const env = await makeCapstoneEnv();
+    await finishGroups(env);
+    expect(await submitExam(env, 'capstone-exam-1', 35)).toMatchObject({
+      correct: 35, total: 50, scorePct: 70, passed: true,
+    });
+    await env.appState.refresh();
+    expect(env.appState.statuses.get('capstone-exam-1')).toBe('done');
+    expect(env.appState.statuses.get('capstone-exam-2')).toBe('current');
+
+    const restarted = await makeCapstoneEnv(env.services.executor);
+    expect(restarted.appState.statuses.get('capstone-exam-1')).toBe('done');
+    expect(restarted.appState.statuses.get('capstone-exam-2')).toBe('current');
+    expect(restarted.appState.submittedAttempts).toContainEqual(expect.objectContaining({
+      topicId: 'capstone-exam-1', scorePct: 70, passed: true,
+    }));
+
+    expect(await submitExam(env, 'capstone-exam-2', 34)).toMatchObject({
+      correct: 34, total: 50, scorePct: 68, passed: false,
+    });
+    await env.appState.refresh();
+    expect(env.appState.statuses.get('capstone-exam-2')).toBe('current');
+    expect(env.appState.statuses.get('capstone')).toBe('locked');
   });
 });
