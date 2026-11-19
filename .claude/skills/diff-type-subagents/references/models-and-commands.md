@@ -32,6 +32,7 @@ Capabilities belong to the CLI, not to the model. Each cell is `yes`, `no` or `[
 
 | CLI | Reads path | Reads outside folder | Runs commands | Web | Sees skills itself |
 |---|---|---|---|---|---|
+| Codex CLI 0.170.0 (2026-11-19) | yes (2026-11-19, read-only sandbox (`-s read-only`), gpt-6.1-sol low) | yes (2026-11-19, read-only sandbox (`-s read-only`), gpt-6.1-sol low) | yes (2026-11-19, read-only sandbox (`-s read-only`), gpt-6.1-sol low) | no (2026-11-19, read-only sandbox (`-s read-only`), gpt-6.1-sol low; read-only sandbox with default flags; [Unverified] whether a flag or another mode enables web access) | yes (2026-11-19, read-only sandbox (`-s read-only`), gpt-6.1-sol low; user-level skills and rule files only, listed from its catalog without opening them; project-level skills of the repository are not seen, so a brief must still name each project skill by path) |
 | The host's own subagent mechanism (row template, valid for any host) | [Unverified] | [Unverified] | [Unverified] | [Unverified] | [Unverified] |
 
 Note: the session-list command of the host's own subagent mechanism is [Unverified] until it is probed.
@@ -40,7 +41,7 @@ Note: the session-list command of the host's own subagent mechanism is [Unverifi
 
 The per-CLI results of the Gate 1B probe are in the table "Worker capabilities (per CLI)" above; the notes below are prose from the first test.
 
-- **Codex CLI (`gpt-6.1-sol`):** can open web pages by itself while read-only (built-in tool, no shell command needed) and can read a file given by absolute path. An audit batch of 8 to 29 questions took 2 to 3 minutes and about 76k to 88k tokens, and returned valid JSON in 2 of 2 runs.
+- **Codex CLI (`gpt-6.1-sol`):** can read a file given by absolute path. It was observed opening web pages by itself while read-only on 2026-11-10 (built-in tool, no shell command needed), but the 2026-11-19 probe in read-only with default flags got CANNOT (see the table "Worker capabilities (per CLI)"). An audit batch of 8 to 29 questions took 2 to 3 minutes and about 76k to 88k tokens, and returned valid JSON in 2 of 2 runs.
 - **Agy CLI, headless (`agy --print`):** cannot browse (its web tool needs the "command" permission, which is auto-denied) and cannot read a file outside its working folder (`read_file` is auto-denied), so pass the input inline in the prompt. It answers from memory, so treat every URL it cites as unverified: in the test one cited CAF URL returned HTTP 404. Run time for similar batches varied from 158 s to 501 s.
 - **Haiku 5.5 (Agent tool):** has WebSearch and WebFetch. A batch took about 200 s and 100k to 133k tokens. In 1 of 2 runs one JSON item was syntactically broken (a missing key name), so always parse a worker's JSON and ask again when it fails.
 - **No worker's "verified" is evidence.** In a control batch of 8 known-defective questions, two of three workers said "verified" with high confidence on the same outdated question (they cited an older page of the AWS documentation, while a newer page of the same documentation said otherwise). AWS pages can disagree with each other, so for every disputed item, and for a sample of "verified" ones, the orchestrator reads the newest official page itself.
