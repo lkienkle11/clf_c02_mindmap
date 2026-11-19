@@ -7,7 +7,7 @@ This file holds machine data (the models table, worker capabilities as tested on
 | Vendor | Model | Effort | Notes |
 |---|---|---|---|
 | Haiku (Agent tool, `model: haiku`) | Haiku 5.5 | High / XHigh | Keep each prompt under 100K tokens (third-party sources say prices multiply by 5 above that) |
-| Codex CLI 0.167.0 | `gpt-6.1-sol` | low, medium, high, xhigh, max, ultra | Default workhorse |
+| Codex CLI 0.170.0 (2026-11-19) | `gpt-6.1-sol` | low, medium, high, xhigh, max, ultra | Default workhorse |
 | Codex CLI | `gpt-6-astra` | same | "Frontier intelligence", for the most demanding work only |
 | Codex CLI | `gpt-6.1-terra`, `gpt-6-luna` | luna: low to max (no ultra) | Terra balanced, Luna fast and cheap, for easier tasks |
 | Agy CLI | `gemini-3.8-flash-low`, `-medium`, `-high` | Chosen by the model name | `--effort` also exists (`low\|medium\|high\|xhigh\|max`) |
@@ -47,7 +47,7 @@ This file holds machine data (the models table, worker capabilities as tested on
 
 | CLI | Command that lists every worker session | Running session followable in real time | Status |
 |---|---|---|---|
-| Codex CLI 0.167.1 (2026-11-18) | `codex resume --include-non-interactive --all` | not checked | **[Verified 2026-11-18]** the combined command runs and its picker lists non-interactive (`codex exec`) worker sessions. Both flags exist in `codex resume --help`. **[Unverified]** that `--all` shows sessions started in another directory (every listed session was started in this project directory, and no CWD column appeared on screen) |
+| Codex CLI 0.170.0 (2026-11-19) | `codex resume --include-non-interactive --all` | not checked | **[Verified 2026-11-19]** the combined command runs and its picker lists non-interactive (`codex exec`) worker sessions. Both flags exist in `codex resume --help`. **[Unverified]** that `--all` shows sessions started in another directory (every listed session was started in this project directory, and no CWD column appeared on screen) |
 | Agy CLI | not known | not checked | **[Unverified]** whether `agy --print` sessions appear in Agy's `/resume`; Agy has `--continue` and `--conversation <id>` |
 | Claude Code | `claude --resume` | not checked | **[Unverified]** |
 | Subagent of the host's own mechanism (for example the Agent tool) | not known | not checked | **[Unverified]** whether it has a session list of its own |
