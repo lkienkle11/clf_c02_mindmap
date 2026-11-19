@@ -13,7 +13,7 @@ Input: a skill name from the cell "skills the worker must read" of `assignments.
 1. Expand each root pattern (`~` is the user's home, a project-relative pattern starts at the project root). Visit the roots in the policy's order; order is precedence, project level first.
 2. In each root, look for a folder named exactly as the skill, with a `SKILL.md` inside. The name may contain a space: quote every path in every command, or pass paths null-delimited (`find ... -print0`, `xargs -0`, or any way that does not split paths on spaces). Never split a path on spaces.
 3. Turn each hit into its real path, the path after every link is followed, with the tool recorded in the `Environment` table of `references/policy.md` (for example `realpath`). If the link is dangling or loops, stop and say so: "dangling symlink" or "symlink loop", with the link path. Do not skip it and do not take the next root silently.
-4. Hits whose real paths are equal are one skill reached twice (for example a project link into the user folder). Record the real path once. This is not a conflict.
+4. Hits whose real paths are equal are one skill reached twice (for example a project link into the user folder). Record the real path once: when the same real path is reached from two roots the table has one row for it. The combined hash compares relative paths and contents, so a symlink to the same folder is never a conflict.
 5. Compute the combined hash of each distinct real path (below). Two distinct real paths with the same name and the same combined hash are identical copies: record the first one by root order. Two with different combined hashes are a conflict: stop and tell the user, naming both roots, both real paths and both hashes. Never pick one ("first root wins" is not allowed); the user decides.
 6. No hit in any root: stop and ask the user where the skill lives. Do not guess a path.
 
@@ -31,6 +31,7 @@ Input: a skill name from the cell "skills the worker must read" of `assignments.
 3. Dangling or looping symlink: say so.
 4. `SKILL.md` of any candidate names a file inside its folder that does not exist: report the file. The whole resolution of that name stops and no combined hash is published for it, even if another candidate was already hashed.
 5. No "Skill source roots" section in `references/policy.md`: ask the user and run the Gate 1B skill-folder probe.
+6. The machine has no SHA-256 tool or no real-path tool (see the `Environment` table of `references/policy.md`): report it to the user and stop skill resolution. Never invent a method.
 
 **The table.** Write one row per resolved skill in the section `Skill resolution` of `assignments.md`:
 

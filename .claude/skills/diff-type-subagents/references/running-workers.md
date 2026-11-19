@@ -40,9 +40,10 @@ Read at Gate 4 (launch) and at every pause point while a worker runs. Every dele
 - Stdin is always closed for a CLI worker. A CLI that waits for input never starts its work and never ends.
 - Past the limit with no `done`, the run is stuck. Then:
   1. ask the user: show the last lines of the log and the session id, and say that the run is past its limit. No process is stopped before the user answers;
-  2. only after the user agrees, stop the worker process and the processes the same launch started to feed it (for example a feeder in a pipeline), and nothing else. The wrapper still writes `exit.code` (non-zero) and `done` after the stop;
+  2. only after the user agrees, stop the worker process and the processes the same launch started to feed it (for example a feeder in a pipeline), and nothing else. The wrapper still writes `exit.code` (non-zero) and `done` after the stop. A host background subagent has no wrapper: after the orchestrator stops it, the orchestrator itself writes the non-zero `exit.code` and then `done`;
   3. run the session-list command again (the check of Gate 4 step 8) and say what it shows: a run that never created a session shows nothing, and a session that is still listed stays listed for the user to open;
   4. mark the ledger entry `failed` with reason `stuck`, and treat it as a failed attempt: continue with the escalation chain of `references/allocation.md`, which ends with "ask the user".
+- After a normal finish, the orchestrator also stops the limit-waiter it started for that run.
 - Do not extend the limit silently, and do not finish the task yourself.
 
 ## Parallel runs
@@ -69,4 +70,4 @@ One entry per run, in `ledger.json` of the task folder, written by the orchestra
 | `exit_code` | the integer read from `exit.code` |
 | `nonces` | the nonces of the skills delivered by `compiled` or `workspace-copy` (`references/skill-delivery.md`) |
 
-A run stopped for being stuck is `failed` with reason `stuck`.
+A run stopped for being stuck is `failed` with reason `stuck`. The status value `done` and the marker file `done` are different things: the status is a field in the ledger, the marker is a file in the task folder.
