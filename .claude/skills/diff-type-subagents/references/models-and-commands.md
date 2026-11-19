@@ -51,7 +51,7 @@ The per-CLI results of the Gate 1B probe are in the table "Worker capabilities (
 
 ## Command shapes (add the command prefix from `policy.md`, if any)
 
-A worker command below is run through the launch wrapper of `references/running-workers.md` (own process, log file, `exit.code`, `done` last), never as a blocking command in the chat.
+A worker command below is run through the launch wrapper of `references/running-workers.md` (own process, log file, `exit.code`, `done` last), never as a blocking command in the chat. Inside the wrapper the worker command already has stdin closed and its output goes to the log file, so the shapes below need no extra stdin redirection or output capture there; the user's command prefix is not applied inside the wrapper, because its output is not read from the terminal.
 
 - Codex: `codex exec -m <model> -c model_reasoning_effort=<effort> -s read-only --skip-git-repo-check -o <last-message-file> "<prompt>" </dev/null`. Always close stdin with `</dev/null` when it is started from an automated shell: on 2026-11-10 two runs without it hung for 7+ minutes at "Reading additional input from stdin..." and never started a session, while the same runs with it finished normally. Add `-C <dir>` to choose the working directory.
 - Agy headless runs (`--print`) cannot ask for permission: a tool that needs the "command" permission is denied automatically and the run ends with a "no output produced" message. This is a safe default for read-only audits. Do not add `--dangerously-skip-permissions` to work around it.
