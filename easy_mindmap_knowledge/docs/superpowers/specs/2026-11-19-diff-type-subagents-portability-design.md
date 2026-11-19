@@ -1,6 +1,6 @@
 # Make `diff-type-subagents` work with any orchestrator and any worker: design
 
-Date: 2026-11-19. Status: approved by the user on 2026-11-19, including section 7.4 (D13, D14); reopened the same day to add the environment and portability part of section 8 (D15, D16, problem 21), which needs the user's approval again.
+Date: 2026-11-19. Status: approved by the user on 2026-11-19, including section 7.4 (D13, D14); the environment and portability part of section 8 (D15, D16, problem 21) was added and approved the same day; reopened again to add section 7.5 (D17, evaluation of a task list for parallel groups, problem 22), which needs the user's approval.
 Source handoff: `.context/handoff-diff-type-subagents-skill-portability.md`.
 Skill under change: `.claude/skills/diff-type-subagents/` (`SKILL.md`, `references/policy.md`, `references/models-and-commands.md`, `references/worker-rules.md`).
 Skill left unchanged: `.claude/skills/select-skills-usp/SKILL.md`.
@@ -67,6 +67,7 @@ Anti-goals (would be a failure even if it technically works)
 | D14 | When the orchestrator's host has no native wake-up, the skill uses polling of completion markers, says so in `policy.md` and when it presents `assignments.md`, and never claims a result before the marker exists. A message injected into the session by a process is not used and is never an approval. |
 | D15 | Gate 1 probes the environment and records it in a `policy.md` table `Environment` (operating system and shell, SHA-256 tool, real-path tool, how to close stdin, how to start a background process, whether a terminal multiplexer exists), each cell dated and marked verified or [Unverified]. The rules state the result needed (SHA-256 of the file bytes; the real path after links are followed), not a command; any tool that gives the same result may be used and is recorded. |
 | D16 | A terminal multiplexer is optional: without it the "Hello" test uses the CLI's non-interactive command, or the user runs the interactive session in their own terminal. The skill never installs anything; a missing tool is reported to the user, who decides. Only macOS was available for real runs; Linux and Windows stay [Unverified]. |
+| D17 | Gate 2 evaluates the whole task list for parallel groups: it builds a conflict graph from the tasks' write sets, read inputs, interface dependencies and ordering constraints, shows the groups in the table for approval, proposes (never silently applies) splitting tasks that conflict only through a shared file, and spreads the members of a group across families. Parallelism does not depend on the vendor. |
 
 ## 6. Batch A: skill source roots and path resolution (problems P1, P2)
 
@@ -127,6 +128,19 @@ Real-run check for B: (1) baseline: show the current skill gives no path-reading
 
 Real-run check for 7.4: start one read-only worker in the background and confirm the orchestrator answers a user message before it ends; confirm the completion is noticed (native or polling); then start a worker whose stdin is left open, with a short limit, and confirm it is reported as stuck. Baseline: the current skill has no wrapper, marker or limit.
 
+### 7.5 Evaluating a task list for parallel groups (D17)
+
+New Gate 2 step "parallel groups", detail in a new reference `references/parallel-groups.md` (headings `## Inputs`, `## Conflict edges`, `## Groups`, `## Splitting`, `## Limits`, `## Record`). It runs after the ripple scan (3a) and before allocation, on the tasks that will be delegated (writes, read-only runs, reviews and scenario runs alike).
+
+- **Inputs, per task:** the allowed paths with the ripple list, split into the files it writes and the files it reads as input; what it produces and consumes (a name, a signature, a heading, a table, a column); the ordering constraints found by the ripple scan; whether it is read-only; whether it is irreversible (3b-bis).
+- **Conflict edges** (the file is the unit; two tasks that edit different parts of one file still conflict): (a) both write the same file or generated artifact; (b) one writes a file the other reads as input or whose checks read it; (c) a dependency: one consumes what the other produces, so the producer goes first; a dependency is HARD when the consumer uses content that the producer's run creates (probe results, resolved paths, a result file), and then the producer goes first for every part of the consumer; it is SOFT when the consumer uses only a name or a shape that the plan's Interfaces block already fixes, and then only the integration and the checks of the consumer wait for the producer, while an own-file part of the consumer may be drafted at the same time; (d) an ordering constraint of the ripple scan; (e) both touch the same irreversible resource or a guard check that cannot run twice at once.
+- **Groups:** order the tasks by dependency into layers; inside a layer, the tasks with no conflict edge between them form a group that starts together, taken in plan order; a task with an edge to a group member goes to the next group. Read-only tasks have no write edges, so they join any group whose inputs they do not read before it is done. Each group has a name `G1`, `G2`, and so on; a later group starts when the tasks it depends on are done and reviewed.
+- **Splitting (proposal only):** when two tasks conflict only because both edit one shared file, the orchestrator proposes splitting each into "own-file part" (a file only that task writes, parallelisable) and a short "integration part" (the shared file, one after the other); the user approves the split with the table; it is never applied silently, because it changes the scope (Gate 2 step 6).
+- **Limits:** a maximum number of runs at the same time, `Parallel limit` in `policy.md` ([Proposed] 3), also bounded by the quota thresholds; write tasks run at the same time only in separate worktrees or branches that the user allowed (the shared working tree would let one task's checks read another's half-written files); each run has its own task folder.
+- **Record:** a column `parallel group` appended at the end of the main assignments table and a section `Parallel groups` in `assignments.md` listing each group, the edges that forced an order ("T3 after T2: consumes the capability cells"), and the split proposals; approved with the table. Allocation (7.3) then runs per task; for the members of one group the Spread step counts them together, so independent members land on different families when they tie. Parallelism does not depend on the vendor: members of one group may be of the same or of different families.
+
+Real-run check for 7.5: baseline: two orchestrators of different vendors list the parallel groups of the plan's own task list with the current skill (they must invent a method and will differ); after the edit both must produce the same groups and the same edges and propose the same splits for the controller's expected result.
+
 ## 8. Batch C: remove the Claude Code tilt and add recovery (problems P5, compaction)
 
 - Wording in `SKILL.md`, `policy.md` and the references that assumes Claude Code is neutralised; the one verified skill-reading test stays as dated data.
@@ -140,7 +154,7 @@ Real-run check for C: run Gate 1 and Gate 2 on a toy task with a non-Claude orch
 
 ## 9. Files changed
 
-`.claude/skills/diff-type-subagents/SKILL.md` (short steps and red-flag rows), `references/policy.md` (roots, spread, tier map, orchestrator row, worker permissions), `references/models-and-commands.md` (capability columns, host-mechanism row template), `references/worker-rules.md` (delivery-mode wording, nonce quoting), and three new files: `references/skill-delivery.md` (roots resolution, modes, proof, checklist format), `references/allocation.md` (the algorithm of section 7.3) and `references/running-workers.md` (section 7.4). The new files are named and linked from `SKILL.md`. No other skill is changed.
+`.claude/skills/diff-type-subagents/SKILL.md` (short steps and red-flag rows), `references/policy.md` (roots, spread, tier map, orchestrator row, worker permissions), `references/models-and-commands.md` (capability columns, host-mechanism row template), `references/worker-rules.md` (delivery-mode wording, nonce quoting), and four new files (the fourth is `references/parallel-groups.md`, section 7.5): `references/skill-delivery.md` (roots resolution, modes, proof, checklist format), `references/allocation.md` (the algorithm of section 7.3) and `references/running-workers.md` (section 7.4). The new files are named and linked from `SKILL.md`. No other skill is changed.
 
 ## 10. Verified facts, assumptions, unknowns
 

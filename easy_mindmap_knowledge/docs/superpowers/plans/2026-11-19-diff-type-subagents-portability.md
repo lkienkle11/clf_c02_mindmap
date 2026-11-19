@@ -152,6 +152,22 @@ Failure modes the spec implies that no earlier task's tests would catch. Each ha
 - [ ] **Step 4: GREEN run** of (a) to (e), with Codex as the orchestrator for (a). Expected: all match; Claude-specific hits remain only in dated notes.
 - [ ] **Step 5: Commit** (after the user's go-ahead): `docs(diff-type-subagents): neutral wording and recovery after compaction`.
 
+### Task 8: Batch B, evaluate a task list for parallel groups (spec 7.5, D17)
+
+**Files:**
+- Create: `references/parallel-groups.md`.
+- Modify: `SKILL.md` (Gate 2: a new step "parallel groups" after the ripple scan, a column `parallel group` appended at the end of the main table's column list, a mention of the `Parallel groups` section; Gate 3/4: tasks of one group start together; Reference files list; two red-flag rows), `references/policy.md` (item `Parallel limit`, [Proposed] 3), `references/running-workers.md` (`## Parallel runs`: refer to the groups and state that parallelism does not depend on the vendor).
+
+**Interfaces:**
+- Produces: `parallel-groups.md` headings `## Inputs`, `## Conflict edges`, `## Groups`, `## Splitting`, `## Limits`, `## Record`; `assignments.md` section `Parallel groups` and column `parallel group`; `policy.md` item `Parallel limit`.
+- Consumes: the ripple lists of the Gate 2 ripple scan, the allocation algorithm (Spread counts group members together), the launch and completion rules of Task 4b.
+
+- [ ] **Step 1: Write the input and the expected result** (the controller writes them, not the implementer): `fixtures/b8-input.md` = the task list of this plan (Tasks 1 to 7 and the read-only baselines of Tasks 3 to 6) with the real files each writes and reads, taken from `git log --name-only`, and the interface each produces and consumes; `fixtures/expected-B8.md` = the conflict edges, the groups, the split proposals (own-file parts: `allocation.md` of Task 5 and `running-workers.md` of Task 4b; integration parts: the shared-file edits) and the limit, derived by hand from spec 7.5.
+- [ ] **Step 2: Baseline.** Two fresh orchestrators of different vendors list the parallel groups of that input with the current skill. Expected: they invent different methods and differ on the groups. Save to `baseline-B8-*.md`.
+- [ ] **Step 3: Write `parallel-groups.md` and the edits** so that expected-B8.md follows, with the heading list unchanged except the added file; no vendor name in SKILL.md or the new file; no deleted section.
+- [ ] **Step 4: GREEN run.** The same two orchestrators run again. Expected: the same edges, groups and split proposals as expected-B8.md, and the same cap.
+- [ ] **Step 5: Commit** (after the user's go-ahead was already given for commits on this branch): `docs(diff-type-subagents): evaluate a task list for parallel groups`.
+
 ### Task 7: Verification and whole-branch review
 
 **Files:** none changed unless a finding requires it.
