@@ -29,6 +29,8 @@ The models table in `references/models-and-commands.md` is the record of the CLI
 - **Flag with no list, and the table is missing or empty:** ask the user which CLIs are installed on this machine. Then run Gate 1B for every CLI the user names. The table is created from what is discovered.
 - **Flag with a list** (example: `/diff-type-subagents I installed: opencode CLI, minimax CLI, AGY CLI`): run Gate 1B for every CLI on the list.
 
+If `references/policy.md` has no "Skill source roots" section, first run the skill-folder probe (Gate 1B step 7) on the orchestrator itself, read-only, and ask the user to confirm the roots before anything is written; the per-CLI probe in Gate 1B then covers each worker CLI.
+
 Then read `references/policy.md`. If it is missing, or the user says the setup changed, ask the user for each item in it, write the answers there, and show the diff before saving. Nothing in these rules overrides the policy, and nothing in the policy overrides the hard rules above. Compare the policy's "Orchestrator" item with the agent session that is actually running this skill; if they differ, ask the user which is right, and update the policy (diff first).
 
 ### Gate 1A: Re-check the CLIs recorded in the table
