@@ -51,7 +51,7 @@ Run steps 0 to 8 for each task, in plan order, counting the tasks already given 
 
 Build the chain as one loop. Start with the chosen row as the first row of the chain. Repeat until three rows are listed:
 
-1a. Before rule 1: if the last row added has the same model and effort in another mode, skip any (model, effort, mode) already in the chain and take the first one not yet listed, in the capability table's row order, whose row passes step 2 for this task; rule 3 applies to it, and the loop still ends after three rows.
+1a. Before rule 1: if the last row added has the same model and effort in another mode (another mode of the SAME model and effort), skip any (model, effort, mode) already in the chain and take the first one not yet listed, in the capability table's row order, whose row passes step 2 for this task; rule 3 applies to it, and the loop still ends after three rows.
 1. From the last row added, take the same family one tier up: the next row of that family by tier, among the rows that pass steps 2 to 4 for this task; if two rows of that family share the next higher tier, take the one listed first in table order. For a review, step 3 applies strictly against the original writer: the independence relaxation of step 4 is used only to find the chosen row when steps 3 and 4 leave none, and is never applied again to a later chain slot.
 2. If there is none, take the lowest-tier row of another family that passes steps 2 to 4 for this task (ties by table order). "Another family" means a family different from the family of the last row added.
 3. Never repeat a row. If no row can be added, stop the loop.
