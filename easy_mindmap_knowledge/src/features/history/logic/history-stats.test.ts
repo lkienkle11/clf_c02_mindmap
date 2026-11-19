@@ -91,6 +91,17 @@ describe('weakTopics', () => {
 });
 
 describe('mostMissed', () => {
+  it('ignores unscored rows for both misses and seen', () => {
+    const rows = [
+      { questionId: 'only-unscored', isCorrect: false, unscored: true },
+      { questionId: 'mixed', isCorrect: false },
+      { questionId: 'mixed', isCorrect: true, unscored: false },
+      { questionId: 'mixed', isCorrect: false, unscored: true },
+      { questionId: 'mixed', isCorrect: true, unscored: true },
+    ];
+    expect(mostMissed(rows, 10)).toEqual([{ questionId: 'mixed', misses: 1, seen: 2 }]);
+  });
+
   const rows = [
     { questionId: 'q1', isCorrect: false },
     { questionId: 'q1', isCorrect: true },
@@ -129,6 +140,29 @@ function qrow(p: Partial<AttemptQuestionRow> & { attemptId: string; questionId: 
 
 describe('missedDetails', () => {
   const topicOf = (q: string) => (q === 'q9' ? null : 't1');
+
+  it('ignores unscored rows entirely when collecting missed questions', () => {
+    const attempts = [attempt({ id: 'a1' }), attempt({ id: 'a2', submittedAt: 200 })];
+    const rows = new Map([
+      ['a1', [
+        qrow({ attemptId: 'a1', questionId: 'only-unscored', unscored: true }),
+        qrow({ attemptId: 'a1', questionId: 'mixed' }),
+        qrow({ attemptId: 'a1', questionId: 'mixed', isCorrect: true }),
+      ]],
+      ['a2', [
+        qrow({ attemptId: 'a2', questionId: 'mixed', selected: ['B'], unscored: true }),
+        qrow({ attemptId: 'a2', questionId: 'mixed', isCorrect: true, unscored: true }),
+      ]],
+    ]);
+    expect(missedDetails(attempts, rows, topicOf)).toEqual([{
+      questionId: 'mixed',
+      topicId: 't1',
+      misses: 1,
+      seen: 2,
+      latestWrong: { attemptId: 'a1', position: 0, at: 100, selected: ['A'], optionOrder: ['A', 'B', 'C'] },
+      distinctWrongAnswers: 1,
+    }]);
+  });
 
   it('matches mostMissed counts and order, only questions with a miss', () => {
     const attempts = [attempt({ id: 'a1' }), attempt({ id: 'a2' })];
