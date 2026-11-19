@@ -20,7 +20,7 @@ This file holds machine data (the models table, worker capabilities as tested on
   - Never rely on a row without a check date, and never use a model that is not in the table without first adding and verifying it.
 - **How to write into the table [Decided 2026-11-12].**
   - **Append** a new row for a new CLI or a new model: place it at the end of that vendor's group, or at the end of the table when the vendor is new. Keep every existing row unchanged.
-  - **Replace** an existing row only when pre-flight check 2 shows a mismatch (model gone, CLI version changed, effort levels changed). Correct or remove only the mismatching row and update the check date of that row only. Rows that did not mismatch keep their text and their date. Git history is the record of old values; do not keep old text in the file.
+  - **Replace** an existing row only when pre-flight check 2 shows a mismatch (model gone, CLI version changed, effort levels changed). Correct or remove only the mismatching row and update the check date of that row only. Rows that did not mismatch keep their text and their date. Replacing a row on a mismatch keeps its `passed` lines only when the model, effort and CLI version are unchanged; otherwise they are removed with the old text. A permitted edit besides these: the Notes cell of an existing row may receive an appended dated line `passed (<effort>, <kind>): <date>`, written by Gate 6 step 1b, shown as a diff first and committed only when the user allows. Git history is the record of old values; do not keep old text in the file.
   - **Row format:** put the CLI version and the check date in the first column, for example `opencode CLI 1.4.2 (2026-11-12)`. Existing rows that only carry the table's heading date stay as they are until they are re-verified.
   - **Show the diff first.** Show the user the diff of this file before writing it as final, and commit only when the user allows it.
 - The effort ceiling is in `policy.md`.
@@ -48,7 +48,7 @@ Note: the session-list command of the host's own subagent mechanism is [Unverifi
 
 ## What each worker can and cannot do (tested on 2026-11-10)
 
-The per-CLI results of the Gate 1B probe are in the table "Worker capabilities (per CLI and mode)" above; the notes below are prose from the first test.
+The per-CLI-and-mode results of the Gate 1B probe are in the table "Worker capabilities (per CLI and mode)" above; the notes below are prose from the first test.
 
 - **Codex CLI (`gpt-6.1-sol`):** can read a file given by absolute path. It was observed opening web pages by itself while read-only on 2026-11-10 (built-in tool, no shell command needed), but the 2026-11-19 probe in read-only with default flags got CANNOT (see the table "Worker capabilities (per CLI and mode)"). An audit batch of 8 to 29 questions took 2 to 3 minutes and about 76k to 88k tokens, and returned valid JSON in 2 of 2 runs.
 - **Agy CLI, headless (`agy --print`):** cannot browse (its web tool needs the "command" permission, which is auto-denied) and cannot read a file outside its working folder (`read_file` is auto-denied), so pass the input inline in the prompt. It answers from memory, so treat every URL it cites as unverified: in the test one cited CAF URL returned HTTP 404. Run time for similar batches varied from 158 s to 501 s.
