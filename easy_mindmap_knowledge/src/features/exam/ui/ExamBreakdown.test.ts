@@ -28,6 +28,12 @@ function bodyRows(): HTMLElement[] {
 }
 
 describe('ExamBreakdown', () => {
+  it('excludes unscored answers from both totals and correct counts, including unscored-only topics', async () => {
+    await mount([item('c1', true), { ...item('c2', true), unscored: true }, { ...item('g1', false), unscored: true }]);
+    expect(bodyRows()).toHaveLength(1);
+    expect(within(bodyRows()[0]).getByText('1 of 1 correct')).toBeInTheDocument();
+    expect(screen.queryByRole('rowheader', { name: 'global-infrastructure' })).not.toBeInTheDocument();
+  });
   it('shows one row per topic with its own correct and total counts, in topic order', async () => {
     await mount([item('c1', true), item('c2', false), item('g1', false), item('p1', true)]);
     const rows = bodyRows();

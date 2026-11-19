@@ -7,6 +7,14 @@ import en from './en.json';
 import vi from './vi.json';
 
 describe('I18n', () => {
+  it.each([
+    'exam.setup.ruleCapstoneQuestions', 'exam.setup.capstonePassMark', 'exam.setup.lockedExam1',
+    'exam.setup.lockedExam2', 'exam.setup.examPassed', 'exam.result.passMark', 'exam.result.notScored',
+    'exam.result.exam2Unlocked', 'exam.result.summaryUnlocked', 'mindmap.lockedByExams',
+  ])('defines the capstone UI key %s in both languages', (key) => {
+    expect(en).toHaveProperty(key);
+    expect(vi).toHaveProperty(key);
+  });
   it('replaces {name} params', () => {
     const i = createI18n('en');
     i.messages.en['x'] = 'Got {n} of {m} {n}';

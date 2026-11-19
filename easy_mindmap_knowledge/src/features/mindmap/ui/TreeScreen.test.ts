@@ -244,6 +244,8 @@ describe('TreeScreen capstone exams', () => {
     const { appState } = await mountExams();
     expect(appState.statuses.get('capstone-exam-1')).toBe('current');
     expect(screen.getByRole('button', { name: 'Capstone - Exam 1, Up next' })).not.toHaveAttribute('aria-disabled', 'true');
+    expect(screen.getByRole('button', { name: /^Summary/ })).toHaveAccessibleName('Summary. Finish both Capstone exams first');
+    expect(screen.getByRole('button', { name: /^Capstone - Exam 2/ })).toHaveAccessibleName(/Capstone - Exam 1/);
     for (const [id, name] of [['capstone-exam-2', /^Capstone - Exam 2/], ['capstone', /^Summary/]] as const) {
       expect(appState.statuses.get(id)).toBe('locked');
       const node = screen.getByRole('button', { name });

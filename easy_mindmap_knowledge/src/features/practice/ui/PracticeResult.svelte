@@ -34,11 +34,12 @@
     mode?: 'practice' | 'review' | 'exam';
     /** A status line under the pass line (e.g. the checkpoint hint or the group that just opened). */
     notice?: string;
+    passMarkText?: string;
     /** Replaces the default buttons (e.g. the review screen's next-batch / stop actions). */
     actions?: Snippet;
   }
 
-  let { services, result, attemptId, onback, timedOut = false, canRetry = false, onretry, unlocked = false, unansweredDisplay = 'reveal', mode = 'practice', notice, actions }: Props = $props();
+  let { services, result, attemptId, onback, timedOut = false, canRetry = false, onretry, unlocked = false, unansweredDisplay = 'reveal', mode = 'practice', notice, passMarkText, actions }: Props = $props();
   const isReview = $derived(mode === 'review');
   const isExam = $derived(mode === 'exam');
   const titleKey = $derived(isReview ? 'review.result.title' : isExam ? 'exam.result.title' : 'practice.result.title');
@@ -98,7 +99,7 @@
       {#if result.passed && unlocked && !isExam}
         <p class="font-medium text-leaf-done-ink">{i18n.t('quiz.unlocked')}</p>
       {/if}
-      <p class="text-muted-foreground">{i18n.t('practice.result.threshold')}</p>
+      <p class="text-muted-foreground">{passMarkText ?? i18n.t('practice.result.threshold')}</p>
     {/if}
     {#if notice}
       <p role="status" class="font-medium text-leaf-done-ink">{notice}</p>
@@ -116,7 +117,11 @@
         {@const q = questions.get(item.questionId)}
         {@const hide = hidesAnswers(item.selected, unansweredDisplay)}
         <li data-question={item.questionId} class="flex flex-col gap-2 rounded-lg border border-border-subtle bg-surface p-4" {@attach frame(item.questionId)}>
-          <p class="text-sm text-muted-foreground">{i18n.t('practice.result.question', { n: i + 1 })}</p>
+          <p class="text-sm text-muted-foreground">{i18n.t('practice.result.question', { n: i + 1 })}
+            {#if item.unscored === true}
+              <span class="ml-2 rounded border border-border px-2 py-0.5 font-medium">{i18n.t('exam.result.notScored')}</span>
+            {/if}
+          </p>
           <p lang="en" class="font-medium">{q?.text ?? item.questionId}</p>
           <p class={cn('font-semibold', item.isCorrect ? 'text-leaf-done-ink' : 'text-danger')}>
             {item.isCorrect ? `✓ ${i18n.t('practice.result.correct')}` : `✗ ${i18n.t('practice.result.incorrect')}`}

@@ -21,6 +21,27 @@ async function mount(result: SubmitResult, timedOut = false, extra: Record<strin
 }
 
 describe('PracticeResult', () => {
+  it('replaces the default threshold and labels only unscored review rows while keeping their verdicts', async () => {
+    const examItems = Array.from({ length: 65 }, (_, i) => ({
+      questionId: `exam-${i}`, selected: ['B'], correct: ['A'], isCorrect: i < 35, unscored: i >= 50,
+    }));
+    await mount({ scorePct: 70, correct: 35, total: 50, passed: true, items: examItems }, false, {
+      mode: 'exam', passMarkText: 'Pass mark: 70% of the 50 scored questions',
+    });
+    expect(screen.getByText('35 of 50 correct')).toBeInTheDocument();
+    expect(screen.getByText('Passed!')).toBeInTheDocument();
+    expect(screen.getByText('Pass mark: 70% of the 50 scored questions')).toBeInTheDocument();
+    expect(screen.queryByText('Pass mark: 80% or higher')).not.toBeInTheDocument();
+    expect(screen.getAllByText('Not scored')).toHaveLength(15);
+    for (const [i, item] of examItems.entries()) {
+      const row = document.querySelector(`[data-question="${item.questionId}"]`)! as HTMLElement;
+      expect(within(row).getByText(`Question ${i + 1}`, { exact: false })).toBeInTheDocument();
+      if (i >= 50) {
+        expect(within(row).getByText('Not scored')).toBeInTheDocument();
+        expect(within(row).getByText('✗ Incorrect')).toBeInTheDocument();
+      } else expect(within(row).queryByText('Not scored')).not.toBeInTheDocument();
+    }
+  });
   it('shows the score, the pass line and the threshold, and moves focus to the heading', async () => {
     await mount({ scorePct: 90, correct: 9, total: 10, passed: true, items });
     expect(screen.getAllByRole('heading', { level: 1 })).toHaveLength(1);

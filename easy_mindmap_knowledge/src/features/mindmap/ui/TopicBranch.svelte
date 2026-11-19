@@ -41,7 +41,9 @@
   const readCount = $derived(lessons.filter((l) => readIds.has(l.id)).length);
   const badge = $derived(i18n.t('mindmap.lessonsRead', { read: readCount, total: lessons.length }));
   const hint = $derived(
-    lockedByCheckpoint !== null
+    topic.tier === 'capstone'
+      ? i18n.t('mindmap.lockedByExams')
+      : lockedByCheckpoint !== null
       ? i18n.t('mindmap.lockedByCheckpoint', { group: lockedByCheckpoint })
       : i18n.t('mindmap.lockedHint', { topic: prevTitle ?? title }),
   );

@@ -5,13 +5,15 @@ import { renderWithI18n } from '@/testing/render-with-i18n';
 import { loadExamOptions } from '../index';
 import { makeExamEnv } from '@/testing/exam-env';
 import ExamSetup from './ExamSetup.svelte';
+import { loadBundledCatalog } from '@/content/bundled';
+import type { PracticeSession } from '@/features/practice';
 
 const GROUP1 = ['cloud-concepts', 'global-infrastructure', 'compute'];
 
 describe('ExamSetup', () => {
   it('is locked and names the missing topics when the group is not completed', async () => {
     const env = await makeExamEnv(['cloud-concepts', 'global-infrastructure']);
-    renderWithI18n(ExamSetup, { services: env.services, appState: env.appState, groupIndex: 1, onstarted: () => {} });
+    renderWithI18n(ExamSetup, { services: env.services, appState: env.appState, groupIndex: 1, capstoneTopicId: null, onstarted: () => {} });
     expect(screen.getByRole('heading', { name: 'Checkpoint 1' })).toBeInTheDocument();
     expect(screen.getByText(/Complete all topics of this group first/)).toHaveTextContent('compute');
     expect(screen.getByRole('button', { name: 'Start exam' })).toBeDisabled();
@@ -19,7 +21,7 @@ describe('ExamSetup', () => {
 
   it('is enabled when the group is completed and shows 90 then 120 minutes with extra time, saving the choice', async () => {
     const env = await makeExamEnv(GROUP1);
-    renderWithI18n(ExamSetup, { services: env.services, appState: env.appState, groupIndex: 1, onstarted: () => {} });
+    renderWithI18n(ExamSetup, { services: env.services, appState: env.appState, groupIndex: 1, capstoneTopicId: null, onstarted: () => {} });
     await waitFor(() => expect(screen.getByRole('button', { name: 'Start exam' })).toBeEnabled());
     expect(screen.getByText(/90 minutes/)).toBeInTheDocument();
     await userEvent.click(screen.getByRole('checkbox', { name: /Extra time/ }));
@@ -32,7 +34,7 @@ describe('ExamSetup', () => {
   it('start calls onstarted with a running exam session', async () => {
     const env = await makeExamEnv(GROUP1);
     let started: unknown = null;
-    renderWithI18n(ExamSetup, { services: env.services, appState: env.appState, groupIndex: 1, onstarted: (s: unknown) => (started = s) });
+    renderWithI18n(ExamSetup, { services: env.services, appState: env.appState, groupIndex: 1, capstoneTopicId: null, onstarted: (s: unknown) => (started = s) });
     await waitFor(() => expect(screen.getByRole('button', { name: 'Start exam' })).toBeEnabled());
     await userEvent.click(screen.getByRole('button', { name: 'Start exam' }));
     await waitFor(() => expect(started).not.toBeNull());
@@ -41,25 +43,46 @@ describe('ExamSetup', () => {
 
   it('shows an alert when the exam cannot be started', async () => {
     const env = await makeExamEnv(GROUP1, { failCreate: true });
-    renderWithI18n(ExamSetup, { services: env.services, appState: env.appState, groupIndex: 1, onstarted: () => {} });
+    renderWithI18n(ExamSetup, { services: env.services, appState: env.appState, groupIndex: 1, capstoneTopicId: null, onstarted: () => {} });
     await waitFor(() => expect(screen.getByRole('button', { name: 'Start exam' })).toBeEnabled());
     await userEvent.click(screen.getByRole('button', { name: 'Start exam' }));
     expect(await screen.findByRole('alert')).toHaveTextContent('Could not start the exam');
   });
 
-  it('Capstone is disabled unless its topic is current or done', async () => {
-    const env = await makeExamEnv([]);
-    env.appState.statuses = new Map([['capstone', 'locked']]);
-    renderWithI18n(ExamSetup, { services: env.services, appState: env.appState, groupIndex: null, onstarted: () => {} });
-    expect(screen.getByRole('heading', { name: 'Capstone exam' })).toBeInTheDocument();
-    expect(screen.getByText(/Pass checkpoint 4/)).toBeInTheDocument();
+  it.each([
+    ['capstone-exam-1', 'Capstone - Exam 1', 'Pass checkpoint 4 first.'],
+    ['capstone-exam-2', 'Capstone - Exam 2', 'Finish Capstone - Exam 1 first.'],
+  ])('%s is disabled with its own gate reason', async (topicId, title, reason) => {
+    const catalog = loadBundledCatalog();
+    const env = await makeExamEnv([], { rawCatalog: { topics: catalog.topics, lessons: catalog.lessons, questions: catalog.questions } });
+    env.appState.statuses = new Map([[topicId, 'locked']]);
+    renderWithI18n(ExamSetup, { services: env.services, appState: env.appState, groupIndex: null, capstoneTopicId: topicId, onstarted: () => {} });
+    expect(screen.getByRole('heading', { name: title })).toBeInTheDocument();
+    expect(screen.getByText(reason)).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Start exam' })).toBeDisabled();
   });
 
-  it('Capstone is enabled when its topic is current', async () => {
-    const env = await makeExamEnv([]);
-    env.appState.statuses = new Map([['capstone', 'current']]);
-    renderWithI18n(ExamSetup, { services: env.services, appState: env.appState, groupIndex: null, onstarted: () => {} });
+  it.each(['current', 'done'] as const)('exam 2 %s setup shows scored rules, duration and starts the selected topic', async (status) => {
+    const catalog = loadBundledCatalog();
+    const env = await makeExamEnv(status === 'done' ? ['capstone-exam-2'] : [], { rawCatalog: { topics: catalog.topics, lessons: catalog.lessons, questions: catalog.questions } });
+    env.appState.statuses = new Map([['capstone-exam-2', status]]);
+    let topic: string | null = null;
+    renderWithI18n(ExamSetup, { services: env.services, appState: env.appState, groupIndex: null, capstoneTopicId: 'capstone-exam-2', onstarted: (s: PracticeSession) => { topic = s.topicId; } });
     await waitFor(() => expect(within(document.body).getByRole('button', { name: 'Start exam' })).toBeEnabled());
+    expect(screen.getByText('65 questions, including 15 that are not scored. You will not be told which questions are not scored.')).toBeInTheDocument();
+    expect(screen.getByText('Pass mark: 70% of the 50 scored questions (35 of 50)')).toBeInTheDocument();
+    expect(screen.getByText('Time limit: 90 minutes.')).toBeInTheDocument();
+    if (status === 'done') expect(screen.getByText('You have already passed this exam. You can take it again.')).toBeInTheDocument();
+    await userEvent.click(screen.getByRole('checkbox', { name: /Extra time/ }));
+    expect(screen.getByText('Time limit: 120 minutes.')).toBeInTheDocument();
+    await userEvent.click(screen.getByRole('button', { name: 'Start exam' }));
+    await waitFor(() => expect(topic).toBe('capstone-exam-2'));
+  });
+
+  it('uses the localized exam topic title', async () => {
+    const catalog = loadBundledCatalog();
+    const env = await makeExamEnv([], { rawCatalog: { topics: catalog.topics, lessons: catalog.lessons, questions: catalog.questions } });
+    renderWithI18n(ExamSetup, { services: env.services, appState: env.appState, groupIndex: null, capstoneTopicId: 'capstone-exam-1', onstarted: () => {} }, 'vi');
+    expect(screen.getByRole('heading', { name: 'Capstone - Bài kiểm tra thứ nhất' })).toBeInTheDocument();
   });
 });
