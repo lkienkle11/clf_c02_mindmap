@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { makeTopic } from '@/testing/fixtures';
+import { loadBundledCatalog } from '@/content/bundled';
 import { CHECKPOINT_GAP, layoutTree } from './tree-layout';
 
 const topics = (lessonCounts: number[]) =>
@@ -8,6 +9,25 @@ const topics = (lessonCounts: number[]) =>
   );
 
 describe('layoutTree', () => {
+  it('expands the summary into six lessons without practice', () => {
+    const catalog = loadBundledCatalog();
+    const branch = layoutTree(catalog.topics, { expandedTopicId: 'capstone' }).branches.find((b) => b.topicId === 'capstone')!;
+    expect(branch.leaves).toHaveLength(6);
+    expect(branch.leaves.every((leaf) => leaf.kind === 'lesson')).toBe(true);
+    expect(branch.leaves.some((leaf) => leaf.kind === 'practice')).toBe(false);
+  });
+
+  it('never gives an exam topic leaves', () => {
+    const catalog = loadBundledCatalog();
+    const branch = layoutTree(catalog.topics, { expandedTopicId: 'capstone-exam-1' }).branches.find((b) => b.topicId === 'capstone-exam-1')!;
+    expect(branch.leaves).toEqual([]);
+  });
+
+  it('places the exam tier before the summary tier', () => {
+    const layout = layoutTree(loadBundledCatalog().topics, { expandedTopicId: null });
+    expect(layout.tierMarks.map((mark) => mark.tier)).toEqual(['introduction', 'core', 'advanced', 'exam', 'capstone']);
+  });
+
   it('alternates sides starting left, ordered by topic order', () => {
     const shuffled = topics([1, 1, 1, 1]).reverse();
     const l = layoutTree(shuffled, { expandedTopicId: null });

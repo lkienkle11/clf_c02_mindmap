@@ -63,7 +63,9 @@ export function waterPath(
   }
   seg(trunk.x, current.y, current.near, current.y, 'next');
 
-  const stop = progress.stopLeafId === null ? undefined : current.leaves.find((l) => l.id === progress.stopLeafId);
+  const stop = progress.stopLeafId === null ? undefined
+    : current.leaves.find((l) => l.id === progress.stopLeafId)
+      ?? (progress.stopLeafId === 'practice' ? current.leaves[current.leaves.length - 1] : undefined);
   if (!stop) return { segments, head: { x: current.near, y: current.y } };
   seg(current.far, current.y, stop.x, current.y, 'next');
   return { segments, head: { x: stop.x, y: current.y } };

@@ -1,6 +1,7 @@
 import { beforeEach, describe, expect, it } from 'vitest';
 import { fireEvent, screen, within } from '@testing-library/svelte';
 import { loadCatalog } from '@/content/load-catalog';
+import { loadBundledCatalog } from '@/content/bundled';
 import { makeTreeRawCatalog } from '@/testing/fixtures';
 import { makeFakeServices } from '@/testing/fake-services';
 import { renderWithI18n } from '@/testing/render-with-i18n';
@@ -204,20 +205,90 @@ describe('TreeScreen topics without lessons (ruling R17)', () => {
     expect(screen.queryByText(NOTE)).not.toBeInTheDocument();
   });
 
-  it('capstone has no own questions but is practisable with the pooled questions', async () => {
+  it('the summary has no practice leaf', async () => {
     const all = ['cloud-concepts', 'global-infrastructure', 'compute', 'storage', 'networking', 'databases', 'deploy-operate',
       'shared-responsibility', 'iam-security', 'pricing-billing', 'migration-caf', 'support-ai-other'];
-    const { appState } = await mountTree({ passed: all, groups: [1, 2, 3, 4] });
-    const p = practiceButton();
-    expect(p).not.toHaveAttribute('aria-disabled', 'true');
-    expect(screen.queryByText('No questions yet')).not.toBeInTheDocument();
-    await fireEvent.click(p);
-    expect(appState.route).toEqual({ view: 'practice', topicId: 'capstone' });
+    await mountTree({ passed: all, groups: [1, 2, 3, 4] });
+    expect(screen.queryByRole('button', { name: /^Practice/ })).not.toBeInTheDocument();
   });
 
   it('speaks Vietnamese', async () => {
     await mountTree({ passed: [...PASSED, 'compute'], groups: [1], locale: 'vi' });
     expect(screen.getByText('Bài học cho chủ đề này sẽ có trong bản cập nhật sau')).toBeInTheDocument();
+  });
+});
+
+describe('TreeScreen capstone exams', () => {
+  async function mountExams(passedExams: string[] = [], groups = [1, 2, 3, 4], locale: Locale = 'en') {
+    const catalog = loadBundledCatalog();
+    const fake = await makeFakeServices({
+      catalog,
+      passedTopicIds: [...catalog.topics.slice(0, 12).map((topic) => topic.id), ...passedExams],
+      passedGroupIndexes: groups,
+    });
+    renderWithI18n(TreeScreen, { services: fake.services, appState: fake.appState }, locale);
+    return fake;
+  }
+
+  it('places CAPSTONE between checkpoint 4 and TỔNG KẾT', async () => {
+    await mountExams([], undefined, 'vi');
+    const checkpoint = screen.getByRole('button', { name: /^Bài kiểm tra mốc 4/ });
+    const banner = screen.getByText('CAPSTONE');
+    const summary = screen.getByText('TỔNG KẾT');
+    const checkpointY = Number(checkpoint.querySelector('rect')!.getAttribute('y'));
+    expect(Number(banner.getAttribute('y'))).toBeGreaterThan(checkpointY);
+    expect(Number(banner.getAttribute('y'))).toBeLessThan(Number(summary.getAttribute('y')));
+  });
+
+  it('unlocks exam 1 after checkpoint 4 while exam 2 and the summary stay locked', async () => {
+    const { appState } = await mountExams();
+    expect(appState.statuses.get('capstone-exam-1')).toBe('current');
+    expect(screen.getByRole('button', { name: 'Capstone - Exam 1, Up next' })).not.toHaveAttribute('aria-disabled', 'true');
+    for (const [id, name] of [['capstone-exam-2', /^Capstone - Exam 2/], ['capstone', /^Summary/]] as const) {
+      expect(appState.statuses.get(id)).toBe('locked');
+      const node = screen.getByRole('button', { name });
+      expect(node).toHaveAttribute('aria-disabled', 'true');
+      await fireEvent.click(node);
+      await fireEvent.keyDown(node, { key: 'Enter' });
+      await fireEvent.keyDown(node, { key: ' ' });
+      expect(appState.route).toEqual({ view: 'tree' });
+    }
+  });
+
+  it('keeps exam 1 locked before checkpoint 4 passes', async () => {
+    const { appState } = await mountExams([], [1, 2, 3]);
+    expect(appState.statuses.get('capstone-exam-1')).toBe('locked');
+    expect(screen.getByRole('button', { name: /^Capstone - Exam 1/ })).toHaveAttribute('aria-disabled', 'true');
+  });
+
+  it.each(['click', 'Enter', ' '])('opens exam 1 directly with %s', async (activation) => {
+    const { appState } = await mountExams();
+    const node = screen.getByRole('button', { name: /^Capstone - Exam 1/ });
+    if (activation === 'click') await fireEvent.click(node);
+    else await fireEvent.keyDown(node, { key: activation });
+    expect(appState.route).toEqual({ view: 'practice', topicId: 'capstone-exam-1' });
+    expect(node).not.toHaveAttribute('aria-expanded');
+    expect(screen.queryByRole('button', { name: /^Practice/ })).not.toBeInTheDocument();
+    expect(screen.queryByText('Lessons for this topic are coming in a later update')).not.toBeInTheDocument();
+    await fireEvent.click(screen.getByRole('button', { name: 'Actions for Capstone - Exam 1' }));
+    expect(screen.getByRole('menuitem', { name: 'Redo practice' })).not.toHaveAttribute('aria-disabled', 'true');
+  });
+
+  it('unlocks exam 2 after exam 1 passes and keeps the summary locked', async () => {
+    const { appState } = await mountExams(['capstone-exam-1']);
+    expect(appState.statuses.get('capstone-exam-2')).toBe('current');
+    expect(screen.getByRole('button', { name: 'Capstone - Exam 2, Up next' })).not.toHaveAttribute('aria-disabled', 'true');
+    expect(appState.statuses.get('capstone')).toBe('locked');
+    expect(screen.getByRole('button', { name: /^Summary/ })).toHaveAttribute('aria-disabled', 'true');
+  });
+
+  it('shows summary lessons without a Luyện tập node after both exams pass', async () => {
+    const { appState, services } = await mountExams(['capstone-exam-1', 'capstone-exam-2'], undefined, 'vi');
+    expect(appState.statuses.get('capstone')).toBe('current');
+    for (const lesson of services.catalog.lessonsOf('capstone')) {
+      expect(screen.getByRole('button', { name: new RegExp(`^${lesson.title.vi}`) })).toBeInTheDocument();
+    }
+    expect(screen.queryByRole('button', { name: /^Luyện tập/ })).not.toBeInTheDocument();
   });
 });
 

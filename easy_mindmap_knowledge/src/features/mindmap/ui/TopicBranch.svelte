@@ -52,11 +52,13 @@
     return days === 0 ? i18n.t('review.badgeToday') : i18n.t(days === 1 ? 'review.badge.one' : 'review.badge', { count: days });
   });
   // Honest note for a topic whose lessons are not written yet (ruling R17): it is practisable anyway.
-  const lessonsNote = $derived(lessons.length === 0 ? i18n.t('mindmap.lessonsLater') : null);
+  const lessonsNote = $derived(topic.tier !== 'exam' && lessons.length === 0 ? i18n.t('mindmap.lessonsLater') : null);
   const ariaLabel = $derived(
     locked
       ? `${title}. ${hint}`
-      : `${title}, ${statusText}, ${lessonsNote ?? badge}${reviewText ? `, ${reviewText}` : ''}`,
+      : topic.tier === 'exam'
+        ? `${title}, ${statusText}`
+        : `${title}, ${statusText}, ${lessonsNote ?? badge}${reviewText ? `, ${reviewText}` : ''}`,
   );
 
   const icons: Record<TopicStatus, string> = { done: '✓', current: '▶', locked: '🔒' };
@@ -83,7 +85,9 @@
   const hintX = $derived(clamp(node.cx, 4 + hintW / 2, canvasWidth - 4 - hintW / 2));
 
   function activate(): void {
-    if (!locked) ontoggle(topic.id);
+    if (locked) return;
+    if (topic.tier === 'exam') onopenpractice(topic.id);
+    else ontoggle(topic.id);
   }
 
   function onkeydown(e: KeyboardEvent): void {
@@ -109,7 +113,7 @@
 
 <circle cx={trunkX} cy={branch.y} r="7" class={dotTones[status]} aria-hidden="true" />
 <!-- badge first so a locked topic's hover hint paints over it -->
-{#if !expanded}
+{#if !expanded && topic.tier !== 'exam'}
   <text x={node.cx} y={branch.y + node.h / 2 + 15} text-anchor="middle" font-size="10" class="fill-muted-foreground" aria-hidden="true">{badge}</text>
 {/if}
 {#if reviewText}
@@ -126,7 +130,7 @@
   tabindex="0"
   aria-label={ariaLabel}
   aria-disabled={locked ? 'true' : undefined}
-  aria-expanded={locked ? undefined : expanded}
+  aria-expanded={locked || topic.tier === 'exam' ? undefined : expanded}
   class={['group outline-none', locked ? 'cursor-not-allowed' : 'cursor-pointer']}
   onclick={activate}
   {onkeydown}
