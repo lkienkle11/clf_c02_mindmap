@@ -26,7 +26,19 @@ This file holds machine data (the models table, worker capabilities as tested on
 - The effort ceiling is in `policy.md`.
 - Prices are **[Unverified]**, taken from third-party sites (not the vendors' pages): Haiku 5.5 about $0.10 input / $0.50 output per million tokens; Gemini 3.8 Flash $0.75 / $3.75 (promotional until 2026-12-31, then reported to double); GPT-6.1 Sol $2 / $10 (one site says $1 / $5). The user's CLI accounts are subscriptions, so the real cost is usage quota, not money per token. Prices only show which model uses more quota relatively.
 
+## Worker capabilities (per CLI)
+
+Capabilities belong to the CLI, not to the model. Each cell is `yes`, `no` or `[Unverified]`, followed by the check date. A worker whose cell is `no` or `[Unverified]` in a column its task needs is not eligible for that task. Rows are added by the Gate 1B probe (step 3b in `SKILL.md`); none is written from memory.
+
+| CLI | Reads path | Reads outside folder | Runs commands | Web | Sees skills itself |
+|---|---|---|---|---|---|
+| The host's own subagent mechanism (row template, valid for any host) | [Unverified] | [Unverified] | [Unverified] | [Unverified] | [Unverified] |
+
+Note: the session-list command of the host's own subagent mechanism is [Unverified] until it is probed.
+
 ## What each worker can and cannot do (tested on 2026-11-10)
+
+The per-CLI results of the Gate 1B probe are in the table "Worker capabilities (per CLI)" above; the notes below are prose from the first test.
 
 - **Codex CLI (`gpt-6.1-sol`):** can open web pages by itself while read-only (built-in tool, no shell command needed) and can read a file given by absolute path. An audit batch of 8 to 29 questions took 2 to 3 minutes and about 76k to 88k tokens, and returned valid JSON in 2 of 2 runs.
 - **Agy CLI, headless (`agy --print`):** cannot browse (its web tool needs the "command" permission, which is auto-denied) and cannot read a file outside its working folder (`read_file` is auto-denied), so pass the input inline in the prompt. It answers from memory, so treat every URL it cites as unverified: in the test one cited CAF URL returned HTTP 404. Run time for similar batches varied from 158 s to 501 s.
