@@ -6,6 +6,7 @@ export interface StoredAnswer {
   questionId: string;
   selected: string[];
   isCorrect: boolean | null;
+  unscored: boolean;
 }
 
 /** Only the answers whose live grade differs from the stored grade. `correctOf` returns null when the question is no longer in the bank. */
@@ -27,9 +28,9 @@ export function regradeAnswers(
 }
 
 /** Same scoring the quiz uses when an attempt is submitted. */
-export function attemptScore(correctCount: number, total: number): { scorePct: number; passed: boolean } {
+export function attemptScore(correctCount: number, total: number, thresholdPct: number = 80): { scorePct: number; passed: boolean } {
   return {
     scorePct: total === 0 ? 0 : Math.round((correctCount * 100) / total),
-    passed: passes(correctCount, total),
+    passed: passes(correctCount, total, thresholdPct),
   };
 }
