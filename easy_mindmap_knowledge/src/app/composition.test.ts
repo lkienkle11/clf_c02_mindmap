@@ -3,7 +3,9 @@ import { describe, expect, it } from 'vitest';
 import { loadCatalog } from '@/content/load-catalog';
 import { makeRawCatalog } from '@/testing/fixtures';
 import { createNodeSqliteExecutor } from '@/testing/node-sqlite-executor';
+import { makeFakeUpdater } from '@/testing/fake-updater';
 import { buildServices } from './composition';
+import { UpdateController } from '@/features/update';
 
 async function seedSubmitted(services: ReturnType<typeof buildServices>) {
   const a = services.repos.attempts;
@@ -35,5 +37,20 @@ describe('buildServices.rebuildStats', () => {
     });
     await services.rebuildStats(['q1', 'q2']);
     expect(seen).toEqual([['q1', 'q2']]);
+  });
+});
+
+describe('buildServices.updates', () => {
+  it('is null without an updater, as in development and in most tests', async () => {
+    const services = buildServices({ executor: await createNodeSqliteExecutor(), catalog: loadCatalog(makeRawCatalog()) });
+    expect(services.updates).toBeNull();
+  });
+
+  it('is an UpdateController over the given updater', async () => {
+    const fake = makeFakeUpdater({ update: { version: '2.0.0', sizeBytes: null } });
+    const services = buildServices({ executor: await createNodeSqliteExecutor(), catalog: loadCatalog(makeRawCatalog()), updater: fake });
+    expect(services.updates).toBeInstanceOf(UpdateController);
+    await services.updates?.check();
+    expect(services.updates?.info?.version).toBe('2.0.0');
   });
 });

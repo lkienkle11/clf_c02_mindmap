@@ -1,4 +1,5 @@
 # Windows and Linux jobs have NOT been run by the author; only the macOS build was verified locally.
+# Builds the development channel only: no secrets, no publishing.
 name: mindmap-build
 
 on:
