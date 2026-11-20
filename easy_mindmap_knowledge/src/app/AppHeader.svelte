@@ -18,7 +18,7 @@
   const items: { view: 'tree' | 'history' | 'reports' | 'settings'; label: string; route: Route }[] = [
     { view: 'tree', label: 'nav.tree', route: { view: 'tree' } },
     { view: 'history', label: 'nav.history', route: { view: 'history' } },
-    { view: 'reports', label: 'report.tab', route: { view: 'reports' } },
+    // TEMP-HIDE-REPORT: { view: 'reports', label: 'report.tab', route: { view: 'reports' } },
     { view: 'settings', label: 'nav.settings', route: { view: 'settings' } },
   ];
   // A lesson belongs to the mindmap section.

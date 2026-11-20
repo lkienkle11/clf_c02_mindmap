@@ -19,7 +19,8 @@ async function mount() {
   return env;
 }
 
-describe('AttemptDetail report buttons', () => {
+// TEMP-HIDE-REPORT: report UI is hidden for now; remove .skip when it is shown again
+describe.skip('AttemptDetail report buttons', () => {
   it('has one Report button per question', async () => {
     await mount();
     expect(screen.getAllByRole('button', { name: 'Report' })).toHaveLength(4);

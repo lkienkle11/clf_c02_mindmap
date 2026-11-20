@@ -15,7 +15,8 @@ async function mount(onreportchange = vi.fn()) {
   return { env, onreportchange };
 }
 
-describe('KnowledgeOverlay report buttons', () => {
+// TEMP-HIDE-REPORT: report UI is hidden for now; remove .skip when it is shown again
+describe.skip('KnowledgeOverlay report buttons', () => {
   it('offers one report button per lesson article', async () => {
     await mount();
     const dlg = screen.getByRole('dialog', { name: 'Review knowledge' });

@@ -1,7 +1,7 @@
 <script lang="ts">
   import type { Services } from '@/app/composition';
   import { OptionReview } from '@/features/practice';
-  import { ReportButton } from '@/features/report';
+  // TEMP-HIDE-REPORT: import { ReportButton } from '@/features/report';
   import { getI18n } from '@/i18n/i18n.svelte';
   import Button from '@/ui/Button.svelte';
   import Modal from '@/ui/Modal.svelte';
@@ -109,7 +109,7 @@
               selected={item.latestWrong.selected}
               optionOrder={item.latestWrong.optionOrder}
             />
-            <ReportButton
+            <!-- TEMP-HIDE-REPORT: <ReportButton
               {services}
               class="self-end"
               context={{
@@ -130,7 +130,7 @@
                   : {}),
               }}
               captureTarget={() => frames[item.questionId] ?? null}
-            />
+            /> -->
           </li>
         {/each}
       </ol>

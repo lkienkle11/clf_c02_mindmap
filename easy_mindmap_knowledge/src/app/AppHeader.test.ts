@@ -72,7 +72,8 @@ describe('AppHeader', () => {
     expect(await screen.findByRole('banner')).toBeInTheDocument();
   });
 
-  describe('Reports tab', () => {
+  // TEMP-HIDE-REPORT: report UI is hidden for now; remove .skip when it is shown again
+  describe.skip('Reports tab', () => {
     const seeds = [
       makeReportSeed({ id: 'a' }),
       makeReportSeed({ id: 'b' }),

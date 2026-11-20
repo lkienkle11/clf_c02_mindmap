@@ -2,7 +2,7 @@
   import type { Services } from '@/app/composition';
   import { getI18n } from '@/i18n/i18n.svelte';
   import { renderLessonBody } from '@/features/lesson';
-  import { ReportButton } from '@/features/report';
+  // TEMP-HIDE-REPORT: import { ReportButton } from '@/features/report';
   import Button from '@/ui/Button.svelte';
   import Modal from '@/ui/Modal.svelte';
 
@@ -58,12 +58,12 @@
         <div class={body}>{@html plain(lesson.body[i18n.locale])}</div>
       </div>
       <div class="mt-3 flex justify-end">
-        <ReportButton
+        <!-- TEMP-HIDE-REPORT: <ReportButton
           {services}
           context={{ type: 'lesson', lessonId: lesson.id, sourceScreen: 'knowledge' }}
           captureTarget={() => contents[lesson.id] ?? null}
           onopenchange={onreportchange}
-        />
+        /> -->
       </div>
     </article>
   {:else}
