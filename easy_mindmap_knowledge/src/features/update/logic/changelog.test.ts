@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import changelog from '../../../../CHANGELOG.md?raw';
-import { entriesUpTo, parseChangelog, parseNotes, pickNotes } from './changelog';
+import { entriesUpTo, parseChangelog, parseNotes, pickNotes, sortNewestFirst } from './changelog';
 
 describe('parseNotes', () => {
   it('reads both languages', () => {
@@ -71,5 +71,13 @@ describe('entriesUpTo', () => {
     expect(entriesUpTo(entries, '1.2.9').map((entry) => entry.version)).toEqual(['1.2.9', '1.2.2', '1.1.99', '0.99.99']);
     expect(entriesUpTo(entries, '1.10.0').map((entry) => entry.version)).toEqual(['1.10.0', '1.2.10', '1.2.9', '1.2.2', '1.1.99', '0.99.99']);
     expect(entriesUpTo(entries, '0.0.0')).toEqual([]);
+  });
+});
+
+describe('sortNewestFirst', () => {
+  it('orders entries by numeric major, minor, patch, newest first', () => {
+    const notes = { en: [], vi: [] };
+    const entries = ['0.1.0', '0.10.0', '0.2.0', '1.0.0'].map((version) => ({ version, notes }));
+    expect(sortNewestFirst(entries).map((e) => e.version)).toEqual(['1.0.0', '0.10.0', '0.2.0', '0.1.0']);
   });
 });

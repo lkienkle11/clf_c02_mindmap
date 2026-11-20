@@ -42,3 +42,14 @@ export function entriesUpTo(entries: ChangelogEntry[], installedVersion: string)
     return true;
   });
 }
+
+export function sortNewestFirst(entries: ChangelogEntry[]): ChangelogEntry[] {
+  return [...entries].sort((a, b) => {
+    const left = a.version.split('.').map(Number);
+    const right = b.version.split('.').map(Number);
+    for (let index = 0; index < 3; index++) {
+      if (left[index] !== right[index]) return right[index] - left[index];
+    }
+    return 0;
+  });
+}

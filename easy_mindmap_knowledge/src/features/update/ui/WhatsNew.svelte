@@ -1,7 +1,7 @@
 <script lang="ts">
   import { getI18n } from '@/i18n/i18n.svelte';
   import bundled from '../../../../CHANGELOG.md?raw';
-  import { entriesUpTo, parseChangelog, pickNotes } from '../logic/changelog';
+  import { entriesUpTo, parseChangelog, pickNotes, sortNewestFirst } from '../logic/changelog';
 
   interface Props {
     installedVersion: string;
@@ -12,7 +12,7 @@
 
   const i18n = getI18n();
   const headingId = $props.id();
-  const entries = $derived(entriesUpTo(parseChangelog(changelog), installedVersion));
+  const entries = $derived(sortNewestFirst(entriesUpTo(parseChangelog(changelog), installedVersion)));
 </script>
 
 {#if entries.length > 0}

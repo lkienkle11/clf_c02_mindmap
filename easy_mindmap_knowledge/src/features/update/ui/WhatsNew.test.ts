@@ -21,6 +21,18 @@ describe('WhatsNew', () => {
     expect(screen.queryByText('Version 0.3.0')).toBeNull();
   });
 
+  it('lists the newest version first and opens it even when the changelog is in ascending order', () => {
+    const ascending = '# Changelog\n\n' + entry('0.1.0', 'One', 'Một') + entry('0.2.0', 'Two', 'Hai') + entry('0.10.0', 'Ten', 'Mười');
+    const { container } = renderWithI18n(WhatsNew, { installedVersion: '0.10.0', changelog: ascending });
+    const sections = [...container.querySelectorAll('details')];
+    expect(sections.map((d) => d.querySelector('summary')?.textContent?.trim())).toEqual([
+      'Version 0.10.0',
+      'Version 0.2.0',
+      'Version 0.1.0',
+    ]);
+    expect(sections.map((d) => d.open)).toEqual([true, false, false]);
+  });
+
   it('shows the chosen language', () => {
     renderWithI18n(WhatsNew, { installedVersion: '0.3.0', changelog: CHANGELOG }, 'vi');
     expect(screen.getByText('Phiên bản 0.3.0')).toBeInTheDocument();
