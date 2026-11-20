@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { assertRealPubkey, checkRelease } from './check-release.mjs';
+import { assertPlatforms, assertRealPubkey, checkRelease } from './check-release.mjs';
 
 function filesAt(version: string) {
   return {
@@ -55,5 +55,27 @@ describe('assertRealPubkey', () => {
   it('passes for a real-looking base64 public key', () => {
     const key = 'dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDEyMzQ1Njc4OUFCQ0RFRjAKUldRQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQQ==';
     expect(() => assertRealPubkey(overlay(key))).not.toThrow();
+  });
+});
+
+describe('assertPlatforms', () => {
+  const required = ['darwin-aarch64', 'darwin-x86_64', 'windows-x86_64', 'linux-x86_64'];
+  const entry = { url: 'https://example.com/a', signature: 'sig' };
+  const latestWith = (keys: string[]) => ({ platforms: Object.fromEntries(keys.map(key => [key, entry])) });
+
+  it('passes when every required platform is present', () => {
+    expect(() => assertPlatforms(latestWith(required), required)).not.toThrow();
+  });
+
+  it('throws naming the missing platform', () => {
+    expect(() => assertPlatforms(latestWith(required.filter(key => key !== 'linux-x86_64')), required)).toThrow(/linux-x86_64/);
+  });
+
+  it('lists every missing platform', () => {
+    expect(() => assertPlatforms(latestWith(['darwin-aarch64']), required)).toThrow(/darwin-x86_64.*windows-x86_64.*linux-x86_64/);
+  });
+
+  it('throws when latest has no platforms object', () => {
+    expect(() => assertPlatforms({}, required)).toThrow();
   });
 });

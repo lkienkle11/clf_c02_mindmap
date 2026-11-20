@@ -20,6 +20,13 @@ export function assertRealPubkey(overlayText) {
   }
 }
 
+export function assertPlatforms(latest, required) {
+  const platforms = latest?.platforms;
+  if (typeof platforms !== 'object' || platforms === null) throw new Error('latest.json has no platforms object');
+  const missing = required.filter(key => !Object.hasOwn(platforms, key));
+  if (missing.length > 0) throw new Error(`latest.json is missing platforms: ${missing.join(', ')}`);
+}
+
 function latestPublishedVersion() {
   try {
     const tag = execFileSync('gh', ['release', 'view', '--json', 'tagName', '--jq', '.tagName'], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] }).trim();

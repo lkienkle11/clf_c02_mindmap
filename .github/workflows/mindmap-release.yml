@@ -40,6 +40,7 @@ jobs:
     needs: verify
     strategy:
       fail-fast: false
+      max-parallel: 1
       matrix:
         include:
           - os: macos-latest
@@ -127,6 +128,7 @@ jobs:
       - name: Add asset sizes to latest.json
         run: |
           gh release download "$GITHUB_REF_NAME" --pattern latest.json --clobber
+          node easy_mindmap_knowledge/scripts/release/assert-platforms.mjs latest.json
           gh release view "$GITHUB_REF_NAME" --json assets --jq .assets > assets.json
           node easy_mindmap_knowledge/scripts/release/add-sizes.mjs latest.json assets.json
           gh release upload "$GITHUB_REF_NAME" latest.json --clobber

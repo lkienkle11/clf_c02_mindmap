@@ -54,6 +54,7 @@ If the check fails, fix the cause, delete the tag locally and on GitHub (only po
 
 - A failed job can be re-run with "Re-run failed jobs" on the workflow run. `verify` is not repeated, so the version check does not run again.
 - A full re-run ("Re-run all jobs") after one platform has already published fails the version check on purpose, because that version is now the latest published release. In that case delete the partial GitHub Release and the tag (on GitHub and locally), fix the cause, and tag again.
+- The `finalize` job fails on purpose when `latest.json` lacks a platform (darwin-aarch64, darwin-x86_64, windows-x86_64 or linux-x86_64), so a release without an update path for some system never looks successful.
 
 ## What each platform downloads
 
