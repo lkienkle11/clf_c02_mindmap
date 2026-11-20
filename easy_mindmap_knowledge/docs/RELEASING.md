@@ -43,12 +43,17 @@ git push origin vX.Y.Z
 
 The `mindmap-release` workflow then:
 
-1. runs `scripts/release/check-release.mjs`, which fails unless the tag is `v` plus the shared version of the four files, the version is greater than the latest published release, and the updater public key is real;
-2. runs `npm test` and `npm run check`;
+1. in the `verify` job (run once, before any build), runs `scripts/release/check-release.mjs`, which fails unless the tag is `v` plus the shared version of the four files, the version is greater than the latest published release, and the updater public key is real;
+2. in the `build` job (after `verify`), runs `npm test` and `npm run check`;
 3. builds and signs each platform and uploads the files and `latest.json` to the GitHub release;
 4. in the `finalize` job, adds the asset sizes to `latest.json` and uploads it again.
 
 If the check fails, fix the cause, delete the tag locally and on GitHub (only possible while no release exists, or after you lift the tag rule), and tag again.
+
+## If a release fails halfway
+
+- A failed job can be re-run with "Re-run failed jobs" on the workflow run. `verify` is not repeated, so the version check does not run again.
+- A full re-run ("Re-run all jobs") after one platform has already published fails the version check on purpose, because that version is now the latest published release. In that case delete the partial GitHub Release and the tag (on GitHub and locally), fix the cause, and tag again.
 
 ## What each platform downloads
 
