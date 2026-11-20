@@ -11,6 +11,7 @@
   import type { PracticeSession } from '@/features/practice';
   import { ReviewLauncher, ReviewPrompts, ReviewRun, ReviewScreen } from '@/features/review';
   import { SettingsScreen } from '@/features/settings';
+  import { UpdatePrompt } from '@/features/update';
   import AppHeader from './AppHeader.svelte';
   import NoticeStack from './NoticeStack.svelte';
   import type { Notice } from './NoticeStack.svelte';
@@ -55,6 +56,15 @@
     ...(resumeNotice ? [{ id: 'resume', text: resumeNotice, onclose: () => (resumeNotice = null) }] : []),
     ...toasts.items.map((t) => ({ id: `toast-${t.id}`, text: i18n.t(t.key), onclose: () => toasts.dismiss(t.id) })),
   ]);
+
+  // Hold the update prompt back while a session runs or another prompt is open (same conditions as ReviewPrompts/ResumeGate).
+  const updateBlocked = $derived(
+    appState.view === 'practice' ||
+      appState.view === 'review' ||
+      appState.view === 'checkpoint' ||
+      (appState.dailyPromptVisible && appState.view === 'tree' && appState.resumeAttempt === null && appState.summaries.length > 0) ||
+      appState.resumeAttempt !== null,
+  );
 
   /** The checkpoint group this topic closes (when it is the group's last topic), or null. */
   function checkpointAfter(topicId: string): number | null {
@@ -116,5 +126,8 @@
   {/if}
   <ReviewPrompts {services} {appState} {launcher} />
   <ResumeGate {services} {appState} {onresumed} activeAttemptId={resumed?.attemptId ?? null} onnotice={(text) => (resumeNotice = text)} />
+  {#if services.updates}
+    <UpdatePrompt controller={services.updates} blocked={updateBlocked} />
+  {/if}
   <NoticeStack {notices} />
 </main>
