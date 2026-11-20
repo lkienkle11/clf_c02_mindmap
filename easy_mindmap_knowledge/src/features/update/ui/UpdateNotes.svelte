@@ -19,7 +19,7 @@
     role="region"
     tabindex="0"
     aria-label={i18n.t('update.notes.heading')}
-    class="max-h-[40vh] overflow-y-auto pr-2 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+    class="max-h-[30vh] overflow-y-auto pr-2 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
   >
     <ul class="list-disc pl-5 text-sm">
       {#each items as item}
