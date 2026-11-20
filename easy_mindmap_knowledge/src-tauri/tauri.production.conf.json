@@ -1,0 +1,35 @@
+{
+  "productName": "AWS CLF-C02 Mindmap",
+  "identifier": "app.awsclf.mindmap",
+  "app": {
+    "windows": [
+      {
+        "title": "AWS CLF-C02 Mindmap",
+        "width": 1280,
+        "height": 820,
+        "resizable": true,
+        "fullscreen": false,
+        "minWidth": 960,
+        "minHeight": 640,
+        "center": true
+      }
+    ]
+  },
+  "bundle": {
+    "createUpdaterArtifacts": true,
+    "targets": ["app", "dmg", "nsis", "deb"],
+    "windows": {
+      "nsis": {
+        "installMode": "currentUser"
+      }
+    }
+  },
+  "plugins": {
+    "updater": {
+      "pubkey": "REPLACE_WITH_TAURI_SIGNER_PUBLIC_KEY",
+      "endpoints": [
+        "https://github.com/lkienkle11/clf_c02_mindmap/releases/latest/download/latest.json"
+      ]
+    }
+  }
+}
