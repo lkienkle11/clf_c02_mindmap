@@ -176,7 +176,7 @@ describe('UpdateSection', () => {
     logged.mockRestore();
   });
 
-  it('alerts when the install fails and offers "Thử lại"', async () => {
+  it('alerts when the install fails and "Thử lại" installs the downloaded update again', async () => {
     const logged = vi.spyOn(console, 'error').mockImplementation(() => {});
     const { fake } = await mount({ update: found(null), failInstall: true });
     await userEvent.click(screen.getByRole('button', { name: 'Tải bản cập nhật' }));
@@ -184,7 +184,7 @@ describe('UpdateSection', () => {
     await userEvent.click(within(screen.getByRole('dialog')).getByRole('button', { name: 'Cập nhật ngay' }));
     expect(await screen.findByRole('alert')).toHaveTextContent('Không cài đặt được bản cập nhật.');
     await userEvent.click(screen.getByRole('button', { name: 'Thử lại' }));
-    expect(fake.calls).toEqual(['check', 'download', 'install', 'check']);
+    expect(fake.calls).toEqual(['check', 'download', 'install', 'install']);
     logged.mockRestore();
   });
 

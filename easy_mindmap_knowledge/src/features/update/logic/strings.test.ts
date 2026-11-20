@@ -45,3 +45,24 @@ describe('update strings', () => {
     },
   );
 });
+
+/** The exact wording the people using the app read, so a reworded string fails a test. */
+const WORDING: [locale: string, key: string, text: string][] = [
+  ['vi', 'update.modal.body', 'Đã có bản cập nhật {version} ({size}), cập nhật ngay?'],
+  ['vi', 'update.modal.confirm', 'Cập nhật ngay'],
+  ['vi', 'update.modal.later', 'Để sau'],
+  ['vi', 'update.download', 'Tải bản cập nhật ({size})'],
+  ['vi', 'update.install', 'Cài đặt bản cập nhật'],
+  ['vi', 'update.installing', 'Đang cài đặt…'],
+  ['vi', 'update.retry', 'Thử lại'],
+  ['en', 'update.modal.confirm', 'Update now'],
+  ['en', 'update.modal.later', 'Later'],
+  ['en', 'update.download', 'Download update ({size})'],
+  ['en', 'update.install', 'Install update'],
+];
+
+describe('update wording', () => {
+  it.each(WORDING)('%s %s reads exactly as agreed', (locale, key, text) => {
+    expect(LOCALES[locale][key]).toBe(text);
+  });
+});

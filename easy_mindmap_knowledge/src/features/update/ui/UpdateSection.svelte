@@ -47,6 +47,7 @@
 
   function retry(): void {
     if (controller.errorStage === 'download') void controller.download();
+    else if (controller.errorStage === 'install') void controller.install();
     else void controller.check();
   }
 

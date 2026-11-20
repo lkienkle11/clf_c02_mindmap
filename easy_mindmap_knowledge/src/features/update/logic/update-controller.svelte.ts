@@ -76,8 +76,10 @@ export class UpdateController {
   }
 
   async install(): Promise<void> {
-    if (this.status !== 'ready') return;
+    const canInstall = this.status === 'ready' || (this.status === 'error' && this.errorStage === 'install');
+    if (!canInstall) return;
     this.status = 'installing';
+    this.errorStage = null;
     try {
       await this.port.install();
     } catch (e) {

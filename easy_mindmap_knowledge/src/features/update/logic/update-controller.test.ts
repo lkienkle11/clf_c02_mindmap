@@ -160,4 +160,40 @@ describe('UpdateController.install', () => {
     expect(c.status).toBe('error');
     expect(c.errorStage).toBe('install');
   });
+
+  it('retries the install of the already downloaded update after an install failure', async () => {
+    const calls: string[] = [];
+    let failNext = true;
+    const c = new UpdateController({
+      check: async () => UPDATE,
+      download: async () => { calls.push('download'); },
+      install: async () => {
+        calls.push('install');
+        if (failNext) {
+          failNext = false;
+          throw new Error('install failed');
+        }
+      },
+    });
+    await c.check();
+    await c.download();
+    await c.install();
+    expect(c.status).toBe('error');
+    expect(c.errorStage).toBe('install');
+    await c.install();
+    expect(c.status).toBe('installing');
+    expect(calls).toEqual(['download', 'install', 'install']);
+  });
+
+  it('is ignored after a check or download failure', async () => {
+    const port = makeFakeUpdater({ update: UPDATE, failDownload: true });
+    const c = new UpdateController(port);
+    await c.check();
+    await c.download();
+    expect(c.errorStage).toBe('download');
+    await c.install();
+    expect(c.status).toBe('error');
+    expect(c.errorStage).toBe('download');
+    expect(port.calls).not.toContain('install');
+  });
 });
