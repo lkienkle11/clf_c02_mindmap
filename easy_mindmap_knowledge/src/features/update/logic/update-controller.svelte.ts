@@ -22,23 +22,34 @@ export class UpdateController {
 
   private readonly port: UpdaterPort;
   private inflightCheck: Promise<void> | null = null;
+  /** Whether the request in flight stays quiet on failure; a non-silent caller joining it turns this off. */
+  private inflightSilent = false;
 
   constructor(port: UpdaterPort) {
     this.port = port;
   }
 
-  /** Overlapping checks share one request, so they cannot overwrite each other's result. */
+  /**
+   * Overlapping checks share one request, so they cannot overwrite each other's result. The request is silent
+   * only while every caller asked for silence. An install error is left alone so the downloaded update stays installable.
+   */
   check(opts: { silent?: boolean } = {}): Promise<void> {
-    if (this.status === 'downloading' || this.status === 'ready' || this.status === 'installing') {
+    const keepsDownload = this.status === 'error' && this.errorStage === 'install';
+    if (keepsDownload || this.status === 'downloading' || this.status === 'ready' || this.status === 'installing') {
       return Promise.resolve();
     }
-    this.inflightCheck ??= this.runCheck(opts).finally(() => {
+    if (this.inflightCheck) {
+      if (!opts.silent) this.inflightSilent = false;
+      return this.inflightCheck;
+    }
+    this.inflightSilent = opts.silent ?? false;
+    this.inflightCheck = this.runCheck().finally(() => {
       this.inflightCheck = null;
     });
     return this.inflightCheck;
   }
 
-  private async runCheck(opts: { silent?: boolean }): Promise<void> {
+  private async runCheck(): Promise<void> {
     this.status = 'checking';
     this.errorStage = null;
     try {
@@ -49,7 +60,7 @@ export class UpdateController {
       this.status = found ? 'available' : 'upToDate';
     } catch (e) {
       if (this.status !== 'checking') return;
-      if (opts.silent) {
+      if (this.inflightSilent) {
         this.status = 'idle';
         return;
       }

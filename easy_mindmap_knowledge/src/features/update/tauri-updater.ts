@@ -17,6 +17,9 @@ type CheckFn = typeof import('@tauri-apps/plugin-updater').check;
 type RelaunchFn = typeof import('@tauri-apps/plugin-process').relaunch;
 type UpdateLike = NonNullable<Awaited<ReturnType<CheckFn>>>;
 
+const CHECK_TIMEOUT_MS = 30_000;
+const DOWNLOAD_TIMEOUT_MS = 600_000;
+
 export interface TauriUpdaterDeps {
   check?: CheckFn;
   relaunch?: RelaunchFn;
@@ -44,10 +47,18 @@ export function createTauriUpdater(deps: TauriUpdaterDeps = {}): UpdaterPort {
   const relaunch: RelaunchFn = deps.relaunch ?? (async () => (await import('@tauri-apps/plugin-process')).relaunch());
   const userAgent = deps.userAgent ?? (typeof navigator === 'undefined' ? '' : navigator.userAgent);
   let current: UpdateLike | null = null;
+  let busy = false;
 
   return {
     async check(): Promise<UpdateInfo | null> {
-      const update = await check();
+      const update = await check({ timeout: CHECK_TIMEOUT_MS });
+      if (!busy) {
+        try {
+          await current?.close();
+        } catch {
+          // A failed release must not break the check.
+        }
+      }
       current = update;
       if (update === null) return null;
       return { version: update.version, sizeBytes: platformSize(update.rawJson, userAgent) };
@@ -56,7 +67,9 @@ export function createTauriUpdater(deps: TauriUpdaterDeps = {}): UpdaterPort {
       if (current === null) throw new Error('No update to download');
       let downloaded = 0;
       let total: number | null = null;
-      await current.download((e) => {
+      busy = true;
+      try {
+        await current.download((e) => {
         if (e.event === 'Started') {
           total = e.data.contentLength ?? null;
           onProgress({ downloaded: 0, total });
@@ -64,12 +77,20 @@ export function createTauriUpdater(deps: TauriUpdaterDeps = {}): UpdaterPort {
           downloaded += e.data.chunkLength;
           onProgress({ downloaded, total });
         }
-      });
+      }, { timeout: DOWNLOAD_TIMEOUT_MS });
+      } finally {
+        busy = false;
+      }
     },
     async install(): Promise<void> {
       if (current === null) throw new Error('No update to install');
-      await current.install();
-      await relaunch();
+      busy = true;
+      try {
+        await current.install();
+        await relaunch();
+      } finally {
+        busy = false;
+      }
     },
   };
 }

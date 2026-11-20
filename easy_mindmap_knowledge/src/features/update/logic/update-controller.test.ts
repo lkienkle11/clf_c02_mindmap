@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import { makeFakeUpdater } from '@/testing/fake-updater';
 import { UpdateController } from './update-controller.svelte';
 
@@ -195,5 +195,58 @@ describe('UpdateController.install', () => {
     expect(c.status).toBe('error');
     expect(c.errorStage).toBe('download');
     expect(port.calls).not.toContain('install');
+  });
+});
+
+describe('UpdateController.check after an install failure', () => {
+  it('keeps the downloaded update installable: check() is ignored in the install error state', async () => {
+    const port = makeFakeUpdater({ update: UPDATE, failInstall: true });
+    const c = new UpdateController(port);
+    await c.check();
+    await c.download();
+    await c.install();
+    await c.check();
+    expect(port.calls).toEqual(['check', 'download', 'install']);
+    expect(c.status).toBe('error');
+    expect(c.errorStage).toBe('install');
+  });
+});
+
+describe('UpdateController.check silent flag when checks overlap', () => {
+  /** A port whose check stays pending until the test settles it. */
+  function deferredCheck() {
+    let reject: (e: Error) => void = () => {};
+    const port = {
+      check: () => new Promise<null>((_, rej) => { reject = rej; }),
+      download: async () => {},
+      install: async () => {},
+    };
+    return { port, fail: () => reject(new Error('offline')) };
+  }
+
+  it('turns a silent check in flight into a non-silent one when a non-silent check joins it', async () => {
+    const logged = vi.spyOn(console, 'error').mockImplementation(() => {});
+    const d = deferredCheck();
+    const c = new UpdateController(d.port);
+    const start = c.check({ silent: true });
+    const settings = c.check();
+    d.fail();
+    await Promise.all([start, settings]);
+    expect(c.status).toBe('error');
+    expect(c.errorStage).toBe('check');
+    logged.mockRestore();
+  });
+
+  it('keeps a non-silent check in flight non-silent when a silent check joins it', async () => {
+    const logged = vi.spyOn(console, 'error').mockImplementation(() => {});
+    const d = deferredCheck();
+    const c = new UpdateController(d.port);
+    const settings = c.check();
+    const start = c.check({ silent: true });
+    d.fail();
+    await Promise.all([settings, start]);
+    expect(c.status).toBe('error');
+    expect(c.errorStage).toBe('check');
+    logged.mockRestore();
   });
 });
