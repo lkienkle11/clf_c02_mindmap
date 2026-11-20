@@ -41,6 +41,28 @@ describe('buildServices.rebuildStats', () => {
 });
 
 describe('buildServices.updates', () => {
+  it('loads and persists postponed versions through settings', async () => {
+    const executor = await createNodeSqliteExecutor();
+    const catalog = loadCatalog(makeRawCatalog());
+    const services = buildServices({ executor, catalog, updater: makeFakeUpdater({
+      update: { version: '2.0.0', sizeBytes: null, notes: null },
+    }) });
+    await services.repos.settings.set('update_prompt_postponed_version', '1.2.0');
+    await services.updates!.loadPostponed();
+    expect(services.updates!.postponedVersion).toBe('1.2.0');
+    await services.updates!.check();
+    expect(services.updates!.promptable).toBe(true);
+    await services.updates!.postpone();
+    expect(await services.repos.settings.get('update_prompt_postponed_version')).toBe('2.0.0');
+
+    const restarted = buildServices({ executor, catalog, updater: makeFakeUpdater({
+      update: { version: '2.0.0', sizeBytes: null, notes: null },
+    }) });
+    await restarted.updates!.loadPostponed();
+    await restarted.updates!.check();
+    expect(restarted.updates!.promptable).toBe(false);
+  });
+
   it('is null without an updater, as in development and in most tests', async () => {
     const services = buildServices({ executor: await createNodeSqliteExecutor(), catalog: loadCatalog(makeRawCatalog()) });
     expect(services.updates).toBeNull();

@@ -1,5 +1,6 @@
 import type { DownloadProgress, UpdateInfo, UpdaterPort } from './updater-port';
 import { percentDone } from './format';
+import type { PromptStore } from './prompt-store';
 
 export type UpdateStatus =
   | 'idle'
@@ -19,14 +20,50 @@ export class UpdateController {
   progress = $state.raw<DownloadProgress | null>(null);
   errorStage = $state<ErrorStage | null>(null);
   percent = $derived(this.progress ? percentDone(this.progress.downloaded, this.progress.total) : null);
+  hasUpdate = $derived(
+    this.status === 'available' || this.status === 'downloading' || this.status === 'ready' ||
+    this.status === 'installing' ||
+    (this.status === 'error' && (this.errorStage === 'download' || this.errorStage === 'install')),
+  );
+  postponedVersion = $state<string | null | undefined>(undefined);
+  promptable = $derived(
+    this.status === 'available' && this.info !== null && this.postponedVersion !== undefined &&
+    this.info.version !== this.postponedVersion,
+  );
 
   private readonly port: UpdaterPort;
+  private readonly store?: PromptStore;
   private inflightCheck: Promise<void> | null = null;
   /** Whether the request in flight stays quiet on failure; a non-silent caller joining it turns this off. */
   private inflightSilent = false;
 
-  constructor(port: UpdaterPort) {
+  constructor(port: UpdaterPort, store?: PromptStore) {
     this.port = port;
+    this.store = store;
+  }
+
+  async loadPostponed(): Promise<void> {
+    try {
+      this.postponedVersion = (await this.store?.get()) ?? null;
+    } catch (e) {
+      console.error('Could not load the postponed update version', e);
+    }
+  }
+
+  async postpone(): Promise<void> {
+    if (!this.info) return;
+    const version = this.info.version;
+    this.postponedVersion = version;
+    try {
+      await this.store?.set(version);
+    } catch (e) {
+      console.error('Could not store the postponed update version', e);
+    }
+  }
+
+  async updateNow(): Promise<void> {
+    await this.download();
+    if (this.status === 'ready') await this.install();
   }
 
   /**
