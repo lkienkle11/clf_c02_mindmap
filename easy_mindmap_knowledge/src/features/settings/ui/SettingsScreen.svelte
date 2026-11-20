@@ -4,6 +4,8 @@
   import { SETTING_LOCALE } from '@/app/app-state.svelte';
   import type { Services } from '@/app/composition';
   // TEMP-HIDE-REPORT: import { ReportButton } from '@/features/report';
+  import { UpdateSection } from '@/features/update';
+  import { onMount } from 'svelte';
   import { getI18n } from '@/i18n/i18n.svelte';
   import type { Locale } from '@/i18n/i18n.svelte';
 
@@ -22,6 +24,10 @@
   ];
   let failed = $state(false);
   let seq = 0;
+
+  onMount(() => {
+    void services.updates?.check();
+  });
 
   async function choose(value: Locale): Promise<void> {
     const previous = i18n.locale;
@@ -67,4 +73,8 @@
   <!-- TEMP-HIDE-REPORT: <ReportButton {services} context={{ type: 'system' }} class="self-start" /> -->
 
   <p class="text-sm text-muted-foreground">{i18n.t('settings.version', { version })}</p>
+
+  {#if services.updates}
+    <UpdateSection controller={services.updates} />
+  {/if}
 </section>

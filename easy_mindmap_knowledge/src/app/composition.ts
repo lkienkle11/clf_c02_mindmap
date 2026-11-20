@@ -23,6 +23,8 @@ import type {
 } from '@/persistence';
 import { LeitnerScheduler, rebuildStatsFor } from '@/features/review';
 import type { RebuildDeps, ReviewScheduler } from '@/features/review';
+import { UpdateController } from '@/features/update';
+import type { UpdaterPort } from '@/features/update';
 
 export interface Services {
   catalog: Catalog;
@@ -44,6 +46,8 @@ export interface Services {
    * without importing the review feature (review depends on practice, never the other way round).
    */
   rebuildStats(questionIds: string[]): Promise<void>;
+  /** null when this build has no updater (the development channel, and most tests). */
+  updates: UpdateController | null;
   now(): number;
   newId(): string;
 }
@@ -59,6 +63,8 @@ export function buildServices(parts: {
   /** Test override; defaults to rebuildStatsFor over this executor and catalog. */
   rebuildStats?: (questionIds: string[]) => Promise<void>;
   beforeRegrade?: () => Promise<void>;
+  /** Defaults to null: no update UI. */
+  updater?: UpdaterPort | null;
 }): Services {
   const { executor, catalog } = parts;
   const scheduler = new LeitnerScheduler();
@@ -79,6 +85,7 @@ export function buildServices(parts: {
     reportStorage: parts.reportStorage ?? createUnavailableReportStorage(),
     rebuildStats: parts.rebuildStats ?? ((ids) => rebuildStatsFor(rebuildDeps, ids)),
     ...(parts.beforeRegrade !== undefined ? { beforeRegrade: parts.beforeRegrade } : {}),
+    updates: parts.updater ? new UpdateController(parts.updater) : null,
     now: parts.now ?? (() => Date.now()),
     newId: parts.newId ?? (() => crypto.randomUUID()),
   };

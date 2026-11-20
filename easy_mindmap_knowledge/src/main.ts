@@ -18,5 +18,6 @@ void startApp({
     const locale = await appState.load();
     target.replaceChildren();
     mount(App, { target, props: { services, appState, i18n: createI18n(locale ?? 'vi') } });
+    void services.updates?.check({ silent: true });
   },
 });

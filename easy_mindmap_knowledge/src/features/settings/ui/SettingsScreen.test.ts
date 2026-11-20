@@ -1,7 +1,10 @@
 import { describe, expect, it, vi } from 'vitest';
 import { fireEvent, screen, waitFor, within } from '@testing-library/svelte';
 import userEvent from '@testing-library/user-event';
+import { version } from '../../../../package.json';
 import { AppState } from '@/app/app-state.svelte';
+import { UpdateController } from '@/features/update';
+import { makeFakeUpdater } from '@/testing/fake-updater';
 import { makeHistoryEnv } from '@/testing/history-env';
 import { makePracticeEnv } from '@/testing/practice-env';
 import { makeReportEnv, PNG_BYTES } from '@/testing/report-env';
@@ -21,7 +24,26 @@ describe('SettingsScreen', () => {
     expect(group).toBeInTheDocument();
     expect(screen.getByRole('radio', { name: 'English' })).toBeChecked();
     expect(screen.getByRole('radio', { name: 'Tiếng Việt' })).not.toBeChecked();
-    expect(screen.getByText(/0\.1\.0/)).toBeInTheDocument();
+    expect(screen.getByText(new RegExp(version.replaceAll('.', '\\.')))).toBeInTheDocument();
+  });
+
+  it('shows no update section when there is no updater (development channel)', async () => {
+    const env = await makeHistoryEnv();
+    expect(env.services.updates).toBeNull();
+    renderWithI18n(SettingsScreen, { services: env.services, appState: env.appState }, 'vi');
+    expect(screen.queryByRole('heading', { name: 'Cập nhật' })).toBeNull();
+  });
+
+  it('shows the update section under the version and checks for updates on open', async () => {
+    const env = await makeHistoryEnv();
+    const fake = makeFakeUpdater({ update: { version: '9.9.9', sizeBytes: null } });
+    const services = { ...env.services, updates: new UpdateController(fake) };
+    renderWithI18n(SettingsScreen, { services, appState: env.appState }, 'vi');
+    expect(await screen.findByRole('button', { name: 'Tải bản cập nhật' })).toBeInTheDocument();
+    expect(fake.calls).toEqual(['check']);
+    const versionLine = screen.getByText(new RegExp(version.replaceAll('.', '\\.')));
+    const heading = screen.getByRole('heading', { name: 'Cập nhật' });
+    expect(versionLine.compareDocumentPosition(heading) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
   });
 
   it('switches the language at once and saves it', async () => {
