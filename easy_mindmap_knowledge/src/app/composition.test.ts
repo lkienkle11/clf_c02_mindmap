@@ -50,7 +50,7 @@ describe('buildServices.updates', () => {
     await services.repos.settings.set('update_prompt_postponed_version', '1.2.0');
     await services.updates!.loadPostponed();
     expect(services.updates!.postponedVersion).toBe('1.2.0');
-    await services.updates!.check();
+    await services.updates!.checkAtStart();
     expect(services.updates!.promptable).toBe(true);
     await services.updates!.postpone();
     expect(await services.repos.settings.get('update_prompt_postponed_version')).toBe('2.0.0');
@@ -59,7 +59,7 @@ describe('buildServices.updates', () => {
       update: { version: '2.0.0', sizeBytes: null, notes: null },
     }) });
     await restarted.updates!.loadPostponed();
-    await restarted.updates!.check();
+    await restarted.updates!.checkAtStart();
     expect(restarted.updates!.promptable).toBe(false);
   });
 

@@ -29,7 +29,7 @@ async function setup(o: FakeUpdaterOptions = { update: INFO }, blocked = false) 
   const store = memoryStore();
   const controller = new UpdateController(fake, store);
   await controller.loadPostponed();
-  await controller.check();
+  await controller.checkAtStart();
   // A getter over a reactive set lets a test flip `blocked` after the first render.
   const flags = new SvelteSet<string>(blocked ? ['blocked'] : []);
   const props = {
@@ -50,6 +50,20 @@ describe('UpdatePrompt', () => {
     expect(screen.getByText('Đã có bản cập nhật 1.2.0 (12.3 MB), cập nhật ngay?')).toBeInTheDocument();
     expect(screen.getByText('Có gì mới')).toBeInTheDocument();
     expect(screen.getByText('Khởi động nhanh hơn')).toBeInTheDocument();
+  });
+
+  it('keeps the title and both buttons outside the notes scroll region with 30 long notes', async () => {
+    const bullets = Array.from({ length: 30 }, (_, n) => `- Ghi chú dài số ${n} ${'rất dài '.repeat(12)}`).join('\n');
+    await setup({ update: { ...INFO, notes: `### Tiếng Việt\n${bullets}\n` } });
+    const region = screen.getByRole('region', { name: 'Có gì mới' });
+    expect(region.querySelectorAll('li')).toHaveLength(30);
+    for (const el of [
+      screen.getByRole('heading', { name: 'Đã có bản cập nhật' }),
+      screen.getByRole('button', { name: 'Cập nhật ngay' }),
+      screen.getByRole('button', { name: 'Để sau' }),
+    ]) {
+      expect(region).not.toContainElement(el);
+    }
   });
 
   it('does not open while blocked and opens when unblocked', async () => {
@@ -101,7 +115,7 @@ describe('UpdatePrompt', () => {
     };
     const controller = new UpdateController(port, memoryStore());
     await controller.loadPostponed();
-    await controller.check();
+    await controller.checkAtStart();
     renderWithI18n(UpdatePrompt, { controller, blocked: false }, 'vi');
     await tick();
     await userEvent.click(screen.getByRole('button', { name: 'Cập nhật ngay' }));
@@ -156,7 +170,7 @@ describe('UpdatePrompt', () => {
     };
     const controller = new UpdateController(port, memoryStore());
     await controller.loadPostponed();
-    await controller.check();
+    await controller.checkAtStart();
     const flags = new SvelteSet<string>();
     renderWithI18n(
       UpdatePrompt,

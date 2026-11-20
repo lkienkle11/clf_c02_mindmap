@@ -47,6 +47,24 @@ describe('SettingsScreen', () => {
     expect(versionLine.compareDocumentPosition(heading) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
   });
 
+  it('keeps the pending update visible when checking on open', async () => {
+    const env = await makeHistoryEnv();
+    const options = { update: { version: '9.9.9', sizeBytes: null, notes: null }, failCheck: false };
+    const fake = makeFakeUpdater(options);
+    const updates = new UpdateController(fake);
+    await updates.check();
+    options.failCheck = true;
+    const services = { ...env.services, updates };
+
+    renderWithI18n(SettingsScreen, { services, appState: env.appState }, 'vi');
+
+    expect(screen.getByRole('button', { name: 'Tải bản cập nhật' })).toBeInTheDocument();
+    expect(updates.hasUpdate).toBe(true);
+    expect(fake.calls).toEqual(['check']);
+    await waitFor(() => expect(updates.status).toBe('available'));
+    expect(screen.getByRole('button', { name: 'Tải bản cập nhật' })).toBeInTheDocument();
+  });
+
   it('renders the release history only when services.updates is set', async () => {
     const env = await makeHistoryEnv();
     const { unmount } = renderWithI18n(SettingsScreen, { services: env.services, appState: env.appState });

@@ -19,6 +19,7 @@ void startApp({
     target.replaceChildren();
     mount(App, { target, props: { services, appState, i18n: createI18n(locale ?? 'vi') } });
     await services.updates?.loadPostponed();
-    void services.updates?.check({ silent: true });
+    void services.updates?.checkAtStart();
+    services.updates?.startRechecks();
   },
 });

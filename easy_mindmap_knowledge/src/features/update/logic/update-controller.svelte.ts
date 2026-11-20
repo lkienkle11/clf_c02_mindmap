@@ -26,9 +26,10 @@ export class UpdateController {
     (this.status === 'error' && (this.errorStage === 'download' || this.errorStage === 'install')),
   );
   postponedVersion = $state<string | null | undefined>(undefined);
+  promptVersion = $state<string | null>(null);
   promptable = $derived(
     this.status === 'available' && this.info !== null && this.postponedVersion !== undefined &&
-    this.info.version !== this.postponedVersion,
+    this.info.version !== this.postponedVersion && this.info.version === this.promptVersion,
   );
 
   private readonly port: UpdaterPort;
@@ -66,39 +67,64 @@ export class UpdateController {
     if (this.status === 'ready') await this.install();
   }
 
+  async checkAtStart(): Promise<void> {
+    await this.check({ silent: true });
+    if (this.status === 'available' && this.info) this.promptVersion = this.info.version;
+  }
+
+  startRechecks(
+    intervalMs = 6 * 60 * 60 * 1000,
+    schedule: (fn: () => void, ms: number) => () => void = (fn, ms) => {
+      const id = setInterval(fn, ms);
+      return () => clearInterval(id);
+    },
+  ): () => void {
+    return schedule(() => { void this.check({ silent: true }); }, intervalMs);
+  }
+
   /**
    * Overlapping checks share one request, so they cannot overwrite each other's result. The request is silent
    * only while every caller asked for silence. An install error is left alone so the downloaded update stays installable.
    */
   check(opts: { silent?: boolean } = {}): Promise<void> {
     const keepsDownload = this.status === 'error' && this.errorStage === 'install';
-    if (keepsDownload || this.status === 'downloading' || this.status === 'ready' || this.status === 'installing') {
+    if (keepsDownload || this.status === 'available' || this.status === 'downloading' || this.status === 'ready' || this.status === 'installing') {
+      return Promise.resolve();
+    }
+    if (opts.silent && this.status === 'error' && this.errorStage !== 'check') {
       return Promise.resolve();
     }
     if (this.inflightCheck) {
-      if (!opts.silent) this.inflightSilent = false;
+      if (!opts.silent) {
+        this.inflightSilent = false;
+        if (this.status === 'upToDate') this.status = 'checking';
+      }
       return this.inflightCheck;
     }
     this.inflightSilent = opts.silent ?? false;
-    this.inflightCheck = this.runCheck().finally(() => {
+    this.inflightCheck = this.runCheck(this.inflightSilent && this.status === 'upToDate').finally(() => {
       this.inflightCheck = null;
     });
     return this.inflightCheck;
   }
 
-  private async runCheck(): Promise<void> {
-    this.status = 'checking';
-    this.errorStage = null;
+  private async runCheck(keepStatus: boolean): Promise<void> {
+    if (!keepStatus) {
+      this.status = 'checking';
+      this.errorStage = null;
+    }
+    // Quiet re-checks retain upToDate; a manual caller joining promotes them to checking.
+    const isCurrent = () => this.status === (keepStatus && this.inflightSilent ? 'upToDate' : 'checking');
     try {
       const found = await this.port.check();
       // A newer check may already have moved on (available, downloading, ready...): drop this stale result.
-      if (this.status !== 'checking') return;
+      if (!isCurrent()) return;
       this.info = found;
       this.status = found ? 'available' : 'upToDate';
     } catch (e) {
-      if (this.status !== 'checking') return;
+      if (!isCurrent()) return;
       if (this.inflightSilent) {
-        this.status = 'idle';
+        if (!keepStatus) this.status = 'idle';
         return;
       }
       console.error('Could not check for updates', e);
