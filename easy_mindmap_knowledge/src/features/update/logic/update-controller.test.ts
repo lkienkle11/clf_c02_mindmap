@@ -61,7 +61,7 @@ describe('UpdateController pending updates', () => {
       get: () => new Promise((resolve) => { finishRead = resolve; }),
       set: async () => {},
     });
-    await c.check();
+    await c.checkAtStart();
     expect(c.postponedVersion).toBeUndefined();
     expect(c.promptable).toBe(false);
     const reading = c.loadPostponed();
@@ -75,21 +75,19 @@ describe('UpdateController pending updates', () => {
   });
 
   it('promptable is false for a postponed version and true again for a newer one', async () => {
-    let update = UPDATE;
-    const c = new UpdateController({ ...makeFakeUpdater(), check: async () => update }, memoryPromptStore('1.2.0'));
-    await c.loadPostponed();
-    await c.check();
-    expect(c.promptable).toBe(false);
-    update = { ...UPDATE, version: '1.3.0' };
-    await c.check();
-    expect(c.promptable).toBe(true);
+    for (const [version, promptable] of [['1.2.0', false], ['1.3.0', true]] as const) {
+      const c = new UpdateController(makeFakeUpdater({ update: { ...UPDATE, version } }), memoryPromptStore('1.2.0'));
+      await c.loadPostponed();
+      await c.checkAtStart();
+      expect(c.promptable).toBe(promptable);
+    }
   });
 
   it('postpone stores the version and clears promptable', async () => {
     const store = memoryPromptStore();
     const c = new UpdateController(makeFakeUpdater({ update: UPDATE }), store);
     await c.loadPostponed();
-    await c.check();
+    await c.checkAtStart();
     await c.postpone();
     expect(await store.get()).toBe('1.2.0');
     expect(c.postponedVersion).toBe('1.2.0');
@@ -105,7 +103,7 @@ describe('UpdateController pending updates', () => {
         set: async () => { throw failure; },
       });
       await c.loadPostponed();
-      await c.check();
+      await c.checkAtStart();
       await expect(c.postpone()).resolves.toBeUndefined();
       expect(c.postponedVersion).toBe('1.2.0');
       expect(c.promptable).toBe(false);
@@ -124,7 +122,7 @@ describe('UpdateController pending updates', () => {
         set: async () => {},
       });
       await expect(c.loadPostponed()).resolves.toBeUndefined();
-      await c.check();
+      await c.checkAtStart();
       expect(c.postponedVersion).toBeUndefined();
       expect(c.promptable).toBe(false);
       expect(logged).toHaveBeenCalledWith(expect.any(String), failure);
@@ -153,6 +151,133 @@ describe('UpdateController pending updates', () => {
 });
 
 describe('UpdateController.check', () => {
+  it('checkAtStart sets promptVersion only when an update is available', async () => {
+    const port = makeFakeUpdater({ update: UPDATE });
+    const c = new UpdateController(port);
+    await c.loadPostponed();
+    expect(c.promptVersion).toBeNull();
+    await c.checkAtStart();
+    expect(c.promptVersion).toBe('1.2.0');
+    expect(c.promptable).toBe(true);
+    for (const options of [{ update: null }, { failCheck: true }]) {
+      const empty = new UpdateController(makeFakeUpdater(options));
+      await empty.checkAtStart();
+      expect(empty.promptVersion).toBeNull();
+      expect(empty.promptable).toBe(false);
+    }
+  });
+
+  it.each([false, true])('a later newer find is not promptable after postponing=%s', async (postpone) => {
+    let update = UPDATE;
+    const c = new UpdateController({ ...makeFakeUpdater(), check: async () => update });
+    await c.loadPostponed();
+    await c.checkAtStart();
+    if (postpone) await c.postpone();
+    update = { ...UPDATE, version: '1.3.0' };
+    await c.check();
+    expect(c.info?.version).toBe('1.3.0');
+    expect(c.promptVersion).toBe('1.2.0');
+    expect(c.promptable).toBe(false);
+    expect(c.hasUpdate).toBe(true);
+  });
+
+  it.each([null, UPDATE])('a silent re-check keeps upToDate while pending and applies %j', async (found) => {
+    let finish!: (value: typeof UPDATE | null) => void;
+    const port = makeFakeUpdater();
+    const c = new UpdateController(port);
+    await c.check();
+    port.check = () => new Promise((resolve) => { finish = resolve; });
+    const pending = c.check({ silent: true });
+    expect(c.status).toBe('upToDate');
+    finish(found);
+    await pending;
+    expect(c.status).toBe(found ? 'available' : 'upToDate');
+    expect(c.info).toEqual(found);
+    expect(c.promptable).toBe(false);
+  });
+
+  it('a silent re-check failure changes nothing', async () => {
+    const options = { failCheck: false };
+    const port = makeFakeUpdater(options);
+    const c = new UpdateController(port);
+    await c.check();
+    options.failCheck = true;
+    await c.check({ silent: true });
+    expect(c.status).toBe('upToDate');
+    expect(c.info).toBeNull();
+    expect(c.errorStage).toBeNull();
+  });
+
+  it.each(['available', 'downloading', 'ready', 'installing', 'download', 'install'] as const)(
+    'a silent re-check does nothing with a pending update in %s', async (stage) => {
+      const port = makeFakeUpdater({ update: UPDATE, failDownload: stage === 'download', failInstall: stage === 'install' });
+      const c = new UpdateController(port);
+      await c.check();
+      let downloading: Promise<void> | undefined;
+      if (stage !== 'available') {
+        downloading = c.download();
+        if (stage !== 'downloading') await downloading;
+      }
+      if (stage === 'installing' || stage === 'install') await c.install();
+      const status = c.status;
+      const errorStage = c.errorStage;
+      const pending = c.check({ silent: true });
+      expect(c.status).toBe(status);
+      expect(c.errorStage).toBe(errorStage);
+      await pending;
+      expect(c.info).toEqual(UPDATE);
+      expect(port.calls.filter((call) => call === 'check')).toHaveLength(1);
+      await downloading;
+    },
+  );
+
+  it('a non-silent check still shows checking from upToDate', async () => {
+    const port = makeFakeUpdater();
+    const c = new UpdateController(port);
+    await c.check();
+    const pending = c.check();
+    expect(c.status).toBe('checking');
+    await pending;
+    expect(c.status).toBe('upToDate');
+  });
+
+  it('startRechecks ticks silently every six hours and its stop function ends them', async () => {
+    vi.useFakeTimers();
+    try {
+      const options = { failCheck: false };
+      const port = makeFakeUpdater(options);
+      const c = new UpdateController(port);
+      await c.check();
+      options.failCheck = true;
+      const stop = c.startRechecks();
+      await vi.advanceTimersByTimeAsync(6 * 60 * 60 * 1000 - 1);
+      expect(port.calls).toEqual(['check']);
+      await vi.advanceTimersByTimeAsync(1);
+      expect(port.calls).toEqual(['check', 'check']);
+      expect(c.status).toBe('upToDate');
+      stop();
+      await vi.advanceTimersByTimeAsync(6 * 60 * 60 * 1000);
+      expect(port.calls).toEqual(['check', 'check']);
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
+  it('startRechecks accepts a scheduler and interval and returns its stop function', async () => {
+    let tick!: () => void;
+    let interval = 0;
+    const stop = () => {};
+    const port = makeFakeUpdater();
+    const c = new UpdateController(port);
+    const cancel = c.startRechecks(123, (fn, ms) => { tick = fn; interval = ms; return stop; });
+    expect(interval).toBe(123);
+    expect(cancel).toBe(stop);
+    tick();
+    await c.check({ silent: true });
+    expect(c.status).toBe('upToDate');
+    expect(port.calls).toEqual(['check']);
+  });
+
   it('becomes available with the info when an update exists', async () => {
     const c = new UpdateController(makeFakeUpdater({ update: UPDATE }));
     await c.check();

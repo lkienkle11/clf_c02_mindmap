@@ -29,7 +29,7 @@ async function setup(o: FakeUpdaterOptions = { update: INFO }, blocked = false) 
   const store = memoryStore();
   const controller = new UpdateController(fake, store);
   await controller.loadPostponed();
-  await controller.check();
+  await controller.checkAtStart();
   // A getter over a reactive set lets a test flip `blocked` after the first render.
   const flags = new SvelteSet<string>(blocked ? ['blocked'] : []);
   const props = {
@@ -101,7 +101,7 @@ describe('UpdatePrompt', () => {
     };
     const controller = new UpdateController(port, memoryStore());
     await controller.loadPostponed();
-    await controller.check();
+    await controller.checkAtStart();
     renderWithI18n(UpdatePrompt, { controller, blocked: false }, 'vi');
     await tick();
     await userEvent.click(screen.getByRole('button', { name: 'Cập nhật ngay' }));
@@ -156,7 +156,7 @@ describe('UpdatePrompt', () => {
     };
     const controller = new UpdateController(port, memoryStore());
     await controller.loadPostponed();
-    await controller.check();
+    await controller.checkAtStart();
     const flags = new SvelteSet<string>();
     renderWithI18n(
       UpdatePrompt,
