@@ -257,6 +257,8 @@
   "update.modal.later": "Để sau",
   "update.notes.heading": "Có gì mới",
   "update.dot.label": "Có bản cập nhật",
+  "update.whatsNew.heading": "Lịch sử phiên bản",
+  "update.whatsNew.version": "Phiên bản {version}",
   "mindmap.menu.open": "Thao tác cho {topic}",
   "mindmap.menu.redo": "Làm lại bài thực hành",
   "mindmap.menu.lessons": "Xem lại bài học",

@@ -1,6 +1,6 @@
 export type LocalizedNotes = { en: string[]; vi: string[] };
 
-type ChangelogEntry = { version: string; notes: LocalizedNotes };
+export type ChangelogEntry = { version: string; notes: LocalizedNotes };
 
 export function parseNotes(text: string | null | undefined): LocalizedNotes {
   const notes: LocalizedNotes = { en: [], vi: [] };

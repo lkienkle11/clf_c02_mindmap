@@ -257,6 +257,8 @@
   "update.modal.later": "Later",
   "update.notes.heading": "What's new",
   "update.dot.label": "Update available",
+  "update.whatsNew.heading": "Release history",
+  "update.whatsNew.version": "Version {version}",
   "mindmap.menu.open": "Actions for {topic}",
   "mindmap.menu.redo": "Redo practice",
   "mindmap.menu.lessons": "Review lessons",

@@ -5,3 +5,4 @@ export type { DownloadProgress, UpdateInfo, UpdaterPort } from './logic/updater-
 export { default as UpdateSection } from './ui/UpdateSection.svelte';
 export { default as UpdatePrompt } from './ui/UpdatePrompt.svelte';
 export { createTauriUpdater } from './tauri-updater';
+export { default as WhatsNew } from './ui/WhatsNew.svelte';
