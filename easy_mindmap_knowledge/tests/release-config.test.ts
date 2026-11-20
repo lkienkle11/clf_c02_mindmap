@@ -143,8 +143,11 @@ describe('release workflow shape', () => {
     expect(finalize).toMatch(/needs: build\b/);
   });
 
-  it('the draft job only reuses a draft release of the tag', () => {
+  it('the draft job only reuses a draft release of the tag and takes the id of a new one from the creation response', () => {
     expect(release).toMatch(/select\(\.tag_name == \\"\$TAG\\" and \.draft\)/);
+    // The releases list lags a moment behind a creation (seen on v0.2.2), so the id must come from the POST itself.
+    expect(release).toMatch(/gh api -X POST "repos\/\$GH_REPO\/releases"[^\n]*draft=true[^\n]*--jq \.id/);
+    expect(release).not.toMatch(/gh release create/);
   });
 
   it('the pull request workflow builds Tauri only for native changes and tests once', () => {
