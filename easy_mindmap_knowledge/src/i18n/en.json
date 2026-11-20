@@ -255,6 +255,7 @@
   "update.modal.bodyNoSize": "Version {version} is ready. Update now?",
   "update.modal.confirm": "Update now",
   "update.modal.later": "Later",
+  "update.notes.heading": "What's new",
   "mindmap.menu.open": "Actions for {topic}",
   "mindmap.menu.redo": "Redo practice",
   "mindmap.menu.lessons": "Review lessons",

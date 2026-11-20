@@ -255,6 +255,7 @@
   "update.modal.bodyNoSize": "Đã có bản cập nhật {version}, cập nhật ngay?",
   "update.modal.confirm": "Cập nhật ngay",
   "update.modal.later": "Để sau",
+  "update.notes.heading": "Có gì mới",
   "mindmap.menu.open": "Thao tác cho {topic}",
   "mindmap.menu.redo": "Làm lại bài thực hành",
   "mindmap.menu.lessons": "Xem lại bài học",

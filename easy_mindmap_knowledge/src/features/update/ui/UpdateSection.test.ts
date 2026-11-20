@@ -38,6 +38,14 @@ function gatedUpdater(info: UpdateInfo) {
 }
 
 describe('UpdateSection', () => {
+  it('shows the notes of an available update', async () => {
+    await mount({
+      update: { version: '1.2.0', sizeBytes: null, notes: '### Tiếng Việt\n- Khởi động nhanh hơn\n' },
+    });
+    expect(screen.getByText('Có gì mới')).toBeInTheDocument();
+    expect(screen.getByText('Khởi động nhanh hơn')).toBeInTheDocument();
+  });
+
   it('shows the update heading and the found version', async () => {
     await mount({ update: found(null) });
     expect(screen.getByRole('heading', { name: 'Cập nhật' })).toBeInTheDocument();
