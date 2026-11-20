@@ -48,7 +48,7 @@ describe('UpdateController.check', () => {
     expect(port.calls.filter((x) => x === 'check')).toHaveLength(1);
   });
 
-  it('ignores a stale check that resolves after the update is ready', async () => {
+  it('shares one request between overlapping checks and applies its result once', async () => {
     const resolvers: ((v: typeof UPDATE | null) => void)[] = [];
     const port = {
       ...makeFakeUpdater({ update: UPDATE }),
@@ -57,16 +57,17 @@ describe('UpdateController.check', () => {
     const c = new UpdateController(port);
     const checkA = c.check();
     const checkB = c.check();
-    resolvers[1](UPDATE);
-    await checkB;
+    expect(resolvers).toHaveLength(1);
+    resolvers[0](UPDATE);
+    resolvers[1]?.(null);
+    await Promise.all([checkA, checkB]);
+    expect(c.status).toBe('available');
+    expect(c.info).toEqual(UPDATE);
     await c.download();
     expect(c.status).toBe('ready');
-    resolvers[0](null);
-    await checkA;
+    await c.check();
     expect(c.status).toBe('ready');
     expect(c.info).toEqual(UPDATE);
-    await c.install();
-    expect(c.status).toBe('installing');
   });
 
   it('does not call the port when the download is ready', async () => {

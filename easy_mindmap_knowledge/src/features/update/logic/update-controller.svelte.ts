@@ -21,13 +21,24 @@ export class UpdateController {
   percent = $derived(this.progress ? percentDone(this.progress.downloaded, this.progress.total) : null);
 
   private readonly port: UpdaterPort;
+  private inflightCheck: Promise<void> | null = null;
 
   constructor(port: UpdaterPort) {
     this.port = port;
   }
 
-  async check(opts: { silent?: boolean } = {}): Promise<void> {
-    if (this.status === 'downloading' || this.status === 'ready' || this.status === 'installing') return;
+  /** Overlapping checks share one request, so they cannot overwrite each other's result. */
+  check(opts: { silent?: boolean } = {}): Promise<void> {
+    if (this.status === 'downloading' || this.status === 'ready' || this.status === 'installing') {
+      return Promise.resolve();
+    }
+    this.inflightCheck ??= this.runCheck(opts).finally(() => {
+      this.inflightCheck = null;
+    });
+    return this.inflightCheck;
+  }
+
+  private async runCheck(opts: { silent?: boolean }): Promise<void> {
     this.status = 'checking';
     this.errorStage = null;
     try {
