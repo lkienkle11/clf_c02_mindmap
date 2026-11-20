@@ -36,7 +36,7 @@ describe('SettingsScreen', () => {
 
   it('shows the update section under the version and checks for updates on open', async () => {
     const env = await makeHistoryEnv();
-    const fake = makeFakeUpdater({ update: { version: '9.9.9', sizeBytes: null } });
+    const fake = makeFakeUpdater({ update: { version: '9.9.9', sizeBytes: null, notes: null } });
     const services = { ...env.services, updates: new UpdateController(fake) };
     renderWithI18n(SettingsScreen, { services, appState: env.appState }, 'vi');
     expect(await screen.findByRole('button', { name: 'Tải bản cập nhật' })).toBeInTheDocument();

@@ -2,7 +2,7 @@ import { describe, expect, it, vi } from 'vitest';
 import { makeFakeUpdater } from '@/testing/fake-updater';
 import { UpdateController } from './update-controller.svelte';
 
-const UPDATE = { version: '1.2.0', sizeBytes: 1000 };
+const UPDATE = { version: '1.2.0', sizeBytes: 1000, notes: null };
 const CHUNKS = [
   { downloaded: 0, total: 1000 },
   { downloaded: 500, total: 1000 },

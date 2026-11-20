@@ -61,7 +61,11 @@ export function createTauriUpdater(deps: TauriUpdaterDeps = {}): UpdaterPort {
       }
       current = update;
       if (update === null) return null;
-      return { version: update.version, sizeBytes: platformSize(update.rawJson, userAgent) };
+      return {
+        version: update.version,
+        sizeBytes: platformSize(update.rawJson, userAgent),
+        notes: typeof update.body === 'string' && update.body !== '' ? update.body : null,
+      };
     },
     async download(onProgress: (p: DownloadProgress) => void): Promise<void> {
       if (current === null) throw new Error('No update to download');

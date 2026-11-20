@@ -47,7 +47,7 @@ describe('buildServices.updates', () => {
   });
 
   it('is an UpdateController over the given updater', async () => {
-    const fake = makeFakeUpdater({ update: { version: '2.0.0', sizeBytes: null } });
+    const fake = makeFakeUpdater({ update: { version: '2.0.0', sizeBytes: null, notes: null } });
     const services = buildServices({ executor: await createNodeSqliteExecutor(), catalog: loadCatalog(makeRawCatalog()), updater: fake });
     expect(services.updates).toBeInstanceOf(UpdateController);
     await services.updates?.check();

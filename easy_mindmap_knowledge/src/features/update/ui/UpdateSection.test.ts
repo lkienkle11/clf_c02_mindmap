@@ -10,7 +10,7 @@ import type { DownloadProgress, UpdateInfo, UpdaterPort } from '../logic/updater
 import UpdateSection from './UpdateSection.svelte';
 
 const BYTES_12_3_MB = 12_897_484;
-const found = (sizeBytes: number | null): UpdateInfo => ({ version: '1.2.0', sizeBytes });
+const found = (sizeBytes: number | null): UpdateInfo => ({ version: '1.2.0', sizeBytes, notes: null });
 
 async function mount(o: FakeUpdaterOptions = {}) {
   const fake = makeFakeUpdater(o);
