@@ -59,7 +59,7 @@ jobs:
           TAG: ${{ github.ref_name }}
         run: |
           gh release view "$TAG" >/dev/null 2>&1 || gh release create "$TAG" --draft --verify-tag --title "AWS CLF-C02 Mindmap $TAG" --notes "Release in progress."
-          id=$(gh api "repos/$GH_REPO/releases" --paginate --jq ".[] | select(.tag_name == \"$TAG\") | .id" | head -n 1)
+          id=$(gh api "repos/$GH_REPO/releases" --paginate --jq ".[] | select(.tag_name == \"$TAG\" and .draft) | .id" | head -n 1)
           test -n "$id"
           echo "release_id=$id" >> "$GITHUB_OUTPUT"
 

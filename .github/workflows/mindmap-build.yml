@@ -62,7 +62,7 @@ jobs:
             exit 0
           fi
           # If the changed files cannot be listed, build: skipping the native build must never be the fallback.
-          files=$(git diff --name-only "$BASE_SHA...$HEAD_SHA") || { echo "native=true" >> "$GITHUB_OUTPUT"; exit 0; }
+          files=$(git diff --name-only --no-renames "$BASE_SHA...$HEAD_SHA") || { echo "native=true" >> "$GITHUB_OUTPUT"; exit 0; }
           if printf '%s\n' "$files" | grep -Eq '^(easy_mindmap_knowledge/(src-tauri/|package\.json$|package-lock\.json$)|\.github/workflows/)'; then
             echo "native=true" >> "$GITHUB_OUTPUT"
           else

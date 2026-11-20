@@ -128,16 +128,34 @@ describe('release workflow shape', () => {
     expect(release).not.toMatch(/public-urls/);
   });
 
-  it('keeps every action pinned by full SHA and the secrets in the tauri-action step only', () => {
+  it('keeps every action pinned by full SHA and the signing key in the tauri-action step only', () => {
     const uses = [...release.matchAll(/uses: ([^\s]+)/g)].map((m) => m[1]);
     expect(uses.length).toBeGreaterThan(0);
     expect(uses.every((u) => /@[0-9a-f]{40}$/.test(u))).toBe(true);
-    expect(countOf(release, 'TAURI_SIGNING_PRIVATE_KEY:')).toBe(1);
+    const tauriStep = release.slice(release.indexOf('tauri-apps/tauri-action@'), release.indexOf('\n  finalize:'));
+    expect(tauriStep).toContain('TAURI_SIGNING_PRIVATE_KEY:');
+    expect(release.replace(tauriStep, '')).not.toContain('TAURI_SIGNING_PRIVATE_KEY');
+  });
+
+  it('a failed platform leaves a draft: builds do not stop each other, finalize needs all builds, and builds need the draft', () => {
+    expect(release).toMatch(/fail-fast: false/);
+    expect(release).toMatch(/\n  build:\n    needs: \[verify, draft\]/);
+    expect(finalize).toMatch(/needs: build\b/);
+  });
+
+  it('the draft job only reuses a draft release of the tag', () => {
+    expect(release).toMatch(/select\(\.tag_name == \\"\$TAG\\" and \.draft\)/);
   });
 
   it('the pull request workflow builds Tauri only for native changes and tests once', () => {
     const pr = workflow('mindmap-build.yml');
     expect(pr).toMatch(/needs\.changes\.outputs\.native == 'true'/);
     expect(countOf(pr, 'npm test')).toBe(1);
+  });
+
+  it('the native-change check lists renames as a delete plus an add and builds when it cannot list files', () => {
+    const pr = workflow('mindmap-build.yml');
+    expect(pr).toContain('git diff --name-only --no-renames');
+    expect(pr).toMatch(/\|\| \{ echo "native=true" >> "\$GITHUB_OUTPUT"; exit 0; \}/);
   });
 });
