@@ -65,5 +65,6 @@ Where skills are looked up by name (`references/skill-delivery.md` section 1). O
 | `~/.qwen/skills` | user | [Unverified] | [Unverified] | 2026-11-19 |
 | `~/.codex/skills` | user | [Unverified] | [Unverified] | 2026-11-19 |
 | `~/.cursor/skills` | user | [Unverified] | [Unverified] | 2026-11-19 |
+| `~/.claude/plugins/cache/claude-plugins-official/superpowers/7.0.2/skills` | user (plugin cache) | [Unverified] | user decision 2026-11-20 (adds test-driven-development); the version folder changes on a plugin update, so re-check it | 2026-11-20 |
 
 Items marked **[Proposed]** are a proposal that the user has not confirmed. Anything else is a user decision recorded on 2026-11-10 to 2026-11-12.
