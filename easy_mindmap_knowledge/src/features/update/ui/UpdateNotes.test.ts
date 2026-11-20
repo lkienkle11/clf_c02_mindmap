@@ -27,4 +27,16 @@ describe('UpdateNotes', () => {
     renderWithI18n(UpdateNotes, { notes: '### English\n- Faster start\n- Faster start\n' }, 'en');
     expect(screen.getAllByText('Faster start')).toHaveLength(2);
   });
+
+  it.each([
+    ['en', "What's new"],
+    ['vi', 'Có gì mới'],
+  ] as const)('puts the list in a scroll region reachable by keyboard (%s)', (locale, name) => {
+    renderWithI18n(UpdateNotes, { notes: NOTES }, locale);
+    const region = screen.getByRole('region', { name });
+    expect(region).toHaveAttribute('tabindex', '0');
+    expect(region.className).toContain('overflow-y-auto');
+    expect(region.className).toMatch(/max-h-/);
+    expect(region).toContainElement(screen.getByRole('list'));
+  });
 });

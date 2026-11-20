@@ -52,6 +52,20 @@ describe('UpdatePrompt', () => {
     expect(screen.getByText('Khởi động nhanh hơn')).toBeInTheDocument();
   });
 
+  it('keeps the title and both buttons outside the notes scroll region with 30 long notes', async () => {
+    const bullets = Array.from({ length: 30 }, (_, n) => `- Ghi chú dài số ${n} ${'rất dài '.repeat(12)}`).join('\n');
+    await setup({ update: { ...INFO, notes: `### Tiếng Việt\n${bullets}\n` } });
+    const region = screen.getByRole('region', { name: 'Có gì mới' });
+    expect(region.querySelectorAll('li')).toHaveLength(30);
+    for (const el of [
+      screen.getByRole('heading', { name: 'Đã có bản cập nhật' }),
+      screen.getByRole('button', { name: 'Cập nhật ngay' }),
+      screen.getByRole('button', { name: 'Để sau' }),
+    ]) {
+      expect(region).not.toContainElement(el);
+    }
+  });
+
   it('does not open while blocked and opens when unblocked', async () => {
     const { setBlocked } = await setup({ update: INFO }, true);
     expect(screen.queryByRole('dialog')).toBeNull();

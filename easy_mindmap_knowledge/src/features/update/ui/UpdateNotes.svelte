@@ -13,9 +13,18 @@
 </script>
 
 {#if items.length > 0}
-  <ul class="list-disc pl-5 text-sm">
-    {#each items as item}
-      <li>{item}</li>
-    {/each}
-  </ul>
+  <!-- A scrollable region must be focusable so keyboard users can scroll it. -->
+  <!-- svelte-ignore a11y_no_noninteractive_tabindex -->
+  <div
+    role="region"
+    tabindex="0"
+    aria-label={i18n.t('update.notes.heading')}
+    class="max-h-[40vh] overflow-y-auto pr-2 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+  >
+    <ul class="list-disc pl-5 text-sm">
+      {#each items as item}
+        <li>{item}</li>
+      {/each}
+    </ul>
+  </div>
 {/if}
