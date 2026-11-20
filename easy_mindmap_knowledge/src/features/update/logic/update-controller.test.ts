@@ -48,6 +48,27 @@ describe('UpdateController.check', () => {
     expect(port.calls.filter((x) => x === 'check')).toHaveLength(1);
   });
 
+  it('ignores a stale check that resolves after the update is ready', async () => {
+    const resolvers: ((v: typeof UPDATE | null) => void)[] = [];
+    const port = {
+      ...makeFakeUpdater({ update: UPDATE }),
+      check: () => new Promise<typeof UPDATE | null>((r) => { resolvers.push(r); }),
+    };
+    const c = new UpdateController(port);
+    const checkA = c.check();
+    const checkB = c.check();
+    resolvers[1](UPDATE);
+    await checkB;
+    await c.download();
+    expect(c.status).toBe('ready');
+    resolvers[0](null);
+    await checkA;
+    expect(c.status).toBe('ready');
+    expect(c.info).toEqual(UPDATE);
+    await c.install();
+    expect(c.status).toBe('installing');
+  });
+
   it('does not call the port when the download is ready', async () => {
     const port = makeFakeUpdater({ update: UPDATE });
     const c = new UpdateController(port);
@@ -76,9 +97,14 @@ describe('UpdateController.download', () => {
 
   it('keeps percent null when the total is unknown', async () => {
     const chunks = [{ downloaded: 0, total: null }, { downloaded: 400, total: null }];
-    const c = new UpdateController(makeFakeUpdater({ update: UPDATE, chunks }));
+    const port = makeFakeUpdater({ update: UPDATE, chunks });
+    const c = new UpdateController(port);
     await c.check();
+    const seen: (number | null)[] = [];
+    const original = port.download.bind(port);
+    port.download = (onProgress) => original((p) => { onProgress(p); seen.push(c.percent); });
     await c.download();
+    expect(seen).toEqual([null, null]);
     expect(c.percent).toBeNull();
     expect(c.status).toBe('ready');
   });

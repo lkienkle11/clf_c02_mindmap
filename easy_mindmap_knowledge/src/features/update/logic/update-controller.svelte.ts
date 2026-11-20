@@ -32,9 +32,12 @@ export class UpdateController {
     this.errorStage = null;
     try {
       const found = await this.port.check();
+      // A newer check may already have moved on (available, downloading, ready...): drop this stale result.
+      if (this.status !== 'checking') return;
       this.info = found;
       this.status = found ? 'available' : 'upToDate';
     } catch (e) {
+      if (this.status !== 'checking') return;
       if (opts.silent) {
         this.status = 'idle';
         return;
