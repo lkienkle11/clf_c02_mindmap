@@ -100,3 +100,62 @@ describe('capability file', () => {
     expect(cap.permissions).toContain('process:allow-restart');
   });
 });
+
+describe('release workflow shape', () => {
+  const workflow = (name: string) => readFileSync(join(root, '..', '.github', 'workflows', name), 'utf8');
+  const release = workflow('mindmap-release.yml');
+  const finalize = release.slice(release.indexOf('\n  finalize:'));
+  const countOf = (text: string, needle: string) => text.split(needle).length - 1;
+
+  it('builds the platforms in parallel into one pre-created draft release', () => {
+    expect(release).not.toMatch(/max-parallel/);
+    expect(release).toMatch(/releaseId: \$\{\{ needs\.draft\.outputs\.release_id \}\}/);
+    expect(release).toMatch(/uploadUpdaterJson: false/);
+    expect(release).not.toMatch(/releaseDraft:/);
+  });
+
+  it('runs the tests once, in verify, not in every build job', () => {
+    expect(countOf(release, 'npm test')).toBe(1);
+    expect(countOf(release, 'npm run check')).toBe(1);
+    expect(release.indexOf('npm test')).toBeLessThan(release.indexOf('\n  draft:'));
+  });
+
+  it('finalize builds latest.json from the assets, checks the platforms and publishes last', () => {
+    const steps = ['build-latest.mjs', 'assert-platforms.mjs', 'add-sizes.mjs', 'changelog.mjs', 'gh release upload', '--draft=false'];
+    const positions = steps.map((s) => finalize.indexOf(s));
+    expect(positions.every((p) => p > -1)).toBe(true);
+    expect([...positions].sort((a, b) => a - b)).toEqual(positions);
+    expect(release).not.toMatch(/public-urls/);
+  });
+
+  it('keeps every action pinned by full SHA and the signing key in the tauri-action step only', () => {
+    const uses = [...release.matchAll(/uses: ([^\s]+)/g)].map((m) => m[1]);
+    expect(uses.length).toBeGreaterThan(0);
+    expect(uses.every((u) => /@[0-9a-f]{40}$/.test(u))).toBe(true);
+    const tauriStep = release.slice(release.indexOf('tauri-apps/tauri-action@'), release.indexOf('\n  finalize:'));
+    expect(tauriStep).toContain('TAURI_SIGNING_PRIVATE_KEY:');
+    expect(release.replace(tauriStep, '')).not.toContain('TAURI_SIGNING_PRIVATE_KEY');
+  });
+
+  it('a failed platform leaves a draft: builds do not stop each other, finalize needs all builds, and builds need the draft', () => {
+    expect(release).toMatch(/fail-fast: false/);
+    expect(release).toMatch(/\n  build:\n    needs: \[verify, draft\]/);
+    expect(finalize).toMatch(/needs: build\b/);
+  });
+
+  it('the draft job only reuses a draft release of the tag', () => {
+    expect(release).toMatch(/select\(\.tag_name == \\"\$TAG\\" and \.draft\)/);
+  });
+
+  it('the pull request workflow builds Tauri only for native changes and tests once', () => {
+    const pr = workflow('mindmap-build.yml');
+    expect(pr).toMatch(/needs\.changes\.outputs\.native == 'true'/);
+    expect(countOf(pr, 'npm test')).toBe(1);
+  });
+
+  it('the native-change check lists renames as a delete plus an add and builds when it cannot list files', () => {
+    const pr = workflow('mindmap-build.yml');
+    expect(pr).toContain('git diff --name-only --no-renames');
+    expect(pr).toMatch(/\|\| \{ echo "native=true" >> "\$GITHUB_OUTPUT"; exit 0; \}/);
+  });
+});
