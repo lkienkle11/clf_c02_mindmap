@@ -47,7 +47,7 @@ describe('extractSection', () => {
     const text = readFileSync(resolve(__dirname, '../../CHANGELOG.md'), 'utf8');
     const versions = [...text.matchAll(/^## (.+)$/gm)].map(match => match[1]);
 
-    expect(versions).toEqual(['0.2.1', '0.2.0', '0.1.1', '0.1.0']);
+    expect(versions).toEqual(['0.2.2', '0.2.1', '0.2.0', '0.1.1', '0.1.0']);
     for (const version of versions) {
       expect(extractSection(text, version)).toMatch(/^### English\n/);
     }

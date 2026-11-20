@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.2.2
+
+### English
+- Faster releases: the macOS, Windows and Linux builds now run at the same time, so a new version is ready in about half the time.
+- No change to the app itself.
+
+### Tiếng Việt
+- Phát hành nhanh hơn: bản macOS, Windows và Linux giờ được dựng cùng lúc, nên phiên bản mới sẵn sàng trong khoảng một nửa thời gian.
+- Không có thay đổi nào trong chính app.
+
 ## 0.2.1
 
 ### English
