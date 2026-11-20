@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.1.2
+## 0.2.0
 
 ### English
 - See a startup notice when a new version is available, with release notes in your chosen language.
