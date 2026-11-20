@@ -33,16 +33,18 @@ All commands run from the `easy_mindmap_knowledge` folder unless stated otherwis
 
 ## How to release
 
+Before tagging, write the `CHANGELOG.md` section for `X.Y.Z` with both languages (`### English` and `### Tiếng Việt`), and include it in the release commit.
+
 ```bash
 node scripts/release/set-version.mjs X.Y.Z
 npm install --package-lock-only
-git add package.json package-lock.json src-tauri/Cargo.toml src-tauri/Cargo.lock src-tauri/tauri.conf.json
+git add CHANGELOG.md package.json package-lock.json src-tauri/Cargo.toml src-tauri/Cargo.lock src-tauri/tauri.conf.json
 git commit
 git tag vX.Y.Z
 git push origin vX.Y.Z
 ```
 
-`set-version.mjs` does not edit `package-lock.json`, so run `npm install --package-lock-only` after it and before staging the lockfile. Stage only the version files listed above (paths are relative to `easy_mindmap_knowledge`).
+`set-version.mjs` does not edit `package-lock.json`, so run `npm install --package-lock-only` after it and before staging the lockfile. Stage the changelog and version files listed above (paths are relative to `easy_mindmap_knowledge`).
 
 Write the commit message in the repository's required form: the title is `chore(release): X.Y.Z`, and the body has the four sections below (no AI attribution lines):
 

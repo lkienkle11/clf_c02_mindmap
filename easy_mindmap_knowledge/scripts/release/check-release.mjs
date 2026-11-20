@@ -3,6 +3,7 @@ import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { assertSameVersions, isGreater, readVersions } from './versions.mjs';
+import { extractSection } from './changelog.mjs';
 
 export function checkRelease(tag, files, latestPublished) {
   assertSameVersions(files);
@@ -11,6 +12,7 @@ export function checkRelease(tag, files, latestPublished) {
   if (latestPublished !== null && !isGreater(version, latestPublished)) {
     throw new Error(`Version ${version} is not greater than the latest published version ${latestPublished}`);
   }
+  extractSection(files.changelog, version);
 }
 
 export function assertRealPubkey(overlayText) {
@@ -45,6 +47,7 @@ function main() {
     tauriConf: read('../../src-tauri/tauri.conf.json'),
     cargoToml: read('../../src-tauri/Cargo.toml'),
     cargoLock: read('../../src-tauri/Cargo.lock'),
+    changelog: read('../../CHANGELOG.md'),
   };
   const tag = process.env.GITHUB_REF_NAME;
   if (!tag) throw new Error('GITHUB_REF_NAME is not set');

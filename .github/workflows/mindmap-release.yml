@@ -131,5 +131,7 @@ jobs:
           node easy_mindmap_knowledge/scripts/release/assert-platforms.mjs latest.json
           gh release view "$GITHUB_REF_NAME" --json assets --jq .assets > assets.json
           node easy_mindmap_knowledge/scripts/release/add-sizes.mjs latest.json assets.json
+          node easy_mindmap_knowledge/scripts/release/changelog.mjs "${GITHUB_REF_NAME#v}" easy_mindmap_knowledge/CHANGELOG.md latest.json notes.md
+          gh release edit "$GITHUB_REF_NAME" --notes-file notes.md
           gh release upload "$GITHUB_REF_NAME" latest.json --clobber
           gh release edit "$GITHUB_REF_NAME" --draft=false
