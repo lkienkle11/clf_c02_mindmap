@@ -58,8 +58,12 @@ jobs:
           GH_REPO: ${{ github.repository }}
           TAG: ${{ github.ref_name }}
         run: |
-          gh release view "$TAG" >/dev/null 2>&1 || gh release create "$TAG" --draft --verify-tag --title "AWS CLF-C02 Mindmap $TAG" --notes "Release in progress."
+          # Reuse a draft of this tag (a re-run); otherwise create it and take the id from the creation response,
+          # because the releases list lags a moment behind a creation.
           id=$(gh api "repos/$GH_REPO/releases" --paginate --jq ".[] | select(.tag_name == \"$TAG\" and .draft) | .id" | head -n 1)
+          if [ -z "$id" ]; then
+            id=$(gh api -X POST "repos/$GH_REPO/releases" -f tag_name="$TAG" -f name="AWS CLF-C02 Mindmap $TAG" -f body="Release in progress." -F draft=true --jq .id)
+          fi
           test -n "$id"
           echo "release_id=$id" >> "$GITHUB_OUTPUT"
 
