@@ -1,6 +1,6 @@
 // @vitest-environment node
 import { describe, expect, it } from 'vitest';
-import { readFileSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 
 const root = resolve(__dirname, '..');
@@ -9,13 +9,22 @@ const read = (...p: string[]) => JSON.parse(readFileSync(join(tauriDir, ...p), '
 
 const ENDPOINT = 'https://github.com/lkienkle11/clf_c02_mindmap/releases/latest/download/latest.json';
 
-function hasKey(value: unknown, key: string): boolean {
-  if (Array.isArray(value)) return value.some((v) => hasKey(v, key));
+// True when any key at any depth starts with the given prefix.
+function hasKeyPrefix(value: unknown, prefix: string): boolean {
+  if (Array.isArray(value)) return value.some((v) => hasKeyPrefix(v, prefix));
   if (value && typeof value === 'object') {
-    return Object.entries(value).some(([k, v]) => k === key || hasKey(v, key));
+    return Object.entries(value).some(([k, v]) => k.startsWith(prefix) || hasKeyPrefix(v, prefix));
   }
   return false;
 }
+
+const PROD_ICONS = [
+  'icons/32x32.png',
+  'icons/128x128.png',
+  'icons/128x128@2x.png',
+  'icons/icon.icns',
+  'icons/icon.ico'
+];
 
 describe('dev Tauri config', () => {
   const dev = read('tauri.conf.json');
@@ -56,9 +65,23 @@ describe('production Tauri overlay', () => {
     expect(endpoints[0].startsWith('https://')).toBe(true);
   });
 
-  it('never sets a dangerous key', () => {
-    expect(hasKey(prod, 'dangerous')).toBe(false);
-    expect(hasKey(read('tauri.conf.json'), 'dangerous')).toBe(false);
+  it('lists the production icons explicitly and does not inherit the dev icons', () => {
+    expect(prod.bundle.icon).toEqual(PROD_ICONS);
+    for (const icon of prod.bundle.icon as string[]) {
+      expect(icon.startsWith('icons/')).toBe(true);
+      expect(existsSync(join(tauriDir, icon))).toBe(true);
+    }
+  });
+
+  it('sets no dangerous option at any depth, in either config', () => {
+    expect(hasKeyPrefix(prod, 'dangerous')).toBe(false);
+    expect(hasKeyPrefix(read('tauri.conf.json'), 'dangerous')).toBe(false);
+  });
+
+  it('the dangerous-key helper catches a prefixed key and a nested array key', () => {
+    expect(hasKeyPrefix({ plugins: { updater: { dangerousInsecureTransport: true } } }, 'dangerous')).toBe(true);
+    expect(hasKeyPrefix({ a: [{ b: { dangerousX: 1 } }] }, 'dangerous')).toBe(true);
+    expect(hasKeyPrefix({ plugins: { updater: { pubkey: 'x' } } }, 'dangerous')).toBe(false);
   });
 });
 
