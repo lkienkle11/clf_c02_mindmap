@@ -2,7 +2,7 @@
   import type { Services } from '@/app/composition';
   import { OptionReview, ResultSearchBar, filterResultItems, hidesAnswers } from '@/features/practice';
   import type { ResultVerdict } from '@/features/practice';
-  import { ReportButton } from '@/features/report';
+  // TEMP-HIDE-REPORT: import { ReportButton } from '@/features/report';
   import { getI18n } from '@/i18n/i18n.svelte';
   import type { AttemptQuestionRow, AttemptRow } from '@/persistence';
   import Modal from '@/ui/Modal.svelte';
@@ -87,7 +87,7 @@
             {ok ? `✓ ${i18n.t('practice.result.correct')}` : `✗ ${i18n.t('practice.result.incorrect')}`}
           </p>
           <OptionReview question={q} selected={row.selected} optionOrder={row.optionOrder} hideAnswers={hidesAnswers(row.selected, attempt.unansweredDisplay)} />
-          <ReportButton
+          <!-- TEMP-HIDE-REPORT: <ReportButton
             {services}
             class="self-end"
             context={{
@@ -97,7 +97,7 @@
               attempt: { attemptId: row.attemptId, position: row.position, optionOrder: [...row.optionOrder], selected: [...row.selected], isCorrect: row.isCorrect },
             }}
             captureTarget={() => frames[row.position] ?? null}
-          />
+          /> -->
         </li>
         {/if}
       {/each}
@@ -105,11 +105,11 @@
   {/if}
   </div>
   <div class="mt-4 flex flex-wrap justify-end gap-3">
-    <ReportButton
+    <!-- TEMP-HIDE-REPORT: <ReportButton
       {services}
       context={{ type: 'attempt', attemptId: attempt.id, sourceScreen: 'history' }}
       captureTarget={() => content}
-    />
+    /> -->
     <Button variant="secondary" onclick={onclose}>{i18n.t('common.close')}</Button>
   </div>
 </Modal>

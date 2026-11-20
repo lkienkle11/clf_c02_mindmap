@@ -23,7 +23,8 @@ async function submitReport(text: string) {
   await userEvent.click(screen.getByRole('button', { name: 'Submit report' }));
 }
 
-describe('PracticeSessionView report button', () => {
+// TEMP-HIDE-REPORT: report UI is hidden for now; remove .skip when it is shown again
+describe.skip('PracticeSessionView report button', () => {
   it('sits immediately before "Exit" in DOM order', async () => {
     const { env, appState } = await envFor();
     const session = await PracticeSession.start(env.services, 'compute', DEFAULT_PRACTICE_OPTIONS, noop);

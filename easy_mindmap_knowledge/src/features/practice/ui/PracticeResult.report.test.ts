@@ -20,7 +20,8 @@ async function mount() {
 }
 const entry = (id: string) => document.querySelector(`li[data-question="${id}"]`) as HTMLElement;
 
-describe('PracticeResult report buttons', () => {
+// TEMP-HIDE-REPORT: report UI is hidden for now; remove .skip when it is shown again
+describe.skip('PracticeResult report buttons', () => {
   it('has one Report button per question (correct, wrong and unanswered)', async () => {
     await mount();
     for (const id of ['q1', 'q2', 'q3']) expect(within(entry(id)).getAllByRole('button', { name: 'Report' })).toHaveLength(1);

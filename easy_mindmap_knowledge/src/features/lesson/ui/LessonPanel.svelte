@@ -4,7 +4,7 @@
   import type { Services } from '@/app/composition';
   import type { Lesson } from '@/content/types';
   import { getI18n } from '@/i18n/i18n.svelte';
-  import { ReportButton } from '@/features/report';
+  // TEMP-HIDE-REPORT: import { ReportButton } from '@/features/report';
   import Badge from '@/ui/Badge.svelte';
   import Button from '@/ui/Button.svelte';
   import { toasts } from '@/ui/toast.svelte';
@@ -136,7 +136,7 @@
     {#if lesson.videoQuery}
       <Button variant="secondary" onclick={openVideo}><span aria-hidden="true">▶</span> {i18n.t('lesson.openVideo')}</Button>
     {/if}
-    <ReportButton class="ml-auto" {services} context={{ type: 'lesson', lessonId: lesson.id, sourceScreen: 'lesson' }} captureTarget={() => content ?? null} />
+    <!-- TEMP-HIDE-REPORT: <ReportButton class="ml-auto" {services} context={{ type: 'lesson', lessonId: lesson.id, sourceScreen: 'lesson' }} captureTarget={() => content ?? null} /> -->
   </div>
 
   {#if error}

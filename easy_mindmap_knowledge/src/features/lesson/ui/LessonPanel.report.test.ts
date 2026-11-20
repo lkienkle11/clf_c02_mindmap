@@ -17,7 +17,8 @@ async function mount(lessonId: string, locale?: 'en' | 'vi') {
   return env;
 }
 
-describe('LessonPanel report button', () => {
+// TEMP-HIDE-REPORT: report UI is hidden for now; remove .skip when it is shown again
+describe.skip('LessonPanel report button', () => {
   it('sits directly above the lesson navigation footer', async () => {
     await mount('compute-lambda');
     const report = screen.getByRole('button', { name: 'Report' });

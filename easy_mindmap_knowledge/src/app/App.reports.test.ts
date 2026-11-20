@@ -5,7 +5,8 @@ import { createI18n } from '@/i18n/i18n.svelte';
 import { makeReportSeed, makeReportsScreenEnv } from '@/testing/reports-screen-env';
 import App from './App.svelte';
 
-describe('App reports route', () => {
+// TEMP-HIDE-REPORT: report UI is hidden for now; remove .skip when it is shown again
+describe.skip('App reports route', () => {
   it('opens the Reports screen from the tab, and marking a report handled lowers the tab badge', async () => {
     const env = await makeReportsScreenEnv([
       makeReportSeed({ id: 'a', body: 'first report', createdAt: 2_000 }),

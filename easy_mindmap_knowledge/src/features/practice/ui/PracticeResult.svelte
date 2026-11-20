@@ -3,7 +3,7 @@
   import type { Question } from '@/content/types';
   import type { Services } from '@/app/composition';
   import type { UnansweredDisplay } from '@/persistence';
-  import { ReportButton } from '@/features/report';
+  // TEMP-HIDE-REPORT: import { ReportButton } from '@/features/report';
   import { getI18n } from '@/i18n/i18n.svelte';
   import Button from '@/ui/Button.svelte';
   import { cn } from '@/ui/cn';
@@ -136,7 +136,7 @@
               <p class="text-sm text-muted-foreground">{item.explanation}</p>
             {/if}
           {/if}
-          <ReportButton
+          <!-- TEMP-HIDE-REPORT: <ReportButton
             {services}
             class="self-end"
             context={{
@@ -148,7 +148,7 @@
                 : {}),
             }}
             captureTarget={() => frames[item.questionId] ?? null}
-          />
+          /> -->
         </li>
         {/if}
       {/each}
@@ -164,13 +164,13 @@
         <Button variant="secondary" onclick={onretry}>{i18n.t('practice.result.tryAgain')}</Button>
       {/if}
     {/if}
-    {#if attemptId !== undefined}
+    <!-- TEMP-HIDE-REPORT: {#if attemptId !== undefined}
       <ReportButton
         {services}
         class="ml-auto"
         context={{ type: 'attempt', attemptId, sourceScreen: 'result' }}
         captureTarget={() => page}
       />
-    {/if}
+    {/if} -->
   </div>
 </div>

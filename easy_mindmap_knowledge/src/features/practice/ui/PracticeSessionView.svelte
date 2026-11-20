@@ -3,7 +3,7 @@
   import type { AppState } from '@/app/app-state.svelte';
   import type { Services } from '@/app/composition';
   import { getI18n } from '@/i18n/i18n.svelte';
-  import { ReportButton } from '@/features/report';
+  // TEMP-HIDE-REPORT: import { ReportButton } from '@/features/report';
   import { AttemptMissingError } from '@/persistence';
   import Button from '@/ui/Button.svelte';
   import Modal from '@/ui/Modal.svelte';
@@ -142,7 +142,7 @@
     {/if}
     <Button disabled={busy} onclick={() => (submitOpen = true)}>{i18n.t('practice.submit')}</Button>
     <!-- The screenshot target is the question wrapper (`panel`): a plain block that grows with its content, never a scrolling container, so the image is not cut. -->
-    {#if current}
+    <!-- TEMP-HIDE-REPORT: {#if current}
       <ReportButton
         {services}
         class="ml-auto"
@@ -155,7 +155,7 @@
         captureTarget={() => panel ?? null}
         onopenchange={(open) => (open ? session.beginReport() : session.endReport())}
       />
-    {/if}
+    {/if} -->
     <Button variant="ghost" disabled={busy} onclick={() => (exitOpen = true)}>{i18n.t('practice.exit')}</Button>
   </div>
 </div>

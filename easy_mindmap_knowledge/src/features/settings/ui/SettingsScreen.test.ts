@@ -48,7 +48,8 @@ describe('SettingsScreen', () => {
   });
 });
 
-describe('SettingsScreen system report', () => {
+// TEMP-HIDE-REPORT: report UI is hidden for now; remove .skip when it is shown again
+describe.skip('SettingsScreen system report', () => {
   const png = (name: string) => new File([PNG_BYTES], name, { type: 'image/png' });
 
   async function mountWithReports() {

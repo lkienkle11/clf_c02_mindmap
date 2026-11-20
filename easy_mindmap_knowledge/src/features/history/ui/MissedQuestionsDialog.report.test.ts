@@ -26,7 +26,8 @@ async function submitFrom(id: string) {
   await userEvent.click(screen.getByRole('button', { name: 'Submit report' }));
 }
 
-describe('MissedQuestionsDialog report buttons', () => {
+// TEMP-HIDE-REPORT: report UI is hidden for now; remove .skip when it is shown again
+describe.skip('MissedQuestionsDialog report buttons', () => {
   it('has one Report button per question', async () => {
     await mount([detail('q1'), detail('q2'), detail('q3')]);
     expect(screen.getAllByRole('button', { name: 'Report' })).toHaveLength(3);
