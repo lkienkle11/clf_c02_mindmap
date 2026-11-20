@@ -4,6 +4,8 @@ import userEvent from '@testing-library/user-event';
 import { makeReviewEnv } from '@/testing/review-env';
 import { renderWithI18n } from '@/testing/render-with-i18n';
 import { makeReportSeed, makeReportsScreenEnv } from '@/testing/reports-screen-env';
+import { makeFakeUpdater } from '@/testing/fake-updater';
+import { UpdateController } from '@/features/update/logic/update-controller.svelte';
 import AppHeader from './AppHeader.svelte';
 
 async function mount(over: Parameters<typeof makeReviewEnv>[0] = {}) {
@@ -70,6 +72,37 @@ describe('AppHeader', () => {
     expect(screen.queryByRole('navigation', { name: 'Main navigation' })).not.toBeInTheDocument();
     appState.open({ view: 'tree' });
     expect(await screen.findByRole('banner')).toBeInTheDocument();
+  });
+
+  describe('update dot', () => {
+    const UPDATE = { version: '1.2.0', sizeBytes: 1000, notes: null };
+    const mountWithUpdates = async (updates: UpdateController | null) => {
+      const env = await makeReviewEnv();
+      const view = renderWithI18n(AppHeader, { services: { ...env.services, updates }, appState: env.appState, onreview: () => {} });
+      return { ...env, ...view };
+    };
+
+    it('shows a dot with the screen-reader text on Settings while an update is pending', async () => {
+      const updates = new UpdateController(makeFakeUpdater({ update: UPDATE }));
+      await updates.check();
+      await mountWithUpdates(updates);
+      const settings = screen.getByRole('button', { name: 'Settings, Update available' });
+      expect(settings.querySelector('[aria-hidden="true"]')).not.toBeNull();
+      expect(screen.getByRole('button', { name: 'Mindmap' })).toBeInTheDocument();
+      expect(screen.getAllByText(/Update available/)).toHaveLength(1);
+    });
+
+    it('shows no dot when up to date or when updates are disabled', async () => {
+      const current = new UpdateController(makeFakeUpdater({ update: null }));
+      await current.check();
+      const first = await mountWithUpdates(current);
+      expect(screen.getByRole('button', { name: 'Settings' })).not.toHaveTextContent('Update available');
+      expect(screen.queryByText('Update available')).toBeNull();
+      first.unmount();
+      await mountWithUpdates(null);
+      expect(screen.getByRole('button', { name: 'Settings' }).querySelector('[aria-hidden="true"]')).toBeNull();
+      expect(screen.queryByText('Update available')).toBeNull();
+    });
   });
 
   // TEMP-HIDE-REPORT: report UI is hidden for now; remove .skip when it is shown again

@@ -27,6 +27,7 @@ const UPDATE_KEYS: Record<string, string[]> = {
   'update.modal.confirm': [],
   'update.modal.later': [],
   'update.notes.heading': [],
+  'update.dot.label': [],
 };
 
 describe('update strings', () => {
@@ -62,6 +63,8 @@ const WORDING: [locale: string, key: string, text: string][] = [
   ['en', 'update.install', 'Install update'],
   ['vi', 'update.notes.heading', 'Có gì mới'],
   ['en', 'update.notes.heading', "What's new"],
+  ['en', 'update.dot.label', 'Update available'],
+  ['vi', 'update.dot.label', 'Có bản cập nhật'],
 ];
 
 describe('update wording', () => {

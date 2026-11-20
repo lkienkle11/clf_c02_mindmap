@@ -256,6 +256,7 @@
   "update.modal.confirm": "Update now",
   "update.modal.later": "Later",
   "update.notes.heading": "What's new",
+  "update.dot.label": "Update available",
   "mindmap.menu.open": "Actions for {topic}",
   "mindmap.menu.redo": "Redo practice",
   "mindmap.menu.lessons": "Review lessons",
