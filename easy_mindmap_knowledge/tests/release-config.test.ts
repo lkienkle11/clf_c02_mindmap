@@ -36,6 +36,14 @@ describe('dev Tauri config', () => {
     expect(dev.app.windows[0].title).toBe('AWS CLF-C02 Mindmap (Dev)');
   });
 
+  it('lists the dev icons under icons-dev/ and every file exists', () => {
+    expect(dev.bundle.icon.length).toBeGreaterThan(0);
+    for (const icon of dev.bundle.icon as string[]) {
+      expect(icon.startsWith('icons-dev/')).toBe(true);
+      expect(existsSync(join(tauriDir, icon))).toBe(true);
+    }
+  });
+
   it('has no updater config and no updater artifacts', () => {
     expect(dev.plugins?.updater).toBeUndefined();
     expect(dev.bundle.createUpdaterArtifacts).toBeUndefined();
