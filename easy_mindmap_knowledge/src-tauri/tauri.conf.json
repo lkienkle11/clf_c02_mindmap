@@ -1,7 +1,7 @@
 {
   "$schema": "../node_modules/@tauri-apps/cli/config.schema.json",
   "productName": "AWS CLF-C02 Mindmap (Dev)",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "identifier": "app.awsclf.mindmap.dev",
   "build": {
     "frontendDist": "../dist",
