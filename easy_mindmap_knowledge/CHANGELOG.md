@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.2.1
+
+### English
+- Fixed: downloading an update could fail ("Tải không thành công") once GitHub's limit for anonymous requests was used up; updates now download from the public release address.
+- A small release to try the update notice, the dot on Settings and the release notes shown in the update window.
+
+### Tiếng Việt
+- Sửa lỗi: tải bản cập nhật có thể báo "Tải không thành công" khi GitHub hết hạn mức cho yêu cầu ẩn danh; giờ bản cập nhật được tải từ địa chỉ công khai của bản phát hành.
+- Bản phát hành nhỏ để thử thông báo cập nhật, chấm báo ở Cài đặt và ghi chú hiện trong cửa sổ cập nhật.
+
 ## 0.2.0
 
 ### English
