@@ -6,13 +6,11 @@
 - See a startup notice when a new version is available, with release notes in your chosen language.
 - Keep track of a pending update with a dot on Settings, even after choosing to update later.
 - Read release notes in English and Vietnamese, including the version history in Settings.
-- These notes describe the planned release and will be finalized at release time.
 
 ### Tiếng Việt
 - Nhận thông báo khi khởi động nếu có phiên bản mới, kèm ghi chú phát hành theo ngôn ngữ bạn chọn.
 - Theo dõi bản cập nhật đang chờ bằng dấu chấm trên Cài đặt, kể cả sau khi chọn cập nhật sau.
 - Đọc ghi chú phát hành bằng tiếng Anh và tiếng Việt, bao gồm lịch sử phiên bản trong Cài đặt.
-- Các ghi chú này mô tả bản phát hành dự kiến và sẽ được hoàn thiện khi phát hành.
 
 ## 0.1.1
 
