@@ -9,7 +9,7 @@
   import UpdateProgress from './UpdateProgress.svelte';
 
   interface Props {
-    controller: UpdateController;
+    controller: UpdateController | null;
     /** True while another prompt or a practice, review or checkpoint session has the user's attention. */
     blocked: boolean;
   }
@@ -24,41 +24,45 @@
   let closed = $state(false);
 
   $effect(() => {
-    if (!started && controller.promptable && !blocked) started = true;
+    if (!started && controller?.promptable && !blocked) started = true;
   });
 
-  const open = $derived(started && !closed);
-  const info = $derived(controller.info);
+  const info = $derived(controller?.info ?? null);
+  const busy = $derived(controller?.status === 'downloading' || controller?.status === 'installing');
+  // Hidden while another prompt or session takes over, but never mid-download or mid-install.
+  const open = $derived(controller !== null && started && !closed && (!blocked || busy));
   const size = $derived(info?.sizeBytes != null ? formatMegabytes(info.sizeBytes) : null);
   const hasNotes = $derived(pickNotes(parseNotes(info?.notes), i18n.locale).length > 0);
-  const busy = $derived(controller.status === 'downloading' || controller.status === 'installing');
 
   const errorKey = $derived(
-    controller.errorStage === 'download'
+    controller?.errorStage === 'download'
       ? 'update.downloadFailed'
-      : controller.errorStage === 'install'
+      : controller?.errorStage === 'install'
         ? 'update.installFailed'
         : 'update.checkFailed',
   );
 
   function postponeAndClose(): void {
-    void controller.postpone();
+    void controller?.postpone();
     closed = true;
   }
 
   function onclose(): void {
     if (busy) return;
-    if (controller.status === 'available') postponeAndClose();
+    if (controller?.status === 'available') postponeAndClose();
     else closed = true;
   }
 
   function retry(): void {
+    if (!controller) return;
     // A retried download goes on to install, as the first click on the update button did.
     if (controller.errorStage === 'download') void controller.updateNow();
     else if (controller.errorStage === 'install') void controller.install();
     else void controller.check();
   }
 </script>
+
+{#if controller}
 
 <Modal {open} title={i18n.t('update.modal.title')} {onclose}>
   {#if controller.status === 'error'}
@@ -92,8 +96,9 @@
     {:else if controller.status === 'available'}
       <div class="flex flex-wrap justify-end gap-3">
         <Button variant="secondary" onclick={postponeAndClose}>{i18n.t('update.modal.later')}</Button>
-        <Button onclick={() => controller.updateNow()}>{i18n.t('update.modal.confirm')}</Button>
+        <Button onclick={() => controller?.updateNow()}>{i18n.t('update.modal.confirm')}</Button>
       </div>
     {/if}
   {/snippet}
 </Modal>
+{/if}

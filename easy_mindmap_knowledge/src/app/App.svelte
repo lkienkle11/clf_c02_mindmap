@@ -126,8 +126,6 @@
   {/if}
   <ReviewPrompts {services} {appState} {launcher} />
   <ResumeGate {services} {appState} {onresumed} activeAttemptId={resumed?.attemptId ?? null} onnotice={(text) => (resumeNotice = text)} />
-  {#if services.updates}
-    <UpdatePrompt controller={services.updates} blocked={updateBlocked} />
-  {/if}
+  <UpdatePrompt controller={services.updates} blocked={updateBlocked} />
   <NoticeStack {notices} />
 </main>

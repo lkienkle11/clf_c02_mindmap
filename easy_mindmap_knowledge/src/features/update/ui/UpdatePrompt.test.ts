@@ -137,6 +137,51 @@ describe('UpdatePrompt', () => {
     expect(store.saved).toBeNull();
   });
 
+  it('hides when blocked turns true after opening and shows again when unblocked', async () => {
+    const { setBlocked } = await setup();
+    expect(screen.getByRole('dialog')).toBeInTheDocument();
+    setBlocked(true);
+    await tick();
+    expect(screen.queryByRole('dialog')).toBeNull();
+    setBlocked(false);
+    await tick();
+    expect(screen.getByRole('dialog')).toBeInTheDocument();
+  });
+
+  it('stays visible during a download even if blocked turns true', async () => {
+    const port: UpdaterPort = {
+      check: async () => INFO,
+      download: () => new Promise<void>(() => {}),
+      install: async () => {},
+    };
+    const controller = new UpdateController(port, memoryStore());
+    await controller.loadPostponed();
+    await controller.check();
+    const flags = new SvelteSet<string>();
+    renderWithI18n(
+      UpdatePrompt,
+      {
+        controller,
+        get blocked() {
+          return flags.has('blocked');
+        },
+      },
+      'vi',
+    );
+    await tick();
+    await userEvent.click(screen.getByRole('button', { name: 'Cập nhật ngay' }));
+    flags.add('blocked');
+    await tick();
+    expect(controller.status).toBe('downloading');
+    expect(screen.getByRole('dialog')).toBeInTheDocument();
+  });
+
+  it('renders nothing when the controller is null', async () => {
+    renderWithI18n(UpdatePrompt, { controller: null, blocked: false }, 'vi');
+    await tick();
+    expect(screen.queryByRole('dialog')).toBeNull();
+  });
+
   it('renders nothing when there is no update', async () => {
     await setup({ update: null });
     expect(screen.queryByRole('dialog')).toBeNull();
