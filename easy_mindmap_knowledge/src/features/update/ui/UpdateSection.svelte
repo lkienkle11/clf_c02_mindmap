@@ -2,8 +2,11 @@
   import { getI18n } from '@/i18n/i18n.svelte';
   import Button from '@/ui/Button.svelte';
   import Modal from '@/ui/Modal.svelte';
+  import { parseNotes, pickNotes } from '../logic/changelog';
   import { formatMegabytes } from '../logic/format';
   import type { UpdateController } from '../logic/update-controller.svelte';
+  import UpdateNotes from './UpdateNotes.svelte';
+  import UpdateProgress from './UpdateProgress.svelte';
 
   interface Props {
     controller: UpdateController;
@@ -17,25 +20,7 @@
 
   const info = $derived(controller.info);
   const size = $derived(info?.sizeBytes != null ? formatMegabytes(info.sizeBytes) : null);
-  const percent = $derived(controller.percent);
-  const progress = $derived(controller.progress);
-
-  /** The visible words that name the progress bar; null before the first chunk arrives. */
-  const downloadText = $derived(
-    percent !== null
-      ? i18n.t('update.downloading', { percent })
-      : progress !== null
-        ? i18n.t('update.downloadingBytesNoTotal', { done: formatMegabytes(progress.downloaded) })
-        : null,
-  );
-  const bytesText = $derived(
-    progress !== null && progress.total !== null
-      ? i18n.t('update.downloadingBytes', {
-          done: formatMegabytes(progress.downloaded),
-          total: formatMegabytes(progress.total),
-        })
-      : null,
-  );
+  const hasNotes = $derived(pickNotes(parseNotes(info?.notes), i18n.locale).length > 0);
 
   const errorKey = $derived(
     controller.errorStage === 'download'
@@ -66,28 +51,17 @@
     <p role="status" class="text-sm text-muted-foreground">{i18n.t('update.upToDate')}</p>
   {:else if controller.status === 'available' && info}
     <p>{i18n.t('update.available', { version: info.version })}</p>
+    {#if hasNotes}
+      <div class="flex flex-col gap-1">
+        <h3 class="text-sm font-semibold">{i18n.t('update.notes.heading')}</h3>
+        <UpdateNotes notes={info.notes} />
+      </div>
+    {/if}
     <Button class="self-start" onclick={() => controller.download()}>
       {size !== null ? i18n.t('update.download', { size }) : i18n.t('update.downloadNoSize')}
     </Button>
   {:else if controller.status === 'downloading'}
-    <div class="flex flex-col gap-1">
-      {#if downloadText}
-        <p id="{headingId}-progress">{downloadText}</p>
-      {/if}
-      <progress
-        class="h-2 w-full accent-primary"
-        max="100"
-        value={percent ?? undefined}
-        aria-valuenow={percent ?? undefined}
-        aria-valuemin="0"
-        aria-valuemax="100"
-        aria-labelledby={downloadText ? `${headingId}-progress` : undefined}
-        aria-label={downloadText ? undefined : i18n.t('update.heading')}
-      ></progress>
-      {#if bytesText}
-        <p class="text-sm text-muted-foreground">{bytesText}</p>
-      {/if}
-    </div>
+    <UpdateProgress {controller} {headingId} />
   {:else if controller.status === 'ready'}
     <Button class="self-start" onclick={() => (confirming = true)}>{i18n.t('update.install')}</Button>
   {:else if controller.status === 'installing'}
@@ -107,6 +81,12 @@
       ? i18n.t('update.modal.body', { version: info.version, size })
       : i18n.t('update.modal.bodyNoSize', { version: info?.version ?? '' })}
   </p>
+  {#if hasNotes && info}
+    <div class="mt-3 flex flex-col gap-1">
+      <h3 class="text-sm font-semibold">{i18n.t('update.notes.heading')}</h3>
+      <UpdateNotes notes={info.notes} />
+    </div>
+  {/if}
   {#snippet footer()}
     <div class="flex flex-wrap justify-end gap-3">
       <Button variant="secondary" onclick={() => (confirming = false)}>{i18n.t('update.modal.later')}</Button>

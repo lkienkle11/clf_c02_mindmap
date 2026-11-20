@@ -7,10 +7,20 @@ function filesAt(version: string) {
     tauriConf: `{\n  "version": "${version}"\n}\n`,
     cargoToml: `[package]\nname = "app"\nversion = "${version}"\n`,
     cargoLock: `[[package]]\nname = "app"\nversion = "${version}"\n`,
+    changelog: `## ${version}\n\n### English\n- Improved release notes.\n\n### Tiếng Việt\n- Cải thiện ghi chú phát hành.\n`,
   };
 }
 
 describe('checkRelease', () => {
+  it('fails when the changelog has no section for the tag version', () => {
+    const files = { ...filesAt('0.2.0'), changelog: filesAt('0.1.0').changelog };
+    expect(() => checkRelease('v0.2.0', files, '0.1.0')).toThrow(/0\.2\.0/);
+  });
+
+  it('passes when the section has both languages', () => {
+    expect(() => checkRelease('v0.2.0', filesAt('0.2.0'), '0.1.0')).not.toThrow();
+  });
+
   it('passes when the tag matches the files and the published version is lower', () => {
     expect(() => checkRelease('v0.2.0', filesAt('0.2.0'), '0.1.0')).not.toThrow();
   });

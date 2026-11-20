@@ -1,6 +1,7 @@
 export interface UpdateInfo {
   version: string;
   sizeBytes: number | null;
+  notes: string | null;
 }
 
 export interface DownloadProgress {

@@ -26,6 +26,10 @@ const UPDATE_KEYS: Record<string, string[]> = {
   'update.modal.bodyNoSize': ['version'],
   'update.modal.confirm': [],
   'update.modal.later': [],
+  'update.notes.heading': [],
+  'update.dot.label': [],
+  'update.whatsNew.heading': [],
+  'update.whatsNew.version': ['version'],
 };
 
 describe('update strings', () => {
@@ -59,6 +63,14 @@ const WORDING: [locale: string, key: string, text: string][] = [
   ['en', 'update.modal.later', 'Later'],
   ['en', 'update.download', 'Download update ({size})'],
   ['en', 'update.install', 'Install update'],
+  ['vi', 'update.notes.heading', 'Có gì mới'],
+  ['en', 'update.notes.heading', "What's new"],
+  ['en', 'update.dot.label', 'Update available'],
+  ['vi', 'update.dot.label', 'Có bản cập nhật'],
+  ['en', 'update.whatsNew.heading', 'Release history'],
+  ['vi', 'update.whatsNew.heading', 'Lịch sử phiên bản'],
+  ['en', 'update.whatsNew.version', 'Version {version}'],
+  ['vi', 'update.whatsNew.version', 'Phiên bản {version}'],
 ];
 
 describe('update wording', () => {

@@ -4,7 +4,7 @@
   import { SETTING_LOCALE } from '@/app/app-state.svelte';
   import type { Services } from '@/app/composition';
   // TEMP-HIDE-REPORT: import { ReportButton } from '@/features/report';
-  import { UpdateSection } from '@/features/update';
+  import { UpdateSection, WhatsNew } from '@/features/update';
   import { onMount } from 'svelte';
   import { getI18n } from '@/i18n/i18n.svelte';
   import type { Locale } from '@/i18n/i18n.svelte';
@@ -76,5 +76,6 @@
 
   {#if services.updates}
     <UpdateSection controller={services.updates} />
+    <WhatsNew installedVersion={version} />
   {/if}
 </section>

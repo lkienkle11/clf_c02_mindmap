@@ -2,12 +2,155 @@ import { describe, expect, it, vi } from 'vitest';
 import { makeFakeUpdater } from '@/testing/fake-updater';
 import { UpdateController } from './update-controller.svelte';
 
-const UPDATE = { version: '1.2.0', sizeBytes: 1000 };
+const UPDATE = { version: '1.2.0', sizeBytes: 1000, notes: null };
 const CHUNKS = [
   { downloaded: 0, total: 1000 },
   { downloaded: 500, total: 1000 },
   { downloaded: 1000, total: 1000 },
 ];
+
+function memoryPromptStore(initial: string | null = null) {
+  let value = initial;
+  return {
+    get: async () => value,
+    set: async (version: string) => { value = version; },
+  };
+}
+
+describe('UpdateController pending updates', () => {
+  it('hasUpdate follows available, downloading, ready and installing states', async () => {
+    const c = new UpdateController(makeFakeUpdater({ update: UPDATE }));
+    expect(c.hasUpdate).toBe(false);
+    await c.check();
+    expect(c.hasUpdate).toBe(true);
+    const downloading = c.download();
+    expect(c.status).toBe('downloading');
+    expect(c.hasUpdate).toBe(true);
+    await downloading;
+    expect(c.status).toBe('ready');
+    expect(c.hasUpdate).toBe(true);
+    await c.install();
+    expect(c.status).toBe('installing');
+    expect(c.hasUpdate).toBe(true);
+  });
+
+  it.each(['download', 'install'] as const)('hasUpdate stays true after a %s error', async (stage) => {
+    const c = new UpdateController(makeFakeUpdater({
+      update: UPDATE, failDownload: stage === 'download', failInstall: stage === 'install',
+    }));
+    await c.check();
+    await c.download();
+    if (stage === 'install') await c.install();
+    expect(c.errorStage).toBe(stage);
+    expect(c.hasUpdate).toBe(true);
+  });
+
+  it('hasUpdate is false when up to date or after a check error', async () => {
+    const current = new UpdateController(makeFakeUpdater());
+    await current.check();
+    expect(current.status).toBe('upToDate');
+    expect(current.hasUpdate).toBe(false);
+    const failed = new UpdateController(makeFakeUpdater({ failCheck: true }));
+    await failed.check();
+    expect(failed.hasUpdate).toBe(false);
+  });
+
+  it('promptable is false until the postponed version has been read', async () => {
+    let finishRead!: (value: string | null) => void;
+    const c = new UpdateController(makeFakeUpdater({ update: UPDATE }), {
+      get: () => new Promise((resolve) => { finishRead = resolve; }),
+      set: async () => {},
+    });
+    await c.check();
+    expect(c.postponedVersion).toBeUndefined();
+    expect(c.promptable).toBe(false);
+    const reading = c.loadPostponed();
+    expect(c.promptable).toBe(false);
+    finishRead(null);
+    await reading;
+    expect(c.postponedVersion).toBeNull();
+    expect(c.promptable).toBe(true);
+    await c.download();
+    expect(c.promptable).toBe(false);
+  });
+
+  it('promptable is false for a postponed version and true again for a newer one', async () => {
+    let update = UPDATE;
+    const c = new UpdateController({ ...makeFakeUpdater(), check: async () => update }, memoryPromptStore('1.2.0'));
+    await c.loadPostponed();
+    await c.check();
+    expect(c.promptable).toBe(false);
+    update = { ...UPDATE, version: '1.3.0' };
+    await c.check();
+    expect(c.promptable).toBe(true);
+  });
+
+  it('postpone stores the version and clears promptable', async () => {
+    const store = memoryPromptStore();
+    const c = new UpdateController(makeFakeUpdater({ update: UPDATE }), store);
+    await c.loadPostponed();
+    await c.check();
+    await c.postpone();
+    expect(await store.get()).toBe('1.2.0');
+    expect(c.postponedVersion).toBe('1.2.0');
+    expect(c.promptable).toBe(false);
+  });
+
+  it('a failing store write still stops promptable for this run', async () => {
+    const failure = new Error('write failed');
+    const logged = vi.spyOn(console, 'error').mockImplementation(() => {});
+    try {
+      const c = new UpdateController(makeFakeUpdater({ update: UPDATE }), {
+        get: async () => null,
+        set: async () => { throw failure; },
+      });
+      await c.loadPostponed();
+      await c.check();
+      await expect(c.postpone()).resolves.toBeUndefined();
+      expect(c.postponedVersion).toBe('1.2.0');
+      expect(c.promptable).toBe(false);
+      expect(logged).toHaveBeenCalledWith(expect.any(String), failure);
+    } finally {
+      logged.mockRestore();
+    }
+  });
+
+  it('a failing store read keeps promptable false', async () => {
+    const failure = new Error('read failed');
+    const logged = vi.spyOn(console, 'error').mockImplementation(() => {});
+    try {
+      const c = new UpdateController(makeFakeUpdater({ update: UPDATE }), {
+        get: async () => { throw failure; },
+        set: async () => {},
+      });
+      await expect(c.loadPostponed()).resolves.toBeUndefined();
+      await c.check();
+      expect(c.postponedVersion).toBeUndefined();
+      expect(c.promptable).toBe(false);
+      expect(logged).toHaveBeenCalledWith(expect.any(String), failure);
+    } finally {
+      logged.mockRestore();
+    }
+  });
+
+  it('updateNow downloads then installs', async () => {
+    const port = makeFakeUpdater({ update: UPDATE });
+    const c = new UpdateController(port);
+    await c.check();
+    await c.updateNow();
+    expect(port.calls).toEqual(['check', 'download', 'install']);
+    expect(c.status).toBe('installing');
+  });
+
+  it('updateNow stops after a download error and does not call install', async () => {
+    const port = makeFakeUpdater({ update: UPDATE, failDownload: true });
+    const c = new UpdateController(port);
+    await c.check();
+    await c.updateNow();
+    expect(c.errorStage).toBe('download');
+    expect(port.calls).toEqual(['check', 'download']);
+  });
+});
 
 describe('UpdateController.check', () => {
   it('becomes available with the info when an update exists', async () => {

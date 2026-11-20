@@ -223,3 +223,26 @@ Order summary: using-superpowers -> brainstorming (+ research) -> spec -> [user 
 When the user says "start over" (or an equivalent), restart this workflow from Step 0. Do not ask again about things the user already specified, and do not continue previous work that was never approved.
 
 <!-- end:superpowers-workflow-rule:end -->
+
+<!-- begin:release-tag-rule:start -->
+## Release Tag Rule (changelog, version info and size-based version number)
+
+When the user asks to create a tag or a release (for example "tag v0.1.2", "merge và tag", "release"):
+
+1. **Do not tag yet.** First assess the size of the work in this release and propose the version number; wait for the user's answer.
+2. **Assess the size of task** from evidence, not from feeling: the commits since the last published tag (`git log <last-tag>..HEAD`), the files and lines changed, user-visible features added or changed, database migrations, breaking or incompatible changes, and the number and weight of plan tasks. Rate it as one of: **huge** (siêu big), **big**, **somewhat big** (hơi big), **medium** (vừa), **small** (nhỏ).
+3. **Propose the version `X.Y.Z`** from that size. Recommended mapping (the user decides):
+   - huge -> **major** (`X+1.0.0`), or a minor jump while the app is still 0.x and the user has not declared 1.0.0
+   - big -> **minor** (`X.Y+1.0`)
+   - somewhat big -> **minor** when it adds a user-visible feature, otherwise **patch**
+   - medium and small -> **patch** (`X.Y.Z+1`)
+   A release that only exercises the pipeline (no code change) is always **patch**.
+4. **Ask the user** with `AskUserQuestion` (or a direct question when the tool is unavailable): show the size rating with the 2 to 3 pieces of evidence behind it, your recommended `X.Y.Z` with the reason, and the alternatives (the next patch, minor and major numbers). The user may also type another number. **Wait for the answer.** Never choose the number alone, and never reuse a number that is already published.
+5. **After the user decides, prepare the release content before the tag**, in the same release commit:
+   - Write the `CHANGELOG.md` section for that version in **both languages** (`### English`, then `### Tiếng Việt`), describing what changed for the user (this is the "info version" shown in the update modal, in Settings and on the GitHub Release page). No placeholder text.
+   - Set the version in all version files (`node scripts/release/set-version.mjs X.Y.Z`, then `package-lock.json`), as described in `easy_mindmap_knowledge/docs/RELEASING.md`.
+   - Commit it as `chore(release): X.Y.Z` with the four body sections required by the commit rules.
+6. Only then, with the user's permission for each outward step, merge, push the tag `vX.Y.Z`, watch the release workflow, and verify the published Release and `latest.json` (version, sizes, notes).
+7. Report to the user: the final version, the size rating used, what the release notes say, and the verification result.
+
+<!-- end:release-tag-rule:end -->

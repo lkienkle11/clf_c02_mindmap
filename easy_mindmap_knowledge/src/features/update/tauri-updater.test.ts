@@ -36,14 +36,24 @@ function make(update: any, extra: { calls?: string[]; userAgent?: string } = {})
 }
 
 describe('createTauriUpdater.check', () => {
+  it('check returns the update notes from body', async () => {
+    const update = { ...fakeUpdate({}), body: 'Release notes\n- New feature' };
+    expect(await make(update).check()).toHaveProperty('notes', update.body);
+  });
+
+  it.each([undefined, null, 42, false, {}, ''])('check returns null notes when body is missing or not a string (%j)', async (body) => {
+    const update = body === undefined ? fakeUpdate({}) : { ...fakeUpdate({}), body };
+    expect(await make(update).check()).toHaveProperty('notes', null);
+  });
+
   it('returns null when there is no update', async () => {
     expect(await make(null).check()).toBeNull();
   });
 
   it('reads the size for the running platform from rawJson.sizes', async () => {
     const raw = { sizes: { 'windows-x86_64': 5000, 'darwin-aarch64': 7000 } };
-    expect(await make(fakeUpdate(raw)).check()).toEqual({ version: '2.0.0', sizeBytes: 5000 });
-    expect(await make(fakeUpdate(raw), { userAgent: MAC_ARM }).check()).toEqual({ version: '2.0.0', sizeBytes: 7000 });
+    expect(await make(fakeUpdate(raw)).check()).toEqual({ version: '2.0.0', sizeBytes: 5000, notes: null });
+    expect(await make(fakeUpdate(raw), { userAgent: MAC_ARM }).check()).toEqual({ version: '2.0.0', sizeBytes: 7000, notes: null });
   });
 
   it('uses the largest darwin size when the architecture cannot be told', async () => {

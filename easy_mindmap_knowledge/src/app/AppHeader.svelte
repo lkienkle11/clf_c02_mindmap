@@ -45,7 +45,10 @@
         >{i18n.t(item.label)}{#if item.view === 'reports' && appState.newReportCount > 0}<span class="sr-only">, {i18n.t('report.tab.new', { n: appState.newReportCount })}</span><span
               aria-hidden="true"
               class="ml-2 inline-flex min-w-6 items-center justify-center rounded-full bg-danger px-1.5 text-sm font-semibold text-danger-foreground"
-            >{appState.newReportCount}</span>{/if}</button>
+            >{appState.newReportCount}</span>{/if}{#if item.view === 'settings' && services.updates?.hasUpdate}<span class="sr-only">, {i18n.t('update.dot.label')}</span><span
+              aria-hidden="true"
+              class="ml-2 inline-block size-2.5 rounded-full bg-danger"
+            ></span>{/if}</button>
       {/each}
       <ReviewButton {services} {appState} onstart={onreview} />
     </nav>

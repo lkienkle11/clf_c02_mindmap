@@ -36,14 +36,25 @@ describe('SettingsScreen', () => {
 
   it('shows the update section under the version and checks for updates on open', async () => {
     const env = await makeHistoryEnv();
-    const fake = makeFakeUpdater({ update: { version: '9.9.9', sizeBytes: null } });
+    const fake = makeFakeUpdater({ update: { version: '9.9.9', sizeBytes: null, notes: null } });
     const services = { ...env.services, updates: new UpdateController(fake) };
     renderWithI18n(SettingsScreen, { services, appState: env.appState }, 'vi');
     expect(await screen.findByRole('button', { name: 'Tải bản cập nhật' })).toBeInTheDocument();
     expect(fake.calls).toEqual(['check']);
-    const versionLine = screen.getByText(new RegExp(version.replaceAll('.', '\\.')));
+    // the release history repeats the version in its summaries, so pick the plain version line
+    const versionLine = screen.getByText(new RegExp(version.replaceAll('.', '\\.')), { selector: 'p' });
     const heading = screen.getByRole('heading', { name: 'Cập nhật' });
     expect(versionLine.compareDocumentPosition(heading) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+  });
+
+  it('renders the release history only when services.updates is set', async () => {
+    const env = await makeHistoryEnv();
+    const { unmount } = renderWithI18n(SettingsScreen, { services: env.services, appState: env.appState });
+    expect(screen.queryByRole('heading', { name: 'Release history' })).toBeNull();
+    unmount();
+    const services = { ...env.services, updates: new UpdateController(makeFakeUpdater({ update: null })) };
+    renderWithI18n(SettingsScreen, { services, appState: env.appState });
+    expect(await screen.findByRole('heading', { name: 'Release history' })).toBeInTheDocument();
   });
 
   it('switches the language at once and saves it', async () => {

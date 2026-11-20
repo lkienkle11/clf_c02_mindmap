@@ -26,6 +26,7 @@ import type { RebuildDeps, ReviewScheduler } from '@/features/review';
 import { UpdateController, createTauriUpdater } from '@/features/update';
 import { getBuildChannel } from '@/app/build-channel';
 import type { UpdaterPort } from '@/features/update';
+import { POSTPONED_KEY } from '@/features/update/logic/prompt-store';
 
 export interface Services {
   catalog: Catalog;
@@ -71,6 +72,7 @@ export function buildServices(parts: {
   const scheduler = new LeitnerScheduler();
   const questionTopics = new Map(catalog.questions.map((q) => [q.id, q.topicId]));
   const rebuildDeps: RebuildDeps = { executor, scheduler, topicOf: (id) => questionTopics.get(id) ?? null };
+  const settings = createSettingsRepo(executor);
   return {
     catalog,
     executor,
@@ -79,14 +81,17 @@ export function buildServices(parts: {
       lessonProgress: createLessonProgressRepo(executor),
       attempts: createAttemptsRepo(executor),
       questionStats: createQuestionStatsRepo(executor),
-      settings: createSettingsRepo(executor),
+      settings,
       reports: createReportsRepo(executor),
     },
     rebuildDeps,
     reportStorage: parts.reportStorage ?? createUnavailableReportStorage(),
     rebuildStats: parts.rebuildStats ?? ((ids) => rebuildStatsFor(rebuildDeps, ids)),
     ...(parts.beforeRegrade !== undefined ? { beforeRegrade: parts.beforeRegrade } : {}),
-    updates: parts.updater ? new UpdateController(parts.updater) : null,
+    updates: parts.updater ? new UpdateController(parts.updater, {
+      get: () => settings.get(POSTPONED_KEY),
+      set: (version) => settings.set(POSTPONED_KEY, version),
+    }) : null,
     now: parts.now ?? (() => Date.now()),
     newId: parts.newId ?? (() => crypto.randomUUID()),
   };
