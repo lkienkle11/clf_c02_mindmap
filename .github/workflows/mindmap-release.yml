@@ -103,7 +103,7 @@ jobs:
           projectPath: easy_mindmap_knowledge
           tagName: ${{ github.ref_name }}
           releaseName: AWS CLF-C02 Mindmap ${{ github.ref_name }}
-          releaseDraft: false
+          releaseDraft: true
           prerelease: false
           uploadUpdaterJson: true
           updaterJsonPreferNsis: true
@@ -132,3 +132,4 @@ jobs:
           gh release view "$GITHUB_REF_NAME" --json assets --jq .assets > assets.json
           node easy_mindmap_knowledge/scripts/release/add-sizes.mjs latest.json assets.json
           gh release upload "$GITHUB_REF_NAME" latest.json --clobber
+          gh release edit "$GITHUB_REF_NAME" --draft=false

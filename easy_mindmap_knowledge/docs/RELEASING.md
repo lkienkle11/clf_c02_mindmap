@@ -29,14 +29,37 @@ All commands run from the `easy_mindmap_knowledge` folder unless stated otherwis
 
 5. Protect `v*` tags on GitHub: Settings, Rules, Rulesets, New tag ruleset, target pattern `v*`, and enable "Restrict deletions" and "Restrict updates" (also restrict creations to maintainers). A release tag must never be moved or re-created after the app has been published.
 
+   GitHub lets anyone with write access push a `v*` tag from any branch, and the workflow builds whatever commit the tag points at. Tag protection does not check the branch, so it is your responsibility to tag only commits that are on `main`.
+
 ## How to release
 
 ```bash
 node scripts/release/set-version.mjs X.Y.Z
-git add -A
-git commit -m "chore(release): X.Y.Z"
+npm install --package-lock-only
+git add package.json package-lock.json src-tauri/Cargo.toml src-tauri/Cargo.lock src-tauri/tauri.conf.json
+git commit
 git tag vX.Y.Z
 git push origin vX.Y.Z
+```
+
+`set-version.mjs` does not edit `package-lock.json`, so run `npm install --package-lock-only` after it and before staging the lockfile. Stage only the version files listed above (paths are relative to `easy_mindmap_knowledge`).
+
+Write the commit message in the repository's required form: the title is `chore(release): X.Y.Z`, and the body has the four sections below (no AI attribution lines):
+
+```text
+chore(release): X.Y.Z
+
+Scope:
+Release version X.Y.Z.
+
+What did:
+Set the version to X.Y.Z in package.json, package-lock.json, tauri.conf.json, Cargo.toml and Cargo.lock.
+
+Reviewed:
+Checked that the five files show the same version and the diff contains nothing else.
+
+Tested:
+npm test and npm run check, both passed.
 ```
 
 `set-version.mjs` updates the version in `package.json`, `src-tauri/tauri.conf.json`, `src-tauri/Cargo.toml` and `src-tauri/Cargo.lock` together. Push the branch with the version commit as well, so the tag points at a commit that is on the main line.
@@ -52,9 +75,10 @@ If the check fails, fix the cause, delete the tag locally and on GitHub (only po
 
 ## If a release fails halfway
 
+- The release is created as a draft and the `finalize` job publishes it as the very last step, only after `latest.json` has all four platforms. While it is a draft nobody sees it and it is not "latest", so installed apps are never pointed at a half-built release.
 - A failed job can be re-run with "Re-run failed jobs" on the workflow run. `verify` is not repeated, so the version check does not run again.
-- A full re-run ("Re-run all jobs") after one platform has already published fails the version check on purpose, because that version is now the latest published release. In that case delete the partial GitHub Release and the tag (on GitHub and locally), fix the cause, and tag again.
-- The `finalize` job fails on purpose when `latest.json` lacks a platform (darwin-aarch64, darwin-x86_64, windows-x86_64 or linux-x86_64), so a release without an update path for some system never looks successful.
+- Or delete the draft release and the tag (on GitHub and locally), fix the cause, and tag again. The version check compares against the latest published release only, so a draft does not block re-tagging.
+- The `finalize` job fails on purpose when `latest.json` lacks a platform (darwin-aarch64, darwin-x86_64, windows-x86_64 or linux-x86_64), so a release without an update path for some system is never published.
 
 ## What each platform downloads
 
