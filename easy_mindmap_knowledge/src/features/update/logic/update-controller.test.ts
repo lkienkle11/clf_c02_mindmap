@@ -167,7 +167,7 @@ describe('UpdateController.check', () => {
     }
   });
 
-  it.each([false, true])('a later newer find is not promptable after postponing=%s', async (postpone) => {
+  it.each([false, true])('a manual re-check preserves the pending version and prompt state after postponing=%s', async (postpone) => {
     let update = UPDATE;
     const c = new UpdateController({ ...makeFakeUpdater(), check: async () => update });
     await c.loadPostponed();
@@ -175,9 +175,34 @@ describe('UpdateController.check', () => {
     if (postpone) await c.postpone();
     update = { ...UPDATE, version: '1.3.0' };
     await c.check();
-    expect(c.info?.version).toBe('1.3.0');
+    expect(c.info?.version).toBe('1.2.0');
     expect(c.promptVersion).toBe('1.2.0');
-    expect(c.promptable).toBe(false);
+    expect(c.promptable).toBe(!postpone);
+    expect(c.hasUpdate).toBe(true);
+  });
+
+  it('a manual check while an update is pending does not call the port and keeps the status available', async () => {
+    const options = { update: UPDATE as typeof UPDATE | null };
+    const port = makeFakeUpdater(options);
+    const c = new UpdateController(port);
+    await c.check();
+    options.update = null;
+
+    await c.check();
+
+    expect(port.calls).toEqual(['check']);
+    expect(c.status).toBe('available');
+    expect(c.info).toEqual(UPDATE);
+  });
+
+  it('a manual check while an update is pending keeps hasUpdate true throughout', async () => {
+    const c = new UpdateController(makeFakeUpdater({ update: UPDATE }));
+    await c.check();
+    expect(c.hasUpdate).toBe(true);
+
+    const pending = c.check();
+    expect(c.hasUpdate).toBe(true);
+    await pending;
     expect(c.hasUpdate).toBe(true);
   });
 

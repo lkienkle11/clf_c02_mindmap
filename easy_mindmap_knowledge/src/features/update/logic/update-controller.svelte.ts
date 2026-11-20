@@ -88,10 +88,10 @@ export class UpdateController {
    */
   check(opts: { silent?: boolean } = {}): Promise<void> {
     const keepsDownload = this.status === 'error' && this.errorStage === 'install';
-    if (keepsDownload || this.status === 'downloading' || this.status === 'ready' || this.status === 'installing') {
+    if (keepsDownload || this.status === 'available' || this.status === 'downloading' || this.status === 'ready' || this.status === 'installing') {
       return Promise.resolve();
     }
-    if (opts.silent && (this.status === 'available' || (this.status === 'error' && this.errorStage !== 'check'))) {
+    if (opts.silent && this.status === 'error' && this.errorStage !== 'check') {
       return Promise.resolve();
     }
     if (this.inflightCheck) {
