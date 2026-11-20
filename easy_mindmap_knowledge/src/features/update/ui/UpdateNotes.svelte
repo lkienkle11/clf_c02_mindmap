@@ -14,7 +14,7 @@
 
 {#if items.length > 0}
   <ul class="list-disc pl-5 text-sm">
-    {#each items as item (item)}
+    {#each items as item}
       <li>{item}</li>
     {/each}
   </ul>

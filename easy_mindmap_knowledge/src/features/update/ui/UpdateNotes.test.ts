@@ -22,4 +22,9 @@ describe('UpdateNotes', () => {
     expect(screen.queryByRole('list')).toBeNull();
     expect(screen.queryByText("What's new")).toBeNull();
   });
+
+  it('renders repeated identical bullets', () => {
+    renderWithI18n(UpdateNotes, { notes: '### English\n- Faster start\n- Faster start\n' }, 'en');
+    expect(screen.getAllByText('Faster start')).toHaveLength(2);
+  });
 });
