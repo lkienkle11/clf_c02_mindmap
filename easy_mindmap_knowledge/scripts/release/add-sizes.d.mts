@@ -1,4 +1,4 @@
 export function addSizes<T extends { platforms: Record<string, { url: string }> }>(
   latest: T,
-  assets: { name: string; size: number }[],
+  assets: { name: string; size: number; apiUrl?: string }[],
 ): Omit<T, 'sizes'> & { sizes: Record<string, number> };

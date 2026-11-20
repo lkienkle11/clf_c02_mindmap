@@ -5,7 +5,7 @@ export function addSizes(latest, assets) {
   const sizes = {};
   for (const [platform, entry] of Object.entries(latest.platforms)) {
     const name = decodeURIComponent(new URL(entry.url).pathname.split('/').pop());
-    const asset = assets.find(asset => asset.name === name);
+    const asset = assets.find(asset => asset.name === name || (asset.apiUrl && asset.apiUrl === entry.url));
     if (!asset) throw new Error(`Missing asset for platform ${platform}`);
     sizes[platform] = asset.size;
   }
