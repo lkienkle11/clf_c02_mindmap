@@ -1,5 +1,19 @@
 # Changelog
 
+## 0.2.3
+
+### English
+- The update window now appears only when you open the app. If a new version comes out while the app is already open, you see a dot on Settings and the update in Settings; the window shows the next time you open the app. "Để sau" still waits for the next version.
+- While the app stays open it checks for updates quietly every 6 hours, so the dot appears on its own without visiting Settings.
+- Long release notes scroll inside their own area, and the title and the buttons of the update window always stay in view.
+- Release builds are faster and stop on their own if a step hangs.
+
+### Tiếng Việt
+- Cửa sổ cập nhật giờ chỉ hiện khi bạn mở app. Nếu có phiên bản mới ra khi app đang mở, bạn thấy chấm báo ở Cài đặt và bản cập nhật trong Cài đặt; cửa sổ sẽ hiện ở lần mở app kế tiếp. "Để sau" vẫn đợi đến phiên bản mới tiếp theo.
+- Khi app đang mở, app tự kiểm tra cập nhật âm thầm mỗi 6 tiếng, nên chấm báo tự xuất hiện mà không cần vào Cài đặt.
+- Ghi chú phát hành dài cuộn trong khung riêng, tiêu đề và các nút của cửa sổ cập nhật luôn nằm trong tầm nhìn.
+- Bản phát hành được dựng nhanh hơn và tự dừng nếu một bước bị treo.
+
 ## 0.2.2
 
 ### English
