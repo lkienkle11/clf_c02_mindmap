@@ -21,7 +21,57 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  # Tests, type check and the web bundle: always, on one fast runner.
+  test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: easy_mindmap_knowledge
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: easy_mindmap_knowledge/package-lock.json
+
+      - run: npm ci
+      - run: npm test
+      - run: npm run check
+      - run: npm run build
+
+  # Decides whether the slow native (Tauri) build is needed: only for a change to the native side, the
+  # dependencies or the workflows. A push to main always builds, so the main Rust cache stays warm.
+  changes:
+    runs-on: ubuntu-latest
+    outputs:
+      native: ${{ steps.diff.outputs.native }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - id: diff
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          if [ "$GITHUB_EVENT_NAME" != "pull_request" ]; then
+            echo "native=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          # If the changed files cannot be listed, build: skipping the native build must never be the fallback.
+          files=$(git diff --name-only "$BASE_SHA...$HEAD_SHA") || { echo "native=true" >> "$GITHUB_OUTPUT"; exit 0; }
+          if printf '%s\n' "$files" | grep -Eq '^(easy_mindmap_knowledge/(src-tauri/|package\.json$|package-lock\.json$)|\.github/workflows/)'; then
+            echo "native=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "native=false" >> "$GITHUB_OUTPUT"
+          fi
+
   build:
+    needs: changes
+    if: needs.changes.outputs.native == 'true'
     strategy:
       fail-fast: false
       matrix:
@@ -59,6 +109,4 @@ jobs:
           sudo apt-get install -y libwebkit2gtk-4.1-dev libappindicator3-dev librsvg2-dev patchelf libxdo-dev libssl-dev
 
       - run: npm ci
-      - run: npm test
-      - run: npm run check
       - run: npx tauri build --bundles ${{ matrix.bundles }}

@@ -29,6 +29,13 @@ jobs:
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version: 22
+          cache: npm
+          cache-dependency-path: easy_mindmap_knowledge/package-lock.json
+
+      # The tests and the type check run once here; the platform builds below do not repeat them.
+      - run: npm ci
+      - run: npm test
+      - run: npm run check
 
       - name: Check the release
         run: node scripts/release/check-release.mjs
@@ -36,11 +43,30 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_REF_NAME: ${{ github.ref_name }}
 
-  build:
+  # One job creates the draft release, so the parallel builds below upload into it and never create a second one.
+  draft:
     needs: verify
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    outputs:
+      release_id: ${{ steps.release.outputs.release_id }}
+    steps:
+      - id: release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_REPO: ${{ github.repository }}
+          TAG: ${{ github.ref_name }}
+        run: |
+          gh release view "$TAG" >/dev/null 2>&1 || gh release create "$TAG" --draft --verify-tag --title "AWS CLF-C02 Mindmap $TAG" --notes "Release in progress."
+          id=$(gh api "repos/$GH_REPO/releases" --paginate --jq ".[] | select(.tag_name == \"$TAG\") | .id" | head -n 1)
+          test -n "$id"
+          echo "release_id=$id" >> "$GITHUB_OUTPUT"
+
+  build:
+    needs: [verify, draft]
     strategy:
       fail-fast: false
-      max-parallel: 1
       matrix:
         include:
           - os: macos-latest
@@ -89,8 +115,6 @@ jobs:
           sudo apt-get install -y libwebkit2gtk-4.1-dev libappindicator3-dev librsvg2-dev patchelf libxdo-dev libssl-dev
 
       - run: npm ci
-      - run: npm test
-      - run: npm run check
 
       - uses: tauri-apps/tauri-action@1deb371b0cd8bd54025b384f1cd735e725c4060f # action-v1.0.0
         env:
@@ -101,12 +125,9 @@ jobs:
           TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
         with:
           projectPath: easy_mindmap_knowledge
-          tagName: ${{ github.ref_name }}
-          releaseName: AWS CLF-C02 Mindmap ${{ github.ref_name }}
-          releaseDraft: true
-          prerelease: false
-          uploadUpdaterJson: true
-          updaterJsonPreferNsis: true
+          releaseId: ${{ needs.draft.outputs.release_id }}
+          # latest.json is built once in finalize from the uploaded files, so parallel jobs never overwrite each other.
+          uploadUpdaterJson: false
           args: --config src-tauri/tauri.production.conf.json --bundles ${{ matrix.bundles }} ${{ matrix.args }}
 
   finalize:
@@ -125,13 +146,14 @@ jobs:
         with:
           node-version: 22
 
-      - name: Add asset sizes to latest.json
+      - name: Build latest.json, add notes and publish
         run: |
-          gh release download "$GITHUB_REF_NAME" --pattern latest.json --clobber
-          node easy_mindmap_knowledge/scripts/release/assert-platforms.mjs latest.json
           gh release view "$GITHUB_REF_NAME" --json assets --jq .assets > assets.json
+          mkdir sigs
+          gh release download "$GITHUB_REF_NAME" --pattern '*.sig' --dir sigs
+          node easy_mindmap_knowledge/scripts/release/build-latest.mjs assets.json sigs "${GITHUB_REF_NAME#v}" "$GITHUB_REPOSITORY" "$GITHUB_REF_NAME" latest.json
+          node easy_mindmap_knowledge/scripts/release/assert-platforms.mjs latest.json
           node easy_mindmap_knowledge/scripts/release/add-sizes.mjs latest.json assets.json
-          node easy_mindmap_knowledge/scripts/release/public-urls.mjs latest.json assets.json "$GITHUB_REPOSITORY" "$GITHUB_REF_NAME"
           node easy_mindmap_knowledge/scripts/release/changelog.mjs "${GITHUB_REF_NAME#v}" easy_mindmap_knowledge/CHANGELOG.md latest.json notes.md
           gh release edit "$GITHUB_REF_NAME" --notes-file notes.md
           gh release upload "$GITHUB_REF_NAME" latest.json --clobber
