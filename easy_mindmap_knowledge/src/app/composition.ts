@@ -23,7 +23,8 @@ import type {
 } from '@/persistence';
 import { LeitnerScheduler, rebuildStatsFor } from '@/features/review';
 import type { RebuildDeps, ReviewScheduler } from '@/features/review';
-import { UpdateController } from '@/features/update';
+import { UpdateController, createTauriUpdater } from '@/features/update';
+import { getBuildChannel } from '@/app/build-channel';
 import type { UpdaterPort } from '@/features/update';
 
 export interface Services {
@@ -98,5 +99,6 @@ export async function createServices(): Promise<Services> {
     catalog: loadBundledCatalog(),
     reportStorage: createTauriReportStorage(),
     beforeRegrade: createTauriDbBackup(executor),
+    updater: getBuildChannel() === 'production' ? createTauriUpdater() : null,
   });
 }
