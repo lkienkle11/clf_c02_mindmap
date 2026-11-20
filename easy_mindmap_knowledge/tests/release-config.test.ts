@@ -162,3 +162,27 @@ describe('release workflow shape', () => {
     expect(pr).toMatch(/\|\| \{ echo "native=true" >> "\$GITHUB_OUTPUT"; exit 0; \}/);
   });
 });
+
+describe('workflow time limits', () => {
+  const workflow = (name: string) => readFileSync(join(root, '..', '.github', 'workflows', name), 'utf8');
+  const jobBlock = (text: string, job: string) => {
+    const start = text.indexOf(`\n  ${job}:`);
+    const rest = text.slice(start + 1);
+    const next = rest.slice(1).search(/\n  [a-z-]+:\n/);
+    return next === -1 ? rest : rest.slice(0, next + 1);
+  };
+
+  it.each([
+    ['mindmap-release.yml', 'build'],
+    ['mindmap-build.yml', 'build'],
+    ['mindmap-release.yml', 'verify'],
+  ])('%s job %s has a time limit so a stuck step fails fast', (file, job) => {
+    expect(jobBlock(workflow(file), job)).toMatch(/timeout-minutes: \d+/);
+  });
+
+  it.each(['mindmap-release.yml', 'mindmap-build.yml'])('%s installs the Linux packages with retries', (file) => {
+    const lines = workflow(file).split('\n').filter((l) => l.includes('apt-get'));
+    expect(lines.length).toBeGreaterThan(0);
+    expect(lines.every((l) => l.includes('Acquire::Retries=3'))).toBe(true);
+  });
+});

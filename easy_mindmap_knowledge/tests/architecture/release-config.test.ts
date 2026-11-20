@@ -46,7 +46,7 @@ describe('CI workflow (.github/workflows/mindmap-build.yml)', () => {
     expect(yml).toMatch(/^ {2}push:\n {4}branches: \[main\]$/m);
   });
   it('installs the Linux packages Tauri needs, including libxdo-dev and libssl-dev', () => {
-    const line = yml.split('\n').find((l) => l.includes('apt-get install')) ?? '';
+    const line = yml.split('\n').find((l) => /apt-get .*install/.test(l)) ?? '';
     for (const pkg of ['libwebkit2gtk-4.1-dev', 'libxdo-dev', 'libssl-dev', 'librsvg2-dev']) expect(line).toContain(pkg);
   });
 });
