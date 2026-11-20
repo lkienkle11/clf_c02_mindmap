@@ -31,6 +31,16 @@ describe('addSizes', () => {
       .toEqual({ ...latest, sizes: { 'darwin-aarch64': 321 } });
   });
 
+  it('matches an asset by its API URL when latest.json lists API asset URLs (draft release)', () => {
+    const api = 'https://api.github.com/repos/o/r/releases/assets/771680652';
+    const latest = { platforms: { 'darwin-aarch64': { url: api } } };
+
+    expect(addSizes(latest, [
+      { name: 'AWS.CLF-C02.Mindmap_0.1.0_universal.app.tar.gz', apiUrl: api, size: 14215636 },
+      { name: 'other.exe', apiUrl: 'https://api.github.com/repos/o/r/releases/assets/1', size: 5 },
+    ])).toEqual({ ...latest, sizes: { 'darwin-aarch64': 14215636 } });
+  });
+
   it('throws an Error naming the platform when its asset is missing', () => {
     const latest = { platforms: { 'windows-x86_64': { url: 'https://example.com/setup.exe' } } };
 
