@@ -31,12 +31,12 @@
           aria-current={current ? 'step' : undefined}
           onclick={() => ongo(i)}
           class={cn(
-            'inline-flex min-h-11 min-w-11 cursor-pointer items-center justify-center gap-1 rounded-lg border px-2 text-base focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring',
+            'inline-flex min-h-11 min-w-11 cursor-pointer items-center justify-center rounded-lg border px-2 text-base focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring',
             answered ? 'border-primary bg-muted' : 'border-border bg-surface',
             current ? 'font-bold underline decoration-2 underline-offset-4 ring-2 ring-primary' : 'font-normal',
           )}
         >
-          {i + 1}{#if answered}<span aria-hidden="true">✓</span>{/if}
+          {i + 1}
         </button>
       </li>
     {/each}
