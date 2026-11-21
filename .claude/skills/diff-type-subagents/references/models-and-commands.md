@@ -10,7 +10,8 @@ This file holds machine data (the models table, worker capabilities as tested on
 | Codex CLI 0.170.0 (2026-11-19) | `gpt-6.1-sol` | low, medium, high, xhigh, max, ultra | Default workhorse |
 | Codex CLI | `gpt-6-astra` | same | "Frontier intelligence", for the most demanding work only |
 | Codex CLI | `gpt-6.1-terra`, `gpt-6-luna` | luna: low to max (no ultra) | Terra balanced, Luna fast and cheap, for easier tasks |
-| Agy CLI | `gemini-3.8-flash-low`, `-medium`, `-high` | Chosen by the model name | `--effort` also exists (`low\|medium\|high\|xhigh\|max`) |
+| Codex CLI 0.170.0 (2026-11-21) | `gpt-6.2-sol`, `gpt-6.2-astra` | [Unverified] | Listed by `codex debug models` on 2026-11-21, not yet probed. Not used until verified (tier map: not listed = Small) |
+| Agy CLI 1.5.13 (2026-11-21; was 1.5.11) | `gemini-3.8-flash-low`, `-medium`, `-high` | Chosen by the model name | `--effort` also exists (`low\|medium\|high\|xhigh\|max`) |
 | Agy CLI | `claude-sonnet-4-6` (Thinking) | **Not adjustable**: `--effort` is rejected for this model | Arbiter only |
 | Agy CLI | `gpt-oss-120b-medium` | **Fixed at medium**: `--effort` conflicts with the model name | Only for very low-effort mechanical work (formatting, counting, merging reports) |
 
@@ -86,7 +87,7 @@ Data for Gate 1A in `SKILL.md`: one row per CLI, the commands that were verified
 | Codex CLI 0.170.0 (2026-11-19) | `codex resume --include-non-interactive --all` | not checked | **[Verified 2026-11-19]** the combined command runs and its picker lists non-interactive (`codex exec`) worker sessions. Both flags exist in `codex resume --help`. **[Unverified]** that `--all` shows sessions started in another directory (every listed session was started in this project directory, and no CWD column appeared on screen) |
 | Agy CLI 1.5.11 (2026-11-19) | `/resume` typed inside an interactive `agy` started in the project directory (Agy has no list subcommand: `agy --help` shows `--continue` and `--conversation <id>` only; it keeps conversations under its own data folder) | not checked | **[Verified 2026-11-19]** by the user: an interactive session and a non-interactive `agy --print` session, both started in the project directory, appeared in that list with content matching what was run. **[Unverified]**: sessions started in another directory; whether a running session can be followed in real time |
 | Claude Code | `claude --resume` | not checked | **[Unverified]** |
-| Subagent of the host's own mechanism (for example the Agent tool) | how the host shows the runs of its subagents, as confirmed by the user | not checked | **[Unverified]** until the user has confirmed, one time, how the host shows these runs; record the confirmation and the way to see them here with a date. After it the row counts as session-list verified (user decision 2026-11-20) |
+| Subagent of the host's own mechanism (for example the Agent tool) | how the host shows the runs of its subagents, as confirmed by the user | not checked | **[User-confirmed 2026-11-21]** the user said they can see the subagent runs of the Agent tool in their Claude Code interface and allows them as workers (the exact view was not named). Row counts as session-list verified (user decision 2026-11-20). Other folders and live following: [Unverified] |
 
 Notes from the first test (2026-11-10):
 
