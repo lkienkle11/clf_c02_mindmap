@@ -1,5 +1,19 @@
 # Changelog
 
+## 0.3.0
+
+### English
+- Practice: a new option "Cho phép hiển thị đáp án" adds a "Hiển thị đáp án" button while you answer. It shows the correct answers in green, your wrong pick in red, the note of each option and the explanation, and you can still change your answer afterwards.
+- Checkpoint exams: a new option "Sử dụng quyền trợ giúp" gives you two helps, 3 uses each per attempt: show the correct answer, and remove 2 wrong answers. The remaining uses are shown, and closing the app and resuming does not give them back. Capstone exams stay as strict as the real exam, with no help.
+- Answering a question no longer changes the size of its number in the question grid, so nothing jumps around while you take an exam.
+- The "Bắt đầu" button is now pinned to the bottom of the practice and exam setup screens, so you no longer scroll down to start.
+
+### Tiếng Việt
+- Luyện tập: tùy chọn mới "Cho phép hiển thị đáp án" thêm nút "Hiển thị đáp án" trong lúc làm bài. Nút hiện đáp án đúng màu xanh, đáp án bạn chọn sai màu đỏ, ghi chú của từng đáp án và phần giải thích; bạn vẫn đổi được đáp án sau đó.
+- Bài kiểm tra mốc (checkpoint): tùy chọn mới "Sử dụng quyền trợ giúp" cho bạn hai quyền trợ giúp, mỗi quyền 3 lần cho cả bài: hiện đáp án đúng, và loại 2 đáp án sai. Số lượt còn lại được hiển thị; đóng app rồi làm tiếp không được hoàn lại lượt. Bài Capstone vẫn nghiêm ngặt như thi thật, không có trợ giúp.
+- Trả lời một câu không còn làm đổi kích thước ô số câu trong lưới câu hỏi, nên giao diện không bị xô lệch khi làm bài.
+- Nút "Bắt đầu" giờ được ghim ở đáy các màn hình thiết lập luyện tập và thi, bạn không cần kéo xuống để bắt đầu.
+
 ## 0.2.3
 
 ### English

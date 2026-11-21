@@ -1,6 +1,6 @@
 [package]
 name = "app"
-version = "0.2.3"
+version = "0.3.0"
 description = "Offline desktop mindmap for learning and practising AWS Certified Cloud Practitioner (CLF-C02)"
 authors = ["AWS CLF-C02 Mindmap contributors"]
 license = "UNLICENSED"
