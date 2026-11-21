@@ -29,11 +29,12 @@ const attempt = (over: Partial<AttemptRow> = {}): AttemptRow => ({
   groupIndex: null,
   plannedCount: null,
   unansweredDisplay: 'reveal',
+  helpMode: 'off',
   ...over,
 });
 const questions = (attemptId = 'a1'): AttemptQuestionRow[] => [
-  { attemptId, position: 0, questionId: 'q1', optionOrder: ['B', 'A', 'C'], selected: [], isCorrect: null, unscored: false },
-  { attemptId, position: 1, questionId: 'q2', optionOrder: ['D', 'C', 'A', 'B'], selected: ['A'], isCorrect: null, unscored: false },
+  { attemptId, position: 0, questionId: 'q1', optionOrder: ['B', 'A', 'C'], selected: [], isCorrect: null, unscored: false, revealed: false, eliminated: [] },
+  { attemptId, position: 1, questionId: 'q2', optionOrder: ['D', 'C', 'A', 'B'], selected: ['A'], isCorrect: null, unscored: false, revealed: false, eliminated: [] },
 ];
 
 describe('translatePlaceholders', () => {
@@ -81,6 +82,35 @@ describe('attempts', () => {
     await repo.create(attempt(), [row as unknown as AttemptQuestionRow]);
     const rows = reader === 'questionsOf' ? await repo.questionsOf('a1') : (await repo.questionsOfMany(['a1'])).get('a1')!;
     expect(rows.map((q) => q.unscored)).toEqual([false]);
+  });
+
+  it('round-trips helpMode, revealed and eliminated', async () => {
+    const repo = createAttemptsRepo(db);
+    await repo.create(
+      attempt({ helpMode: 'powers' }),
+      questions().map((q, i) => ({ ...q, revealed: i === 0, eliminated: i === 1 ? ['B', 'C'] : [] })),
+    );
+    expect((await repo.findInProgress())?.attempt.helpMode).toBe('powers');
+    const rows = await repo.questionsOf('a1');
+    expect(rows.map((q) => q.revealed)).toEqual([true, false]);
+    expect(rows.map((q) => q.eliminated)).toEqual([[], ['B', 'C']]);
+  });
+
+  it('saveReveal sets revealed on one question', async () => {
+    const repo = createAttemptsRepo(db);
+    await repo.create(attempt({ helpMode: 'reveal' }), questions());
+    await repo.saveReveal('a1', 1);
+    expect((await repo.questionsOf('a1')).map((q) => q.revealed)).toEqual([false, true]);
+  });
+
+  it('saveElimination writes eliminated and selected together', async () => {
+    const repo = createAttemptsRepo(db);
+    await repo.create(attempt({ helpMode: 'powers' }), questions());
+    await repo.saveElimination('a1', 1, ['B', 'C'], []);
+    const rows = await repo.questionsOf('a1');
+    expect(rows[1].eliminated).toEqual(['B', 'C']);
+    expect(rows[1].selected).toEqual([]);
+    expect(rows[0].eliminated).toEqual([]);
   });
 
   it('stores and reads back clock.onHidden', async () => {

@@ -17,7 +17,7 @@ const attempt = (over: Partial<AttemptRow>): AttemptRow => ({
   scorePct: 80,
   passed: true,
   groupIndex: 1,
-  plannedCount: 30, unansweredDisplay: 'reveal',
+  plannedCount: 30, unansweredDisplay: 'reveal', helpMode: 'off',
   ...over,
 });
 

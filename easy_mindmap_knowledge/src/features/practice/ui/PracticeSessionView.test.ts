@@ -324,3 +324,58 @@ describe('PracticeSessionView', () => {
     expect(screen.queryByText(/Could not save the clock/)).not.toBeInTheDocument();
   });
 });
+
+async function mountPowers() {
+  const env = await makePracticeEnv();
+  const plan = ['q1', 'q2', 'q3'].map((questionId) => ({ questionId, optionOrder: ['A', 'B', 'C', 'D'] }));
+  const session = await PracticeSession.startExam(env.services, { kind: 'checkpoint', topicId: null, groupIndex: 1, plan, limitMs: 60_000, help: true }, () => env.appState.refresh());
+  renderWithI18n(PracticeSessionView, { services: env.services, appState: env.appState, session, hideKnowledge: true });
+  return { ...env, session };
+}
+
+describe('session help controls', () => {
+  it('hides help buttons when help is off', async () => {
+    await mount({ showAnswer: false });
+    expect(screen.queryByRole('button', { name: /Show answer|Eliminate/i })).not.toBeInTheDocument();
+  });
+  it('shows one reveal button in reveal mode', async () => {
+    await mount({ showAnswer: true });
+    expect(screen.getByRole('button', { name: 'Show answer' })).toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: /Eliminate/i })).not.toBeInTheDocument();
+  });
+  it('shows both powers with remaining counts', async () => {
+    await mountPowers();
+    expect(screen.getByRole('button', { name: 'Show correct answer (3/3)' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Eliminate 2 wrong answers (3/3)' })).toBeInTheDocument();
+  });
+  it('reveals the current question on click', async () => {
+    const { session } = await mount({ showAnswer: true });
+    session.goTo(1);
+    await userEvent.click(await screen.findByRole('button', { name: 'Show answer' }));
+    expect(session.questions[1].revealed).toBe(true);
+    expect(session.questions[0].revealed).toBe(false);
+  });
+  it('disables elimination with a visible reason after revealing', async () => {
+    await mountPowers();
+    await userEvent.click(screen.getByRole('button', { name: 'Show correct answer (3/3)' }));
+    expect(screen.getByRole('button', { name: 'Eliminate 2 wrong answers (3/3)' })).toBeDisabled();
+    expect(screen.getByText('Cannot eliminate answers after revealing the answer.')).toBeVisible();
+  });
+  it('disables powers when no uses remain', async () => {
+    const { session } = await mountPowers();
+    for (let i = 0; i < 3; i++) { await session.eliminate(i); await session.reveal(i); }
+    await waitFor(() => expect(screen.getByRole('button', { name: 'Show correct answer (0/3)' })).toBeDisabled());
+    expect(screen.getByRole('button', { name: 'Eliminate 2 wrong answers (0/3)' })).toBeDisabled();
+  });
+  it('announces a help result in the status region', async () => {
+    await mountPowers();
+    await userEvent.click(screen.getByRole('button', { name: 'Eliminate 2 wrong answers (3/3)' }));
+    expect(screen.getByTestId('question-announcement')).toHaveTextContent('Wrong answers eliminated.');
+  });
+  it('places help buttons in the right-aligned bottom action row', async () => {
+    await mountPowers();
+    const button = screen.getByRole('button', { name: 'Show correct answer (3/3)' });
+    expect(button.closest('.ml-auto')).toBeInTheDocument();
+    expect(button.closest('.border-t')).toContainElement(screen.getByRole('button', { name: 'Submit' }));
+  });
+});

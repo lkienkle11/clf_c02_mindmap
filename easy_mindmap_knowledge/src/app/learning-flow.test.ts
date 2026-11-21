@@ -79,13 +79,13 @@ async function passCheckpoint(services: Services, appState: AppState, groupIndex
     id: `cp-${groupIndex}`, kind: 'checkpoint', topicId: null, status: 'submitted', startedAt: T0, submittedAt: T0 + 1,
     submitReason: 'manual', reviewAllowed: true,
     clock: { mode: 'freeze', limitMs: null, remainingMs: null, deadlineAt: null, onHidden: 'freeze', onReport: 'freeze' },
-    heartbeatAt: null, scorePct: 90, passed: true, groupIndex, plannedCount: 30, unansweredDisplay: 'reveal',
+    heartbeatAt: null, scorePct: 90, passed: true, groupIndex, plannedCount: 30, unansweredDisplay: 'reveal', helpMode: 'off',
   }, []);
   await appState.refresh();
 }
 
 async function passWithSession(services: Services, appState: AppState, topicId: string): Promise<void> {
-  const s = await PracticeSession.start(services, topicId, { allowReview: false, limitMs: null, clockMode: 'freeze', onHidden: 'freeze', onReport: 'freeze', unansweredDisplay: 'reveal' as const, questionCount: 10 }, () => appState.refresh());
+  const s = await PracticeSession.start(services, topicId, { allowReview: false, limitMs: null, clockMode: 'freeze', onHidden: 'freeze', onReport: 'freeze', unansweredDisplay: 'reveal' as const, questionCount: 10, showAnswer: false }, () => appState.refresh());
   const byId = new Map(services.catalog.questions.map((q) => [q.id, q]));
   for (const q of s.questions) await s.select(q.position, byId.get(q.questionId)!.correct);
   const result = await s.submit('manual');
@@ -307,7 +307,7 @@ describe('Capstone learning flow with stored attempts and real exams', () => {
       startedAt: T0, submittedAt: T0 + 1, submitReason: 'manual', reviewAllowed: false,
       clock: { mode: 'run', limitMs: 5_400_000, remainingMs: null, deadlineAt: T0 + 5_400_000, onHidden: 'run', onReport: 'run' },
       heartbeatAt: null, scorePct: 70, passed: true, groupIndex: null,
-      plannedCount: 65, unansweredDisplay: 'reveal',
+      plannedCount: 65, unansweredDisplay: 'reveal', helpMode: 'off',
     }, []);
     await env.appState.refresh();
   }

@@ -5,6 +5,7 @@
   import { getI18n } from '@/i18n/i18n.svelte';
   import type { UnansweredDisplay } from '@/persistence';
   import Button from '@/ui/Button.svelte';
+  import StickyActionBar from '@/ui/StickyActionBar.svelte';
   import { buildPool } from '../logic/pick-questions';
   import { MIN_PRACTICE_QUESTIONS, quickCounts, validateQuestionCount } from '../logic/question-count';
   import { NoQuestionsError } from '../errors';
@@ -34,6 +35,7 @@
   let onHidden = $state<'freeze' | 'run'>('freeze');
   let onReport = $state<'freeze' | 'run'>('freeze');
   let unanswered = $state<UnansweredDisplay>('reveal');
+  let showAnswer = $state(false);
   let questionInput = $state<number | null>(DEFAULT_PRACTICE_OPTIONS.questionCount);
   let minutes = $state<number | null>(10);
   let seconds = $state<number | null>(0);
@@ -69,6 +71,7 @@
           onHidden = o.onHidden;
           onReport = o.onReport;
           unanswered = o.unansweredDisplay;
+          showAnswer = o.showAnswer;
           // A saved count larger than the pool is clamped to it.
           questionInput = Math.min(o.questionCount, poolSize);
           if (o.limitMs !== null) {
@@ -113,7 +116,7 @@
         services,
         topicId,
         // A pool below the minimum saves the minimum; the session clamps the draw to the pool.
-        { allowReview: review === 'allow', limitMs, clockMode: clock, onHidden, onReport, unansweredDisplay: unanswered, questionCount: fixedCount ? MIN_PRACTICE_QUESTIONS : count },
+        { allowReview: review === 'allow', limitMs, clockMode: clock, onHidden, onReport, unansweredDisplay: unanswered, questionCount: fixedCount ? MIN_PRACTICE_QUESTIONS : count, showAnswer },
         () => appState.refresh(),
       );
       onstarted(session);
@@ -128,7 +131,7 @@
   const field = 'min-h-11 w-24 rounded-lg border border-border bg-surface px-3 py-2 text-surface-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring aria-invalid:border-danger';
 </script>
 
-<form class="mx-auto flex max-w-2xl flex-col gap-6 p-6" onsubmit={start}>
+<form class="mx-auto flex max-w-2xl flex-col gap-6 p-6 pb-24" onsubmit={start}>
   <!-- The header nav is hidden on the practice route, so the setup stage needs its own way back. -->
   <div>
     <Button variant="ghost" onclick={() => appState.open({ view: 'tree' })}><span aria-hidden="true">←</span> {i18n.t('practice.setup.back')}</Button>
@@ -227,13 +230,15 @@
     <label class={radio}><input class="size-5" type="radio" name="unanswered" value="answersOnly" bind:group={unanswered} />{i18n.t('practice.setup.unansweredAnswersOnly')}</label>
   </fieldset>
 
+  <label class={radio}><input class="size-5" type="checkbox" bind:checked={showAnswer} />{i18n.t('practice.setup.showAnswer')}</label>
+
   {#if message}
     <p role="alert" class="rounded-lg border border-danger p-3 text-danger">{message}</p>
   {/if}
 
-  <div>
+  <StickyActionBar>
     <Button type="submit" disabled={!loaded || busy || timeInvalid || countInvalid} aria-describedby={startDescribedBy}>
       {i18n.t('practice.setup.start')}
     </Button>
-  </div>
+  </StickyActionBar>
 </form>

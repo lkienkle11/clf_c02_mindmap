@@ -13,11 +13,13 @@ export interface PracticeOptions {
   questionCount: number;
   /** What the results show for questions left unanswered. */
   unansweredDisplay: UnansweredDisplay;
+  /** Practice only: the tick that lets the user reveal the answer of a question. */
+  showAnswer: boolean;
 }
 
 export const DEFAULT_PRACTICE_OPTIONS: PracticeOptions = {
   allowReview: false, limitMs: null, clockMode: 'freeze', onHidden: 'freeze', onReport: 'freeze', questionCount: DEFAULT_QUESTION_COUNT,
-  unansweredDisplay: 'reveal',
+  unansweredDisplay: 'reveal', showAnswer: false,
 };
 
 const KEY = 'practice_last_options';
@@ -38,11 +40,12 @@ function parse(raw: string | null): PracticeOptions {
       ? { ok: true as const, count: DEFAULT_QUESTION_COUNT }
       : validateQuestionCount(o.questionCount, Number.POSITIVE_INFINITY);
     const unansweredOk = o.unansweredDisplay === undefined || o.unansweredDisplay === 'reveal' || o.unansweredDisplay === 'answersOnly';
-    if (typeof o.allowReview !== 'boolean' || !limitOk || !modeOk || !hiddenOk || !reportOk || !unansweredOk || !count.ok) return { ...DEFAULT_PRACTICE_OPTIONS };
+    if (typeof o.allowReview !== 'boolean' || !limitOk || !modeOk || !hiddenOk || !reportOk || !unansweredOk || !count.ok || (o.showAnswer !== undefined && typeof o.showAnswer !== 'boolean')) return { ...DEFAULT_PRACTICE_OPTIONS };
     return {
       allowReview: o.allowReview, limitMs: o.limitMs as number | null, clockMode: o.clockMode as 'freeze' | 'run',
       onHidden: (o.onHidden ?? 'freeze') as HiddenPolicy, onReport: (o.onReport ?? 'freeze') as HiddenPolicy,
       questionCount: count.count, unansweredDisplay: (o.unansweredDisplay ?? 'reveal') as UnansweredDisplay,
+      showAnswer: (o.showAnswer ?? false) as boolean,
     };
   } catch {
     return { ...DEFAULT_PRACTICE_OPTIONS };

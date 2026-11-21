@@ -24,6 +24,18 @@ function smallCatalog(count: number): Catalog {
 }
 
 describe('startCheckpoint', () => {
+  it('creates a powers attempt when help is enabled without saving the tick', async () => {
+    const services = await env(loadBundledCatalog());
+    await startCheckpoint(services, 1, { extraTime: true }, noop, true);
+    expect((await services.repos.attempts.findInProgress())!.attempt.helpMode).toBe('powers');
+    expect(await loadExamOptions(services.repos.settings)).toEqual({ extraTime: true });
+  });
+
+  it('creates an off attempt by default', async () => {
+    const services = await env(loadBundledCatalog());
+    await startCheckpoint(services, 1, { extraTime: false }, noop);
+    expect((await services.repos.attempts.findInProgress())!.attempt.helpMode).toBe('off');
+  });
   it('starts a 65-question checkpoint on the bundled catalog', async () => {
     const services = await env(loadBundledCatalog());
     const s = await startCheckpoint(services, 1, { extraTime: false }, noop);
@@ -79,6 +91,11 @@ describe('startCheckpoint', () => {
 });
 
 describe('startCapstoneExam', () => {
+  it('creates an off attempt', async () => {
+    const services = await env(loadBundledCatalog());
+    await startCapstoneExam(services, 'capstone-exam-1', { extraTime: false }, noop);
+    expect((await services.repos.attempts.findInProgress())!.attempt.helpMode).toBe('off');
+  });
   it('starts a 65-question Capstone exam', async () => {
     const catalog = loadBundledCatalog();
     const services = await env(catalog);

@@ -8,6 +8,7 @@
   import Button from '@/ui/Button.svelte';
   import Modal from '@/ui/Modal.svelte';
   import type { PracticeSession } from '../session.svelte';
+  import { HELP_USES, revealCheck, eliminateCheck } from '../logic/help';
   import KnowledgeOverlay from './KnowledgeOverlay.svelte';
   import QuestionNav from './QuestionNav.svelte';
   import QuestionPanel from './QuestionPanel.svelte';
@@ -30,6 +31,8 @@
   const total = $derived(session.questions.length);
   const current = $derived(session.questions[session.index]);
   const question = $derived(current ? questionsById.get(current.questionId) : undefined);
+  const revealRefusal = $derived(current ? revealCheck(session.helpMode, current, session.questions) : 'off');
+  const eliminateRefusal = $derived(current && question ? eliminateCheck(session.helpMode, current, session.questions, current.optionOrder.filter((key) => !question.correct.includes(key)).length) : 'off');
   const unanswered = $derived(session.questions.filter((q) => q.selected.length === 0).length);
   const isReview = $derived(session.kind === 'review');
   // A checkpoint exam has no topic; it is named by its group. The Capstone exam is titled by the Capstone topic.
@@ -61,6 +64,22 @@
     announcement = i18n.t('practice.questionAnnounce', { current: session.index + 1, total });
     await tick();
     panel?.querySelector<HTMLElement>('legend')?.focus();
+  }
+
+  async function useHelp(kind: 'reveal' | 'eliminate'): Promise<void> {
+    if (!current) return;
+    alert = null;
+    try {
+      if (kind === 'reveal') {
+        await session.reveal(current.position);
+        announcement = i18n.t('practice.help.announceRevealed');
+      } else {
+        await session.eliminate(current.position);
+        announcement = i18n.t('practice.help.announceEliminated');
+      }
+    } catch {
+      alert = i18n.t('practice.selectFailed');
+    }
   }
 
   async function submit(): Promise<void> {
@@ -141,6 +160,26 @@
       </div>
     {/if}
     <Button disabled={busy} onclick={() => (submitOpen = true)}>{i18n.t('practice.submit')}</Button>
+    {#if session.helpMode !== 'off' && current && question}
+      <div class="ml-auto flex flex-wrap items-start gap-3">
+        <div class="flex flex-col gap-1">
+          <Button variant="secondary" disabled={revealRefusal !== null} aria-describedby={revealRefusal === 'noneLeft' ? 'reveal-reason' : undefined} onclick={() => useHelp('reveal')}>
+            {session.helpMode === 'reveal' ? i18n.t('practice.help.reveal') : i18n.t('practice.help.revealPower', { left: session.helpLeft.reveal, max: HELP_USES })}
+          </Button>
+          {#if revealRefusal === 'noneLeft'}<p id="reveal-reason" class="text-sm text-muted-foreground">{i18n.t('practice.help.noneLeft')}</p>{/if}
+        </div>
+        {#if session.helpMode === 'powers'}
+          <div class="flex flex-col gap-1">
+            <Button variant="secondary" disabled={eliminateRefusal !== null} aria-describedby={eliminateRefusal === 'revealed' || eliminateRefusal === 'noneLeft' || eliminateRefusal === 'noWrong' ? 'eliminate-reason' : undefined} onclick={() => useHelp('eliminate')}>
+              {i18n.t('practice.help.eliminate', { left: session.helpLeft.eliminate, max: HELP_USES })}
+            </Button>
+            {#if eliminateRefusal === 'revealed'}<p id="eliminate-reason" class="text-sm text-muted-foreground">{i18n.t('practice.help.blockedRevealed')}</p>
+            {:else if eliminateRefusal === 'noneLeft'}<p id="eliminate-reason" class="text-sm text-muted-foreground">{i18n.t('practice.help.noneLeft')}</p>
+            {:else if eliminateRefusal === 'noWrong'}<p id="eliminate-reason" class="text-sm text-muted-foreground">{i18n.t('practice.help.noWrong')}</p>{/if}
+          </div>
+        {/if}
+      </div>
+    {/if}
     <!-- The screenshot target is the question wrapper (`panel`): a plain block that grows with its content, never a scrolling container, so the image is not cut. -->
     <!-- TEMP-HIDE-REPORT: {#if current}
       <ReportButton

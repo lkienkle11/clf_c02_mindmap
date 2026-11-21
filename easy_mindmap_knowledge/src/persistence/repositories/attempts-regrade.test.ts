@@ -27,12 +27,12 @@ const attempt = (): AttemptRow => ({
   scorePct: null,
   passed: null,
   groupIndex: null,
-  plannedCount: null, unansweredDisplay: 'reveal',
+  plannedCount: null, unansweredDisplay: 'reveal', helpMode: 'off',
 });
 
 const questions = (): AttemptQuestionRow[] => [
-  { attemptId: 'a1', position: 0, questionId: 'q1', optionOrder: ['B', 'A', 'C'], selected: [], isCorrect: null, unscored: false },
-  { attemptId: 'a1', position: 1, questionId: 'q2', optionOrder: ['D', 'C', 'A', 'B'], selected: ['A'], isCorrect: null, unscored: false },
+  { attemptId: 'a1', position: 0, questionId: 'q1', optionOrder: ['B', 'A', 'C'], selected: [], isCorrect: null, unscored: false, revealed: false, eliminated: [] },
+  { attemptId: 'a1', position: 1, questionId: 'q2', optionOrder: ['D', 'C', 'A', 'B'], selected: ['A'], isCorrect: null, unscored: false, revealed: false, eliminated: [] },
 ];
 
 describe('attempts.applyRegrade', () => {

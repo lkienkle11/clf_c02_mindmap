@@ -18,6 +18,7 @@ async function start(
   options: ExamOptions,
   onSubmitted: () => Promise<void>,
   draw: (history: AnswerHistory, rng: () => number) => { questions: Question[]; unscoredIds?: ReadonlySet<string> },
+  help?: boolean,
 ): Promise<PracticeSession> {
   const history = historyOf(await services.repos.attempts.listGradedAnswers());
   const rng = makeRng(services.now() % 0x100000000);
@@ -34,6 +35,7 @@ async function start(
     plan,
     unscoredIds,
     limitMs: examLimitMs(plan.length, options.extraTime),
+    ...(help === undefined ? {} : { help }),
   }, onSubmitted);
 }
 
@@ -43,12 +45,13 @@ export async function startCheckpoint(
   groupIndex: number,
   options: ExamOptions,
   onSubmitted: () => Promise<void>,
+  help = false,
 ): Promise<PracticeSession> {
   const catalog = services.catalog;
   const group = checkpointGroups(catalog.topics).find((g) => g.index === groupIndex);
   if (group === undefined) throw new ExamNotAvailableError(`unknown checkpoint group ${groupIndex}`);
   return start(services, { kind: 'checkpoint', groupIndex }, options, onSubmitted,
-    (history, rng) => ({ questions: drawCheckpoint(catalog, group, history, rng) }));
+    (history, rng) => ({ questions: drawCheckpoint(catalog, group, history, rng) }), help);
 }
 
 /** Starts the full-size Capstone exam on the chosen exam topic. */

@@ -100,7 +100,7 @@ describe('PracticeSetup', () => {
     const session = onstarted.mock.calls[0][0] as PracticeSession;
     expect(session).toBeInstanceOf(PracticeSession);
     expect(session.allowReview).toBe(true);
-    expect(await loadLastOptions(services.repos.settings)).toEqual({ allowReview: true, limitMs: 150_000, clockMode: 'run', onHidden: 'freeze', onReport: 'freeze', questionCount: 10, unansweredDisplay: 'reveal' });
+    expect(await loadLastOptions(services.repos.settings)).toEqual({ allowReview: true, limitMs: 150_000, clockMode: 'run', onHidden: 'freeze', onReport: 'freeze', questionCount: 10, unansweredDisplay: 'reveal', showAnswer: false });
   });
 
   it('starts from the last saved options', async () => {
@@ -218,6 +218,47 @@ describe('PracticeSetup', () => {
     const env = await makePracticeEnv();
     renderWithI18n(PracticeSetup, { services: env.services, appState: env.appState, topicId: 'compute', onstarted: vi.fn() }, 'vi');
     expect(screen.getByRole('button', { name: 'Về sơ đồ' })).toBeInTheDocument();
+  });
+
+  it('the tick is unchecked by default', async () => {
+    await mount();
+    expect(screen.getByRole('checkbox', { name: 'Allow showing the answers' })).not.toBeChecked();
+  });
+
+  it('the tick loads the saved value', async () => {
+    await mount('compute', JSON.stringify({ allowReview: false, limitMs: null, clockMode: 'freeze', onHidden: 'freeze', showAnswer: true }));
+    expect(screen.getByRole('checkbox', { name: 'Allow showing the answers' })).toBeChecked();
+  });
+
+  it('starting with the tick sends showAnswer true in the options saved and used', async () => {
+    const { services, onstarted } = await mount();
+    await userEvent.click(screen.getByRole('checkbox', { name: 'Allow showing the answers' }));
+    await userEvent.click(screen.getByRole('button', { name: 'Start' }));
+    await waitFor(() => expect(onstarted).toHaveBeenCalledTimes(1));
+    expect((onstarted.mock.calls[0][0] as PracticeSession).helpMode).toBe('reveal');
+    expect((await loadLastOptions(services.repos.settings)).showAnswer).toBe(true);
+  });
+
+  it('starting without it sends false', async () => {
+    const { services, onstarted } = await mount();
+    expect(screen.getByRole('checkbox', { name: 'Allow showing the answers' })).not.toBeChecked();
+    await userEvent.click(screen.getByRole('button', { name: 'Start' }));
+    await waitFor(() => expect(onstarted).toHaveBeenCalledTimes(1));
+    expect((onstarted.mock.calls[0][0] as PracticeSession).helpMode).toBe('off');
+    expect((await loadLastOptions(services.repos.settings)).showAnswer).toBe(false);
+  });
+
+  it('PracticeSetup renders the Start button inside the sticky bar', async () => {
+    await mount();
+    const start = screen.getByRole('button', { name: 'Start' });
+    const bar = start.closest<HTMLElement>('.fixed');
+    expect(bar).toHaveClass('bottom-0');
+    expect(bar?.closest('form')).toBe(start.closest('form'));
+  });
+
+  it('the form has bottom padding so the last control is not covered', async () => {
+    await mount();
+    expect(screen.getByRole('button', { name: 'Start' }).closest('form')).toHaveClass('pb-24');
   });
 });
 

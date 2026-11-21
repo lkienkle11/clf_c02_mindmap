@@ -1,5 +1,6 @@
 <script lang="ts">
   import type { Question } from '@/content/types';
+  import { badgeKey, optionState, type OptionState } from '@/features/practice/logic/option-state';
   import { getI18n } from '@/i18n/i18n.svelte';
   import { cn } from '@/ui/cn';
 
@@ -23,19 +24,12 @@
     return [...keys, ...rest].map((k) => byKey.get(k)!);
   });
 
-  type State = 'right' | 'wrong' | 'missed' | 'none';
-  function stateOf(key: string): State {
+  function stateOf(key: string): OptionState {
     if (hideAnswers) return 'none';
-    const picked = selected.includes(key);
-    const correct = question?.correct.includes(key) ?? false;
-    if (picked) return correct ? 'right' : 'wrong';
-    return correct ? 'missed' : 'none';
+    return optionState(question?.correct ?? [], selected, key);
   }
-  function badge(state: State): string {
-    const picked = i18n.t('practice.result.badge.picked');
-    if (state === 'right') return `${picked} · ${i18n.t('practice.result.badge.correct')}`;
-    if (state === 'wrong') return `${picked} · ${i18n.t('practice.result.badge.wrong')}`;
-    return i18n.t('practice.result.badge.missed');
+  function badge(state: Exclude<OptionState, 'none'>): string {
+    return badgeKey(state).map((k) => i18n.t(k)).join(' · ');
   }
 </script>
 

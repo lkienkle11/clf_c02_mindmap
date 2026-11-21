@@ -4,7 +4,9 @@
   import { getI18n } from '@/i18n/i18n.svelte';
   import type { PracticeSession } from '@/features/practice';
   import { passThresholdPct } from '@/features/practice';
+  import { HELP_USES } from '@/features/practice';
   import Button from '@/ui/Button.svelte';
+  import StickyActionBar from '@/ui/StickyActionBar.svelte';
   import { ExamNotAvailableError } from '../errors';
   import { CAPSTONE_SCORED_COUNT, CAPSTONE_UNSCORED_COUNT, EXAM_MINUTES, EXAM_MINUTES_EXTRA, EXAM_QUESTION_COUNT } from '../logic/exam-config';
   import { checkpointState } from '../logic/gates';
@@ -25,6 +27,7 @@
 
   const i18n = getI18n();
   let extraTime = $state(false);
+  let help = $state(false);
   let loaded = $state(false);
   let busy = $state(false);
   let message = $state<string | null>(null);
@@ -73,7 +76,7 @@
       }
       const session = groupIndex === null
         ? await startCapstoneExam(services, capstoneTopicId as 'capstone-exam-1' | 'capstone-exam-2', options, refresh)
-        : await startCheckpoint(services, groupIndex, options, refresh);
+        : await startCheckpoint(services, groupIndex, options, refresh, help);
       onstarted(session);
     } catch (error) {
       message = i18n.t(error instanceof ExamNotAvailableError ? 'exam.setup.notAvailable' : 'exam.setup.startFailed');
@@ -85,7 +88,7 @@
   const reasonId = 'exam-locked-reason';
 </script>
 
-<form class="mx-auto flex max-w-2xl flex-col gap-6 p-6" onsubmit={start}>
+<form class="mx-auto flex max-w-2xl flex-col gap-6 p-6 pb-24" onsubmit={start}>
   <div>
     <Button variant="ghost" onclick={() => appState.open({ view: 'tree' })}><span aria-hidden="true">←</span> {i18n.t('exam.setup.back')}</Button>
   </div>
@@ -106,7 +109,7 @@
         <li>{i18n.t('exam.setup.capstonePassMark', { threshold, count: CAPSTONE_SCORED_COUNT, correct: Math.ceil(threshold * CAPSTONE_SCORED_COUNT / 100) })}</li>
       {/if}
       <li>{i18n.t('exam.setup.ruleNoReview')}</li>
-      <li>{i18n.t('exam.setup.ruleAnswers')}</li>
+      <li>{capstoneTopicId === null && help ? i18n.t('exam.setup.ruleAnswersHelp', { max: HELP_USES }) : i18n.t('exam.setup.ruleAnswers')}</li>
       <li>{i18n.t('exam.setup.ruleOneSitting')}</li>
     </ul>
   </section>
@@ -114,6 +117,13 @@
   <label class="flex min-h-11 cursor-pointer items-center gap-3 rounded-lg px-2 py-1 hover:bg-muted">
     <input class="size-5" type="checkbox" bind:checked={extraTime} />{i18n.t('exam.setup.extraTime')}
   </label>
+
+  {#if capstoneTopicId === null}
+    <label class="flex min-h-11 cursor-pointer items-center gap-3 rounded-lg px-2 py-1 hover:bg-muted">
+      <input class="size-5" type="checkbox" bind:checked={help} />
+      <span>{i18n.t('exam.setup.help')} <span class="text-sm text-muted-foreground">{i18n.t('exam.setup.helpHint', { max: HELP_USES })}</span></span>
+    </label>
+  {/if}
 
   {#if lockedReason}
     <p id={reasonId} class="rounded-lg border border-border p-3 text-muted-foreground">{lockedReason}</p>
@@ -125,9 +135,9 @@
     <p role="alert" class="rounded-lg border border-danger p-3 text-danger">{message}</p>
   {/if}
 
-  <div>
+  <StickyActionBar>
     <Button type="submit" disabled={!loaded || busy || lockedReason !== null} aria-describedby={lockedReason ? reasonId : undefined}>
       {i18n.t('exam.setup.start')}
     </Button>
-  </div>
+  </StickyActionBar>
 </form>

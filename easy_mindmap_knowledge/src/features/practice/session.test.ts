@@ -122,7 +122,7 @@ describe('start', () => {
     expect(s.questions.every((q) => q.multi)).toBe(true);
     expect(s.allowReview).toBe(true);
     expect(await loadLastOptions(services.repos.settings)).toEqual({
-      allowReview: true, limitMs: 60000, clockMode: 'run', onHidden: 'freeze', onReport: 'freeze', questionCount: 10, unansweredDisplay: 'reveal',
+      allowReview: true, limitMs: 60000, clockMode: 'run', onHidden: 'freeze', onReport: 'freeze', questionCount: 10, unansweredDisplay: 'reveal', showAnswer: false,
     });
   });
 });
@@ -146,8 +146,8 @@ describe('options persistence', () => {
   it('defaults, round trip, invalid json and wrong shape', async () => {
     const st = services.repos.settings;
     expect(await loadLastOptions(st)).toEqual(DEFAULT_PRACTICE_OPTIONS);
-    await saveLastOptions(st, { allowReview: true, limitMs: 1000, clockMode: 'run', onHidden: 'freeze', onReport: 'run', questionCount: 20, unansweredDisplay: 'answersOnly' });
-    expect(await loadLastOptions(st)).toEqual({ allowReview: true, limitMs: 1000, clockMode: 'run', onHidden: 'freeze', onReport: 'run', questionCount: 20, unansweredDisplay: 'answersOnly' });
+    await saveLastOptions(st, { allowReview: true, limitMs: 1000, clockMode: 'run', onHidden: 'freeze', onReport: 'run', questionCount: 20, unansweredDisplay: 'answersOnly', showAnswer: false });
+    expect(await loadLastOptions(st)).toEqual({ allowReview: true, limitMs: 1000, clockMode: 'run', onHidden: 'freeze', onReport: 'run', questionCount: 20, unansweredDisplay: 'answersOnly', showAnswer: false });
     await st.set('practice_last_options', '{nope');
     expect(await loadLastOptions(st)).toEqual(DEFAULT_PRACTICE_OPTIONS);
     await st.set('practice_last_options', JSON.stringify({ allowReview: 'x', limitMs: 1, clockMode: 'freeze', onHidden: 'freeze' }));
@@ -865,5 +865,104 @@ describe('fix round 1: frozen clock gaps and submit reason', () => {
     failSql = null;
     await s.submit('timeout');
     expect(s.submitReason).toBe('timeout');
+  });
+});
+
+describe('help in practice (showAnswer)', () => {
+  it('practice start with showAnswer stores help_mode reveal', async () => {
+    const s = await start('compute', { showAnswer: true });
+    expect(s.helpMode).toBe('reveal');
+    expect((await services.repos.attempts.findInProgress())!.attempt.helpMode).toBe('reveal');
+  });
+  it('reveal marks the question and persists it', async () => {
+    const s = await start('compute', { showAnswer: true });
+    await s.reveal(2);
+    expect(s.questions[2].revealed).toBe(true);
+    expect(s.questions[0].revealed).toBe(false);
+    expect((await services.repos.attempts.questionsOf(s.attemptId))[2].revealed).toBe(true);
+  });
+  it('a persistence failure in reveal rolls memory back and rejects', async () => {
+    const s = await start('compute', { showAnswer: true });
+    vi.spyOn(services.repos.attempts, 'saveReveal').mockRejectedValueOnce(new Error('disk'));
+    await expect(s.reveal(0)).rejects.toThrow('disk');
+    expect(s.questions[0].revealed).toBe(false);
+    expect((await services.repos.attempts.questionsOf(s.attemptId))[0].revealed).toBe(false);
+  });
+  it('resume of an attempt row with defaults has no help used', async () => {
+    await start('compute');
+    const found = (await services.repos.attempts.findInProgress())!;
+    const { session } = await PracticeSession.resume(services, found, onSubmitted);
+    expect(session.helpMode).toBe('off');
+    expect(session.helpLeft).toEqual({ reveal: 3, eliminate: 3 });
+    expect(session.questions.every((q) => !q.revealed && q.eliminated.length === 0)).toBe(true);
+  });
+});
+
+describe('help saves before memory changes', () => {
+  /** A checkpoint attempt with the powers on over the first n compute questions (one correct answer, A). */
+  const powers = (n = 3) => PracticeSession.startExam(services, {
+    kind: 'checkpoint', topicId: null, groupIndex: 0, limitMs: 600_000, help: true,
+    plan: Array.from({ length: n }, (_, i) => ({ questionId: `c${i}`, optionOrder: ['A', 'B', 'C'] })),
+  }, onSubmitted);
+
+  it('reveal is not shown until the save succeeded', async () => {
+    const s = await start('compute', { showAnswer: true });
+    let release!: () => void;
+    vi.spyOn(services.repos.attempts, 'saveReveal').mockImplementationOnce(() => new Promise<void>((resolve) => { release = resolve; }));
+    const pending = s.reveal(0);
+    expect(s.questions[0].revealed).toBe(false);
+    release();
+    await pending;
+    expect(s.questions[0].revealed).toBe(true);
+  });
+
+  it('a failing reveal save leaves the question unrevealed even when the user selects during the save', async () => {
+    const s = await start('compute', { showAnswer: true });
+    let fail!: (error: Error) => void;
+    vi.spyOn(services.repos.attempts, 'saveReveal').mockImplementationOnce(() => new Promise<void>((_, reject) => { fail = reject; }));
+    const pending = s.reveal(0);
+    await s.select(0, ['B']);
+    fail(new Error('disk'));
+    await expect(pending).rejects.toThrow('disk');
+    expect(s.questions[0]).toMatchObject({ revealed: false, selected: ['B'] });
+    expect((await services.repos.attempts.questionsOf(s.attemptId))[0]).toMatchObject({ revealed: false, selected: ['B'] });
+  });
+
+  it('a failing eliminate save leaves the options and the selection untouched', async () => {
+    const s = await powers();
+    let fail!: (error: Error) => void;
+    vi.spyOn(services.repos.attempts, 'saveElimination').mockImplementationOnce(() => new Promise<void>((_, reject) => { fail = reject; }));
+    const pending = s.eliminate(0);
+    await s.select(0, ['A']);
+    fail(new Error('disk'));
+    await expect(pending).rejects.toThrow('disk');
+    expect(s.questions[0]).toMatchObject({ eliminated: [], selected: ['A'] });
+    expect(s.helpLeft.eliminate).toBe(3);
+    expect((await services.repos.attempts.questionsOf(s.attemptId))[0]).toMatchObject({ eliminated: [], selected: ['A'] });
+  });
+
+  it('a second reveal on the same question while the first save is pending spends one use', async () => {
+    const s = await powers();
+    const releases: (() => void)[] = [];
+    const spy = vi.spyOn(services.repos.attempts, 'saveReveal').mockImplementation(() => new Promise<void>((resolve) => { releases.push(resolve); }));
+    const first = s.reveal(0);
+    await s.reveal(0);
+    expect(spy).toHaveBeenCalledTimes(1);
+    releases.forEach((release) => release());
+    await first;
+    expect(s.helpLeft.reveal).toBe(2);
+    expect(s.questions[0].revealed).toBe(true);
+  });
+
+  it('two pending reveals on different questions cannot exceed the 3 uses', async () => {
+    const s = await powers(4);
+    const releases: (() => void)[] = [];
+    const spy = vi.spyOn(services.repos.attempts, 'saveReveal').mockImplementation(() => new Promise<void>((resolve) => { releases.push(resolve); }));
+    const calls = [0, 1, 2, 3].map((position) => s.reveal(position));
+    expect(spy).toHaveBeenCalledTimes(3);
+    releases.forEach((release) => release());
+    await Promise.all(calls);
+    expect(s.questions.map((q) => q.revealed)).toEqual([true, true, true, false]);
+    expect(s.helpLeft.reveal).toBe(0);
   });
 });
