@@ -110,6 +110,8 @@
   "practice.attemptMissing": "Your attempt no longer exists, so it cannot be submitted. Leave this screen and start again.",
   "practice.exitPartial": "The attempt was only partly removed and can no longer be answered. Press Exit again to finish leaving.",
   "practice.selectFailed": "Could not save your answer. Please try again.",
+  "practice.help.eliminatedLabel": "Eliminated",
+  "practice.help.noExplanation": "No explanation for this question yet",
   "practice.tickFailed": "Could not save the clock. Your answers are still on screen.",
   "practice.timeoutSubmitFailed": "Time is up, but your attempt could not be saved. It will try again in a moment; you can also press Submit.",
   "practice.timeUp": "Time's up, submitted automatically",
