@@ -259,3 +259,106 @@ describe('PracticeSession.startExam input validation', () => {
     });
   }
 });
+
+describe('help powers (checkpoint and Capstone)', () => {
+  it('checkpoint start with help stores powers and capstone start with help stores off', async () => {
+    const s = await PracticeSession.startExam(services, input({ help: true }), onSubmitted);
+    expect(s.helpMode).toBe('powers');
+    expect((await services.repos.attempts.findInProgress())!.attempt.helpMode).toBe('powers');
+    await s.exit();
+    const c = await PracticeSession.startExam(services, input({ kind: 'practice', topicId: 'capstone', groupIndex: null, help: true }), onSubmitted);
+    expect(c.helpMode).toBe('off');
+    expect((await services.repos.attempts.findInProgress())!.attempt.helpMode).toBe('off');
+  });
+
+  it('reveal in powers mode refuses the 4th question and leaves the DB unchanged', async () => {
+    const s = await PracticeSession.startExam(services, input({ help: true }), onSubmitted);
+    await s.reveal(0);
+    await s.reveal(1);
+    await s.reveal(2);
+    expect(s.helpLeft.reveal).toBe(0);
+    const before = await services.repos.attempts.questionsOf(s.attemptId);
+    const spy = vi.spyOn(services.repos.attempts, 'saveReveal');
+    await s.reveal(3);
+    expect(spy).not.toHaveBeenCalled();
+    expect(s.questions[3].revealed).toBe(false);
+    expect(await services.repos.attempts.questionsOf(s.attemptId)).toEqual(before);
+  });
+
+  it('two concurrent reveal calls on one question spend one use', async () => {
+    const s = await PracticeSession.startExam(services, input({ help: true }), onSubmitted);
+    const spy = vi.spyOn(services.repos.attempts, 'saveReveal');
+    await Promise.all([s.reveal(0), s.reveal(0)]);
+    expect(spy).toHaveBeenCalledTimes(1);
+    expect(s.helpLeft.reveal).toBe(2);
+  });
+
+  it('eliminate stores two wrong keys and never a correct one', async () => {
+    const s = await PracticeSession.startExam(services, input({ help: true }), onSubmitted);
+    await s.eliminate(0);
+    const { eliminated } = s.questions[0];
+    expect(eliminated).toHaveLength(2);
+    expect(new Set(eliminated).size).toBe(2);
+    expect(eliminated.every((key) => ['B', 'C', 'D', 'E'].includes(key))).toBe(true);
+    expect((await services.repos.attempts.questionsOf(s.attemptId))[0].eliminated).toEqual(eliminated);
+    expect(s.helpLeft.eliminate).toBe(2);
+  });
+
+  it('eliminate clears a selected option that was eliminated and persists the cleared selection', async () => {
+    const raw = makeRawCatalog();
+    raw.questions = [makeQuestion({
+      id: 'm0', topicId: 'cloud-concepts', multi: true, correct: ['A', 'B'],
+      options: [{ key: 'A', text: 'a' }, { key: 'B', text: 'b' }, { key: 'C', text: 'c' }],
+    })];
+    const examServices = buildServices({ executor, catalog: loadCatalog(raw), now: () => clock, newId: () => `id-${++idN}` });
+    const s = await PracticeSession.startExam(examServices, input({ help: true, plan: [{ questionId: 'm0', optionOrder: ['A', 'B', 'C'] }] }), onSubmitted);
+    await s.select(0, ['C']);
+    await s.eliminate(0);
+    expect(s.questions[0]).toMatchObject({ eliminated: ['C'], selected: [] });
+    expect((await examServices.repos.attempts.questionsOf(s.attemptId))[0]).toMatchObject({ eliminated: ['C'], selected: [] });
+  });
+
+  it('eliminate keeps the other selected options of a multi-answer question', async () => {
+    const raw = makeRawCatalog();
+    raw.questions = [makeQuestion({
+      id: 'm1', topicId: 'cloud-concepts', multi: true, correct: ['A', 'B'],
+      options: [{ key: 'A', text: 'a' }, { key: 'B', text: 'b' }, { key: 'C', text: 'c' }, { key: 'D', text: 'd' }],
+    })];
+    const examServices = buildServices({ executor, catalog: loadCatalog(raw), now: () => clock, newId: () => `id-${++idN}` });
+    const s = await PracticeSession.startExam(examServices, input({ help: true, plan: [{ questionId: 'm1', optionOrder: ['A', 'B', 'C', 'D'] }] }), onSubmitted);
+    await s.select(0, ['A', 'C']);
+    await s.eliminate(0);
+    expect([...s.questions[0].eliminated].sort()).toEqual(['C', 'D']);
+    expect(s.questions[0].selected).toEqual(['A']);
+    expect((await examServices.repos.attempts.questionsOf(s.attemptId))[0].selected).toEqual(['A']);
+  });
+
+  it('eliminate is refused after reveal', async () => {
+    const s = await PracticeSession.startExam(services, input({ help: true }), onSubmitted);
+    await s.reveal(0);
+    await s.eliminate(0);
+    expect(s.questions[0].eliminated).toEqual([]);
+    expect(s.helpLeft.eliminate).toBe(3);
+  });
+
+  it('select ignores an eliminated key', async () => {
+    const s = await PracticeSession.startExam(services, input({ help: true }), onSubmitted);
+    await s.eliminate(0);
+    const [gone] = s.questions[0].eliminated;
+    await s.select(0, [gone!, 'A']);
+    expect(s.questions[0].selected).toEqual(['A']);
+    expect((await services.repos.attempts.questionsOf(s.attemptId))[0].selected).toEqual(['A']);
+  });
+
+  it('resume restores helpMode, revealed, eliminated and helpLeft', async () => {
+    const s = await PracticeSession.startExam(services, input({ help: true }), onSubmitted);
+    await s.reveal(0);
+    await s.eliminate(1);
+    const found = (await services.repos.attempts.findInProgress())!;
+    const { session } = await PracticeSession.resume(services, found, onSubmitted);
+    expect(session.helpMode).toBe('powers');
+    expect(session.questions[0].revealed).toBe(true);
+    expect(session.questions[1].eliminated).toEqual(s.questions[1].eliminated);
+    expect(session.helpLeft).toEqual({ reveal: 2, eliminate: 2 });
+  });
+});

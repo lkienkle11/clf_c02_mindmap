@@ -122,7 +122,7 @@ describe('start', () => {
     expect(s.questions.every((q) => q.multi)).toBe(true);
     expect(s.allowReview).toBe(true);
     expect(await loadLastOptions(services.repos.settings)).toEqual({
-      allowReview: true, limitMs: 60000, clockMode: 'run', onHidden: 'freeze', onReport: 'freeze', questionCount: 10, unansweredDisplay: 'reveal',
+      allowReview: true, limitMs: 60000, clockMode: 'run', onHidden: 'freeze', onReport: 'freeze', questionCount: 10, unansweredDisplay: 'reveal', showAnswer: false,
     });
   });
 });
@@ -146,8 +146,8 @@ describe('options persistence', () => {
   it('defaults, round trip, invalid json and wrong shape', async () => {
     const st = services.repos.settings;
     expect(await loadLastOptions(st)).toEqual(DEFAULT_PRACTICE_OPTIONS);
-    await saveLastOptions(st, { allowReview: true, limitMs: 1000, clockMode: 'run', onHidden: 'freeze', onReport: 'run', questionCount: 20, unansweredDisplay: 'answersOnly' });
-    expect(await loadLastOptions(st)).toEqual({ allowReview: true, limitMs: 1000, clockMode: 'run', onHidden: 'freeze', onReport: 'run', questionCount: 20, unansweredDisplay: 'answersOnly' });
+    await saveLastOptions(st, { allowReview: true, limitMs: 1000, clockMode: 'run', onHidden: 'freeze', onReport: 'run', questionCount: 20, unansweredDisplay: 'answersOnly', showAnswer: false });
+    expect(await loadLastOptions(st)).toEqual({ allowReview: true, limitMs: 1000, clockMode: 'run', onHidden: 'freeze', onReport: 'run', questionCount: 20, unansweredDisplay: 'answersOnly', showAnswer: false });
     await st.set('practice_last_options', '{nope');
     expect(await loadLastOptions(st)).toEqual(DEFAULT_PRACTICE_OPTIONS);
     await st.set('practice_last_options', JSON.stringify({ allowReview: 'x', limitMs: 1, clockMode: 'freeze', onHidden: 'freeze' }));
@@ -865,5 +865,35 @@ describe('fix round 1: frozen clock gaps and submit reason', () => {
     failSql = null;
     await s.submit('timeout');
     expect(s.submitReason).toBe('timeout');
+  });
+});
+
+describe('help in practice (showAnswer)', () => {
+  it('practice start with showAnswer stores help_mode reveal', async () => {
+    const s = await start('compute', { showAnswer: true });
+    expect(s.helpMode).toBe('reveal');
+    expect((await services.repos.attempts.findInProgress())!.attempt.helpMode).toBe('reveal');
+  });
+  it('reveal marks the question and persists it', async () => {
+    const s = await start('compute', { showAnswer: true });
+    await s.reveal(2);
+    expect(s.questions[2].revealed).toBe(true);
+    expect(s.questions[0].revealed).toBe(false);
+    expect((await services.repos.attempts.questionsOf(s.attemptId))[2].revealed).toBe(true);
+  });
+  it('a persistence failure in reveal rolls memory back and rejects', async () => {
+    const s = await start('compute', { showAnswer: true });
+    vi.spyOn(services.repos.attempts, 'saveReveal').mockRejectedValueOnce(new Error('disk'));
+    await expect(s.reveal(0)).rejects.toThrow('disk');
+    expect(s.questions[0].revealed).toBe(false);
+    expect((await services.repos.attempts.questionsOf(s.attemptId))[0].revealed).toBe(false);
+  });
+  it('resume of an attempt row with defaults has no help used', async () => {
+    await start('compute');
+    const found = (await services.repos.attempts.findInProgress())!;
+    const { session } = await PracticeSession.resume(services, found, onSubmitted);
+    expect(session.helpMode).toBe('off');
+    expect(session.helpLeft).toEqual({ reveal: 3, eliminate: 3 });
+    expect(session.questions.every((q) => !q.revealed && q.eliminated.length === 0)).toBe(true);
   });
 });

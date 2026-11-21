@@ -1,7 +1,8 @@
 import type { Services } from '@/app/composition';
 import { AttemptMissingError } from '@/persistence';
-import type { AttemptQuestionRow, AttemptRow, ClockState, UnansweredDisplay } from '@/persistence';
+import type { AttemptQuestionRow, AttemptRow, ClockState, HelpMode, UnansweredDisplay } from '@/persistence';
 import { advanceFreeze, isExpired, pauseForReport, remainingAt, resolveOnResume, settleHidden as settleClockHidden, startClock } from './logic/attempt-clock';
+import { eliminateCheck, pickEliminations, revealCheck, usesLeft } from './logic/help';
 import { gradeQuestion, passThresholdPct } from './logic/grading';
 import { attemptScore } from './logic/regrade';
 import { buildPool, planAttempt } from './logic/pick-questions';
@@ -27,6 +28,10 @@ export interface SessionQuestion {
   multi: boolean;
   selected: string[];
   unscored: boolean;
+  /** The answer was revealed during the attempt. */
+  revealed: boolean;
+  /** Option keys removed by the eliminate power. */
+  eliminated: string[];
 }
 
 type Reason = 'manual' | 'timeout';
@@ -39,7 +44,12 @@ const CLOCK_SAVE_EVERY_MS = 5000;
 export const FREEZE_MAX_TICK_MS = 3000;
 
 const view = (q: SessionQuestion): SessionQuestion =>
-  Object.freeze({ ...q, optionOrder: Object.freeze([...q.optionOrder]) as string[], selected: Object.freeze([...q.selected]) as string[] });
+  Object.freeze({
+    ...q,
+    optionOrder: Object.freeze([...q.optionOrder]) as string[],
+    selected: Object.freeze([...q.selected]) as string[],
+    eliminated: Object.freeze([...q.eliminated]) as string[],
+  });
 
 /**
  * One practice attempt. Time comes only from `services.now()` (never Date.now) so tests and
@@ -55,6 +65,8 @@ export class PracticeSession {
   readonly groupIndex: number | null;
   /** What the results show for questions left unanswered; fixed when the attempt starts. */
   readonly unansweredDisplay: UnansweredDisplay;
+  /** Exam help of the attempt; fixed when the attempt starts. */
+  readonly helpMode: HelpMode;
 
   // $state.raw + frozen items: components cannot mutate selections and bypass persistence.
   #questions = $state.raw<readonly SessionQuestion[]>([]);
@@ -89,6 +101,7 @@ export class PracticeSession {
     this.allowReview = attempt.reviewAllowed;
     this.groupIndex = attempt.groupIndex;
     this.unansweredDisplay = attempt.unansweredDisplay;
+    this.helpMode = attempt.helpMode;
     this.#clock = clock;
     this.#remainingMs = remainingAt(clock, services.now());
     const byId = new Map(services.catalog.questions.map((q) => [q.id, q]));
@@ -100,11 +113,15 @@ export class PracticeSession {
         multi: byId.get(q.questionId)?.multi ?? false,
         selected: q.selected,
         unscored: q.unscored,
+        revealed: q.revealed,
+        eliminated: q.eliminated,
       }),
     );
   }
 
   get questions(): readonly SessionQuestion[] { return this.#questions; }
+  /** Uses of each help power left in this attempt. */
+  get helpLeft(): { reveal: number; eliminate: number } { return usesLeft(this.#questions); }
   get index(): number { return this.#index; }
   get remainingMs(): number | null { return this.#remainingMs; }
   get submitted(): boolean { return this.#submitted; }
@@ -133,7 +150,7 @@ export class PracticeSession {
     const attempt: AttemptRow = {
       id: services.newId(), kind: 'practice', topicId, status: 'in_progress', startedAt: now,
       submittedAt: null, submitReason: null, reviewAllowed: options.allowReview, clock,
-      heartbeatAt: now, scorePct: null, passed: null, groupIndex: null, plannedCount: count, unansweredDisplay: options.unansweredDisplay, helpMode: 'off',
+      heartbeatAt: now, scorePct: null, passed: null, groupIndex: null, plannedCount: count, unansweredDisplay: options.unansweredDisplay, helpMode: options.showAnswer ? 'reveal' : 'off',
     };
     const rows: AttemptQuestionRow[] = plan.map((p, position) => ({
       attemptId: attempt.id, position, questionId: p.questionId, optionOrder: p.optionOrder,
@@ -194,6 +211,8 @@ export class PracticeSession {
       plan: PlannedQuestion[];
       unscoredIds?: ReadonlySet<string>;
       limitMs: number;
+      /** Checkpoint only: the attempt uses the two help powers. Ignored for every other kind. */
+      help?: boolean;
     },
     onSubmitted: () => Promise<void>,
   ): Promise<PracticeSession> {
@@ -208,7 +227,8 @@ export class PracticeSession {
     const attempt: AttemptRow = {
       id, kind: input.kind, topicId: input.topicId, status: 'in_progress', startedAt: now,
       submittedAt: null, submitReason: null, reviewAllowed: false, clock,
-      heartbeatAt: now, scorePct: null, passed: null, groupIndex: input.groupIndex, plannedCount: input.plan.length, unansweredDisplay: 'reveal', helpMode: 'off',
+      heartbeatAt: now, scorePct: null, passed: null, groupIndex: input.groupIndex, plannedCount: input.plan.length, unansweredDisplay: 'reveal',
+      helpMode: input.kind === 'checkpoint' && input.help === true ? 'powers' : 'off',
     };
     const rows: AttemptQuestionRow[] = input.plan.map((p, position) => ({
       attemptId: id, position, questionId: p.questionId, optionOrder: [...p.optionOrder],
@@ -252,13 +272,57 @@ export class PracticeSession {
     if (this.#closed || this.#exited) return;
     const prev = this.#questions[position];
     if (!prev) return;
-    const selected = prev.multi ? [...keys] : keys.slice(0, 1);
+    // An eliminated key is not an answer: it is dropped before the single-choice cut.
+    const allowed = keys.filter((key) => !prev.eliminated.includes(key));
+    const selected = prev.multi ? allowed : allowed.slice(0, 1);
     const next = view({ ...prev, selected });
     this.#questions = this.#questions.with(position, next);
     try {
       await this.services.repos.attempts.saveAnswer(this.attemptId, position, selected);
     } catch (e) {
       // Keep memory equal to the DB: undo, unless a newer select already replaced ours.
+      if (this.#questions[position] === next) this.#questions = this.#questions.with(position, prev);
+      throw e;
+    }
+  }
+
+  /**
+   * Shows the answer of one question. A refusal (help off, already revealed, no uses left) resolves silently.
+   * Memory is updated before the await so a second call sees the question revealed and spends nothing.
+   */
+  async reveal(position: number): Promise<void> {
+    if (this.#closed || this.#exited) return;
+    const prev = this.#questions[position];
+    if (!prev) return;
+    if (revealCheck(this.helpMode, prev, this.#questions) !== null) return;
+    const next = view({ ...prev, revealed: true });
+    this.#questions = this.#questions.with(position, next);
+    try {
+      await this.services.repos.attempts.saveReveal(this.attemptId, position);
+    } catch (e) {
+      if (this.#questions[position] === next) this.#questions = this.#questions.with(position, prev);
+      throw e;
+    }
+  }
+
+  /**
+   * Removes two wrong options of one question. A refusal resolves silently. Only the eliminated keys leave
+   * the selection; the other selected keys are kept, and the result is saved with the eliminated keys.
+   */
+  async eliminate(position: number): Promise<void> {
+    if (this.#closed || this.#exited) return;
+    const prev = this.#questions[position];
+    if (!prev) return;
+    const correct = this.services.catalog.questions.find((q) => q.id === prev.questionId)?.correct ?? [];
+    const wrongCount = prev.optionOrder.filter((key) => !correct.includes(key)).length;
+    if (eliminateCheck(this.helpMode, prev, this.#questions, wrongCount) !== null) return;
+    const eliminated = pickEliminations(prev.optionOrder, correct, makeRng((this.services.now() + position) % 0x100000000));
+    const selected = prev.selected.filter((key) => !eliminated.includes(key));
+    const next = view({ ...prev, eliminated, selected });
+    this.#questions = this.#questions.with(position, next);
+    try {
+      await this.services.repos.attempts.saveElimination(this.attemptId, position, eliminated, selected);
+    } catch (e) {
       if (this.#questions[position] === next) this.#questions = this.#questions.with(position, prev);
       throw e;
     }

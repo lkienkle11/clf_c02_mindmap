@@ -113,7 +113,7 @@
         services,
         topicId,
         // A pool below the minimum saves the minimum; the session clamps the draw to the pool.
-        { allowReview: review === 'allow', limitMs, clockMode: clock, onHidden, onReport, unansweredDisplay: unanswered, questionCount: fixedCount ? MIN_PRACTICE_QUESTIONS : count },
+        { allowReview: review === 'allow', limitMs, clockMode: clock, onHidden, onReport, unansweredDisplay: unanswered, questionCount: fixedCount ? MIN_PRACTICE_QUESTIONS : count, showAnswer: false },
         () => appState.refresh(),
       );
       onstarted(session);

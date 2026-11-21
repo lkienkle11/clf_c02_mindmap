@@ -9,14 +9,14 @@ describe('practice options', () => {
   it("legacy stored options without onHidden load with default 'freeze' and keep other fields", async () => {
     const raw = JSON.stringify({ allowReview: true, limitMs: 60000, clockMode: 'run' });
     expect(await loadLastOptions(repoWith(raw))).toEqual({
-      allowReview: true, limitMs: 60000, clockMode: 'run', onHidden: 'freeze', onReport: 'freeze', questionCount: 10, unansweredDisplay: 'reveal',
+      allowReview: true, limitMs: 60000, clockMode: 'run', onHidden: 'freeze', onReport: 'freeze', questionCount: 10, unansweredDisplay: 'reveal', showAnswer: false,
     });
   });
 
   it('stored options without questionCount load as 10 and keep the other fields', async () => {
     const raw = JSON.stringify({ allowReview: true, limitMs: 60000, clockMode: 'run', onHidden: 'run' });
     expect(await loadLastOptions(repoWith(raw))).toEqual({
-      allowReview: true, limitMs: 60000, clockMode: 'run', onHidden: 'run', onReport: 'freeze', questionCount: 10, unansweredDisplay: 'reveal',
+      allowReview: true, limitMs: 60000, clockMode: 'run', onHidden: 'run', onReport: 'freeze', questionCount: 10, unansweredDisplay: 'reveal', showAnswer: false,
     });
   });
 
@@ -54,7 +54,7 @@ describe('practice options', () => {
     let stored: string | null = null;
     const repo = { get: async () => stored, set: async (_k: string, v: string) => { stored = v; } } as unknown as SettingsRepo;
     const opts = {
-      allowReview: false, limitMs: 1000, clockMode: 'freeze' as const, onHidden: 'run' as const, onReport: 'run' as const, questionCount: 20, unansweredDisplay: 'answersOnly' as const,
+      allowReview: false, limitMs: 1000, clockMode: 'freeze' as const, onHidden: 'run' as const, onReport: 'run' as const, questionCount: 20, unansweredDisplay: 'answersOnly' as const, showAnswer: false,
     };
     await saveLastOptions(repo, opts);
     expect(await loadLastOptions(repo)).toEqual(opts);

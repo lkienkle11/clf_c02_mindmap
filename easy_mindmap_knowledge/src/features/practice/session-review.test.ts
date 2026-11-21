@@ -87,4 +87,10 @@ describe('PracticeSession.startReview', () => {
     expect(completed.size).toBe(0);
     expect(topicStatuses(services.catalog.topics, completed, () => true).get('cloud-concepts')).toBe('current');
   });
+
+  it('a review attempt always has helpMode off', async () => {
+    const s = await PracticeSession.startReview(services, ids, onSubmitted);
+    expect(s.helpMode).toBe('off');
+    expect((await services.repos.attempts.findInProgress())!.attempt.helpMode).toBe('off');
+  });
 });

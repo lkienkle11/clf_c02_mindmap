@@ -4,8 +4,8 @@ import type { SessionQuestion } from '../session.svelte';
 import QuestionNav from './QuestionNav.svelte';
 
 const questions: SessionQuestion[] = [
-  { position: 0, questionId: 'q1', optionOrder: [], multi: false, selected: ['A'], unscored: false },
-  { position: 1, questionId: 'q2', optionOrder: [], multi: false, selected: [], unscored: false },
+  { position: 0, questionId: 'q1', optionOrder: [], multi: false, selected: ['A'], unscored: false, revealed: false, eliminated: [] },
+  { position: 1, questionId: 'q2', optionOrder: [], multi: false, selected: [], unscored: false, revealed: false, eliminated: [] },
 ];
 
 function renderNav() {
