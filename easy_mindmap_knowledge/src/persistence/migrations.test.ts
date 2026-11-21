@@ -267,6 +267,35 @@ describe('migrations', () => {
     });
   });
 
+  describe('0009 attempt help', () => {
+    const MIGRATION = '0009_attempt_help.sql';
+
+    it('is the ninth migration file', () => {
+      expect(files[8]).toBe(MIGRATION);
+    });
+
+    it('is registered with version 9 in lib.rs', () => {
+      const lib = readFileSync(join(ROOT, 'src-tauri', 'src', 'lib.rs'), 'utf8');
+      expect(lib).toMatch(/Migration\s*\{\s*version:\s*9,\s*description:\s*"attempt_help",\s*sql:\s*include_str!\("\.\.\/migrations\/0009_attempt_help\.sql"\),\s*kind:\s*MigrationKind::Up,?\s*\}/);
+    });
+
+    it('keeps version-8 rows and defaults help_mode, revealed and eliminated', () => {
+      const db = new DatabaseSync(':memory:');
+      for (const f of files.slice(0, 8)) db.exec(sql(f));
+      db.exec("INSERT INTO attempts (id, kind, topic_id, status, started_at, clock_mode) VALUES ('a1', 'practice', 't', 'in_progress', 1, 'freeze')");
+      db.exec(`INSERT INTO attempt_questions (attempt_id, position, question_id, option_order, selected) VALUES ('a1', 0, 'q1', '["A","B"]', '["A"]')`);
+      for (const f of files.slice(8, 9)) db.exec(sql(f));
+      expect(db.prepare('SELECT help_mode FROM attempts').all()).toEqual([{ help_mode: 'off' }]);
+      expect(db.prepare('SELECT revealed, eliminated FROM attempt_questions').all()).toEqual([{ revealed: 0, eliminated: '[]' }]);
+    });
+
+    it('rejects an unknown help_mode', () => {
+      const db = new DatabaseSync(':memory:');
+      for (const f of files.slice(0, 9)) db.exec(sql(f));
+      expect(() => db.exec("INSERT INTO attempts (id, kind, status, started_at, clock_mode, help_mode) VALUES ('a2', 'practice', 'in_progress', 1, 'freeze', 'x')")).toThrow(/CHECK/i);
+    });
+  });
+
   describe('report record types', () => {
     it('ReportRow mirrors the reports columns, with images as ordered relative paths', () => {
       expectTypeOf<ReportType>().toEqualTypeOf<'question' | 'lesson' | 'system' | 'attempt'>();

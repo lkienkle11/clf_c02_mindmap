@@ -133,11 +133,11 @@ export class PracticeSession {
     const attempt: AttemptRow = {
       id: services.newId(), kind: 'practice', topicId, status: 'in_progress', startedAt: now,
       submittedAt: null, submitReason: null, reviewAllowed: options.allowReview, clock,
-      heartbeatAt: now, scorePct: null, passed: null, groupIndex: null, plannedCount: count, unansweredDisplay: options.unansweredDisplay,
+      heartbeatAt: now, scorePct: null, passed: null, groupIndex: null, plannedCount: count, unansweredDisplay: options.unansweredDisplay, helpMode: 'off',
     };
     const rows: AttemptQuestionRow[] = plan.map((p, position) => ({
       attemptId: attempt.id, position, questionId: p.questionId, optionOrder: p.optionOrder,
-      selected: [], isCorrect: null, unscored: false,
+      selected: [], isCorrect: null, unscored: false, revealed: false, eliminated: [],
     }));
     await saveLastOptions(services.repos.settings, options);
     await services.repos.attempts.create(attempt, rows);
@@ -167,14 +167,14 @@ export class PracticeSession {
       const keys = q.options.map((o) => o.key);
       rows.push({
         attemptId: id, position, questionId, optionOrder: q.orderDependent ? keys : shuffle(keys, rng),
-        selected: [], isCorrect: null, unscored: false,
+        selected: [], isCorrect: null, unscored: false, revealed: false, eliminated: [],
       });
     });
     const clock = startClock(null, 'freeze', now, 'freeze');
     const attempt: AttemptRow = {
       id, kind: 'review', topicId: null, status: 'in_progress', startedAt: now,
       submittedAt: null, submitReason: null, reviewAllowed: true, clock,
-      heartbeatAt: now, scorePct: null, passed: null, groupIndex: null, plannedCount: null, unansweredDisplay: 'reveal',
+      heartbeatAt: now, scorePct: null, passed: null, groupIndex: null, plannedCount: null, unansweredDisplay: 'reveal', helpMode: 'off',
     };
     await services.repos.attempts.create(attempt, rows);
     return new PracticeSession(services, onSubmitted, attempt, rows, clock);
@@ -208,11 +208,11 @@ export class PracticeSession {
     const attempt: AttemptRow = {
       id, kind: input.kind, topicId: input.topicId, status: 'in_progress', startedAt: now,
       submittedAt: null, submitReason: null, reviewAllowed: false, clock,
-      heartbeatAt: now, scorePct: null, passed: null, groupIndex: input.groupIndex, plannedCount: input.plan.length, unansweredDisplay: 'reveal',
+      heartbeatAt: now, scorePct: null, passed: null, groupIndex: input.groupIndex, plannedCount: input.plan.length, unansweredDisplay: 'reveal', helpMode: 'off',
     };
     const rows: AttemptQuestionRow[] = input.plan.map((p, position) => ({
       attemptId: id, position, questionId: p.questionId, optionOrder: [...p.optionOrder],
-      selected: [], isCorrect: null, unscored: input.unscoredIds?.has(p.questionId) ?? false,
+      selected: [], isCorrect: null, unscored: input.unscoredIds?.has(p.questionId) ?? false, revealed: false, eliminated: [],
     }));
     await services.repos.attempts.create(attempt, rows);
     return new PracticeSession(services, onSubmitted, attempt, rows, clock);

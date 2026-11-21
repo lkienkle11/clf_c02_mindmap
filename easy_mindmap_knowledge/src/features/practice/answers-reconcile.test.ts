@@ -28,19 +28,19 @@ const attempt = (id = 'a1'): AttemptRow => ({
   scorePct: null,
   passed: null,
   groupIndex: null,
-  plannedCount: null, unansweredDisplay: 'reveal',
+  plannedCount: null, unansweredDisplay: 'reveal', helpMode: 'off',
 });
 
 const questions = (attemptId = 'a1'): AttemptQuestionRow[] => [
-  { attemptId, position: 0, questionId: 'q1', optionOrder: ['B', 'A'], selected: ['A'], isCorrect: true, unscored: false },
-  { attemptId, position: 1, questionId: 'q2', optionOrder: ['A', 'B'], selected: ['A'], isCorrect: true, unscored: false },
+  { attemptId, position: 0, questionId: 'q1', optionOrder: ['B', 'A'], selected: ['A'], isCorrect: true, unscored: false, revealed: false, eliminated: [] },
+  { attemptId, position: 1, questionId: 'q2', optionOrder: ['A', 'B'], selected: ['A'], isCorrect: true, unscored: false, revealed: false, eliminated: [] },
 ];
 
 describe('reconcileAnswers', () => {
   it.each(['capstone-exam-1', 'capstone-exam-2'])('keeps %s passing with 35/50 scored correct and 15 wrong unscored', async (topicId) => {
     const rows: AttemptQuestionRow[] = Array.from({ length: 65 }, (_, position) => ({
       attemptId: 'a1', position, questionId: `q${position}`, optionOrder: ['A', 'B'],
-      selected: position < 35 ? ['A'] : ['B'], isCorrect: position < 35, unscored: position >= 50,
+      selected: position < 35 ? ['A'] : ['B'], isCorrect: position < 35, unscored: position >= 50, revealed: false, eliminated: [],
     }));
     await repo.create({ ...attempt(), topicId, status: 'submitted', submittedAt: 2000, scorePct: 70, passed: true }, rows);
     const catalog = { questions: rows.map((row) => makeQuestion({ id: row.questionId, correct: ['A'] })) };
@@ -52,7 +52,7 @@ describe('reconcileAnswers', () => {
   it.each(['capstone', 'compute'])('keeps the normal pass threshold for %s', async (topicId) => {
     const rows: AttemptQuestionRow[] = Array.from({ length: 10 }, (_, position) => ({
       attemptId: 'a1', position, questionId: `q${position}`, optionOrder: ['A', 'B'],
-      selected: position < 7 ? ['A'] : ['B'], isCorrect: position < 7, unscored: false,
+      selected: position < 7 ? ['A'] : ['B'], isCorrect: position < 7, unscored: false, revealed: false, eliminated: [],
     }));
     await repo.create({ ...attempt(), topicId, status: 'submitted', submittedAt: 2000, scorePct: 70, passed: true }, rows);
     const catalog = { questions: rows.map((row) => makeQuestion({ id: row.questionId, correct: ['A'] })) };
@@ -147,6 +147,8 @@ describe('reconcileAnswers', () => {
       selected: ['A'],
       isCorrect: position === 4 ? null : true,
       unscored: false,
+      revealed: false,
+      eliminated: [],
     }));
     const risingRows = fallingRows.map((row) => ({
       ...row,
@@ -330,6 +332,8 @@ describe('reconcileAnswers', () => {
       selected: ['A'],
       isCorrect: position !== 4,
       unscored: false,
+      revealed: false,
+      eliminated: [],
     }));
     await repo.create({ ...attempt(), status: 'submitted', submittedAt: 2000, scorePct: 80, passed: false }, rows);
     const catalog = {

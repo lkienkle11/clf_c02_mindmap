@@ -79,7 +79,7 @@ async function passCheckpoint(services: Services, appState: AppState, groupIndex
     id: `cp-${groupIndex}`, kind: 'checkpoint', topicId: null, status: 'submitted', startedAt: T0, submittedAt: T0 + 1,
     submitReason: 'manual', reviewAllowed: true,
     clock: { mode: 'freeze', limitMs: null, remainingMs: null, deadlineAt: null, onHidden: 'freeze', onReport: 'freeze' },
-    heartbeatAt: null, scorePct: 90, passed: true, groupIndex, plannedCount: 30, unansweredDisplay: 'reveal',
+    heartbeatAt: null, scorePct: 90, passed: true, groupIndex, plannedCount: 30, unansweredDisplay: 'reveal', helpMode: 'off',
   }, []);
   await appState.refresh();
 }
@@ -307,7 +307,7 @@ describe('Capstone learning flow with stored attempts and real exams', () => {
       startedAt: T0, submittedAt: T0 + 1, submitReason: 'manual', reviewAllowed: false,
       clock: { mode: 'run', limitMs: 5_400_000, remainingMs: null, deadlineAt: T0 + 5_400_000, onHidden: 'run', onReport: 'run' },
       heartbeatAt: null, scorePct: 70, passed: true, groupIndex: null,
-      plannedCount: 65, unansweredDisplay: 'reveal',
+      plannedCount: 65, unansweredDisplay: 'reveal', helpMode: 'off',
     }, []);
     await env.appState.refresh();
   }

@@ -16,7 +16,7 @@ function attempt(p: Partial<AttemptRow> & { id: string }): AttemptRow {
     scorePct: 50,
     passed: false,
     groupIndex: null,
-    plannedCount: null, unansweredDisplay: 'reveal',
+    plannedCount: null, unansweredDisplay: 'reveal', helpMode: 'off',
     ...p,
   };
 }
@@ -135,7 +135,7 @@ describe('mostMissed', () => {
 });
 
 function qrow(p: Partial<AttemptQuestionRow> & { attemptId: string; questionId: string }): AttemptQuestionRow {
-  return { position: 0, optionOrder: ['A', 'B', 'C'], selected: ['A'], isCorrect: false, unscored: false, ...p };
+  return { position: 0, optionOrder: ['A', 'B', 'C'], selected: ['A'], isCorrect: false, unscored: false, revealed: false, eliminated: [], ...p };
 }
 
 describe('missedDetails', () => {

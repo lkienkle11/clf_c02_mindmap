@@ -14,6 +14,9 @@ export interface ClockState {
 /** What the results show for questions left unanswered: everything, or the options only. */
 export type UnansweredDisplay = 'reveal' | 'answersOnly';
 
+/** Exam help of an attempt: none, answer reveal, or the two powers. */
+export type HelpMode = 'off' | 'reveal' | 'powers';
+
 export interface AttemptRow {
   id: string;
   kind: 'practice' | 'review' | 'checkpoint';
@@ -32,6 +35,7 @@ export interface AttemptRow {
   /** Question count the attempt was planned with; null for attempts that predate it. */
   plannedCount: number | null;
   unansweredDisplay: UnansweredDisplay;
+  helpMode: HelpMode;
 }
 
 export interface AttemptQuestionRow {
@@ -42,6 +46,10 @@ export interface AttemptQuestionRow {
   selected: string[];
   isCorrect: boolean | null;
   unscored: boolean;
+  /** The answer was revealed during the attempt. */
+  revealed: boolean;
+  /** Option ids removed by the eliminate power. */
+  eliminated: string[];
 }
 
 export interface QuestionStat {
