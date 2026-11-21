@@ -1,7 +1,7 @@
+import type { HelpMode } from '@/persistence/records';
 import { shuffle } from '@/random/seeded-random';
 
 export const HELP_USES = 3;
-export type HelpMode = 'off' | 'reveal' | 'powers';
 export type HelpQuestion = { revealed: boolean; eliminated: readonly string[] };
 export type HelpRefusal = 'off' | 'noneLeft' | 'revealed' | 'noWrong' | 'already';
 
