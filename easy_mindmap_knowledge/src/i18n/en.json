@@ -75,6 +75,7 @@
   "practice.setup.unansweredLegend": "Unanswered questions after the attempt",
   "practice.setup.unansweredReveal": "Show the correct answers and explanations",
   "practice.setup.unansweredAnswersOnly": "Show the answers only, without the correct answer",
+  "practice.setup.showAnswer": "Allow showing the answers",
   "practice.setup.reportHint": "Applies while the report is open and the window is visible. Time with the window hidden still follows the setting above.",
   "practice.setup.back": "Back to the map",
   "practice.setup.start": "Start",

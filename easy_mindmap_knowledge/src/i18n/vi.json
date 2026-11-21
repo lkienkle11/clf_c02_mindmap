@@ -75,6 +75,7 @@
   "practice.setup.unansweredLegend": "Xử lý các câu chưa làm sau khi kết thúc bài",
   "practice.setup.unansweredReveal": "Hiển thị đáp án đúng và giải thích của các câu đó",
   "practice.setup.unansweredAnswersOnly": "Chỉ hiển thị đáp án, không hiển thị đáp án đúng",
+  "practice.setup.showAnswer": "Cho phép hiển thị đáp án",
   "practice.setup.reportHint": "Áp dụng khi báo cáo đang mở và cửa sổ còn hiển thị. Lúc cửa sổ bị ẩn vẫn theo tùy chọn ở trên.",
   "practice.setup.back": "Về sơ đồ",
   "practice.setup.start": "Bắt đầu",
