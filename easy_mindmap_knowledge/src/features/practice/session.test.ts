@@ -897,3 +897,72 @@ describe('help in practice (showAnswer)', () => {
     expect(session.questions.every((q) => !q.revealed && q.eliminated.length === 0)).toBe(true);
   });
 });
+
+describe('help saves before memory changes', () => {
+  /** A checkpoint attempt with the powers on over the first n compute questions (one correct answer, A). */
+  const powers = (n = 3) => PracticeSession.startExam(services, {
+    kind: 'checkpoint', topicId: null, groupIndex: 0, limitMs: 600_000, help: true,
+    plan: Array.from({ length: n }, (_, i) => ({ questionId: `c${i}`, optionOrder: ['A', 'B', 'C'] })),
+  }, onSubmitted);
+
+  it('reveal is not shown until the save succeeded', async () => {
+    const s = await start('compute', { showAnswer: true });
+    let release!: () => void;
+    vi.spyOn(services.repos.attempts, 'saveReveal').mockImplementationOnce(() => new Promise<void>((resolve) => { release = resolve; }));
+    const pending = s.reveal(0);
+    expect(s.questions[0].revealed).toBe(false);
+    release();
+    await pending;
+    expect(s.questions[0].revealed).toBe(true);
+  });
+
+  it('a failing reveal save leaves the question unrevealed even when the user selects during the save', async () => {
+    const s = await start('compute', { showAnswer: true });
+    let fail!: (error: Error) => void;
+    vi.spyOn(services.repos.attempts, 'saveReveal').mockImplementationOnce(() => new Promise<void>((_, reject) => { fail = reject; }));
+    const pending = s.reveal(0);
+    await s.select(0, ['B']);
+    fail(new Error('disk'));
+    await expect(pending).rejects.toThrow('disk');
+    expect(s.questions[0]).toMatchObject({ revealed: false, selected: ['B'] });
+    expect((await services.repos.attempts.questionsOf(s.attemptId))[0]).toMatchObject({ revealed: false, selected: ['B'] });
+  });
+
+  it('a failing eliminate save leaves the options and the selection untouched', async () => {
+    const s = await powers();
+    let fail!: (error: Error) => void;
+    vi.spyOn(services.repos.attempts, 'saveElimination').mockImplementationOnce(() => new Promise<void>((_, reject) => { fail = reject; }));
+    const pending = s.eliminate(0);
+    await s.select(0, ['A']);
+    fail(new Error('disk'));
+    await expect(pending).rejects.toThrow('disk');
+    expect(s.questions[0]).toMatchObject({ eliminated: [], selected: ['A'] });
+    expect(s.helpLeft.eliminate).toBe(3);
+    expect((await services.repos.attempts.questionsOf(s.attemptId))[0]).toMatchObject({ eliminated: [], selected: ['A'] });
+  });
+
+  it('a second reveal on the same question while the first save is pending spends one use', async () => {
+    const s = await powers();
+    const releases: (() => void)[] = [];
+    const spy = vi.spyOn(services.repos.attempts, 'saveReveal').mockImplementation(() => new Promise<void>((resolve) => { releases.push(resolve); }));
+    const first = s.reveal(0);
+    await s.reveal(0);
+    expect(spy).toHaveBeenCalledTimes(1);
+    releases.forEach((release) => release());
+    await first;
+    expect(s.helpLeft.reveal).toBe(2);
+    expect(s.questions[0].revealed).toBe(true);
+  });
+
+  it('two pending reveals on different questions cannot exceed the 3 uses', async () => {
+    const s = await powers(4);
+    const releases: (() => void)[] = [];
+    const spy = vi.spyOn(services.repos.attempts, 'saveReveal').mockImplementation(() => new Promise<void>((resolve) => { releases.push(resolve); }));
+    const calls = [0, 1, 2, 3].map((position) => s.reveal(position));
+    expect(spy).toHaveBeenCalledTimes(3);
+    releases.forEach((release) => release());
+    await Promise.all(calls);
+    expect(s.questions.map((q) => q.revealed)).toEqual([true, true, true, false]);
+    expect(s.helpLeft.reveal).toBe(0);
+  });
+});

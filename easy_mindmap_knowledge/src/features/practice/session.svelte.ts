@@ -3,6 +3,7 @@ import { AttemptMissingError } from '@/persistence';
 import type { AttemptQuestionRow, AttemptRow, ClockState, HelpMode, UnansweredDisplay } from '@/persistence';
 import { advanceFreeze, isExpired, pauseForReport, remainingAt, resolveOnResume, settleHidden as settleClockHidden, startClock } from './logic/attempt-clock';
 import { eliminateCheck, pickEliminations, revealCheck, usesLeft } from './logic/help';
+import type { HelpQuestion } from './logic/help';
 import { gradeQuestion, passThresholdPct } from './logic/grading';
 import { attemptScore } from './logic/regrade';
 import { buildPool, planAttempt } from './logic/pick-questions';
@@ -42,6 +43,9 @@ const CLOCK_SAVE_EVERY_MS = 5000;
  * Run mode derives time from the deadline and needs no cap.
  */
 export const FREEZE_MAX_TICK_MS = 3000;
+
+/** Stands in for a key of a question whose eliminate is in flight; the help checks only count it. */
+const PENDING_KEY = '?';
 
 const view = (q: SessionQuestion): SessionQuestion =>
   Object.freeze({
@@ -87,6 +91,8 @@ export class PracticeSession {
   #exited = false;
   #exitPromise: Promise<void> | null = null;
   #inflight: Promise<SubmitResult> | null = null;
+  /** Help saves in flight, by position: the power being saved. Plain state, never reactive. */
+  #helpPending = new Map<number, 'reveal' | 'eliminate'>();
 
   private constructor(
     private readonly services: Services,
@@ -287,44 +293,63 @@ export class PracticeSession {
   }
 
   /**
-   * Shows the answer of one question. A refusal (help off, already revealed, no uses left) resolves silently.
-   * Memory is updated before the await so a second call sees the question revealed and spends nothing.
+   * The questions as the help checks count them. A save in flight has already spent its use, so a pending
+   * reveal counts as revealed and a pending eliminate as eliminated.
+   */
+  #helpCounts(): HelpQuestion[] {
+    return this.#questions.map((q, position) => {
+      const pending = this.#helpPending.get(position);
+      return {
+        revealed: q.revealed || pending === 'reveal',
+        eliminated: q.eliminated.length > 0 || pending !== 'eliminate' ? q.eliminated : [PENDING_KEY],
+      };
+    });
+  }
+
+  /**
+   * Shows the answer of one question. Persist first: memory changes only after the save succeeded, so a failed
+   * save has nothing to undo. A refusal (help off, already revealed, no uses left, a save of this question in
+   * flight) resolves silently.
    */
   async reveal(position: number): Promise<void> {
     if (this.#closed || this.#exited) return;
     const prev = this.#questions[position];
-    if (!prev) return;
-    if (revealCheck(this.helpMode, prev, this.#questions) !== null) return;
-    const next = view({ ...prev, revealed: true });
-    this.#questions = this.#questions.with(position, next);
+    if (!prev || this.#helpPending.has(position)) return;
+    if (revealCheck(this.helpMode, prev, this.#helpCounts()) !== null) return;
+    this.#helpPending.set(position, 'reveal');
     try {
       await this.services.repos.attempts.saveReveal(this.attemptId, position);
-    } catch (e) {
-      if (this.#questions[position] === next) this.#questions = this.#questions.with(position, prev);
-      throw e;
+      const current = this.#questions[position];
+      if (current) this.#questions = this.#questions.with(position, view({ ...current, revealed: true }));
+    } finally {
+      this.#helpPending.delete(position);
     }
   }
 
   /**
-   * Removes two wrong options of one question. A refusal resolves silently. Only the eliminated keys leave
-   * the selection; the other selected keys are kept, and the result is saved with the eliminated keys.
+   * Removes two wrong options of one question. Persist first, as reveal does: the keys and the new selection
+   * are computed from the item now; memory takes them only after the save succeeded, from the item as it is
+   * then, so a selection made during the save is kept. Only the eliminated keys leave the selection. A refusal
+   * resolves silently.
    */
   async eliminate(position: number): Promise<void> {
     if (this.#closed || this.#exited) return;
     const prev = this.#questions[position];
-    if (!prev) return;
+    if (!prev || this.#helpPending.has(position)) return;
     const correct = this.services.catalog.questions.find((q) => q.id === prev.questionId)?.correct ?? [];
     const wrongCount = prev.optionOrder.filter((key) => !correct.includes(key)).length;
-    if (eliminateCheck(this.helpMode, prev, this.#questions, wrongCount) !== null) return;
+    if (eliminateCheck(this.helpMode, prev, this.#helpCounts(), wrongCount) !== null) return;
     const eliminated = pickEliminations(prev.optionOrder, correct, makeRng((this.services.now() + position) % 0x100000000));
-    const selected = prev.selected.filter((key) => !eliminated.includes(key));
-    const next = view({ ...prev, eliminated, selected });
-    this.#questions = this.#questions.with(position, next);
+    const dropEliminated = (keys: readonly string[]): string[] => keys.filter((key) => !eliminated.includes(key));
+    this.#helpPending.set(position, 'eliminate');
     try {
-      await this.services.repos.attempts.saveElimination(this.attemptId, position, eliminated, selected);
-    } catch (e) {
-      if (this.#questions[position] === next) this.#questions = this.#questions.with(position, prev);
-      throw e;
+      await this.services.repos.attempts.saveElimination(this.attemptId, position, eliminated, dropEliminated(prev.selected));
+      const current = this.#questions[position];
+      if (current) {
+        this.#questions = this.#questions.with(position, view({ ...current, eliminated, selected: dropEliminated(current.selected) }));
+      }
+    } finally {
+      this.#helpPending.delete(position);
     }
   }
 
