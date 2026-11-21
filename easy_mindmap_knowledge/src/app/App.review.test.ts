@@ -113,10 +113,10 @@ describe('App resume of a review attempt', () => {
   const attempt: AttemptRow = {
     id: 'old-review', kind: 'review', topicId: null, status: 'in_progress', startedAt: 0, submittedAt: null,
     submitReason: null, reviewAllowed: true, clock: { mode: 'freeze', limitMs: null, remainingMs: null, deadlineAt: null, onHidden: 'freeze', onReport: 'freeze' },
-    heartbeatAt: null, scorePct: null, passed: null, groupIndex: null, plannedCount: null, unansweredDisplay: 'reveal',
+    heartbeatAt: null, scorePct: null, passed: null, groupIndex: null, plannedCount: null, unansweredDisplay: 'reveal', helpMode: 'off',
   };
   const rows = (ids: string[]): AttemptQuestionRow[] =>
-    ids.map((questionId, position) => ({ attemptId: 'old-review', position, questionId, optionOrder: ['A', 'B'], selected: [], isCorrect: null, unscored: false }));
+    ids.map((questionId, position) => ({ attemptId: 'old-review', position, questionId, optionOrder: ['A', 'B'], selected: [], isCorrect: null, unscored: false, revealed: false, eliminated: [] }));
 
   async function mountResume(): Promise<Env> {
     const env = await makeReviewEnv({ due: { compute: 3 }, inProgress: { attempt, questions: rows(['compute-0', 'compute-1']) } });

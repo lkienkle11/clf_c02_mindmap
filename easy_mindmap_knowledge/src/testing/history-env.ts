@@ -6,11 +6,11 @@ export const makeAttempt = (id: string, over: Partial<AttemptRow> = {}): Attempt
   id, kind: 'practice', topicId: 'compute', status: 'submitted', startedAt: 0, submittedAt: 1,
   submitReason: 'manual', reviewAllowed: false,
   clock: { mode: 'freeze', limitMs: null, remainingMs: null, deadlineAt: null, onHidden: 'freeze', onReport: 'freeze' },
-  heartbeatAt: null, scorePct: 50, passed: false, groupIndex: null, plannedCount: null, unansweredDisplay: 'reveal', ...over,
+  heartbeatAt: null, scorePct: 50, passed: false, groupIndex: null, plannedCount: null, unansweredDisplay: 'reveal', helpMode: 'off', ...over,
 });
 
 export const makeRow = (attemptId: string, position: number, over: Partial<AttemptQuestionRow> = {}): AttemptQuestionRow => ({
-  attemptId, position, questionId: 'q1', optionOrder: ['A', 'B', 'C', 'D'], selected: ['A'], isCorrect: true, unscored: false, ...over,
+  attemptId, position, questionId: 'q1', optionOrder: ['A', 'B', 'C', 'D'], selected: ['A'], isCorrect: true, unscored: false, revealed: false, eliminated: [], ...over,
 });
 
 export interface HistoryEnvOptions {

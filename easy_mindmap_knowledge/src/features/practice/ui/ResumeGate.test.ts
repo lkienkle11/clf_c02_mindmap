@@ -9,10 +9,10 @@ import ResumeGate from './ResumeGate.svelte';
 const attempt = (over: Partial<AttemptRow> = {}): AttemptRow => ({
   id: 'old', kind: 'practice', topicId: 'compute', status: 'in_progress', startedAt: 0, submittedAt: null,
   submitReason: null, reviewAllowed: false, clock: { mode: 'freeze', limitMs: null, remainingMs: null, deadlineAt: null, onHidden: 'freeze', onReport: 'freeze' },
-  heartbeatAt: null, scorePct: null, passed: null, groupIndex: null, plannedCount: null, unansweredDisplay: 'reveal', ...over,
+  heartbeatAt: null, scorePct: null, passed: null, groupIndex: null, plannedCount: null, unansweredDisplay: 'reveal', helpMode: 'off', ...over,
 });
 const rows = (ids = ['q1', 'q2', 'q3']): AttemptQuestionRow[] =>
-  ids.map((questionId, position) => ({ attemptId: 'old', position, questionId, optionOrder: ['A', 'B', 'C', 'D'], selected: [], isCorrect: null, unscored: false }));
+  ids.map((questionId, position) => ({ attemptId: 'old', position, questionId, optionOrder: ['A', 'B', 'C', 'D'], selected: [], isCorrect: null, unscored: false, revealed: false, eliminated: [] }));
 
 async function mount(found: { attempt: AttemptRow; questions: AttemptQuestionRow[] } | null) {
   const env = await makePracticeEnv({ inProgress: found });

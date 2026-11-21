@@ -13,9 +13,9 @@ async function seedSubmitted(services: ReturnType<typeof buildServices>) {
     {
       id: 'a1', kind: 'practice', topicId: 'compute', status: 'in_progress', startedAt: 1, submittedAt: null,
       submitReason: null, reviewAllowed: false, clock: { mode: 'freeze', limitMs: null, remainingMs: null, deadlineAt: null, onHidden: 'freeze', onReport: 'freeze' },
-      heartbeatAt: null, scorePct: null, passed: null, groupIndex: null, plannedCount: null, unansweredDisplay: 'reveal',
+      heartbeatAt: null, scorePct: null, passed: null, groupIndex: null, plannedCount: null, unansweredDisplay: 'reveal', helpMode: 'off',
     },
-    [{ attemptId: 'a1', position: 0, questionId: 'q1', optionOrder: ['A', 'B'], selected: ['A'], isCorrect: null, unscored: false }],
+    [{ attemptId: 'a1', position: 0, questionId: 'q1', optionOrder: ['A', 'B'], selected: ['A'], isCorrect: null, unscored: false, revealed: false, eliminated: [] }],
   );
   await a.markSubmitted('a1', { scorePct: 100, passed: true, reason: 'manual', at: 1000, grades: [{ position: 0, isCorrect: true, selected: ['A'] }] });
 }
