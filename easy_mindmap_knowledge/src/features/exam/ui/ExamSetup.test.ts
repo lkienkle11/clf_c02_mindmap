@@ -11,6 +11,57 @@ import type { PracticeSession } from '@/features/practice';
 const GROUP1 = ['cloud-concepts', 'global-infrastructure', 'compute'];
 
 describe('ExamSetup', () => {
+  it('shows the help tick only for checkpoint setup', async () => {
+    const env = await makeExamEnv(GROUP1);
+    const view = renderWithI18n(ExamSetup, { services: env.services, appState: env.appState, groupIndex: 1, capstoneTopicId: null, onstarted: () => {} });
+    expect(screen.getByRole('checkbox', { name: /Use help powers/ })).toBeInTheDocument();
+    view.unmount();
+    const catalog = loadBundledCatalog();
+    const capstone = await makeExamEnv([], { rawCatalog: { topics: catalog.topics, lessons: catalog.lessons, questions: catalog.questions } });
+    renderWithI18n(ExamSetup, { services: capstone.services, appState: capstone.appState, groupIndex: null, capstoneTopicId: 'capstone-exam-1', onstarted: () => {} });
+    expect(screen.queryByRole('checkbox', { name: /Use help powers/ })).not.toBeInTheDocument();
+  });
+
+  it('starts unchecked and does not remember help between mounts', async () => {
+    const env = await makeExamEnv(GROUP1);
+    const props = { services: env.services, appState: env.appState, groupIndex: 1, capstoneTopicId: null, onstarted: () => {} };
+    const view = renderWithI18n(ExamSetup, props);
+    const tick = screen.getByRole('checkbox', { name: /Use help powers/ });
+    expect(tick).not.toBeChecked();
+    await userEvent.click(tick);
+    view.unmount();
+    renderWithI18n(ExamSetup, props);
+    expect(screen.getByRole('checkbox', { name: /Use help powers/ })).not.toBeChecked();
+  });
+
+  it('starts a checkpoint with help powers when ticked', async () => {
+    const env = await makeExamEnv(GROUP1);
+    let session: PracticeSession | null = null;
+    renderWithI18n(ExamSetup, { services: env.services, appState: env.appState, groupIndex: 1, capstoneTopicId: null, onstarted: (s: PracticeSession) => { session = s; } });
+    await waitFor(() => expect(screen.getByRole('button', { name: 'Start exam' })).toBeEnabled());
+    await userEvent.click(screen.getByRole('checkbox', { name: /Use help powers/ }));
+    await userEvent.click(screen.getByRole('button', { name: 'Start exam' }));
+    await waitFor(() => expect(session).not.toBeNull());
+    expect((session as unknown as PracticeSession).helpMode).toBe('powers');
+  });
+
+  it('switches the answers rule when help is ticked', async () => {
+    const env = await makeExamEnv(GROUP1);
+    renderWithI18n(ExamSetup, { services: env.services, appState: env.appState, groupIndex: 1, capstoneTopicId: null, onstarted: () => {} });
+    expect(screen.getByText('Answers and explanations are shown only after you submit.')).toBeInTheDocument();
+    await userEvent.click(screen.getByRole('checkbox', { name: /Use help powers/ }));
+    expect(screen.queryByText('Answers and explanations are shown only after you submit.')).not.toBeInTheDocument();
+    expect(screen.getByText('Use help up to 3 times for each power; remaining answers and explanations are shown after you submit.')).toBeInTheDocument();
+  });
+
+  it('keeps the capstone setup rules unchanged', async () => {
+    const catalog = loadBundledCatalog();
+    const env = await makeExamEnv([], { rawCatalog: { topics: catalog.topics, lessons: catalog.lessons, questions: catalog.questions } });
+    renderWithI18n(ExamSetup, { services: env.services, appState: env.appState, groupIndex: null, capstoneTopicId: 'capstone-exam-1', onstarted: () => {} });
+    expect(screen.getByText('Answers and explanations are shown only after you submit.')).toBeInTheDocument();
+    expect(screen.queryByText(/Use help up to/)).not.toBeInTheDocument();
+  });
+
   it('is locked and names the missing topics when the group is not completed', async () => {
     const env = await makeExamEnv(['cloud-concepts', 'global-infrastructure']);
     renderWithI18n(ExamSetup, { services: env.services, appState: env.appState, groupIndex: 1, capstoneTopicId: null, onstarted: () => {} });
