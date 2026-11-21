@@ -100,4 +100,25 @@ describe('QuestionPanel reveal and eliminate', () => {
     }
     expect(within(rowOf('B')).getByText('Đã loại')).toHaveAttribute('lang', 'vi');
   });
+
+  it('a revealed question shows the note of a marked option', () => {
+    const question = makeQuestion({ options, correct: ['A'], optionNotes: { A: 'Note A', B: 'Note B' } });
+    renderPanel({ revealed: true, selected: ['B'] }, question);
+    expect(within(rowOf('A')).getByText('Note A')).toBeInTheDocument();
+    expect(within(rowOf('B')).getByText('Note B')).toBeInTheDocument();
+  });
+
+  it('an unrevealed question shows no option notes', () => {
+    const question = makeQuestion({ options, correct: ['A'], optionNotes: { A: 'Note A', B: 'Note B' } });
+    renderPanel({ revealed: false, selected: ['B'] }, question);
+    expect(screen.queryByText('Note A')).not.toBeInTheDocument();
+    expect(screen.queryByText('Note B')).not.toBeInTheDocument();
+  });
+
+  it('a revealed question does not show the note of an unmarked option', () => {
+    const question = makeQuestion({ options, correct: ['A'], optionNotes: { A: 'Note A', B: 'Note B', C: 'Note C' } });
+    renderPanel({ revealed: true, selected: ['B'] }, question);
+    expect(within(rowOf('B')).getByText('Note B')).toBeInTheDocument();
+    expect(screen.queryByText('Note C')).not.toBeInTheDocument();
+  });
 });

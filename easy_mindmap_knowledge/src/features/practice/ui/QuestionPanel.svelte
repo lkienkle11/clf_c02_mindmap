@@ -62,6 +62,7 @@
     {#each item.optionOrder as key (key)}
       {@const state = stateOf(key)}
       {@const eliminated = item.eliminated.includes(key)}
+      {@const note = state === 'none' ? undefined : question.optionNotes?.[key]}
       <label class={cn(row, eliminated && 'line-through opacity-60', stateRow[state])}>
         {#if item.multi}
           <input class="mt-0.5 size-5" type="checkbox" name={`q-${item.position}`} value={key} disabled={eliminated} checked={item.selected.includes(key)} onchange={(e) => toggle(key, e.currentTarget.checked)} />
@@ -76,6 +77,7 @@
               <span aria-hidden="true">{state === 'wrong' ? '✗' : '✓'}</span> <span lang={i18n.locale}>{badge(state)}</span>
             </span>
           {/if}
+          {#if note}<span class="text-sm text-muted-foreground">{note}</span>{/if}
         </span>
       </label>
     {/each}
