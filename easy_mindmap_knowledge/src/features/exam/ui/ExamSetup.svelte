@@ -6,6 +6,7 @@
   import { passThresholdPct } from '@/features/practice';
   import { HELP_USES } from '@/features/practice';
   import Button from '@/ui/Button.svelte';
+  import StickyActionBar from '@/ui/StickyActionBar.svelte';
   import { ExamNotAvailableError } from '../errors';
   import { CAPSTONE_SCORED_COUNT, CAPSTONE_UNSCORED_COUNT, EXAM_MINUTES, EXAM_MINUTES_EXTRA, EXAM_QUESTION_COUNT } from '../logic/exam-config';
   import { checkpointState } from '../logic/gates';
@@ -87,7 +88,7 @@
   const reasonId = 'exam-locked-reason';
 </script>
 
-<form class="mx-auto flex max-w-2xl flex-col gap-6 p-6" onsubmit={start}>
+<form class="mx-auto flex max-w-2xl flex-col gap-6 p-6 pb-24" onsubmit={start}>
   <div>
     <Button variant="ghost" onclick={() => appState.open({ view: 'tree' })}><span aria-hidden="true">←</span> {i18n.t('exam.setup.back')}</Button>
   </div>
@@ -134,9 +135,9 @@
     <p role="alert" class="rounded-lg border border-danger p-3 text-danger">{message}</p>
   {/if}
 
-  <div>
+  <StickyActionBar>
     <Button type="submit" disabled={!loaded || busy || lockedReason !== null} aria-describedby={lockedReason ? reasonId : undefined}>
       {i18n.t('exam.setup.start')}
     </Button>
-  </div>
+  </StickyActionBar>
 </form>

@@ -136,4 +136,19 @@ describe('ExamSetup', () => {
     renderWithI18n(ExamSetup, { services: env.services, appState: env.appState, groupIndex: null, capstoneTopicId: 'capstone-exam-1', onstarted: () => {} }, 'vi');
     expect(screen.getByRole('heading', { name: 'Capstone - Bài kiểm tra thứ nhất' })).toBeInTheDocument();
   });
+
+  it('ExamSetup renders the Start button inside the sticky bar', async () => {
+    const env = await makeExamEnv(GROUP1);
+    renderWithI18n(ExamSetup, { services: env.services, appState: env.appState, groupIndex: 1, capstoneTopicId: null, onstarted: () => {} });
+    const start = screen.getByRole('button', { name: 'Start exam' });
+    const bar = start.closest<HTMLElement>('.fixed');
+    expect(bar).toHaveClass('bottom-0');
+    expect(bar?.closest('form')).toBe(start.closest('form'));
+  });
+
+  it('the form has bottom padding so the last control is not covered', async () => {
+    const env = await makeExamEnv(GROUP1);
+    renderWithI18n(ExamSetup, { services: env.services, appState: env.appState, groupIndex: 1, capstoneTopicId: null, onstarted: () => {} });
+    expect(screen.getByRole('button', { name: 'Start exam' }).closest('form')).toHaveClass('pb-24');
+  });
 });

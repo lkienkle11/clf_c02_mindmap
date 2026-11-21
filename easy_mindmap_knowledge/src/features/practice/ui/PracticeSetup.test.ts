@@ -247,6 +247,19 @@ describe('PracticeSetup', () => {
     expect((onstarted.mock.calls[0][0] as PracticeSession).helpMode).toBe('off');
     expect((await loadLastOptions(services.repos.settings)).showAnswer).toBe(false);
   });
+
+  it('PracticeSetup renders the Start button inside the sticky bar', async () => {
+    await mount();
+    const start = screen.getByRole('button', { name: 'Start' });
+    const bar = start.closest<HTMLElement>('.fixed');
+    expect(bar).toHaveClass('bottom-0');
+    expect(bar?.closest('form')).toBe(start.closest('form'));
+  });
+
+  it('the form has bottom padding so the last control is not covered', async () => {
+    await mount();
+    expect(screen.getByRole('button', { name: 'Start' }).closest('form')).toHaveClass('pb-24');
+  });
 });
 
 describe('PracticeSetup question count', () => {
