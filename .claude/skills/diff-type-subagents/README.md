@@ -24,6 +24,14 @@ If the first line no longer matches the machine (you copied the folder, restored
 
 The skill folder itself holds only the rules and blank starting files (`references/templates/`).
 
+## Fewer questions
+
+The skill asks its questions in one list, once per topic, and only the ones it cannot already answer from your configuration, your command or the files of the topic. Every question has a default, and one reply ("accept the defaults") answers the whole list.
+
+For a few questions (running the test of a new agent CLI, whether to use an independent reviewer, which kinds of mechanical edit may follow a change) you can answer "yes and remember". The answer is saved on this machine only, in your `policy.md`, after you confirm its diff. Say "forget <name>" to remove one, or use `reset`, which clears all of them.
+
+Some things are always asked, whatever you saved: anything that cannot be undone or touches real data, writing outside the approved workspace, merging or pushing, changing a worker after you approved the plan, and the approval of the plan itself.
+
 ## Safe by default
 
 Workers are read-only unless you allow writing, and then only in a separate branch or worktree. The skill never installs anything and never uses a flag that skips an agent's permission checks.
