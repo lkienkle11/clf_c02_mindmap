@@ -7,11 +7,11 @@ Delegate work to AI agents of different vendors (CLI agents installed on your ma
 | Type | When |
 |---|---|
 | `/diff-type-subagents` | Normal use. Uses your saved configuration and checks that it still fits this machine. If there is no configuration yet, it starts `setup`. |
-| `/diff-type-subagents setup` | First time on a machine. It checks what the machine offers, asks about the few settings that have no default, asks which agent CLIs you have, and tests each one. Every file it writes is shown to you as a diff first. |
-| `/diff-type-subagents reset` | Configure again from the start, for example after changing computer, operating system or the set of installed agents. It first moves your old configuration to `~/.claude/diff-type-subagents.bak-<date>-<time>/` (nothing is deleted), then runs `setup`. It refuses to run while any delegated run, or any folder or branch the skill made, is still unsettled in any topic of this project; the configuration is shared by every project on this machine, so make sure nothing is running in another project either. |
+| `/diff-type-subagents setup` | First time on a machine. It checks what the machine offers, asks about the few settings that have no default, asks which agent CLIs you have, and (with your permission, which you can remember) tests each one. Every file it writes is shown to you as a diff first. |
+| `/diff-type-subagents reset` | Configure again from the start, for example after changing computer, operating system or the set of installed agents. It first moves your old configuration to `~/.claude/diff-type-subagents.bak-<YYYY-MM-DD-HHMM>/` (nothing is deleted), then runs `setup`. It refuses to run while any delegated run, or any folder or branch the skill made, is still unsettled in any topic of this project; the configuration is shared by every project on this machine, so make sure nothing is running in another project either. |
 | `/diff-type-subagents target: opencode, minimax` | Use only these CLIs as workers for this run. A CLI new to your configuration is tested first; one already verified is only re-checked; the other CLIs are ignored. The host's own subagents are included only if you write `host` in the list, for example `target: host, opencode`. |
 
-You never edit a configuration file by hand to get started.
+`/diff-type-subagents I installed: a, b` tells the skill that these CLIs exist (it is not a filter). On a machine that already has a configuration, `setup` works like `reset`. You never edit a configuration file by hand to get started.
 
 ## Where your configuration lives
 
@@ -26,11 +26,11 @@ The skill folder itself holds only the rules and blank starting files (`referenc
 
 ## Fewer questions
 
-The skill asks its questions in one list, once per topic, and only the ones it cannot already answer from your configuration, your command or the files of the topic. Every question has a default, and one reply ("accept the defaults") answers the whole list.
+The skill asks its questions in one list, once per topic, and only the ones it cannot already answer from your configuration, your command or the files of the topic. Every question has a default, and one reply ("accept the defaults") answers the whole list, except the questions about running a test of an agent, creating folders and branches, and choosing where agents write: those you always answer in words.
 
 For a few questions (running the test of a new agent CLI, whether to use an independent reviewer, which kinds of mechanical edit may follow a change) you can answer "yes and remember". The answer is saved on this machine only, in your `policy.md`, after you confirm its diff. Say "forget <name>" to remove one, or use `reset`, which clears all of them.
 
-Some things are always asked, whatever you saved: anything that cannot be undone or touches real data, writing outside the folders the approved plan names, merging into your own branch, merging into your main branch (the skill never does that itself), pushing, changing a worker after you approved the plan, and the approval of the plan itself.
+Some things are always asked, whatever you saved: anything that cannot be undone or touches real data, writing outside the folders the approved plan names, merging into your own branch, merging into your main branch (the skill never does that itself), pushing, changing a worker after you approved the table (moving to a backup worker already listed in it is only reported), and the approval of the plan itself.
 
 ## Parallel work
 
@@ -42,4 +42,4 @@ The skill asks you before it creates any workspace folder or branch for this wor
 
 ## Safe by default
 
-Workers are read-only unless you allow writing, and then only in a separate branch or worktree. The skill never installs anything and never uses a flag that skips an agent's permission checks.
+Workers are read-only unless you allow writing, and then only in a branch or worktree you allow (never while your own working tree has uncommitted changes). The skill never installs anything and never uses a flag that skips an agent's permission checks.

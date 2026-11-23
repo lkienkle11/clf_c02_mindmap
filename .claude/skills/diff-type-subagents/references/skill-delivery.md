@@ -6,7 +6,7 @@ How the orchestrator finds the skills a worker must read and proves what it foun
 
 Input: a skill name from the cell "skills the worker must read" of `assignments.md`, and the ordered list in the section "Skill source roots" of `policy.md`. Output: one row in the section `Skill resolution` of `assignments.md`, or a stop.
 
-**Before the walk.** If `policy.md` has no "Skill source roots" section (first run on a new machine), stop. Ask the user, and run the skill-folder probe of Gate 1B. Never guess the roots.
+**Before the walk.** If `policy.md` has no "Skill source roots" section or no verified row in it (first run on a new machine), stop. Ask the user, and run the skill-folder probe of Gate 1B. Never guess the roots.
 
 **The walk.**
 
