@@ -1,6 +1,6 @@
 ---
 name: diff-type-subagents
-description: Delegate work to subagents of different vendors (CLI agents installed on the machine, a subagent of the host's own mechanism, and any CLI the user lists after the flag) with the current agent session as orchestrator and reviewer. Use when the user types /diff-type-subagents, with or without a list of installed CLIs, or asks to delegate work to other agents. Load it at Step 0, before any other action, and apply it at every workflow step.
+description: Delegate work to subagents of different vendors (CLI agents installed on the machine, or the host's own subagent mechanism), with the current session as orchestrator and reviewer. Use when the user types /diff-type-subagents or asks to delegate work to other agents or CLIs.
 ---
 
 # Diff-Type Subagents
@@ -8,6 +8,32 @@ description: Delegate work to subagents of different vendors (CLI agents install
 The orchestrator is the agent session that runs this skill, whatever its vendor. It coordinates, writes task briefs, talks to the user and reviews every task and the whole branch. Workers are the agents recorded in the models table and verified at Gate 1: CLI agents, and a subagent of the host's own mechanism if the host has one. Never assume that any CLI or model is available. This skill never replaces or weakens the approval gates of the workflow in use (spec, plan, branch, commit, merge, push). Settings that depend on the machine or the user (which agent orchestrates, which models are forbidden, effort ceiling, fallback order, quota thresholds, command prefix, handoff folder) are not written in these rules; they live in `references/policy.md`.
 
 **Announce:** "I'm using the diff-type-subagents skill."
+
+## How to use
+
+Type one of these. The skill keeps its settings for you; you never edit a file to configure it.
+
+| Typed | Meaning | What happens |
+|---|---|---|
+| `/diff-type-subagents` | Use the current configuration | If the config is missing or incomplete, run `setup` first. Otherwise check the marker (see Where the config lives), then Gate 1A. |
+| `/diff-type-subagents setup` | Configure this machine | Create the config folder from `references/templates/`. Probe the `Environment` table, ask for each policy item that has no default, ask which CLIs are installed and run Gate 1B for them, probe the skill roots. Every write shows its diff first and waits for the user's confirmation. |
+| `/diff-type-subagents reset` | Start the configuration again | If a run of the current topic is still `pending` or `running`, stop and tell the user; move nothing. Otherwise ask the user to confirm, move the config folder to `~/.claude/diff-type-subagents.bak-<YYYY-MM-DD-HHMM>/` (never delete it), then run `setup`. |
+| `/diff-type-subagents target: a, b` | Use only these CLIs as workers for this run | A hard filter, per run, never stored. If the config is missing or incomplete, run `setup` first. Run Gate 1B for each named CLI (what is verified is recorded in the models table as usual). Every other CLI in the table is ignored for this run: escalation chains and fallback entries use only the named CLIs, and when a step leaves no row the rule of `references/allocation.md` applies (stop and ask the user, who may widen the list). The host's own subagent mechanism is in the pool only when the list contains the word `host` (for example `target: host, opencode`). A name that matches no installed program is reported and never guessed. An empty list asks the user. A name given twice counts once. |
+
+The older free-text form `/diff-type-subagents I installed: <CLI one>, <CLI two>` keeps working: it says these CLIs exist (Gate 1B runs for them) and is not a filter.
+
+## Where the config lives
+
+The skill holds rules and blank templates only. Everything recorded on a machine lives in one per-user config folder, the same whatever vendor orchestrates: `~/.claude/diff-type-subagents/`, with exactly two files:
+
+- `policy.md`: machine and user settings (orchestrator, forbidden models, effort ceiling, fallback order, equivalents, quota thresholds, spread, completion signal, parallel limit, liveness window, command prefix, handoff root), the `Environment` table, the tier map and the skill source roots.
+- `models.md`: the models table, worker capabilities, the command shapes, pre-flight checks, session-list rows and quota notes of each CLI as verified on this machine.
+
+In these rules, "the policy" and "`references/policy.md`" mean `policy.md` of the config folder, and "the models table" and "`references/models-and-commands.md`" (with the tables it names: Worker capabilities, Pre-flight check commands, Session-list) mean `models.md` of the config folder. `references/models-and-commands.md` itself holds only the generic procedure. The blank starting files are in `references/templates/`. Items that depend on the host (`Orchestrator`, `Completion signal`) are recorded per host.
+
+**Missing or incomplete config.** If the folder is missing, or holds only one of the two files, treat it as no config: run `setup`, never use a half config. If the folder cannot be created or written (for example `$HOME` is unset or not writable), report it to the user and stop; never write the config anywhere else.
+
+**The marker.** The first line under the title of `policy.md` is `Configured for: <hostname> | <operating system and shell> | <date>`. Every session, before Gate 1, compare it with the live machine. The operating system and the shell are the hard keys; the date is never compared. On a mismatch or a missing marker, change nothing and ask the user once: (a) reconfigure for this machine (same as `reset`), (b) keep the config and update the marker, (c) cancel. If only the hostname differs (a hostname that depends on the network), ask the same question once; answer (b) updates the marker, so the question does not repeat. The `Environment` comparison of Gate 1 stays as a second guard.
 
 ## Hard rules
 
@@ -23,10 +49,10 @@ The orchestrator is the agent session that runs this skill, whatever its vendor.
 
 ### Gate 1: Which CLIs exist on this machine (once per session, before any assignment)
 
-The models table in `references/models-and-commands.md` is the record of the CLIs and models that were discovered and verified on a machine. Never assume that any named CLI is installed. Choose the path by what the user typed and by whether the table has rows:
+First run the config check of "Where the config lives" (missing or incomplete config starts `setup`; the marker is compared with the live machine). Then: the models table in `references/models-and-commands.md` is the record of the CLIs and models that were discovered and verified on a machine. Never assume that any named CLI is installed. Choose the path by what the user typed and by whether the table has rows:
 
 - **Flag with no list, and the table has rows:** trust the table, then re-check it against the live CLIs: Gate 1A.
-- **Flag with no list, and the table is missing or empty:** ask the user which CLIs are installed on this machine. Then run Gate 1B for every CLI the user names. The table is created from what is discovered.
+- **Flag with no list, and the config or the table is missing or empty** (a missing or incomplete config folder always starts `setup` first, see How to use): ask the user which CLIs are installed on this machine. Then run Gate 1B for every CLI the user names. The table is created from what is discovered.
 - **Flag with a list** (example: `/diff-type-subagents I installed: <CLI one>, <CLI two>`): run Gate 1B for every CLI on the list.
 
 If `references/policy.md` has no "Skill source roots" section, first run the skill-folder probe (Gate 1B step 7) on the orchestrator itself, read-only, and ask the user to confirm the roots before anything is written; the per-CLI probe in Gate 1B then covers each worker CLI.
@@ -206,8 +232,9 @@ A result from `workspace-copy` or `compiled` gets a closer review, like a fallba
 
 ## Reference files
 
-- `references/policy.md`: machine and user settings (orchestrator, forbidden models, effort ceiling, fallback order, equivalents, quota thresholds, command prefix, handoff folder). Read at Gate 1.
-- `references/models-and-commands.md`: models table and how to keep it current, worker capabilities, command shapes, session visibility.
+- `policy.md` of the config folder (`~/.claude/diff-type-subagents/`; see Where the config lives): machine and user settings (orchestrator, forbidden models, effort ceiling, fallback order, equivalents, quota thresholds, command prefix, handoff folder), the `Environment` table, the tier map and the skill source roots. Created by `setup` from `references/templates/policy.md`. Read at Gate 1.
+- `models.md` of the config folder, and `references/models-and-commands.md`: the first is this machine's record (models table, worker capabilities, command shapes, pre-flight checks, session-list rows, quota notes), created from `references/templates/models.md`; the second holds the generic procedure for keeping it current.
+- `references/templates/`: the blank `policy.md` and `models.md` that `setup` copies. `README.md`: a short guide for people (the modes, where the config lives, how to reset).
 - `references/allocation.md`: how to weigh a task and choose its worker (steps 0 to 8), the roles and families, the escalation chain and the `Allocation record` table. Read at Gate 2 step 3.
 - `references/skill-delivery.md`: how a skill name is resolved to a real path and a combined hash (section 1), how it is delivered to a worker by mode (section 2), how reading is proved (section 3) and the compiled checklist format (section 4).
 - `references/running-workers.md`: how a worker runs as its own process: the launch wrapper, the `done` completion marker, the completion signal (`native` or `polling`), hang detection and the time limit, and parallel runs. Read at Gate 4.
