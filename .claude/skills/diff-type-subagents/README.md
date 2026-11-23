@@ -32,6 +32,14 @@ For a few questions (running the test of a new agent CLI, whether to use an inde
 
 Some things are always asked, whatever you saved: anything that cannot be undone or touches real data, writing outside the approved workspace, merging or pushing, changing a worker after you approved the plan, and the approval of the plan itself.
 
+## Parallel work
+
+Tasks that cannot touch each other (they share no file and do not depend on each other) are split into separate workspaces. Inside a workspace, tasks that run at the same time each get their own folder, and tasks that run alone use the workspace folder. Finished work is merged back step by step: task into workspace, workspace into your branch. If a merge conflicts, only that workspace stops and the skill asks you.
+
+How many runs go at once is capped by `Parallel limit` in your `policy.md` (3 by default) and by your quota, however many workspaces there are; you can raise it when the skill asks.
+
+The skill asks you before it creates any folder or branch, every time, and never merges into your main branch by itself. At the end it asks once whether to remove the folders and branches it made. It keeps them unless you say yes, and it never removes your own branch, your own folders, or anything with unmerged or uncommitted work.
+
 ## Safe by default
 
 Workers are read-only unless you allow writing, and then only in a separate branch or worktree. The skill never installs anything and never uses a flag that skips an agent's permission checks.
