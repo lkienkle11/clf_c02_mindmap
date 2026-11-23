@@ -61,7 +61,7 @@ One list of questions, shown once per topic, and only for questions whose answer
 | 5 | 2 | The four ripple classes of Gate 2 step 3b | the four classes | yes (the kinds only; the files stay per task in the table) |
 | 6a | 2 | Run tasks in parallel, up to the `Parallel limit` (shown with its value) | yes, when the provisional groups (the read-only analysis of Gate 2 steps 3a to 3f, run before this question) give more than one task in some round or workspace | no |
 | 6b | 2 | May the skill create workspace folders, task worktrees and branches under the handoff root for this topic, commit in them, and merge the task branches into the workspace branches and the workspace branches into the base (when the base is not the default branch) as they finish | no, and nothing is created until yes | no (the project requires permission each time) |
-| 6c | 2 | Only if no base workspace exists: work on the current branch, or in an isolated workspace | isolated | no |
+| 6c | 2 | Only if no base exists: work on the current branch, or in an isolated workspace | isolated | no |
 
 If question 3 is answered "from the start", the work to delegate first (research, reconnaissance) is the task list of a first table, built and approved as usual, and later tasks are added by Gate 2 step 6. If it is answered "only at execution", the answer is recorded and Gate 3 sends the orchestrator to Gate 2 when the workflow reaches execution.
 
@@ -75,15 +75,27 @@ If question 3 is answered "from the start", the work to delegate first (research
 
 ### Never stored
 
-These are asked every time, whatever consents exist: anything irreversible or touching real data; a write outside the approved workspace or outside the allowed paths; a merge outside the topic's own branches, a push or a publish; any change of worker, model, effort, mode, write permission, scope, delivery mode or skill hash after approval (except a move along the approved chain); a violation found at Gate 5; a failed or stopped run; quota exhausted at the end of the chain; a conflict, a cycle or a missing skill; and the approval of the table itself (Gate 2 step 4).
+These are asked every time, whatever consents exist: anything irreversible or touching real data; a write outside the approved folders or the allowed paths; a merge outside the topic's own branches, a push or a publish; any change of worker, model, effort, mode, write permission, scope, delivery mode or skill hash after approval (except a move along the approved chain); a violation found at Gate 5; a failed or stopped run; quota exhausted at the end of the chain; a conflict, a cycle or a missing skill; and the approval of the table itself (Gate 2 step 4).
 
 ## Workspaces, merge and wrap-up
 
-Used when intake question 6a and 6b are answered yes. With "no" to either, nothing below is created: the tasks run in order in the base workspace the workflow gave, or on the branch the user names (writes happen only in a branch the user allowed), and 6c never creates anything on its own: an isolated workspace is created only when 6b is yes.
+Used when intake question 6a and 6b are answered yes. With "no" to either, nothing below is created: the tasks run in order in the base the workflow gave, or on the branch the user names (writes happen only in a branch the user allowed), and 6c never creates anything on its own: an isolated workspace is created only when 6b is yes.
+
+### Terms
+
+Three words, each with one meaning in this skill. Read them first.
+
+| Word | Meaning | On the machine |
+|---|---|---|
+| **base** | the place the workflow in use works in (the branch or worktree it created with the user's permission). This skill never creates it and never removes it | the user's own branch or worktree |
+| **workspace** | a group of tasks that cannot touch each other, named `w1`, `w2`, ... | one git worktree (a folder) with its own branch, made by this skill from the base |
+| **task worktree** | the own folder of one task that runs at the same time as another task of the same workspace | one more git worktree with its own branch, made by this skill from the workspace branch |
+
+A workspace is a group first and a worktree second: the skill says "workspace" for the grouping and for its folder and branch together. The Gate 4 task folder (`brief.md`, ledger) is a different thing: it holds records, not code.
 
 ### Ownership and names
 
-- The workflow in use owns the **base workspace** (the branch or worktree it created with the user's permission). This skill owns only the workspace folders, task worktrees and branches it creates, and records every one of them. The topic's own branches are `diff-agents/<topic>/*` plus the base when it is not the repository's default branch. If no base exists and write isolation is needed, ask question 6c before creating anything.
+- The workflow in use owns the **base** (the branch or worktree it created with the user's permission). This skill owns only the workspace folders, task worktrees and branches it creates, and records every one of them. The topic's own branches are `diff-agents/<topic>/*` plus the base when it is not the repository's default branch. If no base exists and write isolation is needed, ask question 6c before creating anything.
 - A **workspace** is a connected part of the conflict graph (`references/parallel-groups.md`, Workspaces and folders). Workspace folder `<handoff-root>/worktrees/<topic>/<workspace>/`, branch `diff-agents/<topic>/<workspace>`, made from the base. A **task worktree** (not the Gate 4 task worktree that holds `brief.md` and the ledger) is never inside a workspace folder: `<handoff-root>/worktrees/<topic>/<workspace>--<task-id>/`, branch `diff-agents/<topic>/<workspace>--<task-id>`, made from the workspace branch. No branch name nests inside another (git cannot hold `a/b` and `a/b/c` together). The handoff root is ignored by git, and these folders stay clear of the `.worktrees/` and `worktrees/` places that the workflow's own clean-up looks at in the project root. `<topic>` is the name of the topic folder under the handoff root, date prefix included. Workspaces are named `w1`, `w2`, ... in the plan order of their first task, and task ids are the plan's; the `parallel group` column holds `<workspace>.G<n>` (for example `w1.G1`). A skill copy of the `workspace-copy` delivery mode for a worker in a task worktree goes to `<task worktree>/.diff-agents/skills/<skill name>/` (inside the worker's working folder, so the mode stays valid), and the orchestrator excludes `.diff-agents/` from every commit through the worktree's exclude file.
 - Workers never run a git command (WORKER RULES): the orchestrator creates, commits, merges and removes.
 
@@ -93,7 +105,7 @@ Every folder and branch is an entry in the `Workspaces` section of `assignments.
 
 ### Merge
 
-- **Precondition.** Before a workspace is cut, the base workspace is clean and everything the workers need is committed; if not, stop and ask the user to commit or stash. Inputs that are not committed (briefs, results, skills) are read by absolute path, as briefs already do.
+- **Precondition.** Before a workspace is cut, the base is clean and everything the workers need is committed; if not, stop and ask the user to commit or stash. Inputs that are not committed (briefs, results, skills) are read by absolute path, as briefs already do.
 - **Order for a round**, for each run: the Gate 5 check against its own baseline, then the orchestrator commits that folder's changes to that folder's branch (a round that ran in the workspace folder commits to the workspace branch, before any task worktree of the next round is cut), then the review (Gate 6 step 1, on the diff and the light checks only), then the task branches are merged into the workspace branch in table order, then the heavy checks (the project's build or full test) run once in the workspace folder, then the next round is cut from the updated workspace branch. The workspace branch is merged into the base from inside the base folder, which must be clean and idle; a base that moved is a normal non-fast-forward merge.
 - Use real merge commits only (no squash, no rebase), so that `git branch -d` works and no force flag is needed. A task branch is merged from inside the workspace folder (its branch is checked out there), and the commits follow the project's commit rules.
 - **Checks.** In a task worktree run only the light checks the task's brief names, on the task's own files. The project's build and full tests run only in the workspace folder after the merge, with the dependencies installed the way the project's own setup does; if they are missing, the heavy check reports it and stops that workspace instead of failing in a task worktree.
@@ -103,7 +115,7 @@ Every folder and branch is an entry in the `Workspaces` section of `assignments.
 
 ### Wrap-up
 
-When every workspace is merged or settled (see Merge) and the final review (Gate 6 step 1a) is recorded, ask one question: remove the folders and branches this skill created? List each with its state (merged and clean, or not). The default is keep. A failed, paused or violating run keeps its folder. Never offer anything that holds unmerged work or uncommitted changes (report it only), never touch the base workspace or anything the workflow created, and only entries of the `Workspaces` section are eligible. Remove from outside the folder, never with `git worktree remove --force` and never with `git branch -D`. A folder that holds only ignored files (build output) is offered with its file count; after the user's yes, empty it with `git clean -fdX` inside that folder, then remove it. Any other untracked or uncommitted file makes the folder "not clean". Once the user has answered, every entry that was kept or only reported settles as `kept (user decision)`, and removed ones become `cleaned`.
+When every workspace is merged or settled (see Merge) and the final review (Gate 6 step 1a) is recorded, ask one question: remove the folders and branches this skill created? List each with its state (merged and clean, or not). The default is keep. A failed, paused or violating run keeps its folder. Never offer anything that holds unmerged work or uncommitted changes (report it only), never touch the base or anything the workflow created, and only entries of the `Workspaces` section are eligible. Remove from outside the folder, never with `git worktree remove --force` and never with `git branch -D`. A folder that holds only ignored files (build output) is offered with its file count; after the user's yes, empty it with `git clean -fdX` inside that folder, then remove it. Any other untracked or uncommitted file makes the folder "not clean". Once the user has answered, every entry that was kept or only reported settles as `kept (user decision)`, and removed ones become `cleaned`.
 
 ### Reset guard
 
