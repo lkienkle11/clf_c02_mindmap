@@ -35,15 +35,16 @@ Orientation: for (a) and (b) the task listed first goes first; for (c) the produ
 3. A read-only task follows the same rule, using only edges (b), (c), (e) and (f). Read-only tasks never conflict with one another otherwise.
 4. Name the groups `G1`, `G2` and so on, in order.
 
-The members of one group start together, unless the parallel limit forces them to start in parts. Write members of a round run at the same time only in the task folders the approved table names (see `Workspaces, merge and wrap-up` in `SKILL.md` and the section below); without intake question 6b answered yes they run one after the other in group order (a group is then run one write member at a time). A later group starts when the tasks it depends on are done and reviewed (Gate 6 step 1).
+The members of one group start together, unless the parallel limit forces them to start in parts. Write members of a round run at the same time only in the task worktrees the approved table names (see `Workspaces, merge and wrap-up` in `SKILL.md` and the section below); without intake question 6b answered yes they run one after the other in group order (a group is then run one write member at a time). A later group starts when the tasks it depends on are done and reviewed (Gate 6 step 1).
 
 ## Workspaces and folders
 
 Run after the groups are computed (Gate 2 step 3f). Every step is mechanical, like the rest of this file.
 
 - **Workspace.** A workspace is a connected part of the conflict graph: two tasks are in the same workspace when a path of edges (a) to (f) joins them, and tasks with no path are in different workspaces (a part with one task is a workspace of one). Tasks in different workspaces cannot conflict, so their workspaces merge without conflicts by construction.
+- **Names.** Workspaces are named `w1`, `w2`, ... in the plan order of their first task; the `parallel group` column holds `<workspace>.G<n>` (for example `w1.G1`).
 - **Rounds.** The rounds of a workspace are the groups `G1`, `G2` and so on, computed on that part only, with the group rule, the split evaluation and the limit of this file unchanged. The split evaluation (`split recommended: n groups against m`) is computed per workspace.
-- **Folder decision.** A round with two or more tasks that write gives each of them its own task folder. A round with one task, or only read-only tasks, uses the workspace folder. The decision is made when the table is built, is fixed at approval, and a later change is a change of scope that needs approval again (Gate 2 step 6).
+- **Folder decision.** A round with two or more tasks that write gives each of them its own task worktree. A round with one task, or only read-only tasks, uses the workspace folder. The decision is made when the table is built, is fixed at approval, and a later change is a change of scope that needs approval again (Gate 2 step 6).
 - **Read-only runs.** A read-only run in a round with writers gets its own detached copy of the committed state of the workspace branch, so the default of edge (f) ("has its own folder") holds and the workspace folder stays idle for the checks after the merge.
 - **Limit.** `Parallel limit` counts all active runs across all workspaces; rounds of different workspaces do not wait for each other, and workspaces never raise the limit.
 
