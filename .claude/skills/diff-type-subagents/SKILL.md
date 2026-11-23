@@ -39,7 +39,7 @@ In these rules, "the policy" and "`references/policy.md`" mean `policy.md` of th
 
 ## When this skill applies
 
-**Trigger.** The user types `/diff-type-subagents`, or asks to delegate work to other agents or CLIs. A request in words counts as the command typed with no list, or with the CLIs it names as the list. Setup and the Gate 1 checks may run at any earlier time and need no task list.
+**Trigger.** The user types `/diff-type-subagents`, or asks to delegate work to other agents or CLIs. A request in words counts as the command typed with no list, or, when it names CLIs, as the `I installed:` form with those CLIs (never a filter, and a CLI with verified rows goes to Gate 1A, any other to Gate 1B). Setup and the Gate 1 checks may run at any earlier time and need no task list.
 
 - **Moment of effect.** The skill takes effect at the earliest moment a decision it governs, who does a piece of work, is about to be taken, and not earlier. Before that moment it stays out of the way: it neither asks questions nor delegates.
 - **With a workflow.** The skill is an overlay: it never replaces the workflow in use and never weakens that workflow's approval gates. Each step of the workflow is a Gate 3 point. The natural moment is when the workflow's tasks are about to be executed (for example, when the user chooses how to execute an approved plan, delegating is one more way to do it). It takes effect earlier only when the user asks to delegate earlier work such as research or reconnaissance. The skill does not describe the internal steps of any other workflow; it names only the moment.
