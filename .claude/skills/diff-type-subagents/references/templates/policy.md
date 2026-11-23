@@ -2,7 +2,7 @@
 
 Configured for: <hostname> | <operating system and shell> | <date>
 
-Template. `setup` copies this file to the per-user config folder as `policy.md` and fills it with the user (every write shows a diff first). Read at Gate 1. If the config is missing, or the user says the setup changed, ask the user for each item, then write the answers there and show the diff before saving. The rules in `SKILL.md` never name a vendor or a model; every such choice lives in the config. An item marked `[Proposed]` ships with a default that the user may change; an empty value is asked at setup.
+Template. `setup` copies this file to the per-user config folder as `policy.md` and fills it with the user (every write shows a diff first). Read at Gate 1. If the config is missing, or the user says the setup changed, run `setup` (see `SKILL.md`). The rules in `SKILL.md` never name a vendor or a model; every such choice lives in the config. An item marked `[Proposed]` ships with a default that the user may change; an empty value is asked at setup.
 
 | Item | Value |
 |---|---|
@@ -52,5 +52,12 @@ Where skills are looked up by name (`references/skill-delivery.md` section 1). O
 
 | Path pattern | Scope | Agents that scan it | Status | Date |
 |---|---|---|---|---|
+
+## Standing consents
+
+Answers the user chose to have remembered on this machine ("yes and remember"). A row is added only after that answer and a confirmed diff; `reset` clears every row; the user removes one by saying "forget <consent>" (with a diff). A missing section, or no row, means no consent. The table is empty until the user stores one.
+
+| Consent | Covers | Granted | Scope |
+|---|---|---|---|
 
 Items marked **[Proposed]** are a proposal that the user has not confirmed.
