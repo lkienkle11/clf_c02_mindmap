@@ -17,7 +17,7 @@ Type one of these. The skill keeps its settings for you; you never edit a file t
 |---|---|---|
 | `/diff-type-subagents` | Use the current configuration | If the config is missing or incomplete, run `setup` first. Otherwise check the marker (see Where the config lives), then Gate 1A. |
 | `/diff-type-subagents setup` | Configure this machine | Create the config folder from `references/templates/`. Probe the `Environment` table, ask for each policy item that has no default, ask which CLIs are installed and run Gate 1B for them, probe the skill roots. Every write shows its diff first and waits for the user's confirmation. `setup` writes the marker last, after the `Environment` table is confirmed. Once `setup` has verified the CLIs, continue with the task, do not ask again which CLIs exist, and do not repeat the Gate 1A re-check for them in this session. |
-| `/diff-type-subagents reset` | Start the configuration again | If a run of the current topic is still `pending` or `running`, stop, name the run to the user and say they can wait for it or stop it themselves (a process is never stopped without the user's agreement); move nothing. Otherwise ask the user to confirm, move the config folder to `~/.claude/diff-type-subagents.bak-<YYYY-MM-DD-HHMM>/` (never delete it; if that name exists, add a numeric suffix), then run `setup`, which asks everything again and never reads the backup. |
+| `/diff-type-subagents reset` | Start the configuration again | If any topic of the handoff root has a `pending` or `running` run, or a recorded workspace entry that is not settled (see Workspaces, merge and wrap-up), stop, name it to the user and say they can wait for it or stop it themselves (a process is never stopped without the user's agreement); move nothing. Otherwise ask the user to confirm, move the config folder to `~/.claude/diff-type-subagents.bak-<YYYY-MM-DD-HHMM>/` (never delete it; if that name exists, add a numeric suffix), then run `setup`, which asks everything again and never reads the backup. |
 | `/diff-type-subagents target: a, b` | Use only these CLIs as workers for this run | A hard filter, per run, never stored. If the config is missing or incomplete, run `setup` first. A named CLI that already has verified rows in the models table goes to Gate 1A (re-check, no new Hello test); a named CLI with no verified row goes to Gate 1B (what is verified is recorded in the models table as usual). The typed list answers the question of Gate 1A "another installed CLI?", so that question is not asked. When `host` is listed, Gate 1A's host-row check runs for the host. If no named CLI passes and `host` is not listed, stop and ask the user. Every other CLI in the table is ignored for this run: escalation chains and fallback entries use only the named CLIs, and when a step leaves no row the rule of `references/allocation.md` applies (stop and ask the user, who may widen the list). The host's own subagent mechanism is in the pool only when the list contains the word `host` (for example `target: host, opencode`). A name that matches no installed program is reported and never guessed. An empty list asks the user which CLIs to use (the word `host` may be named). A name given twice counts once. |
 
 The older free-text form `/diff-type-subagents I installed: <CLI one>, <CLI two>` keeps working: it says these CLIs exist and is not a filter (a CLI with verified rows goes to Gate 1A, any other to Gate 1B).
@@ -59,7 +59,9 @@ One list of questions, shown once per topic, and only for questions whose answer
 | 3 | 1 | Delegate from the start, or only at execution (asked only when the command was typed at the first step of a workflow) | only at execution | no |
 | 4 | 2 | An independent reviewer for the final review (row "R" of `assignments.md`) | yes | yes (a "yes" or a "no") |
 | 5 | 2 | The four ripple classes of Gate 2 step 3b | the four classes | yes (the kinds only; the files stay per task in the table) |
-| 6 | 2 | Reserved for the questions about parallel work and workspaces | none | none |
+| 6a | 2 | Run tasks in parallel, up to the `Parallel limit` (shown with its value) | yes, when the conflict graph gives more than one task in some round or workspace | no |
+| 6b | 2 | May the skill create the workspace and task folders and branches under the handoff root for this topic, and merge the task branches back into the topic's own branches as they finish | no, and nothing is created until yes | no (the project requires permission each time) |
+| 6c | 2 | Only if no base workspace exists: work on the current branch, or in an isolated workspace | isolated | no |
 
 If question 3 is answered "from the start", the work to delegate first (research, reconnaissance) is the task list of a first table, built and approved as usual, and later tasks are added by Gate 2 step 6. If it is answered "only at execution", the answer is recorded and Gate 3 sends the orchestrator to Gate 2 when the workflow reaches execution.
 
@@ -73,7 +75,37 @@ If question 3 is answered "from the start", the work to delegate first (research
 
 ### Never stored
 
-These are asked every time, whatever consents exist: anything irreversible or touching real data; a write outside the approved workspace or outside the allowed paths; a merge, a push or a publish; any change of worker, model, effort, mode, write permission, scope, delivery mode or skill hash after approval (except a move along the approved chain); a violation found at Gate 5; a failed or stopped run; quota exhausted at the end of the chain; a conflict, a cycle or a missing skill; and the approval of the table itself (Gate 2 step 4).
+These are asked every time, whatever consents exist: anything irreversible or touching real data; a write outside the approved workspace or outside the allowed paths; a merge outside the topic's own branches, a push or a publish; any change of worker, model, effort, mode, write permission, scope, delivery mode or skill hash after approval (except a move along the approved chain); a violation found at Gate 5; a failed or stopped run; quota exhausted at the end of the chain; a conflict, a cycle or a missing skill; and the approval of the table itself (Gate 2 step 4).
+
+## Workspaces, merge and wrap-up
+
+Used when intake question 6a and 6b are answered yes. With "no" to either, there is one workspace folder and the tasks run in order, as before; nothing below is created.
+
+### Ownership and names
+
+- The workflow in use owns the **base workspace** (the branch or worktree it created with the user's permission). This skill owns only the workspace and task folders and branches it creates, and records every one of them. If no base exists and write isolation is needed, ask question 6c before creating anything.
+- A **workspace** is a connected part of the conflict graph (`references/parallel-groups.md`, Workspaces and folders). Workspace folder `<handoff-root>/worktrees/<topic>/<workspace>/`, branch `diff-agents/<topic>/<workspace>`, made from the base. A **task folder** is never inside a workspace folder: `<handoff-root>/worktrees/<topic>/<workspace>--<task-id>/`, branch `diff-agents/<topic>/<workspace>--<task-id>`, made from the workspace branch. No branch name nests inside another (git cannot hold `a/b` and `a/b/c` together). The handoff root is ignored by git, and these folders stay clear of the `.worktrees/` and `worktrees/` places that the workflow's own clean-up looks at.
+- Workers never run a git command (WORKER RULES): the orchestrator creates, commits, merges and removes.
+
+### States
+
+Every folder and branch is an entry in the `Workspaces` section of `assignments.md` (path, branch, parent, state, and the folder decision of each round). The entry is written as `planned` when the table is approved, before anything is created, so no folder exists without an entry. States: `planned`, `created`, `committed`, `merged`, `stopped (<reason>)`, `kept (user decision)`, `cleaned`. A new orchestrator session resumes from these states.
+
+### Merge
+
+- **Precondition.** Before a workspace is cut, the base workspace is clean and everything the workers need is committed; if not, stop and ask the user to commit or stash. Inputs that are not committed (briefs, results, skills) are read by absolute path, as briefs already do.
+- **Order for a round**, for each run: the Gate 5 check against its own baseline, then the orchestrator commits that folder's changes to that folder's branch (a round that ran in the workspace folder commits to the workspace branch, before any task folder of the next round is cut), then the review (Gate 6 step 1), then the task branches are merged into the workspace branch in table order, then the heavy checks (the project's build or full test) run once in the workspace folder, then the next round is cut from the updated workspace branch. The workspace branch is merged into the base from inside the base folder, which must be clean and idle; a base that moved is a normal non-fast-forward merge.
+- Use real merge commits only (no squash, no rebase), so that `git branch -d` works and no force flag is needed.
+- A merge conflict, or a failed check after a merge, stops that workspace (state `stopped (<reason>)`), tells the user and changes nothing else; other workspaces continue.
+- Question 6b covers merging task branches into workspace branches and a workspace branch into the base, when the base is not the repository's default branch. A merge into the default branch, or into a branch the skill cannot tell is private, is never stored and always asked.
+
+### Wrap-up
+
+When every workspace is merged and the final review (Gate 6 step 1a) is recorded, ask one question: remove the folders and branches this skill created? List each with its state (merged and clean, or not). The default is keep. A failed, paused or violating run keeps its folder. Never offer anything that holds unmerged work or uncommitted changes (report it only), never touch the base workspace or anything the workflow created, and only entries of the `Workspaces` section are eligible. Remove from outside the folder, never with `git worktree remove --force` and never with `git branch -D`. A folder that holds only ignored files (build output) is offered with its file count; after the user's yes, empty it with `git clean -fdX` inside that folder, then remove it. Any other untracked or uncommitted file makes the folder "not clean". Once the user has answered, every entry that was kept settles as `kept (user decision)`, and removed ones become `cleaned`.
+
+### Reset guard
+
+`reset` stops when any topic of the handoff root has a pending or running run, or an entry in state `planned`, `created`, `committed`, `merged` (not yet asked about) or `stopped`. Entries `kept (user decision)` and `cleaned` do not block it.
 
 ## Hard rules
 
