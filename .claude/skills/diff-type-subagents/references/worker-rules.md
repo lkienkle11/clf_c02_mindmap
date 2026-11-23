@@ -2,7 +2,7 @@
 
 Copy these two blocks word for word into `brief.md`. Do not rewrite, shorten or weaken them. Line 5 of CODE WORKER RULES starts with "In Svelte files": it applies only when the task touches such files, so it stays in the block for every project.
 
-Workers do not know this project's rules: they do not load project rule files or the host's skills. Whether a given worker sees any of them is recorded in the capability table (`references/models-and-commands.md`; dated test evidence is in its notes). A brief must still name every project skill by path, and a worker is assumed not to see project-level skills unless a probe says otherwise. A worker has only what is inside its `brief.md`.
+Workers do not know this project's rules: they do not load project rule files or the host's skills. Whether a given worker sees any of them is recorded in the capability table (the models file of the config folder; its notes may hold test results). A brief must still name every project skill by path, and a worker is assumed not to see project-level skills unless a probe says otherwise. A worker has only what is inside its `brief.md`.
 
 ## WORKER RULES (every worker)
 
@@ -34,6 +34,6 @@ CODE WORKER RULES. These apply in addition to WORKER RULES, because this task wr
 
 - For a plan task, copy that task's steps into the brief, below these blocks. They carry the TDD and verification steps the worker must follow.
 - Technical limits come first, instructions second. Audits run read-only (sandbox), so a worker cannot write even if it ignores the rules. A worker that writes code runs only inside an isolated worktree or branch that the user allowed, with write access limited to the allowed paths where the CLI supports it (the CLI's own write mode, as recorded in `references/models-and-commands.md`, Command shapes).
-- **Naming a skill is not enough; giving the file path can work [Partly verified 2026-11-10].** How a skill is delivered depends on the worker's probed capabilities: see the delivery modes in `references/skill-delivery.md` section 2. Never write only "use the TDD skill". The dated test evidence (one run per side, one small task) is in the notes of `references/models-and-commands.md`; do not rely on it for workers that were not tested. For a worker that cannot read the path, use the next delivery mode.
+- **Naming a skill is not enough; giving the file path can work.** How a skill is delivered depends on the worker's probed capabilities: see the delivery modes in `references/skill-delivery.md` section 2. Never write only "use the TDD skill". Whether a given worker reads a path is recorded in its capability row; do not rely on it for workers that were not tested. For a worker that cannot read the path, use the next delivery mode.
 - Skills are not optional extras. For every skill that applies to the task, `SKILL.md` Gate 4 step 2a requires the brief to deliver that skill by the mode of the `Delivery table` (for `path`: the absolute path as "read and follow", limited with "read only this file and the files it links; change nothing else"), next to the CODE WORKER RULES block and the plan task's steps. After the run, Gate 5 requires the proof of that mode (for `path`, the skill file opened before the first step of the work). A worker's own report is never proof.
 - Compliance check after every run: see Gate 5 in `SKILL.md`.
