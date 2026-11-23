@@ -55,7 +55,7 @@ Where skills are looked up by name (`references/skill-delivery.md` section 1). O
 
 ## Standing consents
 
-Answers the user chose to have remembered on this machine ("yes and remember"). A row is added only after that answer and a confirmed diff; `reset` clears every row; the user removes one by saying "forget <consent>" (with a diff). A missing section, or no row, means no consent. The table is empty until the user stores one.
+Answers the user chose to have remembered on this machine ("yes and remember"). A row is added only after that answer in words and a confirmed diff, and names the CLIs it covers with their versions (a CLI whose version changed is asked about again; the word `host` may be named); `reset` clears every row; the user removes one by saying "forget <consent>" (with a diff). A missing section, or no row, means no consent. The table is empty until the user stores one.
 
 | Consent | Covers | Granted | Scope |
 |---|---|---|---|

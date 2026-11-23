@@ -12,9 +12,9 @@ The models table is a record of what was verified, not a fixed list.
   - Never rely on a row without a check date, and never use a model that is not in the table without first adding and verifying it.
 - **How to write into the table [Decided 2026-11-12].**
   - **Append** a new row for a new CLI or a new model: place it at the end of that vendor's group, or at the end of the table when the vendor is new. Keep every existing row unchanged.
-  - **Replace** an existing row only when pre-flight check 2 shows a mismatch (model gone, CLI version changed, effort levels changed). Correct or remove only the mismatching row and update the check date of that row only. Rows that did not mismatch keep their text and their date. Replacing a row on a mismatch keeps its `passed` lines only when the model, effort and CLI version are unchanged; otherwise they are removed with the old text. A permitted edit besides these: the Notes cell of an existing row may receive an appended dated line `passed (<effort>, <kind>): <date>`, written by Gate 6 step 1b, shown as a diff first and committed only when the user allows. Git history is the record of old values; do not keep old text in the file.
+  - **Replace** an existing row only when pre-flight check 2 shows a mismatch (model gone, CLI version changed, effort levels changed). Correct or remove only the mismatching row and update the check date of that row only. Rows that did not mismatch keep their text and their date. Replacing a row on a mismatch keeps its `passed` lines only when the model, effort and CLI version are unchanged; otherwise they are removed with the old text. A permitted edit besides these: the Notes cell of an existing row may receive an appended dated line `passed (<effort>, <kind>): <date>`, written by Gate 6 step 1b, shown as a diff first. The config folder keeps the previous text of a changed file as `<file>.prev-<YYYY-MM-DD>` (see Where the config lives in `SKILL.md`); do not keep old text in the file itself.
   - **Row format:** put the CLI version and the check date in the first column, for example `<cli> <version> (<date>)`. Existing rows that only carry the table's heading date stay as they are until they are re-verified.
-  - **Show the diff first.** Show the user the diff of the file before writing it as final, and commit only when the user allows it.
+  - **Show the diff first.** Show the user the diff of the file before writing it as final; the config folder is not a git repository, so there is nothing to commit.
 - The effort ceiling is in `policy.md`.
 - Prices, when recorded, are **[Unverified]** unless taken from the vendor's own page. The user's CLI accounts are usually subscriptions, so the real cost is usage quota, not money per token.
 
@@ -55,7 +55,7 @@ Data for Gate 1A in `SKILL.md`: one row per CLI in the recorded table, the comma
 
 ## Session visibility
 
-**Session-list commands per CLI** (one row per CLI in the recorded table; a CLI is added at Gate 1B and re-checked at Gate 1A). The rule in `SKILL.md` ("Every worker session must be listed") uses these rows.
+**Session-list table** (one row per CLI in the recorded table; a CLI is added at Gate 1B and re-checked at Gate 1A). The rule in `SKILL.md` ("Every worker session must be listed") uses these rows.
 
 | CLI | Command that lists every worker session | Running session followable in real time | Status |
 |---|---|---|---|

@@ -29,7 +29,7 @@ One entry per CLI, found at Gate 1B from the CLI's own help or documentation: th
 
 ## Session visibility
 
-**Session-list commands per CLI.**
+**Session-list table.**
 
 | CLI | Command that lists every worker session | Running session followable in real time | Status |
 |---|---|---|---|
