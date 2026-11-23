@@ -66,6 +66,7 @@ Notes:
 - A CLI may tie a session to the working directory; sessions started in another directory are **[Unverified]** until checked.
 - Run a worker from the directory the user will look in when the work is read-only. Work that writes runs in an isolated worktree, so its sessions are found with the CLI's all-directories option, if it has one.
 - Only when the user wants to watch a whole live conversation, run an interactive session in the project directory through a terminal multiplexer, if the `Environment` table of `policy.md` says one exists (otherwise use the CLI's non-interactive command, or ask the user to run the interactive session in their own terminal and report what they see), exit it cleanly, and give the user the session ID and the captured screen. Never install a multiplexer.
+- A session-list command that opens an interactive picker may first show a prompt (an update offer, a notice). Never accept an offer that installs or changes anything; dismiss it only through an option that skips it once; if there is none, ask the user to look and confirm. Record in `models.md`, for that CLI, which prompt appeared and which key dismissed it.
 - Resuming a CLI session non-interactively is not verified until it is checked; check before relying on it.
 
 ## Quota notes

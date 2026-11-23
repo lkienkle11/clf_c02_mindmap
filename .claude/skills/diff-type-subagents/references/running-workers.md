@@ -52,7 +52,7 @@ Read at Gate 4 (launch) and at every pause point while a worker runs. Every dele
 
 - Only read-only tasks, or write tasks whose allowed paths do not overlap, run at the same time (each in the folder the approved table names, see Workspaces, merge and wrap-up in `SKILL.md`). Tasks whose allowed paths overlap run one after the other, in the order of the main table. Write tasks run at the same time only in the folders the approved table names (see Workspaces, merge and wrap-up in `SKILL.md`); a branch alone does not give a second working folder; a read-only run active beside a write run likewise has its own working folder (a separate worktree or a copy of the committed state) or, if it cannot, goes to a later group (edge (f) of `references/parallel-groups.md`); without them, write tasks run one after the other in group order (a group whose write members have no allowed worktree is run one member at a time).
 - The groups of tasks that start together, and the order of the later groups, come from `references/parallel-groups.md` (Gate 2 step 3f); this list applies inside that result. Parallelism does not depend on the vendor: runs of one family or of several may overlap under the same rules.
-- Each run has its own task folder, its own log, its own `exit.code` and its own `done`.
+- Each run has its own log, its own `exit.code`, its own `done` and its own `launch.pid`. A task that is run again (a retry or a move along the chain) keeps one task folder: before the new run starts, move the previous run's markers and result (`done`, `exit.code`, `launch.pid`, the log, the result file) into a subfolder `<task folder>/<run-id>/` (`run-1`, `run-2`, ... in launch order), so that the `done` of an earlier run can never make the new run look finished.
 - Gate 5 is run per run, after that run's own `done`, and compares the changes with that run's allowed paths. This is how a violation is attributed to one worker.
 - While workers run, the orchestrator keeps answering the user and says at most one short line of status at each pause point.
 - The session check of Gate 4 step 8 may be done while the run is live. Whether a running session can be followed in real time stays [Unverified] until it is probed (see "Session visibility" in `models.md`).
@@ -64,6 +64,7 @@ One entry per run, in `ledger.json` of the task folder, written by the orchestra
 | Field | Meaning |
 |---|---|
 | `task` | the task id |
+| `run_id` | `run-1`, `run-2`, ... in launch order; the folder `<run-id>/` of the task folder holds the markers and the result of a finished earlier run |
 | `worker` | the row (CLI, model, effort) that runs it |
 | `kind` | the kind of task: `research`, `write` or `review` (`references/allocation.md`) |
 | `effort` | the effort level of the chosen row |
