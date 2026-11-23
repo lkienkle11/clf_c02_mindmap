@@ -8,8 +8,8 @@ Delegate work to AI agents of different vendors (CLI agents installed on your ma
 |---|---|
 | `/diff-type-subagents` | Normal use. Uses your saved configuration and checks that it still fits this machine. If there is no configuration yet, it starts `setup`. |
 | `/diff-type-subagents setup` | First time on a machine. It checks what the machine offers, asks about the few settings that have no default, asks which agent CLIs you have, and tests each one. Every file it writes is shown to you as a diff first. |
-| `/diff-type-subagents reset` | Configure again from the start, for example after changing computer, operating system or the set of installed agents. It first moves your old configuration to `~/.claude/diff-type-subagents.bak-<date>-<time>/` (nothing is deleted), then runs `setup`. It refuses to run while a delegated run of the current topic is still going. |
-| `/diff-type-subagents target: opencode, minimax` | Use only these CLIs as workers for this run. Each one is tested first; the others are ignored. The host's own subagents are included only if you write `host` in the list, for example `target: host, opencode`. |
+| `/diff-type-subagents reset` | Configure again from the start, for example after changing computer, operating system or the set of installed agents. It first moves your old configuration to `~/.claude/diff-type-subagents.bak-<date>-<time>/` (nothing is deleted), then runs `setup`. It refuses to run while any delegated run, or any folder or branch the skill made, is still unsettled in any topic of this project; the configuration is shared by every project on this machine, so make sure nothing is running in another project either. |
+| `/diff-type-subagents target: opencode, minimax` | Use only these CLIs as workers for this run. A CLI new to your configuration is tested first; one already verified is only re-checked; the other CLIs are ignored. The host's own subagents are included only if you write `host` in the list, for example `target: host, opencode`. |
 
 You never edit a configuration file by hand to get started.
 
@@ -30,15 +30,15 @@ The skill asks its questions in one list, once per topic, and only the ones it c
 
 For a few questions (running the test of a new agent CLI, whether to use an independent reviewer, which kinds of mechanical edit may follow a change) you can answer "yes and remember". The answer is saved on this machine only, in your `policy.md`, after you confirm its diff. Say "forget <name>" to remove one, or use `reset`, which clears all of them.
 
-Some things are always asked, whatever you saved: anything that cannot be undone or touches real data, writing outside the approved workspace, merging or pushing, changing a worker after you approved the plan, and the approval of the plan itself.
+Some things are always asked, whatever you saved: anything that cannot be undone or touches real data, writing outside the folders the approved plan names, merging into your own branch, merging into your main branch (the skill never does that itself), pushing, changing a worker after you approved the plan, and the approval of the plan itself.
 
 ## Parallel work
 
-Tasks that cannot touch each other (they share no file and do not depend on each other) are split into separate workspaces. Inside a workspace, tasks that run at the same time each get their own folder, and tasks that run alone use the workspace folder. Finished work is merged back step by step: task into workspace, workspace into your branch. If a merge conflicts, only that workspace stops and the skill asks you.
+Tasks that cannot touch each other (they share no file and do not depend on each other) are split into separate workspaces. Inside a workspace, tasks that run at the same time each get their own folder, and tasks that run alone use the workspace folder. Finished work is merged back step by step: each task into its workspace as it finishes, and at the end, only if you say yes, each workspace into your branch. If a merge conflicts, only that workspace stops, the skill undoes the half-done merge, and asks you to resolve it or give that workspace up.
 
-How many runs go at once is capped by `Parallel limit` in your `policy.md` (3 by default) and by your quota, however many workspaces there are; you can raise it when the skill asks.
+How many runs go at once is capped by `Parallel limit` in your `policy.md` (3 by default) and by your quota, however many workspaces there are; the skill shows the number when it asks, and you can name another one.
 
-The skill asks you before it creates any folder or branch, every time, and never merges into your main branch by itself. At the end it asks once whether to remove the folders and branches it made. It keeps them unless you say yes, and it never removes your own branch, your own folders, or anything with unmerged or uncommitted work.
+The skill asks you before it creates any workspace folder or branch for this work, every time (the answer is never remembered), and never merges into your main branch by itself. The configuration folder, the probe folders and its own records under the handoff folder are made as part of setup, probes and the plan. At the end it asks once, in one message, whether to merge the workspaces into your branch and whether to remove the folders and branches it made. It keeps them unless you say yes, and it never removes your own branch, your own folders, or anything with unmerged or uncommitted work.
 
 ## Safe by default
 
