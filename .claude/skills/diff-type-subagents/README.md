@@ -38,7 +38,7 @@ Tasks that cannot touch each other (they share no file and do not depend on each
 
 How many runs go at once is capped by `Parallel limit` in your `policy.md` (3 by default) and by your quota, however many workspaces there are; the skill shows the number when it asks, and you can name another one.
 
-The skill asks you before it creates any workspace folder or branch for this work, every time (the answer is never remembered), and never merges into your main branch by itself. The configuration folder, the probe folders and its own records under the handoff folder are made as part of setup, probes and the plan. At the end it asks once, in one message, whether to merge the workspaces into your branch and whether to remove the folders and branches it made. It keeps them unless you say yes, and it never removes your own branch, your own folders, or anything with unmerged or uncommitted work.
+The skill asks you before it creates any workspace folder or branch for this work, every time (the answer is never remembered), and never merges into your main branch by itself. The configuration folder, the probe folders and its own records under the handoff folder (made as soon as the work has a name) are not project files. At the end it asks whether to merge the workspaces into your branch, and then whether to remove the folders and branches it made. It keeps them unless you say yes, and it never removes your own branch, your own folders, or anything with unmerged or uncommitted work.
 
 ## Safe by default
 
