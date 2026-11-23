@@ -37,6 +37,15 @@ In these rules, "the policy" and "`references/policy.md`" mean `policy.md` of th
 
 **The marker.** The first line under the title of `policy.md` is `Configured for: <hostname> | <operating system and shell> | <date>`. Every session, before Gate 1, compare it with the live machine. The operating system and the shell are the hard keys; the date is never compared. On a mismatch or a missing marker, change nothing and ask the user once: (a) reconfigure for this machine (same as `reset`), (b) keep the config and update the marker, (c) cancel. If only the hostname differs (a hostname that depends on the network), ask the same question once; answer (b) updates the marker, so the question does not repeat. The `Environment` comparison of Gate 1 stays as a second guard.
 
+## When this skill applies
+
+**Trigger.** The user types `/diff-type-subagents`, or asks to delegate work to other agents or CLIs. Setup and the Gate 1 checks may run at any earlier time and need no task list.
+
+- **Moment of effect.** The skill takes effect at the earliest moment a decision it governs, who does a piece of work, is about to be taken, and not earlier. Before that moment it stays out of the way: it neither asks questions nor delegates.
+- **With a workflow.** The skill is an overlay: it never replaces the workflow in use and never weakens that workflow's approval gates. Each step of the workflow is a Gate 3 point. The natural moment is when the workflow's tasks are about to be executed (for example, when the user chooses how to execute an approved plan, delegating is one more way to do it). It takes effect earlier only when the user asks to delegate earlier work such as research or reconnaissance. The skill does not describe the internal steps of any other workflow; it names only the moment.
+- **With no workflow.** A request to delegate is a one-step workflow: intake, table, approval, run, review.
+- **Typed late.** The skill takes effect from the current step on. It reads the files already on disk (spec, plan, ledger, `assignments.md`) and never asks again what they answer.
+
 ## Hard rules
 
 - A model, a model family or an effort level that `references/policy.md` forbids is never used as a worker. The orchestrator's own model family is a worker only if the policy allows it.
