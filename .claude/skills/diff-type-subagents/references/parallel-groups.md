@@ -35,7 +35,17 @@ Orientation: for (a) and (b) the task listed first goes first; for (c) the produ
 3. A read-only task follows the same rule, using only edges (b), (c), (e) and (f). Read-only tasks never conflict with one another otherwise.
 4. Name the groups `G1`, `G2` and so on, in order.
 
-The members of one group start together, unless the parallel limit forces them to start in parts. Write members of one group run at the same time only in separate worktrees (each its own working folder) or clones that the user allowed; without them, the write members run one after the other in group order (a group is then run one write member at a time). A later group starts when the tasks it depends on are done and reviewed (Gate 6 step 1).
+The members of one group start together, unless the parallel limit forces them to start in parts. Write members of a round run at the same time only in the task folders the approved table names (see `Workspaces, merge and wrap-up` in `SKILL.md` and the section below); without intake question 6b answered yes they run one after the other in group order (a group is then run one write member at a time). A later group starts when the tasks it depends on are done and reviewed (Gate 6 step 1).
+
+## Workspaces and folders
+
+Run after the groups are computed (Gate 2 step 3f). Every step is mechanical, like the rest of this file.
+
+- **Workspace.** A workspace is a connected part of the conflict graph: two tasks are in the same workspace when a path of edges (a) to (f) joins them, and tasks with no path are in different workspaces (a part with one task is a workspace of one). Tasks in different workspaces cannot conflict, so their workspaces merge without conflicts by construction.
+- **Rounds.** The rounds of a workspace are the groups `G1`, `G2` and so on, computed on that part only, with the group rule, the split evaluation and the limit of this file unchanged. The split evaluation (`split recommended: n groups against m`) is computed per workspace.
+- **Folder decision.** A round with two or more tasks that write gives each of them its own task folder. A round with one task, or only read-only tasks, uses the workspace folder. The decision is made when the table is built, is fixed at approval, and a later change is a change of scope that needs approval again (Gate 2 step 6).
+- **Read-only runs.** A read-only run in a round with writers gets its own detached copy of the committed state of the workspace branch, so the default of edge (f) ("has its own folder") holds and the workspace folder stays idle for the checks after the merge.
+- **Limit.** `Parallel limit` counts all active runs across all workspaces; rounds of different workspaces do not wait for each other, and workspaces never raise the limit.
 
 ## Splitting
 
@@ -48,7 +58,7 @@ The own-file part of a task X is the set of files X writes that no task listed B
 
 ## Limits
 
-- `Parallel limit` in `references/policy.md` ([Proposed 2026-11-19] 3; the user may change it) is the most tasks that run at the same time, counting ALL active runs at launch: a member of a group starts when the number of active runs is below `Parallel limit`, so a group may start in parts, in the order of the table. The quota thresholds of the policy bound it further: at 5% to 20% left the limit is 1 run at a time; below 5% none starts.
+- `Parallel limit` in `references/policy.md` ([Proposed 2026-11-19] 3; the user may change it) is the most tasks that run at the same time, counting ALL active runs at launch, across all workspaces: a member of a group starts when the number of active runs is below `Parallel limit`, so a group may start in parts, in the order of the table. The quota thresholds of the policy bound it further: at 5% to 20% left the limit is 1 run at a time; below 5% none starts.
 - Tasks that write at the same time need separate worktrees (each its own working folder) or clones that the user allowed (ask at Gate 2 step 5), because in a shared working tree one task's checks would read another's half-written files. Without that permission they run one after the other. A read-only task that is active at the same time as a write task needs its own working folder (a separate worktree or a copy of the committed state) or, if it cannot, has edge (f) and goes to a later group, so that its "no change" check (Gate 5) is not disturbed by the writer.
 - Each run has its own task folder, log, `exit.code` and `done` (`references/running-workers.md`, Parallel runs).
 - Parallelism does not depend on the vendor: the members of a group may be of one family or of several. Allocation (`references/allocation.md`) is run task by task in plan order; the groups do not change any Spread count.
@@ -56,5 +66,5 @@ The own-file part of a task X is the set of files X writes that no task listed B
 ## Record
 
 - Append a column `parallel group` at the END of the main table's column list in `assignments.md`; do not rewrite the other columns.
-- Add the section `Parallel groups` to `assignments.md`: the groups in order with their members; the edges that forced an order, one line per pair of tasks (earlier, then later) naming every kind that applies and the reason, and no line for two tasks of the same group (for example `T3 after T2: (a) both write SKILL.md; (b) T3 reads the Gate 1B step list that T2 writes`); the split evaluation line (`split recommended: ...` or `split not recommended: ...`); the limit applied and whether a worktree was requested.
+- Add the section `Parallel groups` to `assignments.md`: the groups in order with their members; the edges that forced an order, one line per pair of tasks (earlier, then later) naming every kind that applies and the reason, and no line for two tasks of the same group (for example `T3 after T2: (a) both write SKILL.md; (b) T3 reads the Gate 1B step list that T2 writes`); the split evaluation line (`split recommended: ...` or `split not recommended: ...`); the limit applied and whether folders were requested (intake question 6b). The `Workspaces` section of `assignments.md` is written with the groups (path, branch, parent, state, and the folder decision of each round) and approved with them.
 - It is shown to the user with the table and approved with it. The Status rules of Gate 2 apply: any change to the groups sets `Status: draft` again.
